@@ -23,6 +23,10 @@
   .panel { width: 300px; flex-shrink: 0; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 24px; position: sticky; top: 24px; }
   .panel-title { font-size: 11px; font-weight: 600; color: #555; letter-spacing: 0.05em; margin-bottom: 12px; }
   .panel-hint { font-size: 10px; color: #444; margin-bottom: 10px; line-height: 1.6; }
+  .draft-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
+  .draft-status { font-size: 10px; color: #444; line-height: 1.4; }
+  .clear-draft-btn { background: none; border: 1px solid #2a2a2a; border-radius: 5px; padding: 5px 10px; font-size: 11px; color: #666; cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .clear-draft-btn:hover { border-color: #444; color: #aaa; }
   .preview-hint { color: #666; margin-bottom: 12px; }
   .divider { border: none; border-top: 1px solid #222; margin: 20px 0; }
 
@@ -121,6 +125,7 @@
   .sw-feed.light { background: #F5F5F5; }
   .sw-feed.dark  { background: #1a1a1a; }
   .si-feed  { width: 750px; height: 240px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
+  .sub, .tit { word-break: break-word; overflow-wrap: anywhere; }
 
   .b-feed { width: 750px; height: 240px; padding: 40px; box-sizing: border-box; display: flex; align-items: center; font-family: 'PingFang SC','Noto Sans SC',sans-serif; background: transparent; }
   .b-feed .txt { flex: 1; min-width: 0; padding-right: 40px; }
@@ -133,8 +138,8 @@
   .b-feed .imgw img { width: 128px; height: 128px; display: block; object-fit: cover; border-radius: 8px; }
 
   .b-share { width: 825px; height: 1170px; padding: 90px 60px; box-sizing: border-box; position: relative; background: #fff; border-radius: 24px; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
-  .b-share .sub { margin: 0; font-size: 42px; font-weight: 400; line-height: 1.3; color: #242424; }
-  .b-share .tit { margin: 24px 0 0 0; font-size: 90px; font-weight: 700; line-height: 1.2; color: #0066FF; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; }
+  .b-share .sub { margin: 0; font-size: 42px; font-weight: 400; line-height: 1.3; color: #242424; word-break: break-word; overflow-wrap: anywhere; }
+  .b-share .tit { margin: 24px 0 0 0; font-size: 90px; font-weight: 700; line-height: 1.2; color: #0066FF; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; word-break: break-word; overflow-wrap: anywhere; }
   .b-share .img { position: absolute; right: 60px; bottom: 90px; width: 420px; height: 420px; display: block; object-fit: contain; }
   .sw-share { width: 149px; height: 211px; overflow: hidden; position: relative; flex-shrink: 0; }
   .si-share { width: 825px; height: 1170px; transform: scale(0.18); transform-origin: top left; position: absolute; }
@@ -168,7 +173,6 @@
   .b-appcal .tit { margin: 12px 0 0 0; font-size: 54px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; color: #fff; }
   .b-appcal .imgw { flex-shrink: 0; width: 270px; height: 270px; }
   .b-appcal .imgw img { width: 270px; height: 270px; display: block; object-fit: contain; }
-  .b-appcal .ph { width: 270px; height: 270px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 18px; color: rgba(255,255,255,0.4); }
 
   .b-pccal { width: 2400px; height: 400px; padding: 44px 90px; box-sizing: border-box; background: #FAFAFA; display: flex; align-items: center; border-radius: 24px; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
   .b-pccal .txt { flex: 1; min-width: 0; padding-right: 90px; }
@@ -176,7 +180,6 @@
   .b-pccal .tit { margin: 18px 0 0 0; font-size: 68px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; color: #0F0F0F; }
   .b-pccal .imgw { flex-shrink: 0; width: 300px; height: 300px; }
   .b-pccal .imgw img { width: 300px; height: 300px; display: block; object-fit: contain; }
-  .b-pccal .ph { width: 300px; height: 300px; border-radius: 50%; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #aaa; }
 
   .sw-landing { width: 125px; height: 78px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 4px; }
   .si-landing { width: 375px; height: 234px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
@@ -200,7 +203,7 @@
   .b-baping .txt { width: 100%; max-width: 100%; position: relative; z-index: 1; word-break: normal; overflow-wrap: break-word; }
   .b-baping .sub { margin: 0; font-size: 36px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 1.4; color: #595959; }
   .b-baping .tit { margin: 16px 0 0 0; font-size: 58px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 1.4; color: #000000; }
-  .b-baping .imgw { position: absolute; right: 50px; bottom: 0; width: 210px; height: 210px; z-index: 0; }
+  .b-baping .imgw { position: absolute; right: 50px; bottom: 32px; width: 210px; height: 210px; z-index: 0; }
   .b-baping .imgw img { width: 210px; height: 210px; display: block; object-fit: contain; }
   .b-baping .bar { height: 124px; background: #007FFF; display: flex; align-items: center; justify-content: space-between; padding: 0 50px; box-sizing: border-box; flex-shrink: 0; }
   .b-baping .bar-txt { font-size: 32px; font-weight: 500; font-family: 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif; color: #FFFFFF; line-height: normal; }
@@ -239,6 +242,10 @@
     <hr class="divider">
 
     <div class="panel-title">文案配置</div>
+    <div class="draft-row">
+      <span class="draft-status" id="draftStatus">草稿会自动保存</span>
+      <button class="clear-draft-btn" onclick="clearDraft()">清空草稿</button>
+    </div>
     <div class="lang-list" id="langList"></div>
     <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
 
@@ -322,6 +329,10 @@ let bapingLangs = {};
 let bapingDescEnabled = false;
 let validBapingLangsCache = [];
 const scaleState = {};
+const DRAFT_KEY = 'htxCreativeOSDraftV1';
+const DEFAULT_LANG_CODES = ['en-us','zh-cn','zh-hk','ru-ru','tr-tr','vi-vi'];
+let isRestoringDraft = false;
+let _draftTimer = null;
 const BAPING_ARROW_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#fff" stroke-width="1.5"/><path d="M7.5 12h8.2" stroke="#fff" stroke-width="1.8" stroke-linecap="butt"/><path d="M12 8.3l3.7 3.7-3.7 3.7" stroke="#fff" stroke-width="1.8" stroke-linecap="butt" stroke-linejoin="miter"/></svg>');
 const BAPING_ARROW_HTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="11" stroke="#fff" stroke-width="1.5"/><path d="M7.5 12h8.2" stroke="#fff" stroke-width="1.8" stroke-linecap="butt"/><path d="M12 8.3l3.7 3.7-3.7 3.7" stroke="#fff" stroke-width="1.8" stroke-linecap="butt" stroke-linejoin="miter"/></svg>';
 const SPECS = {
@@ -333,7 +344,7 @@ const SPECS = {
   share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:0,  boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF' },
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0,  transparent:true },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
-  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"HarmonyOS Sans SC", titSz:58, barSz:32, barWeight:'500', barFont:"HarmonyOS Sans SC", barArrowSz:48, gap:16, imgW:210, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'400', descClr:'#595959', descLH:1.4 },
+  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"HarmonyOS Sans SC", titSz:58, barSz:32, barWeight:'500', barFont:"HarmonyOS Sans SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'400', descClr:'#595959', descLH:1.4 },
 };
 
 const SLOT_TEXT_SPECS = {
@@ -352,6 +363,7 @@ const SLOT_LABELS = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
   pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', baping: '霸屏',
 };
+const AUTO_SCALE_BASE_RATIO = 0.9;
 
 const BAPING_BAR_DEFAULTS = {
   'zh-cn': '点击解锁',
@@ -378,6 +390,123 @@ function schedulePreview() {
   if (activeSlots.size) generateDebounced();
 }
 
+function setDraftStatus(text) {
+  const el = document.getElementById('draftStatus');
+  if (el) el.textContent = text;
+}
+
+function scheduleDraftSave() {
+  if (isRestoringDraft) return;
+  clearTimeout(_draftTimer);
+  _draftTimer = setTimeout(saveDraft, 200);
+}
+
+function saveDraft(statusText = '已自动保存') {
+  if (isRestoringDraft) return;
+  const draft = {
+    version: 1,
+    savedAt: Date.now(),
+    langs: langs.map(l => ({ code: l.code, subtitle: l.subtitle, title: l.title })),
+    activeSlots: Array.from(activeSlots),
+    scaleState,
+    bapingDescEnabled,
+    bapingLangs,
+    images
+  };
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    setDraftStatus(statusText);
+  } catch (err) {
+    console.warn(err);
+    setDraftStatus('草稿保存空间不足');
+  }
+}
+
+function updateSlotControls() {
+  ['new','old','email','appcal','pccal','share','feed','landing','baping'].forEach(key => {
+    const el = document.getElementById('slot-' + key);
+    const sec = document.getElementById('section-' + key);
+    if (el) el.classList.toggle('checked', activeSlots.has(key));
+    if (sec) sec.style.display = activeSlots.has(key) ? '' : 'none';
+  });
+  const bapingSec = document.getElementById('bapingLangSection');
+  if (bapingSec) bapingSec.style.display = activeSlots.has('baping') ? 'block' : 'none';
+}
+
+function setUploadButtonState(theme) {
+  const btn = document.getElementById(theme === 'light' ? 'lightBtn' : 'darkBtn');
+  if (!btn) return;
+  if (images[theme]) {
+    btn.innerHTML = '✓ 已加载';
+    btn.className = 'upload-btn loaded';
+  } else {
+    btn.innerHTML = theme === 'light' ? '白天图<br>点击上传' : '黑天图<br>点击上传';
+    btn.className = 'upload-btn';
+  }
+}
+
+function resetToDefaultState() {
+  langs = [];
+  langCounter = 1;
+  activeSlots = new Set();
+  images = { light: null, dark: null };
+  bapingLangs = {};
+  bapingDescEnabled = false;
+  Object.keys(scaleState).forEach(k => delete scaleState[k]);
+  DEFAULT_LANG_CODES.forEach(code => addLang(code));
+}
+
+function restoreDraft() {
+  isRestoringDraft = true;
+  let restored = false;
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    const draft = raw ? JSON.parse(raw) : null;
+    if (draft && Array.isArray(draft.langs)) {
+      langs = [];
+      langCounter = 1;
+      activeSlots = new Set(Array.isArray(draft.activeSlots) ? draft.activeSlots : []);
+      images = draft.images || { light: null, dark: null };
+      bapingLangs = draft.bapingLangs || {};
+      bapingDescEnabled = !!draft.bapingDescEnabled;
+      Object.keys(scaleState).forEach(k => delete scaleState[k]);
+      Object.assign(scaleState, draft.scaleState || {});
+      draft.langs.forEach(l => addLang(l.code || '', l.subtitle || '', l.title || ''));
+      restored = true;
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+  if (!restored) resetToDefaultState();
+  isRestoringDraft = false;
+  updateSlotControls();
+  setUploadButtonState('light');
+  setUploadButtonState('dark');
+  const row = document.getElementById('bapingDescToggleRow');
+  if (row) row.classList.toggle('on', bapingDescEnabled);
+  renderLangList();
+  renderBapingLangList();
+  if (activeSlots.size) generate();
+  setDraftStatus(restored ? '已恢复上次草稿' : '草稿会自动保存');
+}
+
+function clearDraft() {
+  if (!confirm('确定清空当前浏览器里的草稿吗？')) return;
+  localStorage.removeItem(DRAFT_KEY);
+  isRestoringDraft = true;
+  resetToDefaultState();
+  isRestoringDraft = false;
+  updateSlotControls();
+  setUploadButtonState('light');
+  setUploadButtonState('dark');
+  const row = document.getElementById('bapingDescToggleRow');
+  if (row) row.classList.remove('on');
+  renderLangList();
+  renderBapingLangList();
+  generate();
+  saveDraft('草稿已清空');
+}
+
 function toggleSlot(key) {
   const el = document.getElementById('slot-' + key);
   if (activeSlots.has(key)) { activeSlots.delete(key); el.classList.remove('checked'); }
@@ -386,12 +515,14 @@ function toggleSlot(key) {
   const bapingSec = document.getElementById('bapingLangSection');
   if (bapingSec) bapingSec.style.display = activeSlots.has('baping') ? 'block' : 'none';
   if (activeSlots.has('baping')) renderBapingLangList();
+  scheduleDraftSave();
   schedulePreview();
 }
 
 function toggleScale(slotType, langId) {
   const key = slotLangKey(slotType, langId);
   scaleState[key] = !scaleState[key];
+  scheduleDraftSave();
   generate();
 }
 
@@ -417,12 +548,14 @@ function updateBapingBarText(code, barText) {
   if (!code) return;
   if (bapingLangs[code] === undefined) ensureBapingLang(code);
   bapingLangs[code].barText = barText;
+  scheduleDraftSave();
 }
 
 function updateBapingDescText(code, descText) {
   if (!code) return;
   if (bapingLangs[code] === undefined) ensureBapingLang(code);
   bapingLangs[code].descText = descText;
+  scheduleDraftSave();
 }
 
 function toggleBapingDesc() {
@@ -430,6 +563,7 @@ function toggleBapingDesc() {
   const row = document.getElementById('bapingDescToggleRow');
   if (row) row.classList.toggle('on', bapingDescEnabled);
   renderBapingLangList();
+  scheduleDraftSave();
   schedulePreview();
 }
 
@@ -438,6 +572,7 @@ function addLang(code='', subtitle='', title='') {
   langs.push({ id, code, subtitle, title, autoScale: false });
   ensureBapingLang(code);
   renderLangList();
+  scheduleDraftSave();
   schedulePreview();
 }
 
@@ -446,12 +581,14 @@ function removeLang(id) {
   langs = langs.filter(l => l.id !== id);
   if (removed) removeBapingLangByCode(removed.code);
   renderLangList();
+  scheduleDraftSave();
   schedulePreview();
 }
 
 function updateLang(id, field, value) {
   const i = langs.find(l => l.id === id);
   if (i) i[field] = value;
+  scheduleDraftSave();
 }
 
 function renderLangList() {
@@ -580,6 +717,7 @@ function handleUpload(event, theme) {
     images[theme] = e.target.result;
     btn.innerHTML = '✓ 已加载';
     btn.className = 'upload-btn loaded';
+    scheduleDraftSave();
     schedulePreview();
     if (activeSlots.size) generate();
   };
@@ -621,14 +759,14 @@ function cardEmail(l, img) {
 function cardAppCal(l, img) {
   const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
   const titHtml = eh(l.title).replace(/\n/g,'<br>');
-  const ph = img ? `<img src="${img}">` : '<div class="ph">270×270</div>';
+  const ph = img ? `<img src="${img}">` : '';
   return `<div class="b-appcal" data-langid="${l.id}"><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div><div class="imgw">${ph}</div></div>`;
 }
 
 function cardPcCal(l, img) {
   const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
   const titHtml = eh(l.title).replace(/\n/g,'<br>');
-  const ph = img ? `<img src="${img}">` : '<div class="ph">300×300</div>';
+  const ph = img ? `<img src="${img}">` : '';
   return `<div class="b-pccal" data-langid="${l.id}"><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div><div class="imgw">${ph}</div></div>`;
 }
 
@@ -728,6 +866,9 @@ function fitFontSize(ctx, segments, maxSz, minSz, maxW, lineH, maxTotalH, fontFa
   }
   return minSz;
 }
+function scaledMaxSize(maxSz, minSz) {
+  return Math.max(minSz, Math.floor(maxSz * AUTO_SCALE_BASE_RATIO));
+}
 
 function drawMultilineText(ctx, text, x, startY, maxW, sz, lineH_ratio, minLineH, maxH) {
   if (!text) return 0;
@@ -803,12 +944,12 @@ function applyBapingClip(langId, autoScale) {
     const subTxt = getPlainText(sub), titTxt = getPlainText(tit);
     const { subLH, titLH, gap } = spec;
     const subW = s.subWeight || '400';
-    let subSz = fitFontSize(ctx, subTxt.split('\n'), spec.subMax, spec.subMin, textW, subLH, spec.maxH * 0.35, subFont, subW);
+    let subSz = fitFontSize(ctx, subTxt.split('\n'), scaledMaxSize(spec.subMax, spec.subMin), spec.subMin, textW, subLH, spec.maxH * 0.35, subFont, subW);
     ctx.font = `${subW} ${subSz}px ${subFont}`;
     let subH = 0;
     for (const seg of subTxt.split('\n')) subH += countLinesForText(ctx, seg, textW) * subSz * subLH;
     const titMaxH = spec.maxH - subH - gap;
-    let titSz = fitFontSize(ctx, titTxt.split('\n'), spec.titMax, spec.titMin, textW, titLH, Math.max(titMaxH, spec.titMin * titLH), titFont, '700');
+    let titSz = fitFontSize(ctx, titTxt.split('\n'), scaledMaxSize(spec.titMax, spec.titMin), spec.titMin, textW, titLH, Math.max(titMaxH, spec.titMin * titLH), titFont, '700');
     sub.style.fontSize = subSz + 'px';
     tit.style.fontSize = titSz + 'px';
   });
@@ -840,12 +981,12 @@ function applySlotClip(slotType, langId, autoScale) {
     const subTxt = getPlainText(sub), titTxt = getPlainText(tit);
     const subW = s.subWeight || '400';
     const titW = s.titWeight || (s.boldTit ? '700' : '400');
-    let subSz = fitFontSize(ctx, subTxt.split('\n'), spec.subMax, spec.subMin, textW, subLH, spec.maxH * 0.35, subFont, subW);
+    let subSz = fitFontSize(ctx, subTxt.split('\n'), scaledMaxSize(spec.subMax, spec.subMin), spec.subMin, textW, subLH, spec.maxH * 0.35, subFont, subW);
     ctx.font = `${subW} ${subSz}px ${subFont}`;
     let subH = 0;
     for (const seg of subTxt.split('\n')) subH += countLinesForText(ctx, seg, textW) * subSz * subLH;
     const titMaxH = spec.maxH - subH - spec.gap;
-    let titSz = fitFontSize(ctx, titTxt.split('\n'), titMax, spec.titMin, textW, titLH, Math.max(titMaxH, spec.titMin * titLH), titFont, titW);
+    let titSz = fitFontSize(ctx, titTxt.split('\n'), scaledMaxSize(titMax, spec.titMin), spec.titMin, textW, titLH, Math.max(titMaxH, spec.titMin * titLH), titFont, titW);
     sub.style.fontSize = subSz + 'px';
     tit.style.fontSize = titSz + 'px';
   });
@@ -1054,13 +1195,13 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
 
   if (autoScale && spec.subMax) {
     const cvTextW = (s.imgPos === 'baping' || s.imgPos === 'rb' || s.imgPos === 'vt') ? bapingTextW(s) : textW;
-    subSz = fitFontSize(ctx, subTxt.split('\n'), spec.subMax, spec.subMin, cvTextW, subLH, spec.maxH * 0.35, subFont, subW);
+    subSz = fitFontSize(ctx, subTxt.split('\n'), scaledMaxSize(spec.subMax, spec.subMin), spec.subMin, cvTextW, subLH, spec.maxH * 0.35, subFont, subW);
     ctx.font = `${subW} ${subSz}px ${subFont}`;
     let subH = 0;
     for (const seg of subTxt.split('\n')) subH += countLinesForText(ctx, seg, cvTextW) * subSz * subLH;
     const titMaxH = spec.maxH - subH - s.gap;
     const titFont2 = titFontFamily(s, s.boldTit ? "'HarmonyOS Bold','PingFang SC',sans-serif" : font);
-    titSz = fitFontSize(ctx, titTxt.split('\n'), titMax, spec.titMin, cvTextW, titLH, Math.max(titMaxH, spec.titMin * titLH), titFont2, titW);
+    titSz = fitFontSize(ctx, titTxt.split('\n'), scaledMaxSize(titMax, spec.titMin), spec.titMin, cvTextW, titLH, Math.max(titMaxH, spec.titMin * titLH), titFont2, titW);
   }
 
   let imgSrc = null;
@@ -1150,7 +1291,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
       const descBlockH = descLines * descSz * descLH;
       drawMultilineText(ctx, descTxt, padX, mainH - padY - descBlockH + descSz, descMaxW, descSz, descLH, descSz, mainH);
     }
-    if (imgSrc) await drawImg(ctx, imgSrc, W - padX - imgW, mainH - imgW, imgW, imgW);
+    if (imgSrc) await drawImg(ctx, imgSrc, W - padX - imgW, mainH - imgW - (s.imgBottom || 0), imgW, imgW);
     ctx.fillStyle = s.barBg;
     ctx.beginPath();
     ctx.moveTo(0, mainH);
@@ -1251,7 +1392,7 @@ async function downloadAll() {
   }
 }
 
-addLang('en-us'); addLang('zh-cn'); addLang('zh-hk'); addLang('ru-ru'); addLang('tr-tr'); addLang('vi-vi');
+restoreDraft();
 
 </script>
 </body>
