@@ -203,21 +203,53 @@
   .b-baping .txt { width: 100%; max-width: 100%; position: relative; z-index: 1; word-break: normal; overflow-wrap: break-word; }
   .b-baping .sub { margin: 0; font-size: 36px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 1.4; color: #595959; }
   .b-baping .tit { margin: 16px 0 0 0; font-size: 58px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 1.4; color: #000000; }
+  .b-baping .tit .hl { color: #007FFF; }
+  .b-baping.custom .tit { margin: 0; }
+  .b-baping.custom .sub { margin: 16px 0 0 0; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; color: #000000; }
   .b-baping .imgw { position: absolute; right: 50px; bottom: 32px; width: 210px; height: 210px; z-index: 0; }
   .b-baping .imgw img { width: 210px; height: 210px; display: block; object-fit: contain; }
   .b-baping .bar { height: 124px; background: #007FFF; display: flex; align-items: center; justify-content: space-between; padding: 0 50px; box-sizing: border-box; flex-shrink: 0; }
   .b-baping .bar-txt { font-size: 32px; font-weight: 500; font-family: 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif; color: #FFFFFF; line-height: normal; }
   .b-baping .bar-arrow { width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
   .b-baping .bar-arrow svg { width: 48px; height: 48px; display: block; }
-  .b-baping .desc { position: absolute; left: 0; bottom: 0; margin: 0; max-width: calc(100% - 260px); font-size: 30px; font-weight: 400; font-family: 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 1.4; color: #595959; z-index: 1; word-break: normal; overflow-wrap: break-word; }
-  .baping-desc-toggle-row { display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 8px 0 10px; font-size: 12px; color: #666; user-select: none; }
+  .b-baping .desc { position: absolute; left: 0; bottom: 0; margin: 0; max-width: calc(100% - 260px); font-size: 30px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 1.4; color: #595959; z-index: 1; word-break: normal; overflow-wrap: break-word; }
+  .b-baping.custom .desc { position: relative; left: auto; bottom: auto; margin: 24px 0 0 0; max-width: 100%; }
+  .baping-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+  .baping-panel-head .panel-title { margin-bottom: 0; }
+  .baping-desc-toggle-row { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; color: #666; user-select: none; white-space: nowrap; }
   .baping-desc-toggle-row.on { color: #007FFF; }
-  .baping-desc-toggle-row .toggle { width: 28px; height: 16px; border-radius: 8px; background: #ccc; position: relative; transition: background 0.2s; flex-shrink: 0; }
+  .baping-desc-toggle-row .toggle { width: 28px; height: 16px; border-radius: 8px; background: #333; position: relative; transition: background 0.2s; flex-shrink: 0; }
   .baping-desc-toggle-row.on .toggle { background: #007FFF; }
-  .baping-desc-toggle-row .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; transition: left 0.2s; }
-  .baping-desc-toggle-row.on .toggle::after { left: 14px; }
+  .baping-desc-toggle-row .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #777; transition: left 0.2s; }
+  .baping-desc-toggle-row.on .toggle::after { left: 14px; background: #fff; }
   .lang-tag-readonly { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 0.05em; background: #222; padding: 2px 8px; border-radius: 4px; }
   .lang-inputs input.baping-field { font-size: 11px; }
+
+  .sw-tradeapp { width: 125px; height: 56px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 4px; }
+  .si-tradeapp { width: 375px; height: 168px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
+  .b-tradeapp { width: 375px; height: 168px; padding: 32px 16px 0; box-sizing: border-box; position: relative; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
+  .b-tradeapp.light { background: #FFFFFF; }
+  .b-tradeapp.dark { background: #000000; }
+  .b-tradeapp .txt { width: 211px; position: relative; z-index: 1; }
+  .b-tradeapp .sub { margin: 0; font-size: 14px; font-weight: 400; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 20px; color: #007FFF; word-break: break-word; overflow-wrap: anywhere; }
+  .b-tradeapp .tit { margin: 3px 0 0 0; font-size: 24px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 20px; word-break: break-word; overflow-wrap: anywhere; }
+  .b-tradeapp.light .tit { color: #000000; }
+  .b-tradeapp.dark .tit { color: #FFFFFF; }
+  .b-tradeapp .tit .hl { color: #007FFF; }
+  .b-tradeapp .imgw { position: absolute; right: 16px; top: 0; width: 124px; height: 124px; display: flex; align-items: center; justify-content: center; }
+  .b-tradeapp .imgw img { width: 124px; height: 124px; display: block; object-fit: contain; }
+
+  .sw-tradeweb { width: 640px; height: 107px; overflow: hidden; position: relative; flex-shrink: 0; }
+  .si-tradeweb { width: 1920px; height: 320px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
+  .b-tradeweb { width: 1920px; height: 320px; background: #000000; position: relative; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
+  .b-tradeweb .txt { position: absolute; left: 360px; top: 104px; width: 720px; }
+  .b-tradeweb .badge-row { display: flex; align-items: center; height: 32px; margin-bottom: 16px; }
+  .b-tradeweb .badge-blue { height: 32px; padding: 0 16px; display: flex; align-items: center; background: #007FFF; color: #FFFFFF; font-size: 24px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; border-radius: 4px 0 0 4px; }
+  .b-tradeweb .badge-dark { height: 32px; padding: 0 14px; display: flex; align-items: center; background: #333333; color: #FFFFFF; font-size: 20px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; border-radius: 0 4px 4px 0; }
+  .b-tradeweb .tit { margin: 0; font-size: 42px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 1.1; color: #FFFFFF; word-break: break-word; overflow-wrap: anywhere; }
+  .b-tradeweb .tit .hl { color: #007FFF; }
+  .b-tradeweb .imgw { position: absolute; left: 1160px; top: 30px; width: 320px; height: 260px; display: flex; align-items: center; justify-content: center; }
+  .b-tradeweb .imgw img { max-width: 320px; max-height: 260px; display: block; object-fit: contain; }
 </style>
 </head>
 <body>
@@ -237,6 +269,7 @@
       <div class="slot-item" id="slot-feed" onclick="toggleSlot('feed')"><div class="slot-check"></div><span>Feed流</span></div>
       <div class="slot-item" id="slot-landing" onclick="toggleSlot('landing')"><div class="slot-check"></div><span>聚合落地页</span></div>
       <div class="slot-item" id="slot-baping" onclick="toggleSlot('baping')"><div class="slot-check"></div><span>霸屏</span></div>
+      <div class="slot-item" id="slot-trade" onclick="toggleSlot('trade')"><div class="slot-check"></div><span>交易赛</span></div>
     </div>
 
     <hr class="divider">
@@ -251,14 +284,38 @@
 
     <div id="bapingLangSection" class="baping-lang-section" style="display:none">
       <hr class="divider">
-      <div class="panel-title">霸屏文案配置</div>
-      <div class="panel-hint">底部蓝条按钮文案（按语种配置，副标题/主标题沿用上方「文案配置」）</div>
-      <div class="baping-desc-toggle-row" id="bapingDescToggleRow" onclick="toggleBapingDesc()">
-        <div class="toggle"></div>
-        <span>解释文字（可选）</span>
+      <div class="baping-panel-head">
+        <div class="panel-title">霸屏文案配置</div>
+        <div class="baping-desc-toggle-row" id="bapingDescToggleRow" onclick="toggleBapingDesc()">
+          <div class="toggle"></div>
+          <span>专属文案</span>
+        </div>
       </div>
+      <div class="panel-hint">默认沿用上方通用文案；如霸屏文案不同，开启后在下方配置。主标题用 [文字] 标记蓝色高亮。</div>
       <div class="lang-list" id="bapingLangList"></div>
       <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
+    </div>
+
+    <div id="tradeLangSection" class="baping-lang-section" style="display:none">
+      <hr class="divider">
+      <div class="baping-panel-head">
+        <div class="panel-title">交易赛配置</div>
+        <div class="baping-desc-toggle-row" id="tradeToggleRow" onclick="toggleTradeConfig()">
+          <div class="toggle"></div>
+          <span>独立配置</span>
+        </div>
+      </div>
+      <div class="panel-hint">默认关闭。开启后填写交易赛独立文案，主标题可用 [文字] 标记蓝色高亮。</div>
+      <div class="lang-list" id="tradeLangList"></div>
+      <div id="tradeImagePanel" style="display:none">
+        <div class="panel-hint" style="margin-top:8px;">交易赛独立配图：白天图用于 App 白天；黑天图用于 App 黑天和 Web 黑色版。</div>
+        <div class="upload-area">
+          <button class="upload-btn" id="tradeLightBtn" onclick="document.getElementById('tradeLightFile').click()">白天图<br>点击上传</button>
+          <input type="file" id="tradeLightFile" accept=".png" onchange="handleTradeUpload(event,'light')">
+          <button class="upload-btn" id="tradeDarkBtn" onclick="document.getElementById('tradeDarkFile').click()">黑天图<br>点击上传</button>
+          <input type="file" id="tradeDarkFile" accept=".png" onchange="handleTradeUpload(event,'dark')">
+        </div>
+      </div>
     </div>
 
     <hr class="divider">
@@ -316,6 +373,10 @@
       <div class="preview-section-title">霸屏</div>
       <div class="cards-grid" id="gridBaping"><div class="empty-state">填写文案后将自动预览</div></div>
     </div>
+    <div class="preview-section" id="section-trade" style="display:none;">
+      <div class="preview-section-title">交易赛</div>
+      <div class="cards-grid" id="gridTrade"><div class="empty-state">填写文案后将自动预览</div></div>
+    </div>
   </div>
 </div>
 
@@ -326,8 +387,12 @@ let images = { light: null, dark: null };
 let langCounter = 0;
 let validLangsCache = [];
 let bapingLangs = {};
-let bapingDescEnabled = false;
+let bapingCustomEnabled = false;
 let validBapingLangsCache = [];
+let tradeLangs = {};
+let tradeConfigEnabled = false;
+let tradeImages = { light: null, dark: null };
+let validTradeLangsCache = [];
 const scaleState = {};
 const DRAFT_KEY = 'htxCreativeOSDraftV1';
 const DEFAULT_LANG_CODES = ['en-us','zh-cn','zh-hk','ru-ru','tr-tr','vi-vi'];
@@ -344,7 +409,9 @@ const SPECS = {
   share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:0,  boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF' },
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0,  transparent:true },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
-  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"HarmonyOS Sans SC", titSz:58, barSz:32, barWeight:'500', barFont:"HarmonyOS Sans SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'400', descClr:'#595959', descLH:1.4 },
+  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"HarmonyOS Sans SC", titSz:58, barSz:32, barWeight:'500', barFont:"HarmonyOS Sans SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
+  tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:124, imgGap:8, imgPos:'tradeapp', subLH:20/14, titLH:20/24 },
+  tradeweb: { W:1920, H:320, PAD:360, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
 };
 
 const SLOT_TEXT_SPECS = {
@@ -357,11 +424,13 @@ const SLOT_TEXT_SPECS = {
   feed:   { maxH: 160, subMax: 28, subMin: 24, titMax: 32, titMin: 28, gap: 16 },
   landing:{ maxH: 104, subMax: 14, subMin: 12, titMax: 28, titMin: 18, gap: 4, subLH: 20/14, titLH: 38/28 },
   baping: { maxH: 436, subMax: 36, subMin: 28, titMax: 58, titMin: 46, gap: 16, subLH: 1.4, titLH: 1.4 },
+  tradeapp: { maxH: 60, subMax: 14, subMin: 11, titMax: 24, titMin: 18, gap: 3, subLH: 20/14, titLH: 20/24 },
+  tradeweb: { maxH: 94, subMax: 24, subMin: 18, titMax: 42, titMin: 30, gap: 16, subLH: 1.1, titLH: 1.1 },
 };
 
 const SLOT_LABELS = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
-  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', baping: '霸屏',
+  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', baping: '霸屏', trade: '交易赛',
 };
 const AUTO_SCALE_BASE_RATIO = 0.9;
 
@@ -409,8 +478,11 @@ function saveDraft(statusText = '已自动保存') {
     langs: langs.map(l => ({ code: l.code, subtitle: l.subtitle, title: l.title })),
     activeSlots: Array.from(activeSlots),
     scaleState,
-    bapingDescEnabled,
+    bapingCustomEnabled,
     bapingLangs,
+    tradeConfigEnabled,
+    tradeLangs,
+    tradeImages,
     images
   };
   try {
@@ -423,7 +495,7 @@ function saveDraft(statusText = '已自动保存') {
 }
 
 function updateSlotControls() {
-  ['new','old','email','appcal','pccal','share','feed','landing','baping'].forEach(key => {
+  ['new','old','email','appcal','pccal','share','feed','landing','baping','trade'].forEach(key => {
     const el = document.getElementById('slot-' + key);
     const sec = document.getElementById('section-' + key);
     if (el) el.classList.toggle('checked', activeSlots.has(key));
@@ -431,6 +503,8 @@ function updateSlotControls() {
   });
   const bapingSec = document.getElementById('bapingLangSection');
   if (bapingSec) bapingSec.style.display = activeSlots.has('baping') ? 'block' : 'none';
+  const tradeSec = document.getElementById('tradeLangSection');
+  if (tradeSec) tradeSec.style.display = activeSlots.has('trade') ? 'block' : 'none';
 }
 
 function setUploadButtonState(theme) {
@@ -445,13 +519,24 @@ function setUploadButtonState(theme) {
   }
 }
 
+function normalizeTradeImages(value) {
+  const source = value || {};
+  return {
+    light: source.light || source.app || null,
+    dark: source.dark || source.web || source.app || null
+  };
+}
+
 function resetToDefaultState() {
   langs = [];
   langCounter = 1;
   activeSlots = new Set();
   images = { light: null, dark: null };
   bapingLangs = {};
-  bapingDescEnabled = false;
+  bapingCustomEnabled = false;
+  tradeLangs = {};
+  tradeConfigEnabled = false;
+  tradeImages = { light: null, dark: null };
   Object.keys(scaleState).forEach(k => delete scaleState[k]);
   DEFAULT_LANG_CODES.forEach(code => addLang(code));
 }
@@ -468,7 +553,10 @@ function restoreDraft() {
       activeSlots = new Set(Array.isArray(draft.activeSlots) ? draft.activeSlots : []);
       images = draft.images || { light: null, dark: null };
       bapingLangs = draft.bapingLangs || {};
-      bapingDescEnabled = !!draft.bapingDescEnabled;
+      bapingCustomEnabled = !!(draft.bapingCustomEnabled || draft.bapingDescEnabled);
+      tradeLangs = draft.tradeLangs || {};
+      tradeConfigEnabled = !!draft.tradeConfigEnabled;
+      tradeImages = normalizeTradeImages(draft.tradeImages);
       Object.keys(scaleState).forEach(k => delete scaleState[k]);
       Object.assign(scaleState, draft.scaleState || {});
       draft.langs.forEach(l => addLang(l.code || '', l.subtitle || '', l.title || ''));
@@ -483,9 +571,14 @@ function restoreDraft() {
   setUploadButtonState('light');
   setUploadButtonState('dark');
   const row = document.getElementById('bapingDescToggleRow');
-  if (row) row.classList.toggle('on', bapingDescEnabled);
+  if (row) row.classList.toggle('on', bapingCustomEnabled);
+  const tradeRow = document.getElementById('tradeToggleRow');
+  if (tradeRow) tradeRow.classList.toggle('on', tradeConfigEnabled);
+  setTradeUploadButtonState('light');
+  setTradeUploadButtonState('dark');
   renderLangList();
   renderBapingLangList();
+  renderTradeLangList();
   if (activeSlots.size) generate();
   setDraftStatus(restored ? '已恢复上次草稿' : '草稿会自动保存');
 }
@@ -501,8 +594,13 @@ function clearDraft() {
   setUploadButtonState('dark');
   const row = document.getElementById('bapingDescToggleRow');
   if (row) row.classList.remove('on');
+  const tradeRow = document.getElementById('tradeToggleRow');
+  if (tradeRow) tradeRow.classList.remove('on');
+  setTradeUploadButtonState('light');
+  setTradeUploadButtonState('dark');
   renderLangList();
   renderBapingLangList();
+  renderTradeLangList();
   generate();
   saveDraft('草稿已清空');
 }
@@ -514,7 +612,10 @@ function toggleSlot(key) {
   document.getElementById('section-' + key).style.display = activeSlots.has(key) ? '' : 'none';
   const bapingSec = document.getElementById('bapingLangSection');
   if (bapingSec) bapingSec.style.display = activeSlots.has('baping') ? 'block' : 'none';
+  const tradeSec = document.getElementById('tradeLangSection');
+  if (tradeSec) tradeSec.style.display = activeSlots.has('trade') ? 'block' : 'none';
   if (activeSlots.has('baping')) renderBapingLangList();
+  if (activeSlots.has('trade')) renderTradeLangList();
   scheduleDraftSave();
   schedulePreview();
 }
@@ -528,7 +629,28 @@ function toggleScale(slotType, langId) {
 
 function ensureBapingLang(code) {
   if (!code || bapingLangs[code] !== undefined) return;
-  bapingLangs[code] = { barText: BAPING_BAR_DEFAULTS[code] || '', descText: '' };
+  bapingLangs[code] = { title: '', subtitle: '', barText: BAPING_BAR_DEFAULTS[code] || '', descText: '' };
+}
+
+function normalizeBapingLang(code) {
+  ensureBapingLang(code);
+  if (!code || bapingLangs[code] === undefined) return {};
+  const item = bapingLangs[code];
+  if (item.title === undefined) item.title = '';
+  if (item.highlightTitle) {
+    item.title = item.title ? `[${item.highlightTitle}] ${item.title}` : `[${item.highlightTitle}]`;
+    delete item.highlightTitle;
+  }
+  if (item.subtitle === undefined) item.subtitle = '';
+  if (item.barText === undefined) item.barText = BAPING_BAR_DEFAULTS[code] || '';
+  if (item.descText === undefined) item.descText = '';
+  return item;
+}
+
+function hasBapingCustomText(code) {
+  if (!bapingCustomEnabled) return false;
+  const item = normalizeBapingLang(code);
+  return !!(item.title || item.subtitle || item.descText);
 }
 
 function syncBapingLangCode(oldCode, newCode) {
@@ -540,37 +662,121 @@ function syncBapingLangCode(oldCode, newCode) {
   if (newCode && bapingLangs[newCode] === undefined) ensureBapingLang(newCode);
 }
 
+function ensureTradeLang(code) {
+  if (!code || tradeLangs[code] !== undefined) return;
+  tradeLangs[code] = { subtitle: '', title: '', webTag: '' };
+}
+
+function normalizeTradeLang(code) {
+  ensureTradeLang(code);
+  if (!code || tradeLangs[code] === undefined) return {};
+  const item = tradeLangs[code];
+  if (item.subtitle === undefined) item.subtitle = '';
+  if (item.title === undefined) item.title = '';
+  if (item.webTag === undefined) item.webTag = '';
+  return item;
+}
+
+function hasTradeText(code) {
+  if (!tradeConfigEnabled) return false;
+  const item = normalizeTradeLang(code);
+  return !!(item.subtitle || item.title || item.webTag);
+}
+
+function syncTradeLangCode(oldCode, newCode) {
+  if (!oldCode || oldCode === newCode) return;
+  if (tradeLangs[oldCode] !== undefined && tradeLangs[newCode] === undefined) {
+    tradeLangs[newCode] = tradeLangs[oldCode];
+  }
+  delete tradeLangs[oldCode];
+  if (newCode && tradeLangs[newCode] === undefined) ensureTradeLang(newCode);
+}
+
 function removeBapingLangByCode(code) {
   if (code) delete bapingLangs[code];
 }
 
+function removeTradeLangByCode(code) {
+  if (code) delete tradeLangs[code];
+}
+
 function updateBapingBarText(code, barText) {
   if (!code) return;
-  if (bapingLangs[code] === undefined) ensureBapingLang(code);
+  normalizeBapingLang(code);
   bapingLangs[code].barText = barText;
   scheduleDraftSave();
 }
 
 function updateBapingDescText(code, descText) {
   if (!code) return;
-  if (bapingLangs[code] === undefined) ensureBapingLang(code);
+  normalizeBapingLang(code);
   bapingLangs[code].descText = descText;
   scheduleDraftSave();
 }
 
+function updateBapingTextField(code, field, value) {
+  if (!code) return;
+  normalizeBapingLang(code);
+  bapingLangs[code][field] = value;
+  scheduleDraftSave();
+}
+
 function toggleBapingDesc() {
-  bapingDescEnabled = !bapingDescEnabled;
+  bapingCustomEnabled = !bapingCustomEnabled;
   const row = document.getElementById('bapingDescToggleRow');
-  if (row) row.classList.toggle('on', bapingDescEnabled);
+  if (row) row.classList.toggle('on', bapingCustomEnabled);
   renderBapingLangList();
   scheduleDraftSave();
   schedulePreview();
+}
+
+function toggleTradeConfig() {
+  tradeConfigEnabled = !tradeConfigEnabled;
+  const row = document.getElementById('tradeToggleRow');
+  if (row) row.classList.toggle('on', tradeConfigEnabled);
+  renderTradeLangList();
+  scheduleDraftSave();
+  schedulePreview();
+}
+
+function updateTradeTextField(code, field, value) {
+  if (!code) return;
+  normalizeTradeLang(code);
+  tradeLangs[code][field] = value;
+  scheduleDraftSave();
+}
+
+function setTradeUploadButtonState(kind) {
+  const btn = document.getElementById(kind === 'light' ? 'tradeLightBtn' : 'tradeDarkBtn');
+  if (!btn) return;
+  if (tradeImages[kind]) {
+    btn.innerHTML = '✓ 已加载';
+    btn.className = 'upload-btn loaded';
+  } else {
+    btn.innerHTML = kind === 'light' ? '白天图<br>点击上传' : '黑天图<br>点击上传';
+    btn.className = 'upload-btn';
+  }
+}
+
+function handleTradeUpload(event, kind) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    tradeImages[kind] = e.target.result;
+    setTradeUploadButtonState(kind);
+    scheduleDraftSave();
+    schedulePreview();
+    if (activeSlots.size) generate();
+  };
+  reader.readAsDataURL(file);
 }
 
 function addLang(code='', subtitle='', title='') {
   const id = langCounter++;
   langs.push({ id, code, subtitle, title, autoScale: false });
   ensureBapingLang(code);
+  ensureTradeLang(code);
   renderLangList();
   scheduleDraftSave();
   schedulePreview();
@@ -580,6 +786,7 @@ function removeLang(id) {
   const removed = langs.find(l => l.id === id);
   langs = langs.filter(l => l.id !== id);
   if (removed) removeBapingLangByCode(removed.code);
+  if (removed) removeTradeLangByCode(removed.code);
   renderLangList();
   scheduleDraftSave();
   schedulePreview();
@@ -608,7 +815,9 @@ function renderLangList() {
       const newCode = codeInput.value;
       updateLang(l.id, 'code', newCode);
       syncBapingLangCode(oldCode, newCode);
+      syncTradeLangCode(oldCode, newCode);
       renderBapingLangList();
+      renderTradeLangList();
       schedulePreview();
     };
     const removeBtn = document.createElement('button');
@@ -634,15 +843,20 @@ function renderLangList() {
     container.appendChild(item);
   });
   if (activeSlots.has('baping')) renderBapingLangList();
+  if (activeSlots.has('trade')) renderTradeLangList();
 }
 
 function renderBapingLangList() {
   const container = document.getElementById('bapingLangList');
   if (!container) return;
   container.innerHTML = '';
+  if (!bapingCustomEnabled) {
+    container.innerHTML = '<div class="panel-hint">当前沿用上方通用文案。开启「专属文案」后，可单独配置霸屏内容。</div>';
+    return;
+  }
   langs.forEach(l => {
-    ensureBapingLang(l.code);
-    const barText = bapingLangs[l.code]?.barText || '';
+    const bapingText = normalizeBapingLang(l.code);
+    const barText = bapingText.barText || '';
 
     const item = document.createElement('div');
     item.className = 'lang-item';
@@ -658,15 +872,27 @@ function renderBapingLangList() {
     const inputs = document.createElement('div');
     inputs.className = 'lang-inputs';
 
-    if (bapingDescEnabled) {
-      const descText = bapingLangs[l.code]?.descText || '';
-      const descInput = document.createElement('input');
-      descInput.className = 'baping-field';
-      descInput.placeholder = '解释文字';
-      descInput.value = descText;
-      descInput.oninput = () => { updateBapingDescText(l.code, descInput.value); schedulePreview(); };
-      inputs.appendChild(descInput);
-    }
+    const titleInput = document.createElement('input');
+    titleInput.className = 'baping-field';
+    titleInput.placeholder = '霸屏主标题，用 [文字] 标记蓝色高亮';
+    titleInput.value = bapingText.title || '';
+    titleInput.oninput = () => { updateBapingTextField(l.code, 'title', titleInput.value); schedulePreview(); };
+    inputs.appendChild(titleInput);
+
+    const subtitleInput = document.createElement('input');
+    subtitleInput.className = 'baping-field';
+    subtitleInput.placeholder = '霸屏副标题';
+    subtitleInput.value = bapingText.subtitle || '';
+    subtitleInput.oninput = () => { updateBapingTextField(l.code, 'subtitle', subtitleInput.value); schedulePreview(); };
+    inputs.appendChild(subtitleInput);
+
+    const descText = bapingText.descText || '';
+    const descInput = document.createElement('input');
+    descInput.className = 'baping-field';
+    descInput.placeholder = '解释文字（不填则不显示）';
+    descInput.value = descText;
+    descInput.oninput = () => { updateBapingDescText(l.code, descInput.value); schedulePreview(); };
+    inputs.appendChild(descInput);
 
     const barInput = document.createElement('input');
     barInput.className = 'baping-field';
@@ -674,6 +900,60 @@ function renderBapingLangList() {
     barInput.value = barText;
     barInput.oninput = () => { updateBapingBarText(l.code, barInput.value); schedulePreview(); };
     inputs.appendChild(barInput);
+
+    item.appendChild(header);
+    item.appendChild(inputs);
+    container.appendChild(item);
+  });
+}
+
+function renderTradeLangList() {
+  const container = document.getElementById('tradeLangList');
+  const imagePanel = document.getElementById('tradeImagePanel');
+  if (!container) return;
+  container.innerHTML = '';
+  if (imagePanel) imagePanel.style.display = tradeConfigEnabled ? 'block' : 'none';
+  if (!tradeConfigEnabled) {
+    container.innerHTML = '<div class="panel-hint">当前未启用交易赛独立配置。开启后可单独填写交易赛文案和上传配图。</div>';
+    return;
+  }
+  langs.forEach(l => {
+    const tradeText = normalizeTradeLang(l.code);
+
+    const item = document.createElement('div');
+    item.className = 'lang-item';
+
+    const header = document.createElement('div');
+    header.className = 'lang-item-header';
+
+    const codeLabel = document.createElement('span');
+    codeLabel.className = 'lang-tag-readonly';
+    codeLabel.textContent = l.code || '（未设置语种）';
+    header.appendChild(codeLabel);
+
+    const inputs = document.createElement('div');
+    inputs.className = 'lang-inputs';
+
+    const subInput = document.createElement('input');
+    subInput.className = 'baping-field';
+    subInput.placeholder = '交易赛小标题 / Web蓝色标签文字';
+    subInput.value = tradeText.subtitle || '';
+    subInput.oninput = () => { updateTradeTextField(l.code, 'subtitle', subInput.value); schedulePreview(); };
+    inputs.appendChild(subInput);
+
+    const titleInput = document.createElement('input');
+    titleInput.className = 'baping-field';
+    titleInput.placeholder = '交易赛主标题，用 [文字] 标记蓝色高亮';
+    titleInput.value = tradeText.title || '';
+    titleInput.oninput = () => { updateTradeTextField(l.code, 'title', titleInput.value); schedulePreview(); };
+    inputs.appendChild(titleInput);
+
+    const tagInput = document.createElement('input');
+    tagInput.className = 'baping-field';
+    tagInput.placeholder = 'Web灰色标签（默认：交易赛）';
+    tagInput.value = tradeText.webTag || '';
+    tagInput.oninput = () => { updateTradeTextField(l.code, 'webTag', tagInput.value); schedulePreview(); };
+    inputs.appendChild(tagInput);
 
     item.appendChild(header);
     item.appendChild(inputs);
@@ -695,17 +975,59 @@ function setDownloadStatus(text) {
 function restoreDownloadButton() {
   const btn = document.getElementById('downloadAllBtn');
   if (!btn) return;
-  btn.disabled = !validLangsCache.length || !activeSlots.size;
+  const hasDownloadable = validLangsCache.length || (activeSlots.has('baping') && validBapingLangsCache.length) || (activeSlots.has('trade') && validTradeLangsCache.length);
+  btn.disabled = !hasDownloadable || !activeSlots.size;
   btn.textContent = '⬇ 一键下载全部';
 }
 
 function getBarText(code) {
-  return bapingLangs[code]?.barText || '';
+  return normalizeBapingLang(code).barText || '';
 }
 
 function getDescText(code) {
-  if (!bapingDescEnabled) return '';
-  return bapingLangs[code]?.descText || '';
+  return normalizeBapingLang(code).descText || '';
+}
+
+function parseBracketHighlights(text) {
+  const runs = [];
+  const re = /\[([^\]]+)\]/g;
+  let last = 0;
+  let match;
+  while ((match = re.exec(text || '')) !== null) {
+    if (match.index > last) runs.push({ text: text.slice(last, match.index), highlight: false });
+    runs.push({ text: match[1], highlight: true });
+    last = match.index + match[0].length;
+  }
+  if (last < String(text || '').length) runs.push({ text: String(text || '').slice(last), highlight: false });
+  return runs.length ? runs : [{ text: text || '', highlight: false }];
+}
+
+function bapingTitleHtml(title) {
+  return parseBracketHighlights(title).map(part => {
+    const html = eh(part.text).replace(/\n/g,'<br>');
+    return part.highlight ? `<span class="hl">${html}</span>` : `<span>${html}</span>`;
+  }).join('');
+}
+
+function getBapingText(l) {
+  const item = normalizeBapingLang(l.code);
+  const isCustom = hasBapingCustomText(l.code);
+  return {
+    isCustom,
+    title: isCustom ? (item.title || '') : (l.title || ''),
+    subtitle: isCustom ? (item.subtitle || '') : (l.subtitle || ''),
+    descText: getDescText(l.code),
+    barText: getBarText(l.code)
+  };
+}
+
+function getTradeText(l) {
+  const item = normalizeTradeLang(l.code);
+  return {
+    title: item.title || '',
+    subtitle: item.subtitle || '',
+    webTag: item.webTag || '交易赛'
+  };
 }
 
 function handleUpload(event, theme) {
@@ -816,12 +1138,33 @@ function cardLanding(l, theme, img, cardH) {
 }
 
 function cardBaping(l, img) {
-  const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
-  const titHtml = eh(l.title).replace(/\n/g,'<br>');
-  const barHtml = eh(getBarText(l.code));
-  const descText = getDescText(l.code);
+  const text = getBapingText(l);
+  const barHtml = eh(text.barText);
+  const descText = text.descText;
   const descHtml = descText ? `<p class="desc">${eh(descText).replace(/\n/g,'<br>')}</p>` : '';
+  if (text.isCustom) {
+    const title = text.title ? bapingTitleHtml(text.title) : '';
+    const subtitle = text.subtitle ? `<p class="sub">${eh(text.subtitle).replace(/\n/g,'<br>')}</p>` : '';
+    return `<div class="b-baping custom" data-langid="${l.id}"><div class="main"><div class="txt"><p class="tit">${title}</p>${subtitle}${descHtml}</div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div><div class="bar"><span class="bar-txt">${barHtml}</span><span class="bar-arrow">${BAPING_ARROW_HTML}</span></div></div>`;
+  }
+  const subHtml = eh(text.subtitle).replace(/\n/g,'<br>');
+  const titHtml = eh(text.title).replace(/\n/g,'<br>');
   return `<div class="b-baping" data-langid="${l.id}"><div class="main"><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div>${descHtml}<div class="imgw">${img ? `<img src="${img}">` : ''}</div></div><div class="bar"><span class="bar-txt">${barHtml}</span><span class="bar-arrow">${BAPING_ARROW_HTML}</span></div></div>`;
+}
+
+function cardTradeApp(l, theme, img) {
+  const text = getTradeText(l);
+  const subHtml = eh(text.subtitle).replace(/\n/g,'<br>');
+  const titHtml = bapingTitleHtml(text.title);
+  return `<div class="b-tradeapp ${theme}" data-langid="${l.id}"><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
+}
+
+function cardTradeWeb(l, img) {
+  const text = getTradeText(l);
+  const subHtml = eh(text.subtitle).replace(/\n/g,'<br>');
+  const tagHtml = eh(text.webTag || '交易赛').replace(/\n/g,'<br>');
+  const titHtml = bapingTitleHtml(text.title);
+  return `<div class="b-tradeweb" data-langid="${l.id}"><div class="txt"><div class="badge-row"><span class="badge-blue">${subHtml}</span><span class="badge-dark">${tagHtml}</span></div><p class="tit">${titHtml}</p></div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
 }
 
 function getPlainText(domEl) {
@@ -896,6 +1239,42 @@ function drawMultilineText(ctx, text, x, startY, maxW, sz, lineH_ratio, minLineH
   return curY - startY;
 }
 
+function drawRichMultilineText(ctx, runs, x, startY, maxW, sz, lineH_ratio, maxH) {
+  const lh = sz * lineH_ratio;
+  const bottomLimit = maxH === Infinity ? Infinity : startY + maxH - sz;
+  let curY = startY;
+  let line = [];
+  let lineW = 0;
+  const flush = () => {
+    if (!line.length) return;
+    if (curY <= bottomLimit) {
+      let curX = x;
+      line.forEach(part => {
+        ctx.fillStyle = part.color;
+        ctx.fillText(part.text, curX, curY);
+        curX += ctx.measureText(part.text).width;
+      });
+    }
+    curY += lh;
+    line = [];
+    lineW = 0;
+  };
+  runs.forEach(run => {
+    const color = run.color;
+    String(run.text || '').split('\n').forEach((seg, segIndex, arr) => {
+      for (const ch of [...seg]) {
+        const w = ctx.measureText(ch).width;
+        if (line.length && lineW + w > maxW) flush();
+        line.push({ text: ch, color });
+        lineW += w;
+      }
+      if (segIndex < arr.length - 1) flush();
+    });
+  });
+  flush();
+  return curY - startY;
+}
+
 function drawCenteredMultilineText(ctx, text, centerX, startY, maxW, sz, lineH_ratio, maxH) {
   if (!text) return 0;
   const lh = sz * lineH_ratio;
@@ -932,8 +1311,9 @@ function applyBapingClip(langId, autoScale) {
   if (!spec || !s) return;
   document.querySelectorAll(`.b-baping[data-langid="${langId}"]`).forEach(el => {
     const sub = el.querySelector('.sub'), tit = el.querySelector('.tit');
-    if (!sub || !tit) return;
-    sub.style.cssText = tit.style.cssText = '';
+    if (!tit) return;
+    if (sub) sub.style.cssText = '';
+    tit.style.cssText = '';
     if (!autoScale) return;
     const font = "'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif";
     const titFont = "'HarmonyOS Bold','PingFang SC',sans-serif";
@@ -950,7 +1330,7 @@ function applyBapingClip(langId, autoScale) {
     for (const seg of subTxt.split('\n')) subH += countLinesForText(ctx, seg, textW) * subSz * subLH;
     const titMaxH = spec.maxH - subH - gap;
     let titSz = fitFontSize(ctx, titTxt.split('\n'), scaledMaxSize(spec.titMax, spec.titMin), spec.titMin, textW, titLH, Math.max(titMaxH, spec.titMin * titLH), titFont, '700');
-    sub.style.fontSize = subSz + 'px';
+    if (sub) sub.style.fontSize = subSz + 'px';
     tit.style.fontSize = titSz + 'px';
   });
 }
@@ -995,6 +1375,8 @@ function applySlotClip(slotType, langId, autoScale) {
 function getColors(type, theme) {
   const s = SPECS[type];
   if (type === 'baping') return { bg: s.bg, sub: s.subClr, tit: s.titClr, bar: '#FFFFFF' };
+  if (type === 'tradeapp') return { bg: theme === 'dark' ? '#000000' : '#FFFFFF', sub: '#007FFF', tit: theme === 'dark' ? '#FFFFFF' : '#000000' };
+  if (type === 'tradeweb') return { bg: '#000000', sub: '#FFFFFF', tit: '#FFFFFF' };
   if (type === 'landing') {
     const light = theme === 'light';
     return { bg: light ? '#FFFFFF' : '#000000', sub: light ? '#595959' : '#999999', tit: light ? '#000000' : '#FFFFFF' };
@@ -1006,11 +1388,14 @@ function getColors(type, theme) {
 
 function generate() {
   const valid = langs.filter(l => l.subtitle || l.title);
+  const validBaping = langs.filter(l => l.subtitle || l.title || hasBapingCustomText(l.code));
+  const validTrade = langs.filter(l => hasTradeText(l.code));
   const empty = '<div class="empty-state">请填写文案后将自动预览</div>';
   validLangsCache = valid;
+  validTradeLangsCache = validTrade;
   const li = images.light, di = images.dark;
 
-  ['new','old','email','appcal','pccal','share','feed','landing','baping'].forEach(key => {
+  ['new','old','email','appcal','pccal','share','feed','landing','baping','trade'].forEach(key => {
     const sec = document.getElementById('section-' + key); if (sec) sec.style.display = activeSlots.has(key) ? '' : 'none';
   });
 
@@ -1102,17 +1487,34 @@ function generate() {
   }
 
   if (activeSlots.has('baping')) {
-    validBapingLangsCache = valid;
-    if (!valid.length) document.getElementById('gridBaping').innerHTML = '<div class="empty-state">请在上方「文案配置」填写副标题/主标题</div>';
+    validBapingLangsCache = validBaping;
+    if (!validBaping.length) document.getElementById('gridBaping').innerHTML = '<div class="empty-state">请在「霸屏文案配置」填写专属文案，或在上方填写通用文案</div>';
     else {
-      document.getElementById('gridBaping').innerHTML = valid.map(l => langGroupHtml('baping', l,
+      document.getElementById('gridBaping').innerHTML = validBaping.map(l => langGroupHtml('baping', l,
         wrap('baping','sw-baping','si-baping', cardBaping(l, li), '霸屏', l, 'baping', '')
       )).join('');
-      valid.forEach(l => applySlotClip('baping', l.id, !!scaleState[slotLangKey('baping', l.id)]));
+      validBaping.forEach(l => applySlotClip('baping', l.id, !!scaleState[slotLangKey('baping', l.id)]));
     }
   }
 
-  document.getElementById('downloadAllBtn').disabled = !valid.length || !activeSlots.size;
+  if (activeSlots.has('trade')) {
+    if (!tradeConfigEnabled) document.getElementById('gridTrade').innerHTML = '<div class="empty-state">请开启「交易赛配置」后填写独立文案</div>';
+    else if (!validTrade.length) document.getElementById('gridTrade').innerHTML = '<div class="empty-state">请在「交易赛配置」填写文案</div>';
+    else {
+      document.getElementById('gridTrade').innerHTML = validTrade.map(l => langGroupHtml('trade', l,
+        wrap('tradeapp','sw-tradeapp','si-tradeapp', cardTradeApp(l,'light',tradeImages.light), 'App 白天', l, 'tradeapp', 'light') +
+        wrap('tradeapp','sw-tradeapp','si-tradeapp', cardTradeApp(l,'dark',tradeImages.dark),  'App 黑天', l, 'tradeapp', 'dark') +
+        wrap('tradeweb','sw-tradeweb','si-tradeweb', cardTradeWeb(l, tradeImages.dark), 'Web 黑天', l, 'tradeweb', 'dark')
+      )).join('');
+      validTrade.forEach(l => {
+        applySlotClip('tradeapp', l.id, !!scaleState[slotLangKey('tradeapp', l.id)]);
+        applySlotClip('tradeweb', l.id, !!scaleState[slotLangKey('tradeweb', l.id)]);
+      });
+    }
+  }
+
+  const hasDownloadable = valid.length || (activeSlots.has('baping') && validBaping.length) || (activeSlots.has('trade') && validTrade.length);
+  document.getElementById('downloadAllBtn').disabled = !hasDownloadable || !activeSlots.size;
 }
 
 function loadImage(src) {
@@ -1169,7 +1571,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   const c = getColors(type, theme);
   fillCanvasBg(ctx, s, c, W, H);
 
-  const selector = type === 'email' ? '.b-email' : type === 'appcal' ? '.b-appcal' : type === 'pccal' ? '.b-pccal' : type === 'share' ? '.b-share' : type === 'baping' ? '.b-baping' : `.b-${type}${theme ? '.' + theme : ''}`;
+  const selector = type === 'email' ? '.b-email' : type === 'appcal' ? '.b-appcal' : type === 'pccal' ? '.b-pccal' : type === 'share' ? '.b-share' : type === 'baping' ? '.b-baping' : type === 'tradeweb' ? '.b-tradeweb' : `.b-${type}${theme ? '.' + theme : ''}`;
   const inner = document.querySelector(`${selector}[data-langid="${langId}"]`);
   if (!inner) return null;
 
@@ -1206,6 +1608,8 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
 
   let imgSrc = null;
   if (type === 'baping') imgSrc = images.light;
+  else if (type === 'tradeapp') imgSrc = theme === 'light' ? tradeImages.light : tradeImages.dark;
+  else if (type === 'tradeweb') imgSrc = tradeImages.dark;
   else if (s.subClr && type !== 'pccal' && type !== 'share') imgSrc = images.dark;
   else if (type === 'pccal' || type === 'share') imgSrc = images.light;
   else imgSrc = theme === 'light' ? images.light : images.dark;
@@ -1219,6 +1623,57 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
       ctx.scale(DPR, DPR);
       fillCanvasBg(ctx, s, c, W, H);
     }
+  }
+
+  if (type === 'tradeapp') {
+    const textFullW = W - padX * 2 - s.imgW - (s.imgGap || 0);
+    const lang = langs.find(l => l.id === langId);
+    const tradeText = lang ? getTradeText(lang) : { subtitle: subTxt, title: titTxt };
+    const richTitle = parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
+    ctx.fillStyle = c.sub;
+    ctx.font = `${subW} ${subSz}px ${subFont}`;
+    const subDrawn = drawMultilineText(ctx, tradeText.subtitle || '', padX, (s.textTop || 32) + subSz, textFullW, subSz, subLH, subSz, 60);
+    ctx.filter = 'blur(0.25px)';
+    ctx.font = `${titW} ${titSz}px ${titFont}`;
+    drawRichMultilineText(ctx, richTitle, padX, (s.textTop || 32) + subDrawn + s.gap + titSz, textFullW, titSz, titLH, 60);
+    ctx.filter = 'none';
+    if (imgSrc) await drawImg(ctx, imgSrc, W - padX - s.imgW, 0, s.imgW, s.imgW);
+    return canvas.toDataURL('image/png');
+  }
+
+  if (type === 'tradeweb') {
+    const lang = langs.find(l => l.id === langId);
+    const tradeText = lang ? getTradeText(lang) : { subtitle: '', title: titTxt, webTag: '交易赛' };
+    const x = 360;
+    const y = 104;
+    const badgeH = 32;
+    const blueTxt = tradeText.subtitle || '';
+    const darkTxt = tradeText.webTag || '交易赛';
+    ctx.textBaseline = 'middle';
+    ctx.font = `700 24px ${subFontFamily(SPECS.tradeweb)}`;
+    const blueW = Math.max(110, ctx.measureText(blueTxt).width + 32);
+    ctx.fillStyle = '#007FFF';
+    ctx.beginPath();
+    ctx.roundRect(x, y, blueW, badgeH, [4, 0, 0, 4]);
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    if (blueTxt) ctx.fillText(blueTxt, x + 16, y + badgeH / 2);
+    ctx.font = `500 20px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+    const darkW = Math.max(76, ctx.measureText(darkTxt).width + 28);
+    ctx.fillStyle = '#333333';
+    ctx.beginPath();
+    ctx.roundRect(x + blueW, y, darkW, badgeH, [0, 4, 4, 0]);
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(darkTxt, x + blueW + 14, y + badgeH / 2);
+    ctx.textBaseline = 'alphabetic';
+    ctx.filter = 'blur(0.35px)';
+    ctx.font = `700 ${s.titSz}px ${titFont}`;
+    const richTitle = parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : '#FFFFFF' }));
+    drawRichMultilineText(ctx, richTitle, x, y + badgeH + s.gap + s.titSz, 720, s.titSz, 1.1, 90);
+    ctx.filter = 'none';
+    if (imgSrc) await drawImg(ctx, imgSrc, 1160, 30, 320, 260);
+    return canvas.toDataURL('image/png');
   }
 
   if (s.imgPos === 'rc') {
@@ -1269,27 +1724,52 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     const mainH = H - s.barH;
     const textFullW = bapingTextW(s);
     const arrowSz = s.barArrowSz || 14;
-    ctx.fillStyle = c.sub;
-    ctx.font = `${subW} ${subSz}px ${subFont}`;
-    const subDrawn = drawMultilineText(ctx, subTxt, padX, padY + subSz, textFullW, subSz, subLH, subSz, mainH);
-    let curY = padY + subDrawn + s.gap;
-    ctx.fillStyle = c.tit;
-    ctx.filter = 'blur(0.4px)';
-    ctx.font = `700 ${titSz}px ${titFont}`;
-    drawMultilineText(ctx, titTxt, padX, curY + titSz, textFullW, titSz, titLH, titSz, mainH);
-    ctx.filter = 'none';
     const lang = langs.find(l => l.id === langId);
-    const descTxt = bapingDescEnabled && lang ? getDescText(lang.code) : '';
-    if (descTxt) {
-      const descSz = s.descSz || 30;
-      const descLH = s.descLH || 1.4;
-      const descMaxW = textFullW - 260;
-      ctx.fillStyle = s.descClr || '#595959';
-      ctx.font = `${s.descWeight || '400'} ${descSz}px ${font}`;
-      let descLines = 0;
-      for (const seg of descTxt.split('\n')) descLines += countLinesForText(ctx, seg, descMaxW);
-      const descBlockH = descLines * descSz * descLH;
-      drawMultilineText(ctx, descTxt, padX, mainH - padY - descBlockH + descSz, descMaxW, descSz, descLH, descSz, mainH);
+    const bapingText = lang ? getBapingText(lang) : null;
+    if (bapingText && bapingText.isCustom) {
+      ctx.filter = 'blur(0.4px)';
+      ctx.font = `700 ${titSz}px ${titFont}`;
+      const richTitle = parseBracketHighlights(bapingText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
+      const titleDrawn = drawRichMultilineText(ctx, richTitle, padX, padY + titSz, textFullW, titSz, titLH, mainH);
+      ctx.filter = 'none';
+      let curY = padY + titleDrawn + s.gap;
+      if (bapingText.subtitle) {
+        ctx.fillStyle = c.tit;
+        ctx.filter = 'blur(0.4px)';
+        ctx.font = `500 ${subSz}px ${subFont}`;
+        const subDrawn = drawMultilineText(ctx, bapingText.subtitle, padX, curY + subSz, textFullW, subSz, subLH, subSz, mainH);
+        ctx.filter = 'none';
+        curY += subDrawn + 24;
+      }
+      if (bapingText.descText) {
+        const descSz = s.descSz || 30;
+        const descLH = s.descLH || 1.4;
+        ctx.fillStyle = s.descClr || '#595959';
+        ctx.font = `${s.descWeight || '400'} ${descSz}px ${font}`;
+        drawMultilineText(ctx, bapingText.descText, padX, curY + descSz, textFullW, descSz, descLH, descSz, mainH);
+      }
+    } else {
+      ctx.fillStyle = c.sub;
+      ctx.font = `${subW} ${subSz}px ${subFont}`;
+      const subDrawn = drawMultilineText(ctx, subTxt, padX, padY + subSz, textFullW, subSz, subLH, subSz, mainH);
+      let curY = padY + subDrawn + s.gap;
+      ctx.fillStyle = c.tit;
+      ctx.filter = 'blur(0.4px)';
+      ctx.font = `700 ${titSz}px ${titFont}`;
+      drawMultilineText(ctx, titTxt, padX, curY + titSz, textFullW, titSz, titLH, titSz, mainH);
+      ctx.filter = 'none';
+      const descTxt = bapingCustomEnabled && lang ? getDescText(lang.code) : '';
+      if (descTxt) {
+        const descSz = s.descSz || 30;
+        const descLH = s.descLH || 1.4;
+        const descMaxW = textFullW - 260;
+        ctx.fillStyle = s.descClr || '#595959';
+        ctx.font = `${s.descWeight || '400'} ${descSz}px ${font}`;
+        let descLines = 0;
+        for (const seg of descTxt.split('\n')) descLines += countLinesForText(ctx, seg, descMaxW);
+        const descBlockH = descLines * descSz * descLH;
+        drawMultilineText(ctx, descTxt, padX, mainH - padY - descBlockH + descSz, descMaxW, descSz, descLH, descSz, mainH);
+      }
     }
     if (imgSrc) await drawImg(ctx, imgSrc, W - padX - imgW, mainH - imgW - (s.imgBottom || 0), imgW, imgW);
     ctx.fillStyle = s.barBg;
@@ -1360,8 +1840,20 @@ async function downloadAll() {
       tasks.push({ id:`landing-${l.id}-light`, fn:`${safeFilePart(l.code, 'lang')}_light`, folder:'landing', type:'landing', theme:'light', langId:l.id });
       tasks.push({ id:`landing-${l.id}-dark`,  fn:`${safeFilePart(l.code, 'lang')}_dark`,  folder:'landing', type:'landing', theme:'dark',  langId:l.id });
     }
-    if (activeSlots.has('baping')) {
+  }
+
+  if (activeSlots.has('baping')) {
+    for (const l of validBapingLangsCache) {
       tasks.push({ id:`baping-${l.id}`, fn:safeFilePart(l.code, 'lang'), folder:'baping', type:'baping', theme:'', langId:l.id });
+    }
+  }
+
+  if (activeSlots.has('trade')) {
+    for (const l of validTradeLangsCache) {
+      const base = safeFilePart(l.code, 'lang');
+      tasks.push({ id:`tradeapp-${l.id}-light`, fn:`${base}_app_light`, folder:'trade/app', type:'tradeapp', theme:'light', langId:l.id });
+      tasks.push({ id:`tradeapp-${l.id}-dark`,  fn:`${base}_app_dark`,  folder:'trade/app', type:'tradeapp', theme:'dark',  langId:l.id });
+      tasks.push({ id:`tradeweb-${l.id}-dark`,  fn:`${base}_web_dark`,  folder:'trade/web', type:'tradeweb', theme:'dark',  langId:l.id });
     }
   }
 
