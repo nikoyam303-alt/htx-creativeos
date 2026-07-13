@@ -230,9 +230,9 @@
   .b-tradeapp { width: 375px; height: 168px; padding: 32px 16px 0; box-sizing: border-box; position: relative; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
   .b-tradeapp.light { background: #FFFFFF; }
   .b-tradeapp.dark { background: #000000; }
-  .b-tradeapp .txt { width: 211px; position: relative; z-index: 1; }
+  .b-tradeapp .txt { width: 235px; position: relative; z-index: 1; }
   .b-tradeapp .sub { margin: 0; font-size: 14px; font-weight: 400; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 20px; color: #007FFF; word-break: break-word; overflow-wrap: anywhere; }
-  .b-tradeapp .tit { margin: 3px 0 0 0; font-size: 24px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 20px; word-break: break-word; overflow-wrap: anywhere; }
+  .b-tradeapp .tit { margin: 3px 0 0 0; font-size: 24px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 28px; word-break: break-word; overflow-wrap: anywhere; }
   .b-tradeapp.light .tit { color: #000000; }
   .b-tradeapp.dark .tit { color: #FFFFFF; }
   .b-tradeapp .tit .hl { color: #007FFF; }
@@ -242,14 +242,14 @@
   .sw-tradeweb { width: 640px; height: 107px; overflow: hidden; position: relative; flex-shrink: 0; }
   .si-tradeweb { width: 1920px; height: 320px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
   .b-tradeweb { width: 1920px; height: 320px; background: #000000; position: relative; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
-  .b-tradeweb .txt { position: absolute; left: 360px; top: 104px; width: 720px; }
-  .b-tradeweb .badge-row { display: flex; align-items: center; height: 32px; margin-bottom: 16px; }
-  .b-tradeweb .badge-blue { height: 32px; padding: 0 16px; display: flex; align-items: center; background: #007FFF; color: #FFFFFF; font-size: 24px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; border-radius: 4px 0 0 4px; }
-  .b-tradeweb .badge-dark { height: 32px; padding: 0 14px; display: flex; align-items: center; background: #333333; color: #FFFFFF; font-size: 20px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; border-radius: 0 4px 4px 0; }
+  .b-tradeweb .txt { position: absolute; left: 360px; top: 64px; width: 720px; max-height: 136px; overflow: hidden; }
+  .b-tradeweb .badge-row { display: flex; align-items: center; gap: 0; height: 31px; margin-bottom: 16px; }
+  .b-tradeweb .badge-blue { height: 31px; padding: 0 12px; display: flex; align-items: center; background: #007FFF; color: #FFFFFF; font-size: 24px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 31px; border-radius: 4px 0 0 4px; white-space: nowrap; flex: 0 0 auto; }
+  .b-tradeweb .badge-dark { height: 31px; padding: 0 12px; display: flex; align-items: center; background: #333333; color: #FFFFFF; font-size: 20px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 31px; border-radius: 0 4px 4px 0; white-space: nowrap; flex: 0 0 auto; }
   .b-tradeweb .tit { margin: 0; font-size: 42px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 1.1; color: #FFFFFF; word-break: break-word; overflow-wrap: anywhere; }
   .b-tradeweb .tit .hl { color: #007FFF; }
-  .b-tradeweb .imgw { position: absolute; left: 1160px; top: 30px; width: 320px; height: 260px; display: flex; align-items: center; justify-content: center; }
-  .b-tradeweb .imgw img { max-width: 320px; max-height: 260px; display: block; object-fit: contain; }
+  .b-tradeweb .imgw { position: absolute; left: 1160px; top: 0; width: 320px; height: 200px; display: flex; align-items: center; justify-content: center; }
+  .b-tradeweb .imgw img { max-width: 320px; max-height: 200px; display: block; object-fit: contain; }
 </style>
 </head>
 <body>
@@ -410,8 +410,8 @@ const SPECS = {
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0,  transparent:true },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
   baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"HarmonyOS Sans SC", titSz:58, barSz:32, barWeight:'500', barFont:"HarmonyOS Sans SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
-  tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:124, imgGap:8, imgPos:'tradeapp', subLH:20/14, titLH:20/24 },
-  tradeweb: { W:1920, H:320, PAD:360, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
+  tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:124, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
+  tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
 };
 
 const SLOT_TEXT_SPECS = {
@@ -424,7 +424,7 @@ const SLOT_TEXT_SPECS = {
   feed:   { maxH: 160, subMax: 28, subMin: 24, titMax: 32, titMin: 28, gap: 16 },
   landing:{ maxH: 104, subMax: 14, subMin: 12, titMax: 28, titMin: 18, gap: 4, subLH: 20/14, titLH: 38/28 },
   baping: { maxH: 436, subMax: 36, subMin: 28, titMax: 58, titMin: 46, gap: 16, subLH: 1.4, titLH: 1.4 },
-  tradeapp: { maxH: 60, subMax: 14, subMin: 11, titMax: 24, titMin: 18, gap: 3, subLH: 20/14, titLH: 20/24 },
+  tradeapp: { maxH: 72, subMax: 14, subMin: 11, titMax: 24, titMin: 18, gap: 3, subLH: 20/14, titLH: 28/24 },
   tradeweb: { maxH: 94, subMax: 24, subMin: 18, titMax: 42, titMin: 30, gap: 16, subLH: 1.1, titLH: 1.1 },
 };
 
@@ -1533,6 +1533,15 @@ async function drawImg(ctx, src, x, y, w, h) {
   ctx.drawImage(img, x, y, w, h);
 }
 
+async function drawImgContain(ctx, src, x, y, w, h) {
+  const img = await loadImage(src);
+  if (!img) return;
+  const scale = Math.min(w / img.width, h / img.height);
+  const dw = img.width * scale;
+  const dh = img.height * scale;
+  ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+}
+
 function fillCanvasBg(ctx, s, c, W, H) {
   if (s.transparent) return;
   ctx.fillStyle = c.bg;
@@ -1645,34 +1654,37 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     const lang = langs.find(l => l.id === langId);
     const tradeText = lang ? getTradeText(lang) : { subtitle: '', title: titTxt, webTag: '交易赛' };
     const x = 360;
-    const y = 104;
-    const badgeH = 32;
+    const y = s.textTop || 64;
+    const badgeH = 31;
+    const badgePadX = 12;
     const blueTxt = tradeText.subtitle || '';
     const darkTxt = tradeText.webTag || '交易赛';
     ctx.textBaseline = 'middle';
     ctx.font = `700 24px ${subFontFamily(SPECS.tradeweb)}`;
-    const blueW = Math.max(110, ctx.measureText(blueTxt).width + 32);
+    const blueW = Math.ceil(ctx.measureText(blueTxt).width + badgePadX * 2);
     ctx.fillStyle = '#007FFF';
     ctx.beginPath();
     ctx.roundRect(x, y, blueW, badgeH, [4, 0, 0, 4]);
     ctx.fill();
     ctx.fillStyle = '#FFFFFF';
-    if (blueTxt) ctx.fillText(blueTxt, x + 16, y + badgeH / 2);
+    if (blueTxt) ctx.fillText(blueTxt, x + badgePadX, y + badgeH / 2);
     ctx.font = `500 20px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
-    const darkW = Math.max(76, ctx.measureText(darkTxt).width + 28);
+    const darkW = Math.ceil(ctx.measureText(darkTxt).width + badgePadX * 2);
     ctx.fillStyle = '#333333';
     ctx.beginPath();
     ctx.roundRect(x + blueW, y, darkW, badgeH, [0, 4, 4, 0]);
     ctx.fill();
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillText(darkTxt, x + blueW + 14, y + badgeH / 2);
+    ctx.fillText(darkTxt, x + blueW + badgePadX, y + badgeH / 2);
     ctx.textBaseline = 'alphabetic';
     ctx.filter = 'blur(0.35px)';
     ctx.font = `700 ${s.titSz}px ${titFont}`;
     const richTitle = parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : '#FFFFFF' }));
-    drawRichMultilineText(ctx, richTitle, x, y + badgeH + s.gap + s.titSz, 720, s.titSz, 1.1, 90);
+    const titleY = y + badgeH + s.gap + s.titSz;
+    const titleMaxH = Math.max(s.titSz, H - (s.safeBottom || 120) - (titleY - s.titSz));
+    drawRichMultilineText(ctx, richTitle, x, titleY, 720, s.titSz, 1.1, titleMaxH);
     ctx.filter = 'none';
-    if (imgSrc) await drawImg(ctx, imgSrc, 1160, 30, 320, 260);
+    if (imgSrc) await drawImgContain(ctx, imgSrc, 1160, 0, 320, 200);
     return canvas.toDataURL('image/png');
   }
 
