@@ -125,7 +125,8 @@
   .sw-feed.light { background: #F5F5F5; }
   .sw-feed.dark  { background: #1a1a1a; }
   .si-feed  { width: 750px; height: 240px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
-  .sub, .tit { word-break: break-word; overflow-wrap: anywhere; }
+  .sub, .tit { max-width: 100%; white-space: normal; word-break: normal; overflow-wrap: anywhere; }
+  .txt { min-width: 0; }
 
   .b-feed { width: 750px; height: 240px; padding: 40px; box-sizing: border-box; display: flex; align-items: center; font-family: 'PingFang SC','Noto Sans SC',sans-serif; background: transparent; }
   .b-feed .txt { flex: 1; min-width: 0; padding-right: 40px; }
@@ -202,7 +203,7 @@
   .b-baping .main { flex: 1; min-height: 0; padding: 50px; box-sizing: border-box; position: relative; }
   .b-baping .txt { width: 100%; max-width: 100%; position: relative; z-index: 1; word-break: normal; overflow-wrap: break-word; }
   .b-baping .sub { margin: 0; font-size: 36px; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #595959; }
-  .b-baping .tit { margin: 16px 0 0 0; font-size: 58px; font-weight: 700; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #000000; }
+  .b-baping .tit { margin: 16px 0 0 0; font-size: 48px; font-weight: 700; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #000000; }
   .b-baping .tit .hl { color: #007FFF; }
   .b-baping.custom .tit { margin: 0; }
   .b-baping.custom .sub { margin: 16px 0 0 0; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; color: #000000; }
@@ -409,7 +410,7 @@ const SPECS = {
   share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:0,  boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF' },
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0,  transparent:true },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
-  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:58, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
+  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
   tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:124, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
 };
@@ -423,7 +424,7 @@ const SLOT_TEXT_SPECS = {
   share:  { maxH: 900, subMax: 42, subMin: 32, titMax: 90, titMin: 60, gap: 24 },
   feed:   { maxH: 160, subMax: 28, subMin: 24, titMax: 32, titMin: 28, gap: 16 },
   landing:{ maxH: 104, subMax: 14, subMin: 12, titMax: 28, titMin: 18, gap: 4, subLH: 20/14, titLH: 38/28 },
-  baping: { maxH: 436, subMax: 36, subMin: 28, titMax: 58, titMin: 46, gap: 16, subLH: 1.4, titLH: 1.4 },
+  baping: { maxH: 436, subMax: 36, subMin: 28, titMax: 48, titMin: 38, gap: 16, subLH: 1.4, titLH: 1.4 },
   tradeapp: { maxH: 72, subMax: 14, subMin: 11, titMax: 24, titMin: 18, gap: 3, subLH: 20/14, titLH: 28/24 },
   tradeweb: { maxH: 94, subMax: 24, subMin: 18, titMax: 42, titMin: 30, gap: 16, subLH: 1.1, titLH: 1.1 },
 };
@@ -1196,13 +1197,43 @@ async function ensureExportFontsReady() {
 
 function countLinesForText(ctx, text, maxW) {
   if (!text) return 0;
-  const bySpace = text.includes(' ');
-  let lines = 1, line = '';
-  for (const c of (bySpace ? text.split(' ') : [...text])) {
-    const test = line ? (bySpace ? line + ' ' + c : line + c) : c;
-    if (ctx.measureText(test).width > maxW && line) { lines++; line = c; }
-    else line = test;
+  return wrapTextLines(ctx, text, maxW).length;
+}
+
+// Match browser wrapping: prefer word boundaries, but split an oversized word
+// character-by-character so every exported line stays inside the safe width.
+function wrapTextLines(ctx, text, maxW) {
+  if (!text) return [];
+  const tokens = String(text).match(/\s+|[^\s]+/g) || [];
+  const lines = [];
+  let line = '';
+  const pushLine = () => {
+    if (line) lines.push(line.replace(/\s+$/g, ''));
+    line = '';
+  };
+  for (const token of tokens) {
+    const candidate = line + token;
+    if (ctx.measureText(candidate).width <= maxW) {
+      line = candidate;
+      continue;
+    }
+    if (/^\s+$/.test(token)) {
+      pushLine();
+      continue;
+    }
+    if (line) pushLine();
+    let chunk = '';
+    for (const ch of [...token]) {
+      if (chunk && ctx.measureText(chunk + ch).width > maxW) {
+        lines.push(chunk);
+        chunk = ch;
+      } else {
+        chunk += ch;
+      }
+    }
+    line = chunk;
   }
+  pushLine();
   return lines;
 }
 
@@ -1229,18 +1260,7 @@ function drawMultilineText(ctx, text, x, startY, maxW, sz, lineH_ratio, minLineH
   let curY = startY;
   const bottomLimit = maxH === Infinity ? Infinity : startY + maxH - sz;
   for (const seg of segments) {
-    const bySpace = seg.includes(' ');
-    let line = '';
-    for (const c of (bySpace ? seg.split(' ') : [...seg])) {
-      const test = line ? (bySpace ? line + ' ' + c : line + c) : c;
-      if (ctx.measureText(test).width > maxW && line) {
-        if (curY > bottomLimit) return curY - startY;
-        ctx.fillText(line, x, curY);
-        curY += lh;
-        line = c;
-      } else line = test;
-    }
-    if (line) {
+    for (const line of wrapTextLines(ctx, seg, maxW)) {
       if (curY <= bottomLimit) ctx.fillText(line, x, curY);
       curY += lh;
     }
@@ -1291,19 +1311,7 @@ function drawCenteredMultilineText(ctx, text, centerX, startY, maxW, sz, lineH_r
   let curY = startY;
   const bottomLimit = maxH === Infinity ? Infinity : startY + maxH;
   for (const seg of segments) {
-    const bySpace = seg.includes(' ');
-    let line = '';
-    for (const c of (bySpace ? seg.split(' ') : [...seg])) {
-      const test = line ? (bySpace ? line + ' ' + c : line + c) : c;
-      if (ctx.measureText(test).width > maxW && line) {
-        if (curY > bottomLimit) return curY - startY;
-        const w = ctx.measureText(line).width;
-        ctx.fillText(line, centerX - w / 2, curY);
-        curY += lh;
-        line = c;
-      } else line = test;
-    }
-    if (line) {
+    for (const line of wrapTextLines(ctx, seg, maxW)) {
       if (curY <= bottomLimit) {
         const w = ctx.measureText(line).width;
         ctx.fillText(line, centerX - w / 2, curY);
