@@ -201,18 +201,18 @@
   .b-baping { width: 550px; height: 660px; border-radius: 36px; overflow: hidden; background: #FFFFFF; display: flex; flex-direction: column; font-family: 'PingFang SC','Noto Sans SC',sans-serif; box-sizing: border-box; }
   .b-baping .main { flex: 1; min-height: 0; padding: 50px; box-sizing: border-box; position: relative; }
   .b-baping .txt { width: 100%; max-width: 100%; position: relative; z-index: 1; word-break: normal; overflow-wrap: break-word; }
-  .b-baping .sub { margin: 0; font-size: 36px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 1.4; color: #595959; }
-  .b-baping .tit { margin: 16px 0 0 0; font-size: 58px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 1.4; color: #000000; }
+  .b-baping .sub { margin: 0; font-size: 36px; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #595959; }
+  .b-baping .tit { margin: 16px 0 0 0; font-size: 58px; font-weight: 700; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #000000; }
   .b-baping .tit .hl { color: #007FFF; }
   .b-baping.custom .tit { margin: 0; }
-  .b-baping.custom .sub { margin: 16px 0 0 0; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; color: #000000; }
+  .b-baping.custom .sub { margin: 16px 0 0 0; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; color: #000000; }
   .b-baping .imgw { position: absolute; right: 50px; bottom: 32px; width: 210px; height: 210px; z-index: 0; }
   .b-baping .imgw img { width: 210px; height: 210px; display: block; object-fit: contain; }
   .b-baping .bar { height: 124px; background: #007FFF; display: flex; align-items: center; justify-content: space-between; padding: 0 50px; box-sizing: border-box; flex-shrink: 0; }
-  .b-baping .bar-txt { font-size: 32px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; color: #FFFFFF; line-height: normal; }
+  .b-baping .bar-txt { font-size: 32px; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; color: #FFFFFF; line-height: normal; }
   .b-baping .bar-arrow { width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
   .b-baping .bar-arrow svg { width: 48px; height: 48px; display: block; }
-  .b-baping .desc { position: absolute; left: 0; bottom: 0; margin: 0; max-width: calc(100% - 260px); font-size: 30px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 1.4; color: #595959; z-index: 1; word-break: normal; overflow-wrap: break-word; }
+  .b-baping .desc { position: absolute; left: 0; bottom: 0; margin: 0; max-width: calc(100% - 260px); font-size: 30px; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #595959; z-index: 1; word-break: normal; overflow-wrap: break-word; }
   .b-baping.custom .desc { position: relative; left: auto; bottom: auto; margin: 24px 0 0 0; max-width: 100%; }
   .baping-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
   .baping-panel-head .panel-title { margin-bottom: 0; }
@@ -409,7 +409,7 @@ const SPECS = {
   share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:0,  boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF' },
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0,  transparent:true },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
-  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"HarmonyOS Sans SC", titSz:58, barSz:32, barWeight:'500', barFont:"HarmonyOS Sans SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
+  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:58, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
   tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:124, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
 };
@@ -1324,8 +1324,8 @@ function applyBapingClip(langId, autoScale) {
     if (sub) sub.style.cssText = '';
     tit.style.cssText = '';
     if (!autoScale) return;
-    const font = "'HarmonyOS Sans SC','PingFang SC',sans-serif";
-    const titFont = "'HarmonyOS Bold','PingFang SC',sans-serif";
+    const font = "'PingFang SC','Noto Sans SC',sans-serif";
+    const titFont = titFontFamily(s, font);
     const subFont = subFontFamily(s);
     const textW = bapingTextW(s);
     const cvs = document.createElement('canvas');
