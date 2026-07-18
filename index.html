@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTX CreativeOS</title>
+<title>HTX 运营视觉工作台</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,7 +23,7 @@
   .panel { width: 300px; flex-shrink: 0; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 24px; position: sticky; top: 24px; }
   .panel-title { font-size: 11px; font-weight: 600; color: #555; letter-spacing: 0.05em; margin-bottom: 12px; }
   .panel-hint { font-size: 10px; color: #444; margin-bottom: 10px; line-height: 1.6; }
-  .draft-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
+  .draft-row { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 0 0 10px; }
   .draft-status { font-size: 10px; color: #444; line-height: 1.4; }
   .clear-draft-btn { background: none; border: 1px solid #2a2a2a; border-radius: 5px; padding: 5px 10px; font-size: 11px; color: #666; cursor: pointer; font-family: inherit; white-space: nowrap; }
   .clear-draft-btn:hover { border-color: #444; color: #aaa; }
@@ -42,7 +42,27 @@
   .lang-inputs input, .lang-inputs textarea { width: 100%; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 5px; padding: 7px 10px; font-size: 12px; color: #e0e0e0; font-family: inherit; outline: none; resize: none; box-sizing: border-box; }
   .lang-inputs input:focus, .lang-inputs textarea:focus { border-color: #444; }
   .lang-inputs input::placeholder, .lang-inputs textarea::placeholder { color: #3a3a3a; }
-  .lang-inputs textarea { line-height: 1.5; min-height: 52px; }
+.lang-inputs textarea { line-height: 1.5; min-height: 34px; height: 34px; overflow-y: hidden; field-sizing: content; }
+.email-fit-control { margin-top: 10px; padding: 2px 0 0; background: transparent; }
+.email-fit-message { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #667085; font-size: 11px; line-height: 1.45; }
+.email-fit-icon { width: auto; height: auto; color: #E5484D; background: transparent; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex: 0 0 auto; }
+.email-fit-slider-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; }
+.email-fit-slider { --fit-progress: 0%; width: 100%; height: 32px; margin: -9px 0; direction: rtl; appearance: none; -webkit-appearance: none; background: transparent; cursor: ew-resize; touch-action: none; }
+.email-fit-slider::-webkit-slider-runnable-track { height: 2px; border-radius: 0; background: linear-gradient(to right, var(--brand-blue) 0 var(--fit-progress), #D7DCE3 var(--fit-progress) 100%); }
+.email-fit-slider::-webkit-slider-thumb { width: 14px; height: 14px; margin-top: -6px; border: 0; border-radius: 50%; background: var(--brand-blue); appearance: none; -webkit-appearance: none; }
+.email-fit-slider::-moz-range-track { height: 2px; border: 0; border-radius: 0; background: #D7DCE3; }
+.email-fit-slider::-moz-range-progress { height: 2px; background: var(--brand-blue); }
+.email-fit-slider::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: var(--brand-blue); }
+body.range-dragging,
+body.range-dragging * { cursor: ew-resize !important; user-select: none !important; }
+.email-fit-value { min-width: 72px; color: #667085; font-size: 11px; text-align: right; white-space: nowrap; }
+.email-fit-reset { margin: 0; padding: 0; border: 0; color: #7C899B; background: transparent; font-family: inherit; font-size: 10px; line-height: 1; white-space: nowrap; cursor: pointer; }
+.email-fit-reset:hover { color: var(--brand-blue); }
+.resource-overflow-warning { margin-top: 10px; color: #667085; font-size: 11px; line-height: 1.45; }
+.resource-overflow-head { display: flex; align-items: flex-start; gap: 6px; }
+.resource-overflow-warning .warning-icon { color: #E5484D; font-size: 13px; line-height: 1.45; flex: 0 0 auto; }
+.resource-overflow-text { flex: 1; min-width: 0; }
+.resource-overflow-adjust { display: block; padding-top: 10px; }
   .card-footer { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
   .scale-toggle-btn { background: none; border: 1px solid #2a2a2a; border-radius: 5px; color: #555; font-size: 11px; padding: 5px 12px; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
   .scale-toggle-btn.on { border-color: #fff; color: #fff; }
@@ -128,7 +148,9 @@
   .sub, .tit { max-width: 100%; white-space: normal; word-break: normal; overflow-wrap: anywhere; }
   .txt { min-width: 0; }
 
-  .b-feed { width: 750px; height: 240px; padding: 40px; box-sizing: border-box; display: flex; align-items: center; font-family: 'PingFang SC','Noto Sans SC',sans-serif; background: transparent; }
+  .b-feed { width: 750px; height: 240px; padding: 40px; box-sizing: border-box; display: flex; align-items: center; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
+  .b-feed.light { background: #FAFAFA; }
+  .b-feed.dark { background: #0F0F0F; }
   .b-feed .txt { flex: 1; min-width: 0; padding-right: 40px; }
   .b-feed .sub { margin: 0; font-size: 28px; font-weight: 400; font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; }
   .b-feed.light .sub { color: #8C8C8C; } .b-feed.dark .sub { color: rgba(250,250,250,0.6); }
@@ -172,8 +194,8 @@
   .b-appcal .txt { flex: 1; min-width: 0; padding-right: 48px; }
   .b-appcal .sub { margin: 0; font-size: 36px; font-weight: 400; font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; color: rgba(255,255,255,0.8); }
   .b-appcal .tit { margin: 12px 0 0 0; font-size: 54px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; color: #fff; }
-  .b-appcal .imgw { flex-shrink: 0; width: 270px; height: 270px; }
-  .b-appcal .imgw img { width: 270px; height: 270px; display: block; object-fit: contain; }
+  .b-appcal .imgw { flex-shrink: 0; width: 234px; height: 234px; }
+  .b-appcal .imgw img { width: 234px; height: 234px; display: block; object-fit: contain; }
 
   .b-pccal { width: 2400px; height: 400px; padding: 44px 90px; box-sizing: border-box; background: #FAFAFA; display: flex; align-items: center; border-radius: 24px; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
   .b-pccal .txt { flex: 1; min-width: 0; padding-right: 90px; }
@@ -205,12 +227,12 @@
   .b-baping .sub { margin: 0; font-size: 36px; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #595959; }
   .b-baping .tit { margin: 16px 0 0 0; font-size: 48px; font-weight: 700; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #000000; }
   .b-baping .tit .hl { color: #007FFF; }
-  .b-baping.custom .tit { margin: 0; }
-  .b-baping.custom .sub { margin: 16px 0 0 0; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; color: #000000; }
-  .b-baping .imgw { position: absolute; right: 50px; bottom: 32px; width: 210px; height: 210px; z-index: 0; }
+  .b-baping.custom .sub { margin: 0; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; color: #595959; }
+  .b-baping.custom .tit { margin: 16px 0 0 0; }
+  .b-baping .imgw { position: absolute; right: 50px; bottom: 2px; width: 210px; height: 210px; z-index: 0; }
   .b-baping .imgw img { width: 210px; height: 210px; display: block; object-fit: contain; }
   .b-baping .bar { height: 124px; background: #007FFF; display: flex; align-items: center; justify-content: space-between; padding: 0 50px; box-sizing: border-box; flex-shrink: 0; }
-  .b-baping .bar-txt { font-size: 32px; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; color: #FFFFFF; line-height: normal; }
+  .b-baping .bar-txt { height: 48px; display: flex; align-items: center; font-size: 32px; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; color: #FFFFFF; line-height: 1; }
   .b-baping .bar-arrow { width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
   .b-baping .bar-arrow svg { width: 48px; height: 48px; display: block; }
   .b-baping .desc { position: absolute; left: 0; bottom: 0; margin: 0; max-width: calc(100% - 260px); font-size: 30px; font-weight: 500; font-family: 'PingFang SC','Noto Sans SC',sans-serif; line-height: 1.4; color: #595959; z-index: 1; word-break: normal; overflow-wrap: break-word; }
@@ -237,8 +259,8 @@
   .b-tradeapp.light .tit { color: #000000; }
   .b-tradeapp.dark .tit { color: #FFFFFF; }
   .b-tradeapp .tit .hl { color: #007FFF; }
-  .b-tradeapp .imgw { position: absolute; right: 16px; top: 0; width: 124px; height: 124px; display: flex; align-items: center; justify-content: center; }
-  .b-tradeapp .imgw img { width: 124px; height: 124px; display: block; object-fit: contain; }
+  .b-tradeapp .imgw { position: absolute; right: 16px; top: 0; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center; }
+  .b-tradeapp .imgw img { width: 110px; height: 110px; display: block; object-fit: contain; }
 
   .sw-tradeweb { width: 640px; height: 107px; overflow: hidden; position: relative; flex-shrink: 0; }
   .si-tradeweb { width: 1920px; height: 320px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
@@ -250,14 +272,640 @@
   .b-tradeweb .tit { margin: 0; font-size: 42px; font-weight: 700; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; line-height: 1.1; color: #FFFFFF; word-break: break-word; overflow-wrap: anywhere; }
   .b-tradeweb .tit .hl { color: #007FFF; }
   .b-tradeweb .imgw { position: absolute; left: 1160px; top: 0; width: 320px; height: 200px; display: flex; align-items: center; justify-content: center; }
-  .b-tradeweb .imgw img { max-width: 320px; max-height: 200px; display: block; object-fit: contain; }
+  .b-tradeweb .imgw img { width: 320px; height: 200px; display: block; object-fit: contain; }
+
+  .sw-pcrebate { width: 384px; height: 112px; overflow: hidden; position: relative; flex-shrink: 0; }
+  .si-pcrebate { width: 1152px; height: 336px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
+  .b-pcrebate { width: 1152px; height: 336px; padding: 48px; box-sizing: border-box; display: flex; align-items: center; background: #F3F3F3; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; overflow: hidden; }
+  .b-pcrebate .txt { flex: 1; min-width: 0; padding-right: 48px; }
+  .b-pcrebate .sub { margin: 0; color: #8C8C8C; font-size: 36px; line-height: 1.35; font-weight: 400; }
+  .b-pcrebate .tit { margin: 18px 0 0; color: #000000; font-size: 48px; line-height: 1.3; font-weight: 500; }
+  .b-pcrebate .imgw { width: 258px; height: 258px; flex: 0 0 258px; display: flex; align-items: center; justify-content: center; }
+  .b-pcrebate .imgw img { width: 258px; height: 258px; display: block; object-fit: contain; }
+  .sw-apprebate { width: 358px; height: 52px; overflow: hidden; position: relative; flex-shrink: 0; }
+  .si-apprebate { width: 1074px; height: 156px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
+  .b-apprebate { width: 1074px; height: 156px; padding: 18px 48px; box-sizing: border-box; display: flex; align-items: center; background: #F6F6F6; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; overflow: hidden; }
+  .b-apprebate .txt { flex: 1; min-width: 0; padding-right: 48px; }
+  .b-apprebate .sub { display: none; }
+  .b-apprebate .tit { margin: 0; color: #000000; font-size: 42px; line-height: 1.3; font-weight: 400; }
+  .b-apprebate .imgw { width: 120px; height: 120px; flex: 0 0 120px; display: flex; align-items: center; justify-content: center; }
+  .b-apprebate .imgw img { width: 120px; height: 120px; display: block; object-fit: contain; }
+/* CreativeOS brand UI — 已读取 HTX 品牌规范 */
+:root {
+  --brand-blue: #0066FF;
+  --brand-blue-light: #2692FF;
+  --ink: #111827;
+  --muted: #64748B;
+  --line: #E5EAF0;
+  --surface: #FFFFFF;
+  --canvas: #F5F7FA;
+}
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  padding: 0 28px 56px;
+}
+.header {
+  margin: 0 -28px 28px;
+  min-height: 112px;
+  padding: 0 max(28px, calc((100vw - 1680px) / 2));
+  background: linear-gradient(180deg, var(--brand-blue) 0%, var(--brand-blue-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.header h1 {
+  color: #FFF;
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.header h1::before {
+  content: 'HTX';
+  display: inline-block;
+  margin-right: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  vertical-align: baseline;
+}
+.tool-layout { gap: 28px; max-width: 1480px; }
+.panel {
+  width: 340px;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  top: 16px;
+  padding: 28px;
+  background: var(--surface);
+  border: 0;
+  border-radius: 12px;
+  scrollbar-width: none;
+}
+.panel::-webkit-scrollbar,
+.v2-nav::-webkit-scrollbar { display: none; width: 0; height: 0; }
+.panel-title {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 14px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.panel-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 3px;
+  height: 14px;
+  background: var(--brand-blue);
+}
+.panel-hint, .draft-status { color: #8793A5; font-weight: 400; }
+.preview-hint { color: var(--muted); }
+.divider { border-top-color: var(--line); margin: 24px 0; }
+.slot-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.slot-item {
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  background: #FFF;
+  border-radius: 8px;
+  transition: border-color .15s, background .15s;
+}
+.slot-item:hover { border-color: #B8D1FF; background: #F7FAFF; }
+.slot-check {
+  width: 16px;
+  height: 16px;
+  border-color: #C8D1DC;
+  background: #FFF;
+  border-radius: 4px;
+  position: relative;
+}
+.slot-item.checked { border-color: #A8C8FF; background: #EFF5FF; }
+.slot-item.checked .slot-check { background: var(--brand-blue); border-color: var(--brand-blue); }
+.slot-item.checked .slot-check::before { content: none; }
+.slot-item.checked .slot-check::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: center / 11px 11px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.2 6.1 4.7 8.3 9.8 3.4' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.slot-item span { color: #344054; font-size: 12px; font-weight: 500; }
+.slot-item.checked span { color: var(--brand-blue); }
+.lang-item {
+  background: #F8FAFC;
+  border-color: transparent;
+  border-radius: 8px;
+  padding: 12px;
+}
+.lang-tag-input {
+  padding: 0;
+  background: transparent;
+  color: #98A2B3;
+  border: 0;
+  border-radius: 0;
+  width: auto;
+  min-width: 40px;
+  max-width: calc(100% - 36px);
+  field-sizing: content;
+  text-align: left;
+  font-weight: 400;
+}
+.lang-tag-input:focus { color: #667085; border: 0; background: transparent; }
+.lang-tag-input::placeholder { color: #91A4BF; }
+.lang-remove { color: #A0AABA; }
+.lang-remove:hover { color: #E5484D; }
+.lang-inputs input, .lang-inputs textarea {
+  background: #FFF;
+  border-color: #DDE3EA;
+  color: var(--ink);
+  border-radius: 6px;
+  font-weight: 400;
+}
+.lang-inputs input:focus, .lang-inputs textarea:focus { border-color: var(--brand-blue); }
+.lang-inputs input::placeholder, .lang-inputs textarea::placeholder { color: #A7B0BE; }
+.clear-draft-btn, .scale-toggle-btn, .download-btn {
+  border-color: #DDE3EA;
+  color: var(--muted);
+  background: #FFF;
+}
+.clear-draft-btn:hover, .scale-toggle-btn:hover, .download-btn:hover { border-color: #A8C8FF; color: var(--brand-blue); }
+.add-lang-btn, .upload-btn {
+  border: 0;
+  border-radius: 8px;
+  color: var(--brand-blue);
+  background: #F8FAFC;
+}
+.add-lang-btn { height: 40px; padding: 0 12px; }
+.add-lang-btn:hover, .upload-btn:hover { color: var(--brand-blue); background: #F1F4F7; }
+.add-lang-btn { color: #7C899B; }
+.add-lang-btn:hover { color: #667085; background: #F1F4F7; }
+.upload-area { gap: 10px; margin: 12px 0 18px; }
+.upload-btn { height: 40px; min-height: 40px; padding: 0 12px; line-height: 40px; }
+.upload-btn.loaded { border-color: transparent; color: var(--brand-blue); background: #F8FAFC; }
+.upload-btn.dragover {
+  color: var(--brand-blue);
+  background: #EEF4FF;
+  box-shadow: inset 0 0 0 1px var(--brand-blue);
+}
+.generate-btn {
+  height: 40px;
+  padding: 0 14px;
+  background: var(--brand-blue);
+  color: #FFF;
+  border-radius: 6px;
+  font-weight: 700;
+}
+.clear-draft-btn, .add-lang-btn, .upload-btn, .download-all-btn, .card-dl-btn { font-weight: 500; }
+.generate-btn:hover { opacity: 1; background: #0059E6; }
+.download-all-btn {
+  height: 40px;
+  padding: 0 14px;
+  border: 0;
+  color: #FFF;
+  background: var(--brand-blue);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.download-all-btn:hover { color: #FFF; background: #0059E6; }
+.download-all-btn:disabled { opacity: 1; color: #B3BDCC; background: #F4F6F8; }
+.preview-hint { margin: 4px 0 12px; }
+.lang-scale-row span, .lang-scale-row.on span { color: var(--muted); }
+.toggle { background: #DCE2EA; }
+.toggle::after { background: #FFF; }
+.lang-scale-row.on .toggle, .baping-desc-toggle-row.on .toggle { background: var(--brand-blue); }
+.lang-scale-row.on .toggle::after { background: #FFF; }
+.baping-desc-toggle-row { color: var(--muted); }
+.baping-desc-toggle-row.on { color: var(--brand-blue); }
+.baping-desc-toggle-row .toggle {
+  background: #DCE2EA;
+  border: 1px solid #D1D9E4;
+}
+.baping-desc-toggle-row .toggle::after {
+  top: 2px;
+  left: 2px;
+  background: #FFF;
+}
+.baping-desc-toggle-row.on .toggle {
+  background: var(--brand-blue);
+  border-color: var(--brand-blue);
+}
+.baping-desc-toggle-row.on .toggle::after { left: 14px; background: #FFF; }
+.lang-tag-readonly {
+  padding: 0;
+  color: #98A2B3;
+  background: transparent;
+  border-radius: 0;
+  font-weight: 400;
+  text-align: left;
+}
+.lang-inputs input.baping-field,
+.lang-inputs textarea.baping-field {
+  background: #FFF;
+  border-color: #DDE3EA;
+  color: var(--ink);
+  font-weight: 400;
+}
+.lang-inputs input.baping-field:focus,
+.lang-inputs textarea.baping-field:focus {
+  background: #FFF;
+  border-color: var(--brand-blue);
+}
+.lang-inputs input.baping-field::placeholder,
+.lang-inputs textarea.baping-field::placeholder { color: #A7B0BE; }
+.trade-field-section { display: flex; flex-direction: column; gap: 6px; }
+.trade-field-section + .trade-field-section { margin-top: 6px; }
+.trade-field-label {
+  color: #98A2B3;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.rebate-category-label {
+  margin-bottom: 10px;
+  color: #98A2B3;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.trade-web-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+@media (max-width: 1180px) {
+  .trade-web-fields { grid-template-columns: 1fr; }
+}
+.preview-area { padding: 0; }
+.preview-section {
+  margin-bottom: 20px;
+  padding: 24px;
+  background: transparent;
+  border: 1px solid #DDE3EA;
+  border-radius: 12px;
+}
+.preview-section-title {
+  margin-bottom: 16px;
+  padding-left: 0;
+  color: #98A2B3;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+.preview-section-title::before { display: none; }
+.lang-group-label { color: var(--muted); font-weight: 500; }
+.theme-label { color: #8793A5; }
+.card-dl-btn {
+  color: var(--brand-blue);
+  background: #FFF;
+  border-color: #B8D1FF;
+  border-radius: 5px;
+}
+.card-dl-btn:hover { color: #FFF; background: var(--brand-blue); border-color: var(--brand-blue); }
+.empty-state {
+  width: 100%;
+  height: 120px;
+  padding: 20px;
+  border: 0;
+  border-radius: 8px;
+  color: #98A2B3;
+  background: #F8FAFC;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+}
+@media (max-width: 900px) {
+  body { padding: 0 16px 32px; }
+  .header { margin: 0 -16px 20px; min-height: 80px; padding: 0 16px; }
+  .tool-layout { flex-direction: column; }
+  .panel { position: relative; top: auto; width: 100%; max-height: none; }
+  .preview-area { width: 100%; }
+}
+
+/* CreativeOS V2 workspace */
+.tool-layout { max-width: 1680px; gap: 20px; }
+.v2-nav {
+  width: 236px;
+  flex: 0 0 236px;
+  position: sticky;
+  top: 16px;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: 22px;
+  background: #FFF;
+  border: 0;
+  border-radius: 12px;
+  scrollbar-width: none;
+}
+.v2-nav-title { font-size: 11px; color: #98A2B3; margin-bottom: 10px; letter-spacing: .04em; }
+.v2-group-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+.v2-group-btn {
+  width: 100%; min-height: 40px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between;
+  border: 1px solid transparent; border-radius: 8px; background: transparent; color: #475467; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-align: left;
+}
+.v2-group-btn:hover { background: #F7FAFF; color: var(--brand-blue); }
+.v2-group-btn.active { background: #F8FAFC; color: var(--brand-blue); border-color: transparent; }
+.v2-group-btn .count { color: #98A2B3; font-size: 11px; font-weight: 400; }
+.v2-group-btn.active .count { color: var(--brand-blue); }
+#v2SlotMount .slot-list { grid-template-columns: 1fr; gap: 6px; }
+#v2SlotMount .slot-item { min-height: 40px; padding: 0 12px; border-color: transparent; background: transparent; }
+#v2SlotMount .slot-item:hover { background: #F7FAFF; border-color: transparent; }
+#v2SlotMount .slot-item.checked { background: #F8FAFC; border-color: transparent; }
+.panel { width: 390px; flex: 0 0 390px; padding: 22px; }
+.v2-panel-label {
+  padding-left: 0;
+  margin: 0;
+  color: #98A2B3;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+.v2-panel-label::before { display: none; }
+.panel > .v2-panel-label { margin-top: 20px; margin-bottom: 8px; }
+.v2-config-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.v2-config-head .draft-row { margin: 0; }
+.v2-config-head .clear-draft-btn {
+  min-height: 26px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  color: #7C899B;
+  background: #F4F6F8;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.v2-config-head .clear-draft-btn:hover {
+  border: 0;
+  color: #667085;
+  background: #EAEDF1;
+}
+.draft-toast {
+  position: fixed;
+  z-index: 9999;
+  top: 20px;
+  right: 24px;
+  width: max-content;
+  max-width: calc(100vw - 48px);
+  padding: 11px 14px;
+  color: #344054;
+  background: #FFF;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(16,24,40,.12);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.draft-toast.show { opacity: 1; transform: translateY(0); }
+.draft-toast.error { color: #B42318; background: #FFF5F4; }
+.baping-lang-section > .divider,
+.baping-lang-section > .panel-title { display: none; }
+.preview-area { min-width: 520px; }
+.preview-section {
+  --preview-inner-padding: clamp(20px, 2.2vw, 32px);
+  padding: var(--preview-inner-padding);
+  box-sizing: border-box;
+}
+.preview-section .cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  gap: 28px 24px;
+  align-items: start;
+  justify-content: center;
+}
+#gridNew, #gridOld, #gridEmail, #gridAppCal, #gridPcCal,
+#gridFeed, #gridPcRebate, #gridAppRebate {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+}
+#gridTrade { grid-template-columns: 1fr; row-gap: 32px; }
+#gridShare { grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); }
+#gridLanding { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+#gridBaping { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.preview-section .lang-group {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+}
+.preview-section .cards-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 100%;
+  gap: 12px;
+  align-items: start;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.preview-section .card-wrapper {
+  width: auto;
+  min-width: 0;
+  position: relative;
+}
+.preview-area .card-wrapper > div,
+.preview-area .card-wrapper [class^="b-"] {
+  border-radius: 0 !important;
+}
+#gridBaping .card-wrapper > .sw-baping {
+  border-radius: 12px !important;
+}
+#gridBaping .card-wrapper .b-baping {
+  border-radius: 36px !important;
+}
+#gridBaping .baping-preview-stack {
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+#gridBaping .baping-preview-stack .lang-group-header {
+  width: 100%;
+}
+#gridBaping .baping-preview-stack .cards-row {
+  width: auto;
+  justify-content: flex-start;
+}
+.preview-section .lang-group-header {
+  min-height: 26px;
+  margin-bottom: 8px;
+  justify-content: flex-start;
+}
+.preview-section .lang-group-label {
+  color: #98A2B3;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: .01em;
+}
+.preview-section .theme-label { margin-bottom: -2px; }
+.preview-scale-btn {
+  min-height: 26px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  color: #667085;
+  background: #E4E9EF;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.preview-scale-btn:hover { color: #475467; background: #DCE2E9; }
+.preview-scale-btn.on { color: var(--brand-blue); background: #DCE9FF; }
+/* 各资源位仅为舒适预览设置倍率，下载仍按原始规范尺寸输出。 */
+#gridNew .cards-row { zoom: 1; }
+#gridOld .cards-row { zoom: .56; }
+#gridEmail .cards-row { zoom: 1; }
+#gridAppCal .cards-row { zoom: 1; }
+#gridPcCal .cards-row { zoom: .78; }
+#gridShare .cards-row { zoom: 1.05; }
+#gridFeed .cards-row { zoom: .72; }
+#gridLanding .cards-row { zoom: .95; }
+#gridBaping .cards-row { zoom: 1; }
+#gridTrade .cards-row { zoom: 1; }
+#gridTrade .trade-preview-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+}
+#gridTrade .trade-version-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+}
+#gridTrade .trade-version-section + .trade-version-section {
+  margin-top: 20px;
+  padding-top: 28px;
+  border-top: 1px solid #E4E7EC;
+}
+#gridTrade .trade-version-title {
+  align-self: flex-start;
+  color: #98A2B3;
+  font-size: 12px;
+  font-weight: 400;
+}
+#gridTrade .trade-preview-app-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 16px;
+}
+#gridTrade .trade-app-lang-stack {
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+#gridTrade .trade-app-lang-stack .trade-preview-app-row {
+  width: auto;
+  justify-content: flex-start;
+}
+#gridTrade .trade-web-lang-stack {
+  width: min(100%, 960px);
+  margin: 0 auto;
+}
+#gridTrade .trade-app-lang-stack .lang-group-header,
+#gridTrade .trade-web-lang-stack .lang-group-header {
+  width: 100%;
+}
+#gridTrade .trade-preview-web-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+#gridTrade .trade-preview-web-row > .card-wrapper {
+  width: min(100%, 960px);
+}
+#gridTrade .sw-tradeapp { width: 300px; height: 134px; }
+#gridTrade .si-tradeapp { transform: scale(.8); }
+#gridTrade .sw-tradeweb { width: 100%; height: auto; aspect-ratio: 6 / 1; }
+#gridTrade .si-tradeweb { transform: scale(.5); }
+#gridPcRebate .cards-row { zoom: 1; }
+#gridAppRebate .cards-row { zoom: 1; }
+@media (min-width: 1280px) {
+  #gridNew .cards-row { zoom: 1.3; }
+  #gridOld .cards-row { zoom: .65; }
+  #gridEmail .cards-row { zoom: 1.18; }
+  #gridAppCal .cards-row { zoom: 1.18; }
+  #gridPcCal .cards-row { zoom: .86; }
+  #gridFeed .cards-row { zoom: .82; }
+  #gridLanding .cards-row { zoom: 1.05; }
+  #gridNew > .lang-group:nth-child(odd) .cards-row,
+  #gridOld > .lang-group:nth-child(odd) .cards-row,
+  #gridEmail > .lang-group:nth-child(odd) .cards-row,
+  #gridAppCal > .lang-group:nth-child(odd) .cards-row,
+  #gridPcCal > .lang-group:nth-child(odd) .cards-row,
+  #gridFeed > .lang-group:nth-child(odd) .cards-row,
+  #gridPcRebate > .lang-group:nth-child(odd) .cards-row,
+  #gridAppRebate > .lang-group:nth-child(odd) .cards-row { justify-content: flex-start; }
+  #gridNew > .lang-group:nth-child(even) .cards-row,
+  #gridOld > .lang-group:nth-child(even) .cards-row,
+  #gridEmail > .lang-group:nth-child(even) .cards-row,
+  #gridAppCal > .lang-group:nth-child(even) .cards-row,
+  #gridPcCal > .lang-group:nth-child(even) .cards-row,
+  #gridFeed > .lang-group:nth-child(even) .cards-row,
+  #gridPcRebate > .lang-group:nth-child(even) .cards-row,
+  #gridAppRebate > .lang-group:nth-child(even) .cards-row { justify-content: flex-end; }
+}
+.v2-hidden { display: none !important; }
+@media (max-width: 1180px) {
+  .tool-layout { flex-wrap: wrap; }
+  .v2-nav { width: 220px; flex-basis: 220px; }
+  .panel { width: calc(100% - 240px); flex: 1; }
+  .preview-area { width: 100%; min-width: 0; }
+}
+@media (max-width: 760px) {
+  .v2-nav, .panel { width: 100%; flex-basis: 100%; position: relative; top: auto; max-height: none; }
+}
 </style>
 </head>
 <body>
 
-<div class="header"><h1>HTX CreativeOS</h1></div>
+<div class="header"><h1>运营视觉工作台</h1></div>
+<div class="draft-toast" id="draftToast" role="status" aria-live="polite"></div>
 
 <div class="tool-layout">
+  <aside class="v2-nav">
+    <div class="v2-nav-title">内容组</div>
+    <div class="v2-group-list">
+      <button class="v2-group-btn active" data-v2-group="common" onclick="setV2Group('common')"><span>通用内容</span></button>
+      <button class="v2-group-btn" data-v2-group="baping" onclick="setV2Group('baping')"><span>霸屏</span></button>
+      <button class="v2-group-btn" data-v2-group="trade" onclick="setV2Group('trade')"><span>交易赛</span></button>
+      <button class="v2-group-btn" data-v2-group="rebate" onclick="setV2Group('rebate')"><span>返佣</span></button>
+    </div>
+    <div class="v2-nav-title">输出资源位</div>
+    <div id="v2SlotMount"></div>
+  </aside>
   <div class="panel">
     <div class="panel-title">资源位</div>
     <div class="slot-list">
@@ -270,71 +918,88 @@
       <div class="slot-item" id="slot-feed" onclick="toggleSlot('feed')"><div class="slot-check"></div><span>Feed流</span></div>
       <div class="slot-item" id="slot-landing" onclick="toggleSlot('landing')"><div class="slot-check"></div><span>聚合落地页</span></div>
       <div class="slot-item" id="slot-baping" onclick="toggleSlot('baping')"><div class="slot-check"></div><span>霸屏</span></div>
-      <div class="slot-item" id="slot-trade" onclick="toggleSlot('trade')"><div class="slot-check"></div><span>交易赛</span></div>
+      <div class="slot-item" id="slot-tradeapp-light" onclick="toggleTradeVariant('tradeapp-light')"><div class="slot-check"></div><span>App 白天</span></div>
+      <div class="slot-item" id="slot-tradeapp-dark" onclick="toggleTradeVariant('tradeapp-dark')"><div class="slot-check"></div><span>App 黑天</span></div>
+      <div class="slot-item" id="slot-tradeweb" onclick="toggleTradeVariant('tradeweb')"><div class="slot-check"></div><span>Web 黑天</span></div>
+      <div class="slot-item" id="slot-pcrebate" onclick="toggleSlot('pcrebate')"><div class="slot-check"></div><span>PC返佣</span></div>
+      <div class="slot-item" id="slot-apprebate" onclick="toggleSlot('apprebate')"><div class="slot-check"></div><span>APP返佣</span></div>
     </div>
 
     <hr class="divider">
 
-    <div class="panel-title">文案配置</div>
-    <div class="draft-row">
-      <span class="draft-status" id="draftStatus">草稿会自动保存</span>
-      <button class="clear-draft-btn" onclick="clearDraft()">清空草稿</button>
+    <div class="v2-config-head">
+      <div class="panel-title">文案配置</div>
+      <div class="draft-row">
+        <button class="clear-draft-btn" onclick="clearDraft()">清空草稿</button>
+      </div>
     </div>
     <div class="lang-list" id="langList"></div>
     <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
 
     <div id="bapingLangSection" class="baping-lang-section" style="display:none">
       <hr class="divider">
-      <div class="baping-panel-head">
-        <div class="panel-title">霸屏文案配置</div>
-        <div class="baping-desc-toggle-row" id="bapingDescToggleRow" onclick="toggleBapingDesc()">
-          <div class="toggle"></div>
-          <span>专属文案</span>
-        </div>
-      </div>
-      <div class="panel-hint">默认沿用上方通用文案；如霸屏文案不同，开启后在下方配置。主标题用 [文字] 标记蓝色高亮。</div>
+      <div class="panel-title">霸屏文案配置</div>
+      <div class="panel-hint">填写霸屏文案，主标题可用 [文字] 标记蓝色高亮。</div>
       <div class="lang-list" id="bapingLangList"></div>
       <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
+      <div class="panel-title" style="margin-top:16px;">配图（可选）</div>
+      <div class="upload-area">
+        <button class="upload-btn" id="bapingImageBtn" onclick="document.getElementById('bapingImageFile').click()">点击或拖拽上传</button>
+        <input type="file" id="bapingImageFile" accept="image/*" onchange="handleBapingUpload(event)">
+      </div>
     </div>
 
     <div id="tradeLangSection" class="baping-lang-section" style="display:none">
       <hr class="divider">
-      <div class="baping-panel-head">
-        <div class="panel-title">交易赛配置</div>
-        <div class="baping-desc-toggle-row" id="tradeToggleRow" onclick="toggleTradeConfig()">
-          <div class="toggle"></div>
-          <span>独立配置</span>
+      <div class="panel-title">交易赛配置</div>
+      <div class="lang-list" id="tradeLangList"></div>
+      <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
+      <div id="tradeImagePanel" style="display:none">
+        <div class="upload-area">
+          <button class="upload-btn" id="tradeLightBtn" onclick="document.getElementById('tradeLightFile').click()">点击或拖拽上传</button>
+          <input type="file" id="tradeLightFile" accept="image/*" onchange="handleTradeUpload(event,'light')">
+          <button class="upload-btn" id="tradeDarkBtn" onclick="document.getElementById('tradeDarkFile').click()">点击或拖拽上传</button>
+          <input type="file" id="tradeDarkFile" accept="image/*" onchange="handleTradeUpload(event,'dark')">
         </div>
       </div>
-      <div class="panel-hint">默认关闭。开启后填写交易赛独立文案，主标题可用 [文字] 标记蓝色高亮。</div>
-      <div class="lang-list" id="tradeLangList"></div>
-      <div id="tradeImagePanel" style="display:none">
-        <div class="panel-hint" style="margin-top:8px;">交易赛独立配图：白天图用于 App 白天；黑天图用于 App 黑天和 Web 黑色版。</div>
+    </div>
+
+    <div id="pcrebateLangSection" class="baping-lang-section" style="display:none">
+      <hr class="divider">
+      <div class="rebate-category-label">PC 返佣</div>
+      <div class="lang-list" id="pcrebateLangList"></div>
+      <button id="rebatePcAddLangButton" class="add-lang-btn" style="display:none" onclick="addLang()">+ 添加语种</button>
+      <div id="pcrebateImagePanel" style="display:none">
         <div class="upload-area">
-          <button class="upload-btn" id="tradeLightBtn" onclick="document.getElementById('tradeLightFile').click()">白天图<br>点击上传</button>
-          <input type="file" id="tradeLightFile" accept=".png" onchange="handleTradeUpload(event,'light')">
-          <button class="upload-btn" id="tradeDarkBtn" onclick="document.getElementById('tradeDarkFile').click()">黑天图<br>点击上传</button>
-          <input type="file" id="tradeDarkFile" accept=".png" onchange="handleTradeUpload(event,'dark')">
+          <button class="upload-btn" id="pcrebateImageBtn" onclick="document.getElementById('pcrebateImageFile').click()">点击或拖拽上传</button>
+          <input type="file" id="pcrebateImageFile" accept="image/*" onchange="handlePcRebateUpload(event)">
         </div>
+      </div>
+    </div>
+
+    <div id="apprebateLangSection" class="baping-lang-section" style="display:none">
+      <hr class="divider">
+      <div class="rebate-category-label">APP 返佣</div>
+      <div class="lang-list" id="apprebateLangList"></div>
+      <button id="rebateAddLangButton" class="add-lang-btn" style="display:none" onclick="addLang()">+ 添加语种</button>
+      <div id="apprebateImagePanel" style="display:none">
+        <div class="upload-area"><button class="upload-btn" id="apprebateImageBtn" onclick="document.getElementById('apprebateImageFile').click()">点击或拖拽上传</button><input type="file" id="apprebateImageFile" accept="image/*" onchange="handleAppRebateUpload(event)"></div>
       </div>
     </div>
 
     <hr class="divider">
 
     <div class="panel-title">配图（可选）</div>
-    <div class="panel-hint">白天图：New/Old白天、PC日历<br>黑天图：New/Old黑天、Email、App日历<br>PNG · 300×300px</div>
     <div class="upload-area">
-      <button class="upload-btn" id="lightBtn" onclick="document.getElementById('lightFile').click()">白天图<br>点击上传</button>
-      <input type="file" id="lightFile" accept=".png" onchange="handleUpload(event,'light')">
-      <button class="upload-btn" id="darkBtn" onclick="document.getElementById('darkFile').click()">黑天图<br>点击上传</button>
-      <input type="file" id="darkFile" accept=".png" onchange="handleUpload(event,'dark')">
+      <button class="upload-btn" id="lightBtn" onclick="document.getElementById('lightFile').click()">点击或拖拽上传</button>
+      <input type="file" id="lightFile" accept="image/*" onchange="handleUpload(event,'light')">
+      <button class="upload-btn" id="darkBtn" onclick="document.getElementById('darkFile').click()">点击或拖拽上传</button>
+      <input type="file" id="darkFile" accept="image/*" onchange="handleUpload(event,'dark')">
     </div>
 
     <hr class="divider">
 
-    <div class="panel-hint preview-hint">勾选资源位后，修改文案或上传配图会自动刷新预览</div>
-    <button class="generate-btn" onclick="generate()">刷新预览</button>
-    <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAll()">⬇ 一键下载全部</button>
+    <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAll()">下载</button>
   </div>
 
   <div class="preview-area">
@@ -378,45 +1043,73 @@
       <div class="preview-section-title">交易赛</div>
       <div class="cards-grid" id="gridTrade"><div class="empty-state">填写文案后将自动预览</div></div>
     </div>
+    <div class="preview-section" id="section-pcrebate" style="display:none;">
+      <div class="preview-section-title">PC返佣</div>
+      <div class="cards-grid" id="gridPcRebate"><div class="empty-state">请开启独立配置并填写文案</div></div>
+    </div>
+    <div class="preview-section" id="section-apprebate" style="display:none;">
+      <div class="preview-section-title">APP返佣</div>
+      <div class="cards-grid" id="gridAppRebate"><div class="empty-state">请开启独立配置并填写文案</div></div>
+    </div>
   </div>
 </div>
 
 <script>
 let activeSlots = new Set();
+let activeTradeVariants = new Set();
 let langs = [];
 let images = { light: null, dark: null };
 let langCounter = 0;
 let validLangsCache = [];
 let bapingLangs = {};
-let bapingCustomEnabled = false;
+let bapingCustomEnabled = true;
+let bapingImage = null;
 let validBapingLangsCache = [];
 let tradeLangs = {};
-let tradeConfigEnabled = false;
+let tradeConfigEnabled = true;
 let tradeImages = { light: null, dark: null };
 let validTradeLangsCache = [];
+let pcrebateLangs = {};
+let pcrebateConfigEnabled = true;
+let pcrebateImage = null;
+let validPcRebateLangsCache = [];
+let apprebateLangs = {};
+let apprebateConfigEnabled = true;
+let apprebateImage = null;
+let validAppRebateLangsCache = [];
+let hiddenLangCodes = {
+  common: new Set(), baping: new Set(), trade: new Set(),
+  pcrebate: new Set(), apprebate: new Set()
+};
 const scaleState = {};
+const emailFontModes = {};
+const fontScaleTargets = {};
 const DRAFT_KEY = 'htxCreativeOSDraftV1';
 const DEFAULT_LANG_CODES = ['en-us','zh-cn','zh-hk','ru-ru','tr-tr','vi-vi'];
 let isRestoringDraft = false;
 let _draftTimer = null;
+const workspaceUndoStack = [];
+let isApplyingWorkspaceHistory = false;
 const BAPING_ARROW_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#fff" stroke-width="1.5"/><path d="M7.5 12h8.2" stroke="#fff" stroke-width="1.8" stroke-linecap="butt"/><path d="M12 8.3l3.7 3.7-3.7 3.7" stroke="#fff" stroke-width="1.8" stroke-linecap="butt" stroke-linejoin="miter"/></svg>');
 const BAPING_ARROW_HTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="11" stroke="#fff" stroke-width="1.5"/><path d="M7.5 12h8.2" stroke="#fff" stroke-width="1.8" stroke-linecap="butt"/><path d="M12 8.3l3.7 3.7-3.7 3.7" stroke="#fff" stroke-width="1.8" stroke-linecap="butt" stroke-linejoin="miter"/></svg>';
 const SPECS = {
   new:    { W:474,  H:600,  PAD:36,  subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:42, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:24, imgW:180, imgPos:'rb', radius:0,  transparent:false },
   old:    { W:1029, H:420,  PAD:48,  subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:54, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:24, imgW:270, imgPos:'rc', radius:24, transparent:false },
   email:  { W:1125, H:450,  PAD:60,  subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:60, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:12, imgW:360, imgPos:'rc', radius:0,  bg:'#0066FF', subClr:'rgba(255,255,255,0.8)', titClr:'#FFFFFF' },
-  appcal: { W:1029, H:330,  PAD:48,  subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:54, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:12, imgW:270, imgPos:'rc', radius:0,  bg:'#0066FF', subClr:'rgba(255,255,255,0.8)', titClr:'#FFFFFF' },
-  pccal:  { W:2400, H:400,  PAD:44,  PADX:90, subSz:50, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:68, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:18, imgW:300, imgPos:'rc', radius:0,  bg:'#FAFAFA', subClr:'#8C8C8C', titClr:'#0F0F0F' },
-  share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:0,  boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF' },
-  feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0,  transparent:true },
+  appcal: { W:1029, H:330,  PAD:48,  subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:54, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:12, imgW:234, imgPos:'rc', radius:0,  bg:'#0066FF', subClr:'rgba(255,255,255,0.8)', titClr:'#FFFFFF' },
+  pccal:  { W:2400, H:400,  PAD:44,  PADX:90, subSz:50, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:68, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:18, imgW:300, imgPos:'rc', radius:24, bg:'#FAFAFA', subClr:'#8C8C8C', titClr:'#0F0F0F' },
+  share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:24, boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF', titLH:1.2 },
+  feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0, transparent:false },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
-  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:32, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
-  tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:124, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
+  baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:2, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
+  tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:110, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
+  pcrebate: { W:1152, H:336, PAD:48, subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:48, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:18, imgW:258, imgPos:'rc', bg:'#F3F3F3', subClr:'#8C8C8C', titClr:'#000000' },
+  apprebate: { W:1074, H:156, PAD:18, PADX:48, subSz:1, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:42, titWeight:'400', titFont:"HarmonyOS Sans SC", gap:0, imgW:120, imgPos:'rc', bg:'#F6F6F6', subClr:'#000000', titClr:'#000000' },
 };
 
 const SLOT_TEXT_SPECS = {
-  new:    { maxH: 180, subMax: 36, subMin: 28, titMax: 42, titMin: 32, gap: 24 },
+  new:    { maxH: 324, subMax: 36, subMin: 28, titMax: 42, titMin: 32, gap: 24 },
   old:    { maxH: 324, subMax: 36, subMin: 28, titMax: 54, titMin: 40, gap: 24 },
   email:  { maxH: 360, subMax: 36, subMin: 28, titMax: 60, titMin: 44, gap: 12 },
   appcal: { maxH: 234, subMax: 36, subMin: 28, titMax: 54, titMin: 40, gap: 12 },
@@ -427,11 +1120,13 @@ const SLOT_TEXT_SPECS = {
   baping: { maxH: 436, subMax: 36, subMin: 28, titMax: 48, titMin: 38, gap: 16, subLH: 1.4, titLH: 1.4 },
   tradeapp: { maxH: 72, subMax: 14, subMin: 11, titMax: 24, titMin: 18, gap: 3, subLH: 20/14, titLH: 28/24 },
   tradeweb: { maxH: 94, subMax: 24, subMin: 18, titMax: 42, titMin: 30, gap: 16, subLH: 1.1, titLH: 1.1 },
+  pcrebate: { maxH: 240, subMax: 36, subMin: 30, titMax: 48, titMin: 38, gap: 18, subLH: 1.35, titLH: 1.3 },
+  apprebate: { maxH: 120, subMax: 1, subMin: 1, titMax: 42, titMin: 34, gap: 0, subLH: 1, titLH: 1.3 },
 };
 
 const SLOT_LABELS = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
-  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', baping: '霸屏', trade: '交易赛',
+  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', baping: '霸屏', trade: '交易赛', pcrebate: 'PC返佣', apprebate: 'APP返佣',
 };
 const AUTO_SCALE_BASE_RATIO = 0.9;
 
@@ -448,6 +1143,11 @@ function eh(s) {
   return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+function emptyWhitespaceToBlank(value) {
+  const text = String(value ?? '');
+  return /\S/.test(text) ? text : '';
+}
+
 function slotLangKey(slotType, langId) { return slotType + '-' + langId; }
 
 let _debounceTimer = null;
@@ -460,34 +1160,61 @@ function schedulePreview() {
   if (activeSlots.size) generateDebounced();
 }
 
+let _draftToastTimer = null;
 function setDraftStatus(text) {
-  const el = document.getElementById('draftStatus');
-  if (el) el.textContent = text;
+  const el = document.getElementById('draftToast');
+  if (!el || text === '已自动保存' || text === '草稿会自动保存') return;
+  clearTimeout(_draftToastTimer);
+  const isError = /不足|失败|错误/.test(text);
+  el.textContent = text;
+  el.classList.toggle('error', isError);
+  el.classList.add('show');
+  if (!isError) _draftToastTimer = setTimeout(() => el.classList.remove('show'), 3000);
 }
 
 function scheduleDraftSave() {
   if (isRestoringDraft) return;
   clearTimeout(_draftTimer);
-  _draftTimer = setTimeout(saveDraft, 200);
+  _draftTimer = setTimeout(() => {
+    _draftTimer = null;
+    saveDraft();
+  }, 200);
 }
 
 function saveDraft(statusText = '已自动保存') {
   if (isRestoringDraft) return;
   const draft = {
-    version: 1,
+    version: 2,
     savedAt: Date.now(),
     langs: langs.map(l => ({ code: l.code, subtitle: l.subtitle, title: l.title })),
     activeSlots: Array.from(activeSlots),
+    tradeVariants: Array.from(activeTradeVariants),
     scaleState,
+    emailFontModes,
+    fontScaleTargets,
     bapingCustomEnabled,
     bapingLangs,
+    bapingImage,
     tradeConfigEnabled,
     tradeLangs,
     tradeImages,
+    pcrebateConfigEnabled,
+    pcrebateLangs,
+    pcrebateImage,
+    apprebateConfigEnabled,
+    apprebateLangs,
+    apprebateImage,
+    hiddenLangCodes: Object.fromEntries(Object.entries(hiddenLangCodes).map(([key, value]) => [key, Array.from(value)])),
     images
   };
   try {
-    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    const nextRaw = JSON.stringify(draft);
+    const previousRaw = localStorage.getItem(DRAFT_KEY);
+    if (!isApplyingWorkspaceHistory && previousRaw !== nextRaw) {
+      workspaceUndoStack.push(previousRaw);
+      if (workspaceUndoStack.length > 50) workspaceUndoStack.shift();
+    }
+    localStorage.setItem(DRAFT_KEY, nextRaw);
     setDraftStatus(statusText);
   } catch (err) {
     console.warn(err);
@@ -495,27 +1222,66 @@ function saveDraft(statusText = '已自动保存') {
   }
 }
 
+function undoWorkspaceChange() {
+  if (_draftTimer !== null) {
+    clearTimeout(_draftTimer);
+    _draftTimer = null;
+    saveDraft();
+  }
+  if (!workspaceUndoStack.length) {
+    setDraftStatus('暂无可撤销的操作');
+    return;
+  }
+  const previousRaw = workspaceUndoStack.pop();
+  isApplyingWorkspaceHistory = true;
+  if (previousRaw) localStorage.setItem(DRAFT_KEY, previousRaw);
+  else localStorage.removeItem(DRAFT_KEY);
+  restoreDraft();
+  isApplyingWorkspaceHistory = false;
+  if (typeof setV2Group === 'function') setV2Group(v2ActiveGroup, false);
+  setDraftStatus('已撤销上一步');
+}
+
+document.addEventListener('keydown', event => {
+  if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'z' || event.shiftKey) return;
+  const target = event.target;
+  const isTextEditing = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
+  if (isTextEditing) return;
+  event.preventDefault();
+  undoWorkspaceChange();
+});
+
 function updateSlotControls() {
-  ['new','old','email','appcal','pccal','share','feed','landing','baping','trade'].forEach(key => {
+  ['new','old','email','appcal','pccal','share','feed','landing','baping','pcrebate','apprebate'].forEach(key => {
     const el = document.getElementById('slot-' + key);
     const sec = document.getElementById('section-' + key);
     if (el) el.classList.toggle('checked', activeSlots.has(key));
     if (sec) sec.style.display = activeSlots.has(key) ? '' : 'none';
   });
+  ['tradeapp-light','tradeapp-dark','tradeweb'].forEach(key => {
+    const el = document.getElementById('slot-' + key);
+    if (el) el.classList.toggle('checked', activeTradeVariants.has(key));
+  });
+  const tradePreview = document.getElementById('section-trade');
+  if (tradePreview) tradePreview.style.display = activeTradeVariants.size ? '' : 'none';
   const bapingSec = document.getElementById('bapingLangSection');
   if (bapingSec) bapingSec.style.display = activeSlots.has('baping') ? 'block' : 'none';
   const tradeSec = document.getElementById('tradeLangSection');
   if (tradeSec) tradeSec.style.display = activeSlots.has('trade') ? 'block' : 'none';
+  const pcrebateSec = document.getElementById('pcrebateLangSection');
+  if (pcrebateSec) pcrebateSec.style.display = activeSlots.has('pcrebate') ? 'block' : 'none';
+  const apprebateSec = document.getElementById('apprebateLangSection');
+  if (apprebateSec) apprebateSec.style.display = activeSlots.has('apprebate') ? 'block' : 'none';
 }
 
 function setUploadButtonState(theme) {
   const btn = document.getElementById(theme === 'light' ? 'lightBtn' : 'darkBtn');
   if (!btn) return;
   if (images[theme]) {
-    btn.innerHTML = '✓ 已加载';
+    btn.innerHTML = '配图已上传';
     btn.className = 'upload-btn loaded';
   } else {
-    btn.innerHTML = theme === 'light' ? '白天图<br>点击上传' : '黑天图<br>点击上传';
+    btn.textContent = '点击或拖拽上传';
     btn.className = 'upload-btn';
   }
 }
@@ -532,13 +1298,24 @@ function resetToDefaultState() {
   langs = [];
   langCounter = 1;
   activeSlots = new Set();
+  activeTradeVariants = new Set();
   images = { light: null, dark: null };
   bapingLangs = {};
-  bapingCustomEnabled = false;
+  bapingCustomEnabled = true;
+  bapingImage = null;
   tradeLangs = {};
-  tradeConfigEnabled = false;
+  tradeConfigEnabled = true;
   tradeImages = { light: null, dark: null };
+  pcrebateLangs = {};
+  pcrebateConfigEnabled = true;
+  pcrebateImage = null;
+  apprebateLangs = {};
+  apprebateConfigEnabled = true;
+  apprebateImage = null;
+  hiddenLangCodes = { common: new Set(), baping: new Set(), trade: new Set(), pcrebate: new Set(), apprebate: new Set() };
   Object.keys(scaleState).forEach(k => delete scaleState[k]);
+  Object.keys(emailFontModes).forEach(k => delete emailFontModes[k]);
+  Object.keys(fontScaleTargets).forEach(k => delete fontScaleTargets[k]);
   DEFAULT_LANG_CODES.forEach(code => addLang(code));
 }
 
@@ -552,14 +1329,33 @@ function restoreDraft() {
       langs = [];
       langCounter = 1;
       activeSlots = new Set(Array.isArray(draft.activeSlots) ? draft.activeSlots : []);
+      activeTradeVariants = new Set(Array.isArray(draft.tradeVariants) ? draft.tradeVariants : []);
+      if (activeSlots.has('trade') && !activeTradeVariants.size) activeTradeVariants = new Set(['tradeapp-light','tradeapp-dark','tradeweb']);
       images = draft.images || { light: null, dark: null };
       bapingLangs = draft.bapingLangs || {};
-      bapingCustomEnabled = !!(draft.bapingCustomEnabled || draft.bapingDescEnabled);
+      if ((draft.version || 1) < 2) {
+        Object.entries(bapingLangs).forEach(([code, item]) => {
+          if (item && item.barText === (BAPING_BAR_DEFAULTS[code] || '')) item.barText = '';
+        });
+      }
+      bapingCustomEnabled = true;
+      bapingImage = draft.bapingImage || null;
       tradeLangs = draft.tradeLangs || {};
-      tradeConfigEnabled = !!draft.tradeConfigEnabled;
+      tradeConfigEnabled = true;
       tradeImages = normalizeTradeImages(draft.tradeImages);
+      pcrebateLangs = draft.pcrebateLangs || {};
+      pcrebateConfigEnabled = true;
+      pcrebateImage = draft.pcrebateImage || null;
+      apprebateLangs = draft.apprebateLangs || {};
+      apprebateConfigEnabled = true;
+      apprebateImage = draft.apprebateImage || null;
+      hiddenLangCodes = Object.fromEntries(['common','baping','trade','pcrebate','apprebate'].map(key => [key, new Set(draft.hiddenLangCodes?.[key] || [])]));
       Object.keys(scaleState).forEach(k => delete scaleState[k]);
       Object.assign(scaleState, draft.scaleState || {});
+      Object.keys(emailFontModes).forEach(k => delete emailFontModes[k]);
+      Object.assign(emailFontModes, draft.emailFontModes || {});
+      Object.keys(fontScaleTargets).forEach(k => delete fontScaleTargets[k]);
+      Object.assign(fontScaleTargets, draft.fontScaleTargets || {});
       draft.langs.forEach(l => addLang(l.code || '', l.subtitle || '', l.title || ''));
       restored = true;
     }
@@ -571,39 +1367,88 @@ function restoreDraft() {
   updateSlotControls();
   setUploadButtonState('light');
   setUploadButtonState('dark');
+  setBapingUploadButtonState();
   const row = document.getElementById('bapingDescToggleRow');
   if (row) row.classList.toggle('on', bapingCustomEnabled);
   const tradeRow = document.getElementById('tradeToggleRow');
   if (tradeRow) tradeRow.classList.toggle('on', tradeConfigEnabled);
+  const pcrebateRow = document.getElementById('pcrebateToggleRow');
+  if (pcrebateRow) pcrebateRow.classList.toggle('on', pcrebateConfigEnabled);
+  const apprebateRow = document.getElementById('apprebateToggleRow');
+  if (apprebateRow) apprebateRow.classList.toggle('on', apprebateConfigEnabled);
   setTradeUploadButtonState('light');
   setTradeUploadButtonState('dark');
+  setPcRebateUploadButtonState();
+  setAppRebateUploadButtonState();
   renderLangList();
   renderBapingLangList();
   renderTradeLangList();
+  renderPcRebateLangList();
+  renderAppRebateLangList();
   if (activeSlots.size) generate();
-  setDraftStatus(restored ? '已恢复上次草稿' : '草稿会自动保存');
+  if (restored && !sessionStorage.getItem('htxDraftRestoreNotified')) {
+    sessionStorage.setItem('htxDraftRestoreNotified', '1');
+    setDraftStatus('已恢复上次草稿');
+  }
 }
 
 function clearDraft() {
-  if (!confirm('确定清空当前浏览器里的草稿吗？')) return;
-  localStorage.removeItem(DRAFT_KEY);
-  isRestoringDraft = true;
-  resetToDefaultState();
-  isRestoringDraft = false;
-  updateSlotControls();
-  setUploadButtonState('light');
-  setUploadButtonState('dark');
-  const row = document.getElementById('bapingDescToggleRow');
-  if (row) row.classList.remove('on');
-  const tradeRow = document.getElementById('tradeToggleRow');
-  if (tradeRow) tradeRow.classList.remove('on');
+  if (!localStorage.getItem(DRAFT_KEY)) {
+    setDraftStatus('暂无可清空的草稿');
+    return;
+  }
+  const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
+  const groupTypes = {
+    common: ['new','old','email','appcal','pccal','share','feed','landing'],
+    baping: ['baping'],
+    trade: ['tradeapp','tradeweb'],
+    rebate: ['pcrebate','apprebate']
+  }[group] || [];
+  const typeSet = new Set(groupTypes);
+  Object.keys(scaleState).forEach(key => {
+    if (groupTypes.some(type => key.startsWith(`${type}-`))) delete scaleState[key];
+  });
+  Object.keys(fontScaleTargets).forEach(code => {
+    const remaining = (fontScaleTargets[code] || []).filter(type => !typeSet.has(type));
+    if (remaining.length) fontScaleTargets[code] = remaining;
+    else delete fontScaleTargets[code];
+  });
+  if (group === 'common') {
+    langs.forEach(lang => { lang.subtitle = ''; lang.title = ''; });
+    images = { light: null, dark: null };
+    Object.keys(emailFontModes).forEach(key => delete emailFontModes[key]);
+  } else if (group === 'baping') {
+    bapingLangs = {};
+    bapingCustomEnabled = true;
+    bapingImage = null;
+  } else if (group === 'trade') {
+    tradeLangs = {};
+    tradeImages = { light: null, dark: null };
+    tradeConfigEnabled = true;
+  } else if (group === 'rebate') {
+    pcrebateLangs = {};
+    pcrebateImage = null;
+    pcrebateConfigEnabled = true;
+    apprebateLangs = {};
+    apprebateImage = null;
+    apprebateConfigEnabled = true;
+  }
   setTradeUploadButtonState('light');
   setTradeUploadButtonState('dark');
+  setUploadButtonState('light');
+  setUploadButtonState('dark');
+  setBapingUploadButtonState();
+  setPcRebateUploadButtonState();
+  setAppRebateUploadButtonState();
   renderLangList();
   renderBapingLangList();
   renderTradeLangList();
+  renderPcRebateLangList();
+  renderAppRebateLangList();
   generate();
-  saveDraft('草稿已清空');
+  saveDraft();
+  const groupName = { common:'通用内容', baping:'霸屏', trade:'交易赛', rebate:'返佣' }[group];
+  setDraftStatus(`${groupName}草稿已清空`);
 }
 
 function toggleSlot(key) {
@@ -615,22 +1460,58 @@ function toggleSlot(key) {
   if (bapingSec) bapingSec.style.display = activeSlots.has('baping') ? 'block' : 'none';
   const tradeSec = document.getElementById('tradeLangSection');
   if (tradeSec) tradeSec.style.display = activeSlots.has('trade') ? 'block' : 'none';
+  const pcrebateSec = document.getElementById('pcrebateLangSection');
+  if (pcrebateSec) pcrebateSec.style.display = activeSlots.has('pcrebate') ? 'block' : 'none';
+  const apprebateSec = document.getElementById('apprebateLangSection');
+  if (apprebateSec) apprebateSec.style.display = activeSlots.has('apprebate') ? 'block' : 'none';
   if (activeSlots.has('baping')) renderBapingLangList();
   if (activeSlots.has('trade')) renderTradeLangList();
+  if (activeSlots.has('pcrebate')) renderPcRebateLangList();
+  if (activeSlots.has('apprebate')) renderAppRebateLangList();
   scheduleDraftSave();
   schedulePreview();
+  if (typeof setV2Group === 'function' && typeof v2ActiveGroup !== 'undefined') setV2Group(v2ActiveGroup, false);
+}
+
+function toggleTradeVariant(key) {
+  if (activeTradeVariants.has(key)) activeTradeVariants.delete(key);
+  else activeTradeVariants.add(key);
+  if (activeTradeVariants.size) activeSlots.add('trade');
+  else activeSlots.delete('trade');
+  updateSlotControls();
+  if (activeTradeVariants.size) renderTradeLangList();
+  scheduleDraftSave();
+  schedulePreview();
+  if (typeof setV2Group === 'function') setV2Group('trade', false);
 }
 
 function toggleScale(slotType, langId) {
+  if (slotType === 'trade') {
+    const appKey = slotLangKey('tradeapp', langId);
+    const webKey = slotLangKey('tradeweb', langId);
+    const next = !(scaleState[appKey] || scaleState[webKey]);
+    scaleState[appKey] = next;
+    scaleState[webKey] = next;
+    scheduleDraftSave();
+    generate();
+    return;
+  }
   const key = slotLangKey(slotType, langId);
   scaleState[key] = !scaleState[key];
   scheduleDraftSave();
   generate();
 }
 
+function isLangAutoScale(slotType, langId) {
+  if (slotType === 'trade') {
+    return !!(scaleState[slotLangKey('tradeapp', langId)] || scaleState[slotLangKey('tradeweb', langId)]);
+  }
+  return !!scaleState[slotLangKey(slotType, langId)];
+}
+
 function ensureBapingLang(code) {
   if (!code || bapingLangs[code] !== undefined) return;
-  bapingLangs[code] = { title: '', subtitle: '', barText: BAPING_BAR_DEFAULTS[code] || '', descText: '' };
+  bapingLangs[code] = { title: '', subtitle: '', barText: '', descText: '' };
 }
 
 function normalizeBapingLang(code) {
@@ -643,13 +1524,16 @@ function normalizeBapingLang(code) {
     delete item.highlightTitle;
   }
   if (item.subtitle === undefined) item.subtitle = '';
-  if (item.barText === undefined) item.barText = BAPING_BAR_DEFAULTS[code] || '';
+  if (item.barText === undefined) item.barText = '';
   if (item.descText === undefined) item.descText = '';
+  item.title = emptyWhitespaceToBlank(item.title);
+  item.subtitle = emptyWhitespaceToBlank(item.subtitle);
+  item.barText = emptyWhitespaceToBlank(item.barText);
+  item.descText = emptyWhitespaceToBlank(item.descText);
   return item;
 }
 
 function hasBapingCustomText(code) {
-  if (!bapingCustomEnabled) return false;
   const item = normalizeBapingLang(code);
   return !!(item.title || item.subtitle || item.descText);
 }
@@ -665,7 +1549,14 @@ function syncBapingLangCode(oldCode, newCode) {
 
 function ensureTradeLang(code) {
   if (!code || tradeLangs[code] !== undefined) return;
-  tradeLangs[code] = { subtitle: '', title: '', webTag: '' };
+  tradeLangs[code] = { subtitle: '', title: '', webBrand: '', webTag: '' };
+}
+
+function inferTradeWebBrand(subtitle) {
+  const text = emptyWhitespaceToBlank(subtitle);
+  if (!text) return '';
+  const saros = text.match(/^SAROS\b/i);
+  return saros ? saros[0].toUpperCase() : (text.split(/\s+/)[0] || '');
 }
 
 function normalizeTradeLang(code) {
@@ -674,14 +1565,19 @@ function normalizeTradeLang(code) {
   const item = tradeLangs[code];
   if (item.subtitle === undefined) item.subtitle = '';
   if (item.title === undefined) item.title = '';
+  if (item.webBrand === undefined) item.webBrand = inferTradeWebBrand(item.subtitle);
   if (item.webTag === undefined) item.webTag = '';
+  item.subtitle = emptyWhitespaceToBlank(item.subtitle);
+  item.title = emptyWhitespaceToBlank(item.title);
+  item.webBrand = emptyWhitespaceToBlank(item.webBrand);
+  item.webTag = emptyWhitespaceToBlank(item.webTag);
   return item;
 }
 
 function hasTradeText(code) {
   if (!tradeConfigEnabled) return false;
   const item = normalizeTradeLang(code);
-  return !!(item.subtitle || item.title || item.webTag);
+  return !!(item.subtitle || item.title || item.webBrand || item.webTag);
 }
 
 function syncTradeLangCode(oldCode, newCode) {
@@ -693,6 +1589,58 @@ function syncTradeLangCode(oldCode, newCode) {
   if (newCode && tradeLangs[newCode] === undefined) ensureTradeLang(newCode);
 }
 
+function ensurePcRebateLang(code) {
+  if (!code || pcrebateLangs[code] !== undefined) return;
+  pcrebateLangs[code] = { subtitle: '', title: '' };
+}
+
+function normalizePcRebateLang(code) {
+  ensurePcRebateLang(code);
+  if (!code || pcrebateLangs[code] === undefined) return {};
+  const item = pcrebateLangs[code];
+  if (item.subtitle === undefined) item.subtitle = '';
+  if (item.title === undefined) item.title = '';
+  item.subtitle = emptyWhitespaceToBlank(item.subtitle);
+  item.title = emptyWhitespaceToBlank(item.title);
+  return item;
+}
+
+function hasPcRebateText(code) {
+  if (!pcrebateConfigEnabled) return false;
+  const item = normalizePcRebateLang(code);
+  return !!(item.subtitle || item.title);
+}
+
+function syncPcRebateLangCode(oldCode, newCode) {
+  if (!oldCode || oldCode === newCode) return;
+  if (pcrebateLangs[oldCode] !== undefined && pcrebateLangs[newCode] === undefined) pcrebateLangs[newCode] = pcrebateLangs[oldCode];
+  delete pcrebateLangs[oldCode];
+  if (newCode && pcrebateLangs[newCode] === undefined) ensurePcRebateLang(newCode);
+}
+
+function ensureAppRebateLang(code) {
+  if (!code || apprebateLangs[code] !== undefined) return;
+  apprebateLangs[code] = { title: '' };
+}
+function normalizeAppRebateLang(code) {
+  ensureAppRebateLang(code);
+  if (!code || apprebateLangs[code] === undefined) return {};
+  const item = apprebateLangs[code];
+  if (item.title === undefined) item.title = '';
+  item.title = emptyWhitespaceToBlank(item.title);
+  return item;
+}
+function hasAppRebateText(code) {
+  if (!apprebateConfigEnabled) return false;
+  return !!normalizeAppRebateLang(code).title;
+}
+function syncAppRebateLangCode(oldCode, newCode) {
+  if (!oldCode || oldCode === newCode) return;
+  if (apprebateLangs[oldCode] !== undefined && apprebateLangs[newCode] === undefined) apprebateLangs[newCode] = apprebateLangs[oldCode];
+  delete apprebateLangs[oldCode];
+  if (newCode && apprebateLangs[newCode] === undefined) ensureAppRebateLang(newCode);
+}
+
 function removeBapingLangByCode(code) {
   if (code) delete bapingLangs[code];
 }
@@ -701,24 +1649,29 @@ function removeTradeLangByCode(code) {
   if (code) delete tradeLangs[code];
 }
 
+function removePcRebateLangByCode(code) {
+  if (code) delete pcrebateLangs[code];
+}
+function removeAppRebateLangByCode(code) { if (code) delete apprebateLangs[code]; }
+
 function updateBapingBarText(code, barText) {
   if (!code) return;
   normalizeBapingLang(code);
-  bapingLangs[code].barText = barText;
+  bapingLangs[code].barText = emptyWhitespaceToBlank(barText);
   scheduleDraftSave();
 }
 
 function updateBapingDescText(code, descText) {
   if (!code) return;
   normalizeBapingLang(code);
-  bapingLangs[code].descText = descText;
+  bapingLangs[code].descText = emptyWhitespaceToBlank(descText);
   scheduleDraftSave();
 }
 
 function updateBapingTextField(code, field, value) {
   if (!code) return;
   normalizeBapingLang(code);
-  bapingLangs[code][field] = value;
+  bapingLangs[code][field] = emptyWhitespaceToBlank(value);
   scheduleDraftSave();
 }
 
@@ -743,7 +1696,7 @@ function toggleTradeConfig() {
 function updateTradeTextField(code, field, value) {
   if (!code) return;
   normalizeTradeLang(code);
-  tradeLangs[code][field] = value;
+  tradeLangs[code][field] = emptyWhitespaceToBlank(value);
   scheduleDraftSave();
 }
 
@@ -751,10 +1704,10 @@ function setTradeUploadButtonState(kind) {
   const btn = document.getElementById(kind === 'light' ? 'tradeLightBtn' : 'tradeDarkBtn');
   if (!btn) return;
   if (tradeImages[kind]) {
-    btn.innerHTML = '✓ 已加载';
+    btn.innerHTML = '配图已上传';
     btn.className = 'upload-btn loaded';
   } else {
-    btn.innerHTML = kind === 'light' ? '白天图<br>点击上传' : '黑天图<br>点击上传';
+    btn.textContent = '点击或拖拽上传';
     btn.className = 'upload-btn';
   }
 }
@@ -773,11 +1726,83 @@ function handleTradeUpload(event, kind) {
   reader.readAsDataURL(file);
 }
 
+function togglePcRebateConfig() {
+  pcrebateConfigEnabled = !pcrebateConfigEnabled;
+  const row = document.getElementById('pcrebateToggleRow');
+  if (row) row.classList.toggle('on', pcrebateConfigEnabled);
+  renderPcRebateLangList();
+  scheduleDraftSave();
+  schedulePreview();
+}
+
+function updatePcRebateTextField(code, field, value) {
+  if (!code) return;
+  normalizePcRebateLang(code);
+  pcrebateLangs[code][field] = emptyWhitespaceToBlank(value);
+  scheduleDraftSave();
+}
+
+function setPcRebateUploadButtonState() {
+  const btn = document.getElementById('pcrebateImageBtn');
+  if (!btn) return;
+  btn.textContent = pcrebateImage ? '配图已上传' : '点击或拖拽上传';
+  btn.className = pcrebateImage ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handlePcRebateUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    pcrebateImage = e.target.result;
+    setPcRebateUploadButtonState();
+    scheduleDraftSave();
+    schedulePreview();
+    if (activeSlots.size) generate();
+  };
+  reader.readAsDataURL(file);
+}
+
+function toggleAppRebateConfig() {
+  apprebateConfigEnabled = !apprebateConfigEnabled;
+  const row = document.getElementById('apprebateToggleRow');
+  if (row) row.classList.toggle('on', apprebateConfigEnabled);
+  renderAppRebateLangList();
+  scheduleDraftSave();
+  schedulePreview();
+}
+function updateAppRebateTextField(code, value) {
+  if (!code) return;
+  normalizeAppRebateLang(code).title = emptyWhitespaceToBlank(value);
+  scheduleDraftSave();
+}
+function setAppRebateUploadButtonState() {
+  const btn = document.getElementById('apprebateImageBtn');
+  if (!btn) return;
+  btn.textContent = apprebateImage ? '配图已上传' : '点击或拖拽上传';
+  btn.className = apprebateImage ? 'upload-btn loaded' : 'upload-btn';
+}
+function handleAppRebateUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    apprebateImage = e.target.result;
+    setAppRebateUploadButtonState();
+    scheduleDraftSave();
+    schedulePreview();
+    if (activeSlots.size) generate();
+  };
+  reader.readAsDataURL(file);
+}
+
 function addLang(code='', subtitle='', title='') {
   const id = langCounter++;
-  langs.push({ id, code, subtitle, title, autoScale: false });
+  langs.push({ id, code, subtitle: emptyWhitespaceToBlank(subtitle), title: emptyWhitespaceToBlank(title), autoScale: false });
   ensureBapingLang(code);
   ensureTradeLang(code);
+  ensurePcRebateLang(code);
+  ensureAppRebateLang(code);
   renderLangList();
   scheduleDraftSave();
   schedulePreview();
@@ -788,6 +1813,27 @@ function removeLang(id) {
   langs = langs.filter(l => l.id !== id);
   if (removed) removeBapingLangByCode(removed.code);
   if (removed) removeTradeLangByCode(removed.code);
+  if (removed) removePcRebateLangByCode(removed.code);
+  if (removed) removeAppRebateLangByCode(removed.code);
+  renderLangList();
+  scheduleDraftSave();
+  schedulePreview();
+}
+
+function visibleLangsFor(group) {
+  const hidden = hiddenLangCodes[group] || new Set();
+  return langs.filter(lang => !hidden.has(lang.code));
+}
+
+function removeLangFromGroup(group, id) {
+  const lang = langs.find(item => item.id === id);
+  if (!lang) return;
+  if (!hiddenLangCodes[group]) hiddenLangCodes[group] = new Set();
+  hiddenLangCodes[group].add(lang.code);
+  if (group === 'baping') removeBapingLangByCode(lang.code);
+  if (group === 'trade') removeTradeLangByCode(lang.code);
+  if (group === 'pcrebate') removePcRebateLangByCode(lang.code);
+  if (group === 'apprebate') removeAppRebateLangByCode(lang.code);
   renderLangList();
   scheduleDraftSave();
   schedulePreview();
@@ -795,36 +1841,169 @@ function removeLang(id) {
 
 function updateLang(id, field, value) {
   const i = langs.find(l => l.id === id);
-  if (i) i[field] = value;
+  if (i) i[field] = field === 'code' ? value : emptyWhitespaceToBlank(value);
   scheduleDraftSave();
+}
+
+function emailTitleSizeFor(code) {
+  const saved = emailFontModes[code];
+  if (Number.isFinite(Number(saved))) return Math.max(44, Math.min(60, Math.round(Number(saved))));
+  return saved === 'compact' ? 54 : saved === 'minimum' ? 48 : 60;
+}
+
+function emailFontSizesFor(code) {
+  const title = emailTitleSizeFor(code);
+  return { title, sub: Math.max(28, Math.round(36 * title / 60)) };
+}
+
+function emailTextOverflows(lang, titleSize = 60) {
+  if (!lang || (!lang.subtitle && !lang.title)) return false;
+  const preset = { title: titleSize, sub: Math.max(28, Math.round(36 * titleSize / 60)) };
+  const s = SPECS.email;
+  const maxW = s.W - s.PAD * 3 - s.imgW;
+  const maxH = s.H - s.PAD * 2;
+  const ctx = document.createElement('canvas').getContext('2d');
+  ctx.font = `${s.subWeight || '400'} ${preset.sub}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+  let subLines = 0;
+  for (const seg of String(lang.subtitle || '').split('\n')) subLines += countLinesForText(ctx, seg, maxW);
+  ctx.font = `${s.titWeight || '500'} ${preset.title}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+  let titleLines = 0;
+  for (const seg of String(lang.title || '').split('\n')) titleLines += countLinesForText(ctx, seg, maxW);
+  const totalH = subLines * preset.sub * 1.3 + (subLines && titleLines ? s.gap : 0) + titleLines * preset.title * 1.3;
+  return totalH > maxH + 1;
+}
+
+function setEmailFontSize(code, size) {
+  emailFontModes[code] = Math.max(44, Math.min(60, Math.round(Number(size) || 60)));
+  const lang = langs.find(item => item.code === code);
+  if (lang) applyEmailFontMode(lang);
+  scheduleDraftSave();
+  if (!document.body.classList.contains('range-dragging')) schedulePreview();
+}
+
+function enableRangeDragCapture(slider) {
+  let activePointerId = null;
+  let dragRect = null;
+  const updateFromPointer = event => {
+    if (activePointerId !== event.pointerId || !dragRect) return;
+    const min = Number(slider.min);
+    const max = Number(slider.max);
+    const step = Number(slider.step) || 1;
+    const ratio = Math.max(0, Math.min(1, (event.clientX - dragRect.left) / dragRect.width));
+    const rawValue = max - ratio * (max - min);
+    const nextValue = Math.max(min, Math.min(max, Math.round(rawValue / step) * step));
+    if (Number(slider.value) !== nextValue) {
+      slider.value = String(nextValue);
+      slider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  };
+  slider.addEventListener('pointerdown', event => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    activePointerId = event.pointerId;
+    dragRect = slider.getBoundingClientRect();
+    document.body.classList.add('range-dragging');
+    slider.focus({ preventScroll: true });
+    try { slider.setPointerCapture(event.pointerId); } catch (_) {}
+    updateFromPointer(event);
+  });
+  slider.addEventListener('pointermove', event => {
+    if (activePointerId === event.pointerId) {
+      event.preventDefault();
+      updateFromPointer(event);
+    }
+  });
+  const release = event => {
+    if (activePointerId !== event.pointerId) return;
+    try {
+      if (slider.hasPointerCapture(event.pointerId)) slider.releasePointerCapture(event.pointerId);
+    } catch (_) {}
+    activePointerId = null;
+    dragRect = null;
+    document.body.classList.remove('range-dragging');
+    schedulePreview();
+  };
+  slider.addEventListener('pointerup', release);
+  slider.addEventListener('pointercancel', release);
+}
+
+function appendEmailFitControl(item, lang) {
+  return;
+  if (!item || !emailTextOverflows(lang, 60)) return;
+  const current = emailTitleSizeFor(lang.code);
+  const box = document.createElement('div');
+  box.className = 'email-fit-control';
+  const stillOverflow = emailTextOverflows(lang, current);
+  box.innerHTML = `<div class="email-fit-message"><span class="email-fit-icon">⚠️</span><span>Email Banner 文案超出安全区域${stillOverflow && current === 44 ? '，当前最小字号仍需精简文案' : ''}</span></div>`;
+  const row = document.createElement('div');
+  row.className = 'email-fit-slider-row';
+  const slider = document.createElement('input');
+  slider.className = 'email-fit-slider';
+  slider.type = 'range';
+  slider.min = '44';
+  slider.max = '60';
+  slider.step = '1';
+  slider.value = String(current);
+  enableRangeDragCapture(slider);
+  const updateValue = size => {
+    slider.style.setProperty('--fit-progress', `${((60 - size) / 16) * 100}%`);
+  };
+  updateValue(current);
+  slider.oninput = () => {
+    const size = Number(slider.value);
+    updateValue(size);
+    setEmailFontSize(lang.code, size);
+  };
+  row.appendChild(slider);
+  const reset = document.createElement('button');
+  reset.type = 'button';
+  reset.className = 'email-fit-reset';
+  reset.textContent = '恢复标准字号';
+  reset.onclick = () => {
+    slider.value = '60';
+    updateValue(60);
+    setEmailFontSize(lang.code, 60);
+  };
+  row.appendChild(reset);
+  box.appendChild(row);
+  item.appendChild(box);
 }
 
 function renderLangList() {
   const container = document.getElementById('langList');
   container.innerHTML = '';
-  langs.forEach(l => {
+  visibleLangsFor('common').forEach(l => {
     const item = document.createElement('div');
     item.className = 'lang-item';
+    item.dataset.langCode = l.code;
+    item.dataset.editorGroup = 'common';
     const header = document.createElement('div');
     header.className = 'lang-item-header';
     const codeInput = document.createElement('input');
     codeInput.className = 'lang-tag-input';
     codeInput.placeholder = '语种';
     codeInput.value = l.code;
+    codeInput.size = Math.max(4, (l.code || '').length);
     codeInput.oninput = () => {
       const oldCode = l.code;
       const newCode = codeInput.value;
+      item.dataset.langCode = newCode;
+      codeInput.size = Math.max(4, newCode.length);
       updateLang(l.id, 'code', newCode);
       syncBapingLangCode(oldCode, newCode);
       syncTradeLangCode(oldCode, newCode);
+      syncPcRebateLangCode(oldCode, newCode);
+      syncAppRebateLangCode(oldCode, newCode);
       renderBapingLangList();
       renderTradeLangList();
+      renderPcRebateLangList();
+      renderAppRebateLangList();
       schedulePreview();
     };
     const removeBtn = document.createElement('button');
     removeBtn.className = 'lang-remove';
     removeBtn.textContent = '✕';
-    removeBtn.onclick = () => removeLang(l.id);
+    removeBtn.onclick = () => removeLangFromGroup('common', l.id);
     header.appendChild(codeInput);
     header.appendChild(removeBtn);
     const inputs = document.createElement('div');
@@ -832,35 +2011,53 @@ function renderLangList() {
     const subTA = document.createElement('textarea');
     subTA.placeholder = '副标题';
     subTA.value = l.subtitle || '';
-    subTA.oninput = () => { updateLang(l.id, 'subtitle', subTA.value); schedulePreview(); if (activeSlots.has('baping')) generateDebounced(); };
+    subTA.oninput = () => { updateLang(l.id, 'subtitle', subTA.value); schedulePreview(); if (activeSlots.has('baping')) generateDebounced(); item.querySelector('.email-fit-control')?.remove(); appendEmailFitControl(item, l); };
     const titTA = document.createElement('textarea');
     titTA.placeholder = '主标题';
     titTA.value = l.title || '';
-    titTA.oninput = () => { updateLang(l.id, 'title', titTA.value); schedulePreview(); if (activeSlots.has('baping')) generateDebounced(); };
+    titTA.oninput = () => { updateLang(l.id, 'title', titTA.value); schedulePreview(); if (activeSlots.has('baping')) generateDebounced(); item.querySelector('.email-fit-control')?.remove(); appendEmailFitControl(item, l); };
     inputs.appendChild(subTA);
     inputs.appendChild(titTA);
     item.appendChild(header);
     item.appendChild(inputs);
+    appendEmailFitControl(item, l);
     container.appendChild(item);
   });
   if (activeSlots.has('baping')) renderBapingLangList();
   if (activeSlots.has('trade')) renderTradeLangList();
+  if (activeSlots.has('pcrebate')) renderPcRebateLangList();
+  if (activeSlots.has('apprebate')) renderAppRebateLangList();
 }
+
+function autoResizeTextArea(textarea) {
+  if (!(textarea instanceof HTMLTextAreaElement) || !textarea.closest('.lang-inputs')) return;
+  textarea.style.height = '34px';
+  textarea.style.height = `${Math.max(34, textarea.scrollHeight)}px`;
+}
+
+function autoResizeAllTextAreas(root = document) {
+  root.querySelectorAll?.('.lang-inputs textarea').forEach(autoResizeTextArea);
+}
+
+document.addEventListener('input', event => {
+  if (event.target.matches?.('.lang-inputs textarea')) {
+    if (!/\S/.test(event.target.value)) event.target.value = '';
+    autoResizeTextArea(event.target);
+  }
+});
 
 function renderBapingLangList() {
   const container = document.getElementById('bapingLangList');
   if (!container) return;
   container.innerHTML = '';
-  if (!bapingCustomEnabled) {
-    container.innerHTML = '<div class="panel-hint">当前沿用上方通用文案。开启「专属文案」后，可单独配置霸屏内容。</div>';
-    return;
-  }
-  langs.forEach(l => {
+  visibleLangsFor('baping').forEach(l => {
     const bapingText = normalizeBapingLang(l.code);
     const barText = bapingText.barText || '';
 
     const item = document.createElement('div');
     item.className = 'lang-item';
+    item.dataset.langCode = l.code;
+    item.dataset.editorGroup = 'baping';
 
     const header = document.createElement('div');
     header.className = 'lang-item-header';
@@ -869,35 +2066,40 @@ function renderBapingLangList() {
     codeLabel.className = 'lang-tag-readonly';
     codeLabel.textContent = l.code || '（未设置语种）';
     header.appendChild(codeLabel);
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'lang-remove';
+    removeBtn.textContent = '✕';
+    removeBtn.onclick = () => removeLangFromGroup('baping', l.id);
+    header.appendChild(removeBtn);
 
     const inputs = document.createElement('div');
     inputs.className = 'lang-inputs';
 
-    const titleInput = document.createElement('input');
+    const titleInput = document.createElement('textarea');
     titleInput.className = 'baping-field';
-    titleInput.placeholder = '霸屏主标题，用 [文字] 标记蓝色高亮';
+    titleInput.placeholder = '主标题，用 [文字] 标记蓝色高亮';
     titleInput.value = bapingText.title || '';
     titleInput.oninput = () => { updateBapingTextField(l.code, 'title', titleInput.value); schedulePreview(); };
     inputs.appendChild(titleInput);
 
-    const subtitleInput = document.createElement('input');
+    const subtitleInput = document.createElement('textarea');
     subtitleInput.className = 'baping-field';
-    subtitleInput.placeholder = '霸屏副标题';
+    subtitleInput.placeholder = '副标题';
     subtitleInput.value = bapingText.subtitle || '';
     subtitleInput.oninput = () => { updateBapingTextField(l.code, 'subtitle', subtitleInput.value); schedulePreview(); };
     inputs.appendChild(subtitleInput);
 
     const descText = bapingText.descText || '';
-    const descInput = document.createElement('input');
+    const descInput = document.createElement('textarea');
     descInput.className = 'baping-field';
     descInput.placeholder = '解释文字（不填则不显示）';
     descInput.value = descText;
     descInput.oninput = () => { updateBapingDescText(l.code, descInput.value); schedulePreview(); };
     inputs.appendChild(descInput);
 
-    const barInput = document.createElement('input');
+    const barInput = document.createElement('textarea');
     barInput.className = 'baping-field';
-    barInput.placeholder = '底部按钮文案';
+    barInput.placeholder = '按钮文案';
     barInput.value = barText;
     barInput.oninput = () => { updateBapingBarText(l.code, barInput.value); schedulePreview(); };
     inputs.appendChild(barInput);
@@ -918,11 +2120,13 @@ function renderTradeLangList() {
     container.innerHTML = '<div class="panel-hint">当前未启用交易赛独立配置。开启后可单独填写交易赛文案和上传配图。</div>';
     return;
   }
-  langs.forEach(l => {
+  visibleLangsFor('trade').forEach(l => {
     const tradeText = normalizeTradeLang(l.code);
 
     const item = document.createElement('div');
     item.className = 'lang-item';
+    item.dataset.langCode = l.code;
+    item.dataset.editorGroup = 'trade';
 
     const header = document.createElement('div');
     header.className = 'lang-item-header';
@@ -931,35 +2135,141 @@ function renderTradeLangList() {
     codeLabel.className = 'lang-tag-readonly';
     codeLabel.textContent = l.code || '（未设置语种）';
     header.appendChild(codeLabel);
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'lang-remove';
+    removeBtn.textContent = '✕';
+    removeBtn.onclick = () => removeLangFromGroup('trade', l.id);
+    header.appendChild(removeBtn);
 
     const inputs = document.createElement('div');
     inputs.className = 'lang-inputs';
 
-    const subInput = document.createElement('input');
+    const makeTradeSection = (label, className = '') => {
+      const section = document.createElement('div');
+      section.className = `trade-field-section${className ? ' ' + className : ''}`;
+      const fieldLabel = document.createElement('div');
+      fieldLabel.className = 'trade-field-label';
+      fieldLabel.textContent = label;
+      section.appendChild(fieldLabel);
+      inputs.appendChild(section);
+      return section;
+    };
+
+    const appSection = makeTradeSection('App 小标题');
+
+    const subInput = document.createElement('textarea');
     subInput.className = 'baping-field';
-    subInput.placeholder = '交易赛小标题 / Web蓝色标签文字';
+    subInput.placeholder = '输入 App 小标题';
     subInput.value = tradeText.subtitle || '';
     subInput.oninput = () => { updateTradeTextField(l.code, 'subtitle', subInput.value); schedulePreview(); };
-    inputs.appendChild(subInput);
+    appSection.appendChild(subInput);
 
-    const titleInput = document.createElement('input');
-    titleInput.className = 'baping-field';
-    titleInput.placeholder = '交易赛主标题，用 [文字] 标记蓝色高亮';
-    titleInput.value = tradeText.title || '';
-    titleInput.oninput = () => { updateTradeTextField(l.code, 'title', titleInput.value); schedulePreview(); };
-    inputs.appendChild(titleInput);
+    const webSection = makeTradeSection('Web 小标题');
+    const webFields = document.createElement('div');
+    webFields.className = 'trade-web-fields';
+    webSection.appendChild(webFields);
 
-    const tagInput = document.createElement('input');
+    const brandInput = document.createElement('textarea');
+    brandInput.className = 'baping-field';
+    brandInput.placeholder = '蓝色品牌标签';
+    brandInput.value = tradeText.webBrand || '';
+    brandInput.oninput = () => { updateTradeTextField(l.code, 'webBrand', brandInput.value); schedulePreview(); };
+    webFields.appendChild(brandInput);
+
+    const tagInput = document.createElement('textarea');
     tagInput.className = 'baping-field';
-    tagInput.placeholder = 'Web灰色标签（默认：交易赛）';
+    tagInput.placeholder = '灰色类目标签';
     tagInput.value = tradeText.webTag || '';
     tagInput.oninput = () => { updateTradeTextField(l.code, 'webTag', tagInput.value); schedulePreview(); };
-    inputs.appendChild(tagInput);
+    webFields.appendChild(tagInput);
+
+    const titleSection = makeTradeSection('通用大标题');
+    const titleInput = document.createElement('textarea');
+    titleInput.className = 'baping-field';
+    titleInput.placeholder = '输入通用大标题，可用 [文字] 标记蓝色高亮';
+    titleInput.value = tradeText.title || '';
+    titleInput.oninput = () => { updateTradeTextField(l.code, 'title', titleInput.value); schedulePreview(); };
+    titleSection.appendChild(titleInput);
 
     item.appendChild(header);
     item.appendChild(inputs);
     container.appendChild(item);
   });
+}
+
+function renderPcRebateLangList() {
+  const container = document.getElementById('pcrebateLangList');
+  const imagePanel = document.getElementById('pcrebateImagePanel');
+  if (!container) return;
+  container.innerHTML = '';
+  if (imagePanel) imagePanel.style.display = pcrebateConfigEnabled ? 'block' : 'none';
+  if (!pcrebateConfigEnabled) {
+    container.innerHTML = '<div class="panel-hint">当前未启用 PC返佣独立配置。开启后可单独填写文案和上传配图。</div>';
+    return;
+  }
+  visibleLangsFor('pcrebate').forEach(l => {
+    const text = normalizePcRebateLang(l.code);
+    const item = document.createElement('div');
+    item.className = 'lang-item';
+    item.dataset.langCode = l.code;
+    item.dataset.editorGroup = 'pcrebate';
+    const header = document.createElement('div');
+    header.className = 'lang-item-header';
+    const codeLabel = document.createElement('span');
+    codeLabel.className = 'lang-tag-readonly';
+    codeLabel.textContent = l.code || '（未设置语种）';
+    header.appendChild(codeLabel);
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'lang-remove';
+    removeBtn.textContent = '✕';
+    removeBtn.onclick = () => removeLangFromGroup('pcrebate', l.id);
+    header.appendChild(removeBtn);
+    const inputs = document.createElement('div');
+    inputs.className = 'lang-inputs';
+    const subInput = document.createElement('textarea');
+    subInput.className = 'baping-field';
+    subInput.placeholder = '小标题';
+    subInput.value = text.subtitle || '';
+    subInput.oninput = () => { updatePcRebateTextField(l.code, 'subtitle', subInput.value); schedulePreview(); };
+    const titleInput = document.createElement('textarea');
+    titleInput.className = 'baping-field';
+    titleInput.placeholder = '大标题';
+    titleInput.value = text.title || '';
+    titleInput.oninput = () => { updatePcRebateTextField(l.code, 'title', titleInput.value); schedulePreview(); };
+    inputs.appendChild(subInput);
+    inputs.appendChild(titleInput);
+    item.appendChild(header);
+    item.appendChild(inputs);
+    container.appendChild(item);
+  });
+  setPcRebateUploadButtonState();
+}
+
+function renderAppRebateLangList() {
+  const container = document.getElementById('apprebateLangList');
+  const imagePanel = document.getElementById('apprebateImagePanel');
+  if (!container) return;
+  container.innerHTML = '';
+  if (imagePanel) imagePanel.style.display = apprebateConfigEnabled ? 'block' : 'none';
+  if (!apprebateConfigEnabled) {
+    container.innerHTML = '<div class="panel-hint">当前未启用 APP返佣独立配置。开启后可单独填写标题和上传配图。</div>';
+    return;
+  }
+  visibleLangsFor('apprebate').forEach(l => {
+    const text = normalizeAppRebateLang(l.code);
+    const item = document.createElement('div'); item.className = 'lang-item';
+    item.dataset.langCode = l.code; item.dataset.editorGroup = 'apprebate';
+    const header = document.createElement('div'); header.className = 'lang-item-header';
+    const codeLabel = document.createElement('span'); codeLabel.className = 'lang-tag-readonly'; codeLabel.textContent = l.code || '（未设置语种）';
+    header.appendChild(codeLabel);
+    const removeBtn = document.createElement('button'); removeBtn.className = 'lang-remove'; removeBtn.textContent = '✕'; removeBtn.onclick = () => removeLangFromGroup('apprebate', l.id);
+    header.appendChild(removeBtn);
+    const inputs = document.createElement('div'); inputs.className = 'lang-inputs';
+    const titleInput = document.createElement('textarea'); titleInput.className = 'baping-field'; titleInput.placeholder = '大标题'; titleInput.value = text.title || '';
+    titleInput.oninput = () => { updateAppRebateTextField(l.code, titleInput.value); schedulePreview(); };
+    inputs.appendChild(titleInput); item.appendChild(header); item.appendChild(inputs); container.appendChild(item);
+  });
+  setAppRebateUploadButtonState();
 }
 
 
@@ -976,9 +2286,16 @@ function setDownloadStatus(text) {
 function restoreDownloadButton() {
   const btn = document.getElementById('downloadAllBtn');
   if (!btn) return;
-  const hasDownloadable = validLangsCache.length || (activeSlots.has('baping') && validBapingLangsCache.length) || (activeSlots.has('trade') && validTradeLangsCache.length);
-  btn.disabled = !hasDownloadable || !activeSlots.size;
-  btn.textContent = '⬇ 一键下载全部';
+  const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
+  const hasDownloadable = group === 'common'
+    ? validLangsCache.length > 0 && ['new','old','email','appcal','pccal','share','feed','landing'].some(type => activeSlots.has(type))
+    : group === 'baping'
+      ? activeSlots.has('baping') && validBapingLangsCache.length > 0
+      : group === 'trade'
+        ? activeSlots.has('trade') && activeTradeVariants.size > 0 && validTradeLangsCache.length > 0
+        : (activeSlots.has('pcrebate') && validPcRebateLangsCache.length > 0) || (activeSlots.has('apprebate') && validAppRebateLangsCache.length > 0);
+  btn.disabled = !hasDownloadable;
+  btn.textContent = '下载';
 }
 
 function getBarText(code) {
@@ -1012,11 +2329,10 @@ function bapingTitleHtml(title) {
 
 function getBapingText(l) {
   const item = normalizeBapingLang(l.code);
-  const isCustom = hasBapingCustomText(l.code);
   return {
-    isCustom,
-    title: isCustom ? (item.title || '') : (l.title || ''),
-    subtitle: isCustom ? (item.subtitle || '') : (l.subtitle || ''),
+    isCustom: true,
+    title: item.title || '',
+    subtitle: item.subtitle || '',
     descText: getDescText(l.code),
     barText: getBarText(l.code)
   };
@@ -1027,8 +2343,30 @@ function getTradeText(l) {
   return {
     title: item.title || '',
     subtitle: item.subtitle || '',
+    webBrand: item.webBrand || inferTradeWebBrand(item.subtitle),
     webTag: item.webTag || '交易赛'
   };
+}
+
+function setBapingUploadButtonState() {
+  const btn = document.getElementById('bapingImageBtn');
+  if (!btn) return;
+  btn.textContent = bapingImage ? '配图已上传' : '点击或拖拽上传';
+  btn.className = bapingImage ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handleBapingUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    bapingImage = e.target.result;
+    setBapingUploadButtonState();
+    scheduleDraftSave();
+    schedulePreview();
+    if (activeSlots.size) generate();
+  };
+  reader.readAsDataURL(file);
 }
 
 function handleUpload(event, theme) {
@@ -1038,7 +2376,7 @@ function handleUpload(event, theme) {
   const reader = new FileReader();
   reader.onload = e => {
     images[theme] = e.target.result;
-    btn.innerHTML = '✓ 已加载';
+    btn.innerHTML = '配图已上传';
     btn.className = 'upload-btn loaded';
     scheduleDraftSave();
     schedulePreview();
@@ -1048,16 +2386,36 @@ function handleUpload(event, theme) {
 }
 
 function wrap(slot, swClass, siClass, innerHtml, themeLabel, lang, slotType, theme, extraClass='', dims=null) {
-  const key = slotLangKey(slotType, lang.id);
-  const autoScale = !!scaleState[key];
   const swExtra = extraClass ? ' ' + extraClass : '';
   const swStyle = dims && dims.h ? ` style="height:${Math.ceil(dims.h / 3)}px"` : '';
   const siStyle = dims && dims.h ? ` style="height:${dims.h}px"` : '';
-  return `<div class="card-wrapper"><div class="theme-label">${themeLabel}</div><div class="${swClass}${swExtra}"${swStyle}><div class="${siClass}"${siStyle}>${innerHtml}</div></div><div class="card-footer"><div class="lang-scale-row${autoScale ? ' on' : ''}" onclick="toggleScale('${slotType}', ${lang.id})"><div class="toggle"></div><span>自动缩放</span></div><button class="card-dl-btn" onclick="downloadCard('${slotType}','${theme}',${lang.id})">下载</button></div></div>`;
+  const previewThemeClass = theme === 'light' ? ' preview-light' : '';
+  const displayLabel = '';
+  const labelHtml = displayLabel ? `<div class="theme-label">${eh(displayLabel)}</div>` : '';
+  return `<div class="card-wrapper${previewThemeClass}">${labelHtml}<div class="${swClass}${swExtra}"${swStyle}><div class="${siClass}"${siStyle}>${innerHtml}</div></div></div>`;
 }
 
 function langGroupHtml(slotType, lang, cardsHtml) {
-  return `<div class="lang-group"><div class="lang-group-header"><span class="lang-group-label">${eh(lang.code)}</span></div><div class="cards-row">${cardsHtml}</div></div>`;
+  const code = String(lang?.code || '').trim() || '未设置语种';
+  if (slotType === 'baping') {
+    return `<div class="lang-group"><div class="baping-preview-stack"><div class="lang-group-header"><span class="lang-group-label">${eh(code)}</span></div><div class="cards-row">${cardsHtml}</div></div></div>`;
+  }
+  return `<div class="lang-group"><div class="lang-group-header"><span class="lang-group-label">${eh(code)}</span></div><div class="cards-row">${cardsHtml}</div></div>`;
+}
+
+function tradeAppLangGroupHtml(lang) {
+  const appCards =
+    (activeTradeVariants.has('tradeapp-light') ? wrap('tradeapp','sw-tradeapp','si-tradeapp', cardTradeApp(lang,'light',tradeImages.light), 'App 白天', lang, 'tradeapp', 'light') : '') +
+    (activeTradeVariants.has('tradeapp-dark') ? wrap('tradeapp','sw-tradeapp','si-tradeapp', cardTradeApp(lang,'dark',tradeImages.dark), 'App 黑天', lang, 'tradeapp', 'dark') : '');
+  const code = String(lang?.code || '').trim() || '未设置语种';
+  return appCards ? `<div class="lang-group"><div class="trade-app-lang-stack"><div class="lang-group-header"><span class="lang-group-label">${eh(code)}</span></div><div class="trade-preview-app-row">${appCards}</div></div></div>` : '';
+}
+
+function tradeWebLangGroupHtml(lang) {
+  if (!activeTradeVariants.has('tradeweb')) return '';
+  const webCard = wrap('tradeweb','sw-tradeweb','si-tradeweb', cardTradeWeb(lang, tradeImages.dark), 'Web 黑天', lang, 'tradeweb', 'dark');
+  const code = String(lang?.code || '').trim() || '未设置语种';
+  return `<div class="lang-group"><div class="trade-web-lang-stack"><div class="lang-group-header"><span class="lang-group-label">${eh(code)}</span></div><div class="trade-preview-web-row">${webCard}</div></div></div>`;
 }
 
 function cardNew(l, theme, img) {
@@ -1077,6 +2435,20 @@ function cardEmail(l, img) {
   const titHtml = eh(l.title).replace(/\n/g,'<br>');
   const ph = img ? `<img src="${img}">` : '';
   return `<div class="b-email" data-langid="${l.id}"><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div><div class="imgw">${ph}</div></div>`;
+}
+
+function applyEmailFontMode(lang) {
+  const preset = emailFontSizesFor(lang.code);
+  const factor = preset.title / 60;
+  document.querySelectorAll(`[class*="b-"][data-langid="${lang.id}"]`).forEach(el => {
+    const resourceType = previewResourceType(el);
+    const shouldScale = shouldScaleResource(lang.code, resourceType);
+    el.querySelectorAll('.sub, .tit, .desc, .bar-txt').forEach(textNode => {
+      if (!textNode.dataset.baseFontSize) textNode.dataset.baseFontSize = String(Number.parseFloat(getComputedStyle(textNode).fontSize));
+      const baseSize = Number.parseFloat(textNode.dataset.baseFontSize);
+      if (Number.isFinite(baseSize)) textNode.style.fontSize = `${shouldScale ? Math.max(8, Math.round(baseSize * factor)) : baseSize}px`;
+    });
+  });
 }
 
 function cardAppCal(l, img) {
@@ -1146,7 +2518,7 @@ function cardBaping(l, img) {
   if (text.isCustom) {
     const title = text.title ? bapingTitleHtml(text.title) : '';
     const subtitle = text.subtitle ? `<p class="sub">${eh(text.subtitle).replace(/\n/g,'<br>')}</p>` : '';
-    return `<div class="b-baping custom" data-langid="${l.id}"><div class="main"><div class="txt"><p class="tit">${title}</p>${subtitle}${descHtml}</div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div><div class="bar"><span class="bar-txt">${barHtml}</span><span class="bar-arrow">${BAPING_ARROW_HTML}</span></div></div>`;
+    return `<div class="b-baping custom" data-langid="${l.id}"><div class="main"><div class="txt">${subtitle}<p class="tit">${title}</p>${descHtml}</div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div><div class="bar"><span class="bar-txt">${barHtml}</span><span class="bar-arrow">${BAPING_ARROW_HTML}</span></div></div>`;
   }
   const subHtml = eh(text.subtitle).replace(/\n/g,'<br>');
   const titHtml = eh(text.title).replace(/\n/g,'<br>');
@@ -1162,10 +2534,22 @@ function cardTradeApp(l, theme, img) {
 
 function cardTradeWeb(l, img) {
   const text = getTradeText(l);
-  const subHtml = eh(text.subtitle).replace(/\n/g,'<br>');
+  const subHtml = eh(text.webBrand).replace(/\n/g,'<br>');
   const tagHtml = eh(text.webTag || '交易赛').replace(/\n/g,'<br>');
   const titHtml = bapingTitleHtml(text.title);
   return `<div class="b-tradeweb" data-langid="${l.id}"><div class="txt"><div class="badge-row"><span class="badge-blue">${subHtml}</span><span class="badge-dark">${tagHtml}</span></div><p class="tit">${titHtml}</p></div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
+}
+
+function cardPcRebate(l, img) {
+  const text = normalizePcRebateLang(l.code);
+  const subHtml = eh(text.subtitle || '').replace(/\n/g, '<br>');
+  const titHtml = eh(text.title || '').replace(/\n/g, '<br>');
+  return `<div class="b-pcrebate" data-langid="${l.id}"><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
+}
+function cardAppRebate(l, img) {
+  const text = normalizeAppRebateLang(l.code);
+  const titHtml = eh(text.title || '').replace(/\n/g, '<br>');
+  return `<div class="b-apprebate" data-langid="${l.id}"><div class="txt"><p class="sub"></p><p class="tit">${titHtml}</p></div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
 }
 
 function getPlainText(domEl) {
@@ -1200,8 +2584,6 @@ function countLinesForText(ctx, text, maxW) {
   return wrapTextLines(ctx, text, maxW).length;
 }
 
-// Match browser wrapping: prefer word boundaries, but split an oversized word
-// character-by-character so every exported line stays inside the safe width.
 function wrapTextLines(ctx, text, maxW) {
   if (!text) return [];
   const tokens = String(text).match(/\s+|[^\s]+/g) || [];
@@ -1213,23 +2595,13 @@ function wrapTextLines(ctx, text, maxW) {
   };
   for (const token of tokens) {
     const candidate = line + token;
-    if (ctx.measureText(candidate).width <= maxW) {
-      line = candidate;
-      continue;
-    }
-    if (/^\s+$/.test(token)) {
-      pushLine();
-      continue;
-    }
+    if (ctx.measureText(candidate).width <= maxW) { line = candidate; continue; }
+    if (/^\s+$/.test(token)) { pushLine(); continue; }
     if (line) pushLine();
     let chunk = '';
     for (const ch of [...token]) {
-      if (chunk && ctx.measureText(chunk + ch).width > maxW) {
-        lines.push(chunk);
-        chunk = ch;
-      } else {
-        chunk += ch;
-      }
+      if (chunk && ctx.measureText(chunk + ch).width > maxW) { lines.push(chunk); chunk = ch; }
+      else chunk += ch;
     }
     line = chunk;
   }
@@ -1250,7 +2622,7 @@ function fitFontSize(ctx, segments, maxSz, minSz, maxW, lineH, maxTotalH, fontFa
   return minSz;
 }
 function scaledMaxSize(maxSz, minSz) {
-  return Math.max(minSz, Math.floor(maxSz * AUTO_SCALE_BASE_RATIO));
+  return maxSz;
 }
 
 function drawMultilineText(ctx, text, x, startY, maxW, sz, lineH_ratio, minLineH, maxH) {
@@ -1288,15 +2660,41 @@ function drawRichMultilineText(ctx, runs, x, startY, maxW, sz, lineH_ratio, maxH
     line = [];
     lineW = 0;
   };
+  const pushPart = (text, color) => {
+    if (!text) return;
+    const width = ctx.measureText(text).width;
+    line.push({ text, color });
+    lineW += width;
+  };
+  const pushLongWord = (word, color) => {
+    let chunk = '';
+    for (const ch of [...word]) {
+      if (chunk && ctx.measureText(chunk + ch).width > maxW) {
+        pushPart(chunk, color);
+        flush();
+        chunk = ch;
+      } else chunk += ch;
+    }
+    pushPart(chunk, color);
+  };
   runs.forEach(run => {
     const color = run.color;
     String(run.text || '').split('\n').forEach((seg, segIndex, arr) => {
-      for (const ch of [...seg]) {
-        const w = ctx.measureText(ch).width;
-        if (line.length && lineW + w > maxW) flush();
-        line.push({ text: ch, color });
-        lineW += w;
-      }
+      const tokens = seg.match(/\s+|[^\s]+/g) || [];
+      tokens.forEach(token => {
+        const isSpace = /^\s+$/.test(token);
+        if (isSpace) {
+          if (!line.length) return;
+          const width = ctx.measureText(token).width;
+          if (lineW + width > maxW) flush();
+          else pushPart(token, color);
+          return;
+        }
+        const width = ctx.measureText(token).width;
+        if (line.length && lineW + width > maxW) flush();
+        if (width <= maxW) pushPart(token, color);
+        else pushLongWord(token, color);
+      });
       if (segIndex < arr.length - 1) flush();
     });
   });
@@ -1322,7 +2720,219 @@ function drawCenteredMultilineText(ctx, text, centerX, startY, maxW, sz, lineH_r
   return curY - startY;
 }
 
+const OVERFLOW_RESOURCE_META = [
+  ['b-new','瓷片区banner','common','new'], ['b-old','旧版banner','common','old'],
+  ['b-appcal','App 日历','common','appcal'], ['b-pccal','PC 日历','common','pccal'],
+  ['b-share','分享页','common','share'], ['b-feed','Feed流','common','feed'],
+  ['b-landing','聚合落地页','common','landing'], ['b-baping','霸屏','baping','baping'],
+  ['b-tradeapp','交易赛 App','trade','tradeapp'], ['b-tradeweb','交易赛 Web','trade','tradeweb'],
+  ['b-pcrebate','PC返佣','pcrebate','pcrebate'], ['b-apprebate','APP返佣','apprebate','apprebate']
+];
+
+function previewResourceType(card) {
+  if (card.classList.contains('b-email')) return 'email';
+  const meta = OVERFLOW_RESOURCE_META.find(([cardClass]) => card.classList.contains(cardClass));
+  return meta?.[3] || '';
+}
+
+function shouldScaleResource(code, type) {
+  return emailTitleSizeFor(code) < 60 && Array.isArray(fontScaleTargets[code]) && fontScaleTargets[code].includes(type);
+}
+
+function previewCardTextOverflows(card) {
+  const cardRect = card.getBoundingClientRect();
+  if (!cardRect.width || !cardRect.height) return false;
+  const visibleTextRects = node => {
+    if (!node || !node.textContent.trim()) return [];
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    return Array.from(range.getClientRects()).filter(rect => rect.width > 0 && rect.height > 0);
+  };
+  if (card.classList.contains('b-tradeapp')) {
+    const sub = card.querySelector('.sub');
+    const title = card.querySelector('.tit');
+    const scaleY = cardRect.height / 168;
+    const safeBottom = cardRect.bottom - 16 * scaleY;
+    // App 的 235px 文案宽度已在样式中固定，并天然避开右侧配图。
+    // 这里只依据实际文字行检查底部安全边距，避免元素盒模型的取整误报。
+    return [sub, title].flatMap(visibleTextRects).some(rect => rect.bottom > safeBottom + 2);
+  }
+  if (card.classList.contains('b-tradeweb')) {
+    const text = card.querySelector('.txt');
+    const badge = card.querySelector('.badge-row');
+    const title = card.querySelector('.tit');
+    if (!text) return false;
+    const scaleX = cardRect.width / 1920;
+    const scaleY = cardRect.height / 320;
+    const safeRight = cardRect.left + (360 + 720) * scaleX;
+    const safeBottom = cardRect.top + (64 + 136) * scaleY;
+    const badgeRects = badge ? Array.from(badge.children).map(node => node.getBoundingClientRect()) : [];
+    const badgeTooWide = badgeRects.some(rect => rect.right > safeRight + 2);
+    const titleTooTall = visibleTextRects(title).some(rect => rect.bottom > safeBottom + 2);
+    return badgeTooWide || titleTooTall;
+  }
+  if (card.classList.contains('b-apprebate')) {
+    const title = card.querySelector('.tit');
+    const image = card.querySelector('.imgw');
+    if (!title) return false;
+    const scaleX = cardRect.width / 1074;
+    const scaleY = cardRect.height / 156;
+    const imageRect = image ? image.getBoundingClientRect() : null;
+    const safeRect = {
+      left: cardRect.left + 48 * scaleX,
+      right: imageRect ? imageRect.left - 48 * scaleX : cardRect.right - 48 * scaleX,
+      top: cardRect.top + 18 * scaleY,
+      bottom: cardRect.bottom - 18 * scaleY
+    };
+    // APP 返佣的 .txt 带有配图预留 padding，不能用容器 scrollWidth
+    // 判断溢出；仅检查实际文字行是否越过 16×6px 的规范安全区。
+    return visibleTextRects(title).some(rect =>
+      rect.left < safeRect.left - 2 || rect.right > safeRect.right + 2 ||
+      rect.top < safeRect.top - 2 || rect.bottom > safeRect.bottom + 2
+    );
+  }
+  if (card.classList.contains('b-feed')) {
+    const text = card.querySelector('.txt');
+    if (!text) return false;
+    const textRect = text.getBoundingClientRect();
+    const scaleX = cardRect.width / 750;
+    const scaleY = cardRect.height / 240;
+    const safeRect = {
+      left: cardRect.left + 40 * scaleX,
+      right: cardRect.right - 40 * scaleX,
+      top: cardRect.top + 40 * scaleY,
+      bottom: cardRect.bottom - 40 * scaleY
+    };
+    // Feed 流的有效文案高度只有 160px。flex 居中会让长文案看似仍在画布内，
+    // 因此必须按 40px 规范安全边距检测，而不是只判断是否越出画布。
+    return text.scrollWidth > text.clientWidth + 1 ||
+      text.scrollHeight > text.clientHeight + 1 ||
+      textRect.left < safeRect.left - 1 || textRect.right > safeRect.right + 1 ||
+      textRect.top < safeRect.top - 1 || textRect.bottom > safeRect.bottom + 1;
+  }
+  if (card.classList.contains('b-share')) {
+    const sub = card.querySelector('.sub');
+    const title = card.querySelector('.tit');
+    const image = card.querySelector('.img');
+    const scaleX = cardRect.width / 825;
+    const scaleY = cardRect.height / 1170;
+    const safeRect = {
+      left: cardRect.left + 60 * scaleX,
+      right: cardRect.right - 60 * scaleX,
+      top: cardRect.top + 90 * scaleY,
+      bottom: cardRect.bottom - 90 * scaleY
+    };
+    const imageRect = image ? image.getBoundingClientRect() : null;
+    const imageGapX = 12 * scaleX;
+    const imageGapY = 12 * scaleY;
+    const textLineRects = node => {
+      if (!node || !node.textContent.trim()) return [];
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      return Array.from(range.getClientRects()).filter(rect => rect.width > 0 && rect.height > 0);
+    };
+    return [sub, title].flatMap(textLineRects).some(rect => {
+      // 左、右、上方安全边距已经由 .b-share 的 padding 强制保证；
+      // 这里只检查可能发生的底部溢出，避免缩放坐标的边界取整造成误报。
+      const outsideSafeArea = rect.bottom > safeRect.bottom + 2;
+      const overlapsImage = imageRect &&
+        rect.right > imageRect.left - imageGapX && rect.left < imageRect.right + imageGapX &&
+        rect.bottom > imageRect.top - imageGapY && rect.top < imageRect.bottom + imageGapY;
+      return outsideSafeArea || overlapsImage;
+    });
+  }
+  const textNodes = card.querySelectorAll('.txt, .sub, .tit, .desc, .bar-txt, .badge-row');
+  return Array.from(textNodes).some(node => {
+    const rect = node.getBoundingClientRect();
+    const clippedInsideNode = node.scrollWidth > node.clientWidth + 1 || node.scrollHeight > node.clientHeight + 1;
+    const outsideCard = rect.left < cardRect.left - 1 || rect.right > cardRect.right + 1 || rect.top < cardRect.top - 1 || rect.bottom > cardRect.bottom + 1;
+    return clippedInsideNode || outsideCard;
+  });
+}
+
+function updateAllResourceOverflowWarnings() {
+  document.querySelectorAll('.resource-overflow-warning').forEach(node => node.remove());
+  document.querySelectorAll('.email-fit-control').forEach(node => node.remove());
+  const warnings = new Map();
+  const warningTypes = new Map();
+  if (activeSlots.has('email')) {
+    visibleLangsFor('common').forEach(lang => {
+      if (!emailTextOverflows(lang, 60)) return;
+      const key = `common::${lang.code}`;
+      if (!warnings.has(key)) warnings.set(key, new Set());
+      warnings.get(key).add('Email Banner');
+      if (!warningTypes.has(key)) warningTypes.set(key, new Set());
+      warningTypes.get(key).add('email');
+    });
+  }
+  OVERFLOW_RESOURCE_META.forEach(([cardClass, label, editorGroup, resourceType]) => {
+    document.querySelectorAll(`.${cardClass}[data-langid]`).forEach(card => {
+      if (!previewCardTextOverflows(card)) return;
+      const lang = langs.find(item => String(item.id) === String(card.dataset.langid));
+      if (!lang) return;
+      const key = `${editorGroup}::${lang.code}`;
+      if (!warnings.has(key)) warnings.set(key, new Set());
+      warnings.get(key).add(label);
+      if (!warningTypes.has(key)) warningTypes.set(key, new Set());
+      warningTypes.get(key).add(resourceType);
+    });
+  });
+  Object.entries(fontScaleTargets).forEach(([code, types]) => {
+    if (emailTitleSizeFor(code) >= 60 || !Array.isArray(types)) return;
+    types.forEach(resourceType => {
+      const meta = resourceType === 'email'
+        ? [null, 'Email Banner', 'common', 'email']
+        : OVERFLOW_RESOURCE_META.find(entry => entry[3] === resourceType);
+      if (!meta) return;
+      const key = `${meta[2]}::${code}`;
+      if (!warnings.has(key)) warnings.set(key, new Set());
+      warnings.get(key).add(meta[1]);
+      if (!warningTypes.has(key)) warningTypes.set(key, new Set());
+      warningTypes.get(key).add(resourceType);
+    });
+  });
+  warnings.forEach((labels, key) => {
+    const [editorGroup, code] = key.split('::');
+    const item = Array.from(document.querySelectorAll('.lang-item')).find(node => node.dataset.editorGroup === editorGroup && node.dataset.langCode === code);
+    if (!item) return;
+    const warning = document.createElement('div');
+    warning.className = 'resource-overflow-warning';
+    const labelText = `${Array.from(labels).join('、')} 文案超出安全区域`;
+    const hasAdjustment = labels.size > 0;
+    const affectedTypes = Array.from(warningTypes.get(key) || []);
+    warning.innerHTML = `<div class="resource-overflow-head"><span class="warning-icon">⚠️</span><span class="resource-overflow-text">${labelText}</span></div>${hasAdjustment ? '<div class="resource-overflow-adjust"></div>' : ''}`;
+    if (hasAdjustment) {
+      const adjust = warning.querySelector('.resource-overflow-adjust');
+      const row = document.createElement('div');
+      row.className = 'email-fit-slider-row';
+      const slider = document.createElement('input');
+      slider.className = 'email-fit-slider';
+      slider.type = 'range'; slider.min = '44'; slider.max = '60'; slider.step = '1';
+      slider.value = String(emailTitleSizeFor(code));
+      enableRangeDragCapture(slider);
+      const updateValue = size => {
+        slider.style.setProperty('--fit-progress', `${((60 - size) / 16) * 100}%`);
+      };
+      updateValue(Number(slider.value));
+      slider.oninput = () => {
+        const size = Number(slider.value);
+        if (size < 60) fontScaleTargets[code] = affectedTypes;
+        updateValue(size);
+        setEmailFontSize(code, size);
+      };
+      row.appendChild(slider);
+      const reset = document.createElement('button');
+      reset.type = 'button'; reset.className = 'email-fit-reset'; reset.textContent = '恢复标准字号';
+      reset.onclick = () => { slider.value = '60'; delete fontScaleTargets[code]; updateValue(60); setEmailFontSize(code, 60); };
+      row.appendChild(reset);
+      adjust.appendChild(row);
+    }
+    item.appendChild(warning);
+  });
+}
+
 function applyBapingClip(langId, autoScale) {
+  autoScale = false;
   const spec = SLOT_TEXT_SPECS.baping;
   const s = SPECS.baping;
   if (!spec || !s) return;
@@ -1353,6 +2963,7 @@ function applyBapingClip(langId, autoScale) {
 }
 
 function applySlotClip(slotType, langId, autoScale) {
+  autoScale = false;
   if (slotType === 'baping') { applyBapingClip(langId, autoScale); return; }
   const spec = SLOT_TEXT_SPECS[slotType];
   const s = SPECS[slotType];
@@ -1404,15 +3015,19 @@ function getColors(type, theme) {
 }
 
 function generate() {
-  const valid = langs.filter(l => l.subtitle || l.title);
-  const validBaping = langs.filter(l => l.subtitle || l.title || hasBapingCustomText(l.code));
-  const validTrade = langs.filter(l => hasTradeText(l.code));
+  const valid = visibleLangsFor('common').filter(l => l.subtitle || l.title);
+  const validBaping = visibleLangsFor('baping').filter(l => hasBapingCustomText(l.code));
+  const validTrade = visibleLangsFor('trade').filter(l => hasTradeText(l.code));
+  const validPcRebate = visibleLangsFor('pcrebate').filter(l => hasPcRebateText(l.code));
+  const validAppRebate = visibleLangsFor('apprebate').filter(l => hasAppRebateText(l.code));
   const empty = '<div class="empty-state">请填写文案后将自动预览</div>';
   validLangsCache = valid;
   validTradeLangsCache = validTrade;
+  validPcRebateLangsCache = validPcRebate;
+  validAppRebateLangsCache = validAppRebate;
   const li = images.light, di = images.dark;
 
-  ['new','old','email','appcal','pccal','share','feed','landing','baping','trade'].forEach(key => {
+  ['new','old','email','appcal','pccal','share','feed','landing','baping','trade','pcrebate','apprebate'].forEach(key => {
     const sec = document.getElementById('section-' + key); if (sec) sec.style.display = activeSlots.has(key) ? '' : 'none';
   });
 
@@ -1442,9 +3057,8 @@ function generate() {
     if (!valid.length) document.getElementById('gridEmail').innerHTML = empty;
     else {
       document.getElementById('gridEmail').innerHTML = valid.map(l => langGroupHtml('email', l,
-        wrap('email','sw-email','si-email', cardEmail(l, di), 'Email', l, 'email', '')
+        wrap('email','sw-email','si-email', cardEmail(l, li), 'Email', l, 'email', '')
       )).join('');
-      valid.forEach(l => applySlotClip('email', l.id, !!scaleState[slotLangKey('email', l.id)]));
     }
   }
 
@@ -1452,7 +3066,7 @@ function generate() {
     if (!valid.length) document.getElementById('gridAppCal').innerHTML = empty;
     else {
       document.getElementById('gridAppCal').innerHTML = valid.map(l => langGroupHtml('appcal', l,
-        wrap('appcal','sw-appcal','si-appcal', cardAppCal(l, di), 'App 日历', l, 'appcal', '')
+        wrap('appcal','sw-appcal','si-appcal', cardAppCal(l, li), 'App 日历', l, 'appcal', '')
       )).join('');
       valid.forEach(l => applySlotClip('appcal', l.id, !!scaleState[slotLangKey('appcal', l.id)]));
     }
@@ -1505,10 +3119,10 @@ function generate() {
 
   if (activeSlots.has('baping')) {
     validBapingLangsCache = validBaping;
-    if (!validBaping.length) document.getElementById('gridBaping').innerHTML = '<div class="empty-state">请在「霸屏文案配置」填写专属文案，或在上方填写通用文案</div>';
+    if (!validBaping.length) document.getElementById('gridBaping').innerHTML = '<div class="empty-state">请填写霸屏文案后将自动预览</div>';
     else {
       document.getElementById('gridBaping').innerHTML = validBaping.map(l => langGroupHtml('baping', l,
-        wrap('baping','sw-baping','si-baping', cardBaping(l, li), '霸屏', l, 'baping', '')
+        wrap('baping','sw-baping','si-baping', cardBaping(l, bapingImage), '霸屏', l, 'baping', '')
       )).join('');
       validBaping.forEach(l => applySlotClip('baping', l.id, !!scaleState[slotLangKey('baping', l.id)]));
     }
@@ -1518,11 +3132,11 @@ function generate() {
     if (!tradeConfigEnabled) document.getElementById('gridTrade').innerHTML = '<div class="empty-state">请开启「交易赛配置」后填写独立文案</div>';
     else if (!validTrade.length) document.getElementById('gridTrade').innerHTML = '<div class="empty-state">请在「交易赛配置」填写文案</div>';
     else {
-      document.getElementById('gridTrade').innerHTML = validTrade.map(l => langGroupHtml('trade', l,
-        wrap('tradeapp','sw-tradeapp','si-tradeapp', cardTradeApp(l,'light',tradeImages.light), 'App 白天', l, 'tradeapp', 'light') +
-        wrap('tradeapp','sw-tradeapp','si-tradeapp', cardTradeApp(l,'dark',tradeImages.dark),  'App 黑天', l, 'tradeapp', 'dark') +
-        wrap('tradeweb','sw-tradeweb','si-tradeweb', cardTradeWeb(l, tradeImages.dark), 'Web 黑天', l, 'tradeweb', 'dark')
-      )).join('');
+      const appGroups = validTrade.map(tradeAppLangGroupHtml).join('');
+      const webGroups = validTrade.map(tradeWebLangGroupHtml).join('');
+      document.getElementById('gridTrade').innerHTML =
+        (appGroups ? `<div class="trade-version-section"><div class="trade-version-title">APP</div>${appGroups}</div>` : '') +
+        (webGroups ? `<div class="trade-version-section"><div class="trade-version-title">WEB</div>${webGroups}</div>` : '');
       validTrade.forEach(l => {
         applySlotClip('tradeapp', l.id, !!scaleState[slotLangKey('tradeapp', l.id)]);
         applySlotClip('tradeweb', l.id, !!scaleState[slotLangKey('tradeweb', l.id)]);
@@ -1530,8 +3144,32 @@ function generate() {
     }
   }
 
-  const hasDownloadable = valid.length || (activeSlots.has('baping') && validBaping.length) || (activeSlots.has('trade') && validTrade.length);
-  document.getElementById('downloadAllBtn').disabled = !hasDownloadable || !activeSlots.size;
+  if (activeSlots.has('pcrebate')) {
+    if (!pcrebateConfigEnabled) document.getElementById('gridPcRebate').innerHTML = '<div class="empty-state">请开启「PC返佣配置」后填写独立文案</div>';
+    else if (!validPcRebate.length) document.getElementById('gridPcRebate').innerHTML = '<div class="empty-state">请在「PC返佣配置」填写文案</div>';
+    else {
+      document.getElementById('gridPcRebate').innerHTML = validPcRebate.map(l => langGroupHtml('pcrebate', l,
+        wrap('pcrebate','sw-pcrebate','si-pcrebate', cardPcRebate(l, pcrebateImage), 'PC返佣', l, 'pcrebate', '')
+      )).join('');
+      validPcRebate.forEach(l => applySlotClip('pcrebate', l.id, !!scaleState[slotLangKey('pcrebate', l.id)]));
+    }
+  }
+
+  if (activeSlots.has('apprebate')) {
+    if (!apprebateConfigEnabled) document.getElementById('gridAppRebate').innerHTML = '<div class="empty-state">请开启「APP返佣配置」后填写独立标题</div>';
+    else if (!validAppRebate.length) document.getElementById('gridAppRebate').innerHTML = '<div class="empty-state">请在「APP返佣配置」填写标题</div>';
+    else {
+      document.getElementById('gridAppRebate').innerHTML = validAppRebate.map(l => langGroupHtml('apprebate', l,
+        wrap('apprebate','sw-apprebate','si-apprebate', cardAppRebate(l, apprebateImage), 'APP返佣', l, 'apprebate', '')
+      )).join('');
+      validAppRebate.forEach(l => applySlotClip('apprebate', l.id, !!scaleState[slotLangKey('apprebate', l.id)]));
+    }
+  }
+
+  restoreDownloadButton();
+  if (typeof setV2Group === 'function') setV2Group(v2ActiveGroup, false);
+  valid.forEach(applyEmailFontMode);
+  requestAnimationFrame(updateAllResourceOverflowWarnings);
 }
 
 function loadImage(src) {
@@ -1559,6 +3197,24 @@ async function drawImgContain(ctx, src, x, y, w, h) {
   ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
 }
 
+async function drawImgCoverRounded(ctx, src, x, y, w, h, radius = 0) {
+  const img = await loadImage(src);
+  if (!img) return;
+  const scale = Math.max(w / img.width, h / img.height);
+  const sw = w / scale;
+  const sh = h / scale;
+  const sx = (img.width - sw) / 2;
+  const sy = (img.height - sh) / 2;
+  ctx.save();
+  if (radius) {
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, radius);
+    ctx.clip();
+  }
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+  ctx.restore();
+}
+
 function fillCanvasBg(ctx, s, c, W, H) {
   if (s.transparent) return;
   ctx.fillStyle = c.bg;
@@ -1581,6 +3237,7 @@ function fillCanvasBg(ctx, s, c, W, H) {
 }
 
 async function renderToDataUrl(type, theme, langId, autoScale) {
+  autoScale = false;
   await ensureExportFontsReady();
   const s = SPECS[type];
   const spec = SLOT_TEXT_SPECS[type] || {};
@@ -1588,7 +3245,9 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   let H = s.H;
   const padY = s.PAD;
   const padX = s.PADX || s.PAD;
-  const DPR = 2;
+  // SPECS 已经记录最终导出像素（需要 3 倍导出的资源位也已换算），
+  // 不再额外叠加 DPR，避免实际文件被重复放大成 6 倍。
+  const DPR = 1;
   const canvas = document.createElement('canvas');
   canvas.width = W * DPR;
   canvas.height = H * DPR;
@@ -1616,6 +3275,16 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   const titMax = (spec.titMaxDark && theme === 'dark') ? spec.titMaxDark : spec.titMax;
   let subSz = s.subSz;
   let titSz = (s.titSzDark && theme === 'dark') ? s.titSzDark : s.titSz;
+  const renderLang = langs.find(l => l.id === langId);
+  const renderLangCode = renderLang?.code || '';
+  const unifiedFontFactor = shouldScaleResource(renderLangCode, type) ? emailTitleSizeFor(renderLangCode) / 60 : 1;
+  if (type === 'email') {
+    subSz = Math.max(8, Math.round(subSz * unifiedFontFactor));
+    titSz = Math.max(8, Math.round(titSz * unifiedFontFactor));
+  } else {
+    subSz = Math.max(8, Math.round(subSz * unifiedFontFactor));
+    titSz = Math.max(8, Math.round(titSz * unifiedFontFactor));
+  }
   const subW = s.subWeight || '400';
   const titW = s.titWeight || (s.boldTit ? '700' : '400');
   const subFont = subFontFamily(s);
@@ -1634,9 +3303,12 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   }
 
   let imgSrc = null;
-  if (type === 'baping') imgSrc = images.light;
+  if (type === 'apprebate') imgSrc = apprebateImage;
+  else if (type === 'pcrebate') imgSrc = pcrebateImage;
+  else if (type === 'baping') imgSrc = bapingImage;
   else if (type === 'tradeapp') imgSrc = theme === 'light' ? tradeImages.light : tradeImages.dark;
   else if (type === 'tradeweb') imgSrc = tradeImages.dark;
+  else if (type === 'email' || type === 'appcal') imgSrc = images.light;
   else if (s.subClr && type !== 'pccal' && type !== 'share') imgSrc = images.dark;
   else if (type === 'pccal' || type === 'share') imgSrc = images.light;
   else imgSrc = theme === 'light' ? images.light : images.dark;
@@ -1652,8 +3324,22 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     }
   }
 
+  if (type === 'apprebate') {
+    const textFullW = W - padX * 2 - s.imgW - padX;
+    ctx.fillStyle = c.tit;
+    ctx.font = `${titW} ${titSz}px ${titFont}`;
+    let titleLines = 0;
+    for (const seg of titTxt.split('\n')) titleLines += countLinesForText(ctx, seg, textFullW);
+    const titleBlockH = Math.max(1, titleLines) * titSz * titLH;
+    const titleStartY = (H - titleBlockH) / 2 + titSz;
+    drawMultilineText(ctx, titTxt, padX, titleStartY, textFullW, titSz, titLH, titSz, titleBlockH);
+    if (imgSrc) await drawImgContain(ctx, imgSrc, W - padX - imgW, (H - imgW) / 2, imgW, imgW);
+    return canvas.toDataURL('image/png');
+  }
+
   if (type === 'tradeapp') {
-    const textFullW = W - padX * 2 - s.imgW - (s.imgGap || 0);
+    // 与预览 .b-tradeapp .txt 的固定宽度保持一致。
+    const textFullW = 235;
     const lang = langs.find(l => l.id === langId);
     const tradeText = lang ? getTradeText(lang) : { subtitle: subTxt, title: titTxt };
     const richTitle = parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
@@ -1664,18 +3350,18 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     ctx.font = `${titW} ${titSz}px ${titFont}`;
     drawRichMultilineText(ctx, richTitle, padX, (s.textTop || 32) + subDrawn + s.gap + titSz, textFullW, titSz, titLH, 60);
     ctx.filter = 'none';
-    if (imgSrc) await drawImg(ctx, imgSrc, W - padX - s.imgW, 0, s.imgW, s.imgW);
+    if (imgSrc) await drawImgContain(ctx, imgSrc, W - padX - s.imgW, 0, s.imgW, s.imgW);
     return canvas.toDataURL('image/png');
   }
 
   if (type === 'tradeweb') {
     const lang = langs.find(l => l.id === langId);
-    const tradeText = lang ? getTradeText(lang) : { subtitle: '', title: titTxt, webTag: '交易赛' };
+    const tradeText = lang ? getTradeText(lang) : { subtitle: '', webBrand: '', title: titTxt, webTag: '交易赛' };
     const x = 360;
     const y = s.textTop || 64;
     const badgeH = 31;
     const badgePadX = 12;
-    const blueTxt = tradeText.subtitle || '';
+    const blueTxt = tradeText.webBrand || '';
     const darkTxt = tradeText.webTag || '交易赛';
     ctx.textBaseline = 'middle';
     ctx.font = `700 24px ${subFontFamily(SPECS.tradeweb)}`;
@@ -1696,28 +3382,47 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     ctx.fillText(darkTxt, x + blueW + badgePadX, y + badgeH / 2);
     ctx.textBaseline = 'alphabetic';
     ctx.filter = 'blur(0.35px)';
-    ctx.font = `700 ${s.titSz}px ${titFont}`;
+    ctx.font = `700 ${titSz}px ${titFont}`;
     const richTitle = parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : '#FFFFFF' }));
-    const titleY = y + badgeH + s.gap + s.titSz;
-    const titleMaxH = Math.max(s.titSz, H - (s.safeBottom || 120) - (titleY - s.titSz));
-    drawRichMultilineText(ctx, richTitle, x, titleY, 720, s.titSz, 1.1, titleMaxH);
+    const titleY = y + badgeH + s.gap + titSz;
+    const titleMaxH = Math.max(titSz, H - (s.safeBottom || 120) - (titleY - titSz));
+    drawRichMultilineText(ctx, richTitle, x, titleY, 720, titSz, 1.1, titleMaxH);
     ctx.filter = 'none';
     if (imgSrc) await drawImgContain(ctx, imgSrc, 1160, 0, 320, 200);
     return canvas.toDataURL('image/png');
   }
 
   if (s.imgPos === 'rc') {
+    ctx.font = `${subW} ${subSz}px ${subFont}`;
+    let subLines = 0;
+    if (subTxt) for (const seg of subTxt.split('\n')) subLines += countLinesForText(ctx, seg, textW);
+    ctx.font = `${titW} ${titSz}px ${titFont}`;
+    let titleLines = 0;
+    if (titTxt) for (const seg of titTxt.split('\n')) titleLines += countLinesForText(ctx, seg, textW);
+    const subBlockH = subLines * subSz * subLH;
+    const titleBlockH = titleLines * titSz * titLH;
+    const blockGap = subLines && titleLines ? s.gap : 0;
+    const blockH = subBlockH + blockGap + titleBlockH;
+    const blockTop = (H - blockH) / 2;
     ctx.fillStyle = c.sub;
     ctx.font = `${subW} ${subSz}px ${subFont}`;
-    const subDrawn = drawMultilineText(ctx, subTxt, padX, padY + subSz, textW, subSz, subLH, subSz, H);
-    let titStartY = padY + subDrawn + s.gap + titSz;
+    if (subLines) drawMultilineText(ctx, subTxt, padX, blockTop + subSz, textW, subSz, subLH, subSz, subBlockH);
+    const titStartY = blockTop + subBlockH + blockGap + titSz;
     ctx.fillStyle = c.tit;
     if (s.boldTit) ctx.filter = 'blur(0.4px)';
     ctx.font = `${titW} ${titSz}px ${titFont}`;
-    drawMultilineText(ctx, titTxt, padX, titStartY, textW, titSz, titLH, titSz, H);
+    if (titleLines) drawMultilineText(ctx, titTxt, padX, titStartY, textW, titSz, titLH, titSz, titleBlockH);
     ctx.filter = 'none';
     const imgY = (H - imgW) / 2;
-    if (imgSrc) await drawImg(ctx, imgSrc, W - padX - imgW, imgY, imgW, imgW);
+    if (type === 'feed') {
+      ctx.fillStyle = theme === 'dark' ? '#313132' : '#F5F5F5';
+      ctx.beginPath();
+      ctx.roundRect(W - padX - imgW, imgY, imgW, imgW, 12);
+      ctx.fill();
+      if (imgSrc) await drawImgCoverRounded(ctx, imgSrc, W - padX - imgW + 16, imgY + 16, 128, 128, 8);
+    } else if (imgSrc) {
+      await drawImgContain(ctx, imgSrc, W - padX - imgW, imgY, imgW, imgW);
+    }
   } else if (s.imgPos === 'rb') {
     ctx.fillStyle = c.sub;
     ctx.font = `${subW} ${subSz}px ${subFont}`;
@@ -1728,10 +3433,10 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     ctx.font = `${titW} ${titSz}px ${titFont}`;
     drawMultilineText(ctx, titTxt, padX, titStartY, textW, titSz, titLH, titSz, H * 0.6);
     ctx.filter = 'none';
-    if (imgSrc) await drawImg(ctx, imgSrc, W - padX - imgW, H - padY - imgW, imgW, imgW);
+    if (imgSrc) await drawImgContain(ctx, imgSrc, W - padX - imgW, H - padY - imgW, imgW, imgW);
   } else if (s.imgPos === 'vt') {
     const textFullW = W - padX * 2;
-    if (imgSrc) await drawImg(ctx, imgSrc, (W - imgW) / 2, padY, imgW, imgW);
+    if (imgSrc) await drawImgContain(ctx, imgSrc, (W - imgW) / 2, padY, imgW, imgW);
     ctx.font = `700 ${titSz}px ${titFont}`;
     let titH = 0;
     for (const seg of titTxt.split('\n')) titH += countLinesForText(ctx, seg, textFullW) * titSz * titLH;
@@ -1757,19 +3462,22 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     const lang = langs.find(l => l.id === langId);
     const bapingText = lang ? getBapingText(lang) : null;
     if (bapingText && bapingText.isCustom) {
-      ctx.filter = 'blur(0.4px)';
-      ctx.font = `700 ${titSz}px ${titFont}`;
-      const richTitle = parseBracketHighlights(bapingText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
-      const titleDrawn = drawRichMultilineText(ctx, richTitle, padX, padY + titSz, textFullW, titSz, titLH, mainH);
-      ctx.filter = 'none';
-      let curY = padY + titleDrawn + s.gap;
+      let curY = padY;
       if (bapingText.subtitle) {
-        ctx.fillStyle = c.tit;
+        ctx.fillStyle = c.sub;
         ctx.filter = 'blur(0.4px)';
         ctx.font = `500 ${subSz}px ${subFont}`;
         const subDrawn = drawMultilineText(ctx, bapingText.subtitle, padX, curY + subSz, textFullW, subSz, subLH, subSz, mainH);
         ctx.filter = 'none';
-        curY += subDrawn + 24;
+        curY += subDrawn + s.gap;
+      }
+      if (bapingText.title) {
+        ctx.filter = 'blur(0.4px)';
+        ctx.font = `700 ${titSz}px ${titFont}`;
+        const richTitle = parseBracketHighlights(bapingText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
+        const titleDrawn = drawRichMultilineText(ctx, richTitle, padX, curY + titSz, textFullW, titSz, titLH, mainH);
+        ctx.filter = 'none';
+        curY += titleDrawn + 24;
       }
       if (bapingText.descText) {
         const descSz = s.descSz || 30;
@@ -1801,7 +3509,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
         drawMultilineText(ctx, descTxt, padX, mainH - padY - descBlockH + descSz, descMaxW, descSz, descLH, descSz, mainH);
       }
     }
-    if (imgSrc) await drawImg(ctx, imgSrc, W - padX - imgW, mainH - imgW - (s.imgBottom || 0), imgW, imgW);
+    if (imgSrc) await drawImgContain(ctx, imgSrc, W - padX - imgW, mainH - imgW - (s.imgBottom || 0), imgW, imgW);
     ctx.fillStyle = s.barBg;
     ctx.beginPath();
     ctx.moveTo(0, mainH);
@@ -1830,11 +3538,37 @@ async function downloadCard(type, theme, langId) {
   if (!dataUrl) return;
   const lang = langs.find(l => l.id === langId);
   const code = lang ? lang.code : langId;
-  const suffix = theme ? `_${theme}` : '';
+  const resourceName = DOWNLOAD_RESOURCE_NAMES[type] || SLOT_LABELS[type] || type;
+  const themeName = theme === 'light' ? '白天' : theme === 'dark' ? '黑天' : '';
+  const suffix = themeName ? `_${themeName}` : '';
   const a = document.createElement('a');
   a.href = dataUrl;
-  a.download = `${safeFilePart(code, 'lang')}${suffix}.png`;
+  a.download = `${resourceName}_${safeFilePart(code, 'lang')}${suffix}.png`;
   a.click();
+}
+
+const DOWNLOAD_RESOURCE_NAMES = {
+  new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
+  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页',
+  baping: '霸屏', tradeapp: '交易赛APP', tradeweb: '交易赛Web',
+  pcrebate: 'PC返佣', apprebate: 'APP返佣'
+};
+
+function downloadFileName(type, code, theme = '') {
+  const name = DOWNLOAD_RESOURCE_NAMES[type] || type;
+  const version = theme === 'light' ? '_白天' : theme === 'dark' ? '_黑天' : '';
+  return `${name}_${safeFilePart(code, 'lang')}${version}`;
+}
+
+function currentGroupAllowsResource(type) {
+  const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
+  const resources = {
+    common: ['new','old','email','appcal','pccal','share','feed','landing'],
+    baping: ['baping'],
+    trade: ['tradeapp','tradeweb'],
+    rebate: ['pcrebate','apprebate']
+  };
+  return (resources[group] || []).includes(type);
 }
 
 async function downloadAll() {
@@ -1849,42 +3583,59 @@ async function downloadAll() {
   const zip = new JSZip();
   const tasks = [];
 
-  for (const l of validLangsCache) {
+  if (currentGroupAllowsResource('new')) for (const l of validLangsCache) {
     if (activeSlots.has('new')) {
-      tasks.push({ id:`new-${l.id}-light`, fn:`${safeFilePart(l.code, 'lang')}_light`, folder:'new', type:'new', theme:'light', langId:l.id });
-      tasks.push({ id:`new-${l.id}-dark`,  fn:`${safeFilePart(l.code, 'lang')}_dark`,  folder:'new', type:'new', theme:'dark',  langId:l.id });
+      tasks.push({ id:`new-${l.id}-light`, fn:downloadFileName('new', l.code, 'light'), folder:'瓷片区banner', type:'new', theme:'light', langId:l.id });
+      tasks.push({ id:`new-${l.id}-dark`,  fn:downloadFileName('new', l.code, 'dark'),  folder:'瓷片区banner', type:'new', theme:'dark',  langId:l.id });
     }
     if (activeSlots.has('old')) {
-      tasks.push({ id:`old-${l.id}-light`, fn:`${safeFilePart(l.code, 'lang')}_light`, folder:'old', type:'old', theme:'light', langId:l.id });
-      tasks.push({ id:`old-${l.id}-dark`,  fn:`${safeFilePart(l.code, 'lang')}_dark`,  folder:'old', type:'old', theme:'dark',  langId:l.id });
+      tasks.push({ id:`old-${l.id}-light`, fn:downloadFileName('old', l.code, 'light'), folder:'旧版banner', type:'old', theme:'light', langId:l.id });
+      tasks.push({ id:`old-${l.id}-dark`,  fn:downloadFileName('old', l.code, 'dark'),  folder:'旧版banner', type:'old', theme:'dark',  langId:l.id });
     }
-    if (activeSlots.has('email')) tasks.push({ id:`email-${l.id}`, fn:safeFilePart(l.code, 'lang'), folder:'email', type:'email', theme:'', langId:l.id });
-    if (activeSlots.has('appcal')) tasks.push({ id:`appcal-${l.id}`, fn:safeFilePart(l.code, 'lang'), folder:'appcal', type:'appcal', theme:'', langId:l.id });
-    if (activeSlots.has('pccal')) tasks.push({ id:`pccal-${l.id}`, fn:safeFilePart(l.code, 'lang'), folder:'pccal', type:'pccal', theme:'', langId:l.id });
-    if (activeSlots.has('share')) tasks.push({ id:`share-${l.id}`, fn:safeFilePart(l.code, 'lang'), folder:'share', type:'share', theme:'', langId:l.id });
+    if (activeSlots.has('email')) tasks.push({ id:`email-${l.id}`, fn:downloadFileName('email', l.code), folder:'Email Banner', type:'email', theme:'', langId:l.id });
+    if (activeSlots.has('appcal')) tasks.push({ id:`appcal-${l.id}`, fn:downloadFileName('appcal', l.code), folder:'App 日历', type:'appcal', theme:'', langId:l.id });
+    if (activeSlots.has('pccal')) tasks.push({ id:`pccal-${l.id}`, fn:downloadFileName('pccal', l.code), folder:'PC 日历', type:'pccal', theme:'', langId:l.id });
+    if (activeSlots.has('share')) tasks.push({ id:`share-${l.id}`, fn:downloadFileName('share', l.code), folder:'分享页', type:'share', theme:'', langId:l.id });
     if (activeSlots.has('feed')) {
-      tasks.push({ id:`feed-${l.id}-light`, fn:`${safeFilePart(l.code, 'lang')}_light`, folder:'feed', type:'feed', theme:'light', langId:l.id });
-      tasks.push({ id:`feed-${l.id}-dark`,  fn:`${safeFilePart(l.code, 'lang')}_dark`,  folder:'feed', type:'feed', theme:'dark',  langId:l.id });
+      tasks.push({ id:`feed-${l.id}-light`, fn:downloadFileName('feed', l.code, 'light'), folder:'Feed流', type:'feed', theme:'light', langId:l.id });
+      tasks.push({ id:`feed-${l.id}-dark`,  fn:downloadFileName('feed', l.code, 'dark'),  folder:'Feed流', type:'feed', theme:'dark',  langId:l.id });
     }
     if (activeSlots.has('landing')) {
-      tasks.push({ id:`landing-${l.id}-light`, fn:`${safeFilePart(l.code, 'lang')}_light`, folder:'landing', type:'landing', theme:'light', langId:l.id });
-      tasks.push({ id:`landing-${l.id}-dark`,  fn:`${safeFilePart(l.code, 'lang')}_dark`,  folder:'landing', type:'landing', theme:'dark',  langId:l.id });
+      tasks.push({ id:`landing-${l.id}-light`, fn:downloadFileName('landing', l.code, 'light'), folder:'聚合落地页', type:'landing', theme:'light', langId:l.id });
+      tasks.push({ id:`landing-${l.id}-dark`,  fn:downloadFileName('landing', l.code, 'dark'),  folder:'聚合落地页', type:'landing', theme:'dark',  langId:l.id });
     }
   }
 
-  if (activeSlots.has('baping')) {
+  if (currentGroupAllowsResource('baping') && activeSlots.has('baping')) {
     for (const l of validBapingLangsCache) {
-      tasks.push({ id:`baping-${l.id}`, fn:safeFilePart(l.code, 'lang'), folder:'baping', type:'baping', theme:'', langId:l.id });
+      tasks.push({ id:`baping-${l.id}`, fn:downloadFileName('baping', l.code), folder:'霸屏', type:'baping', theme:'', langId:l.id });
     }
   }
 
-  if (activeSlots.has('trade')) {
+  if (currentGroupAllowsResource('tradeapp') && activeSlots.has('trade')) {
     for (const l of validTradeLangsCache) {
-      const base = safeFilePart(l.code, 'lang');
-      tasks.push({ id:`tradeapp-${l.id}-light`, fn:`${base}_app_light`, folder:'trade/app', type:'tradeapp', theme:'light', langId:l.id });
-      tasks.push({ id:`tradeapp-${l.id}-dark`,  fn:`${base}_app_dark`,  folder:'trade/app', type:'tradeapp', theme:'dark',  langId:l.id });
-      tasks.push({ id:`tradeweb-${l.id}-dark`,  fn:`${base}_web_dark`,  folder:'trade/web', type:'tradeweb', theme:'dark',  langId:l.id });
+      if (activeTradeVariants.has('tradeapp-light')) tasks.push({ id:`tradeapp-${l.id}-light`, fn:downloadFileName('tradeapp', l.code, 'light'), folder:'交易赛/APP版本', type:'tradeapp', theme:'light', langId:l.id });
+      if (activeTradeVariants.has('tradeapp-dark')) tasks.push({ id:`tradeapp-${l.id}-dark`,  fn:downloadFileName('tradeapp', l.code, 'dark'),  folder:'交易赛/APP版本', type:'tradeapp', theme:'dark',  langId:l.id });
+      if (activeTradeVariants.has('tradeweb')) tasks.push({ id:`tradeweb-${l.id}-dark`,  fn:downloadFileName('tradeweb', l.code, 'dark'), folder:'交易赛/Web版本', type:'tradeweb', theme:'dark', langId:l.id });
     }
+  }
+
+  if (currentGroupAllowsResource('pcrebate') && activeSlots.has('pcrebate')) {
+    for (const l of validPcRebateLangsCache) {
+      tasks.push({ id:`pcrebate-${l.id}`, fn:downloadFileName('pcrebate', l.code), folder:'PC返佣', type:'pcrebate', theme:'', langId:l.id });
+    }
+  }
+
+  if (currentGroupAllowsResource('apprebate') && activeSlots.has('apprebate')) {
+    for (const l of validAppRebateLangsCache) {
+      tasks.push({ id:`apprebate-${l.id}`, fn:downloadFileName('apprebate', l.code), folder:'APP返佣', type:'apprebate', theme:'', langId:l.id });
+    }
+  }
+
+  if (!tasks.length) {
+    setDraftStatus('当前内容组暂无可下载内容');
+    restoreDownloadButton();
+    return;
   }
 
   for (let i = 0; i < tasks.length; i++) {
@@ -1903,7 +3654,8 @@ async function downloadAll() {
     const a = document.createElement('a');
     const url = URL.createObjectURL(blob);
     a.href = url;
-    a.download = 'HTX_CreativeOS.zip';
+    const groupName = { common:'通用内容', baping:'霸屏', trade:'交易赛', rebate:'返佣' }[v2ActiveGroup] || '通用内容';
+    a.download = `HTX运营视觉工作台_${groupName}.zip`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   } catch (err) {
@@ -1914,7 +3666,145 @@ async function downloadAll() {
   }
 }
 
+const V2_ACTIVE_GROUP_KEY = 'htx-visual-workbench-active-group';
+const V2_SCROLL_KEY = 'htx-visual-workbench-scroll-y';
+const hashV2Group = location.hash.replace(/^#/, '');
+const savedV2Group = ['common','baping','trade','rebate'].includes(hashV2Group)
+  ? hashV2Group
+  : localStorage.getItem(V2_ACTIVE_GROUP_KEY);
+let v2ActiveGroup = ['common','baping','trade','rebate'].includes(savedV2Group) ? savedV2Group : 'common';
+let v2CommonNodes = [];
+const v2SlotGroups = {
+  common: ['new','old','email','appcal','pccal','share','feed','landing'],
+  baping: ['baping'],
+  trade: ['tradeapp-light','tradeapp-dark','tradeweb'],
+  rebate: ['pcrebate','apprebate']
+};
+
+function setV2Group(group, updateButtons = true) {
+  if (!v2SlotGroups[group]) group = 'common';
+  v2ActiveGroup = group;
+  localStorage.setItem(V2_ACTIVE_GROUP_KEY, group);
+  if (location.hash !== `#${group}`) history.replaceState(null, '', `#${group}`);
+  if (updateButtons) document.querySelectorAll('.v2-group-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.v2Group === group));
+  Object.values(v2SlotGroups).flat().forEach(key => {
+    const item = document.getElementById('slot-' + key);
+    if (item) item.style.display = v2SlotGroups[group].includes(key) ? '' : 'none';
+  });
+  const previewGroups = {
+    common: ['new','old','email','appcal','pccal','share','feed','landing'],
+    baping: ['baping'],
+    trade: ['trade'],
+    rebate: ['pcrebate','apprebate']
+  };
+  Object.values(previewGroups).flat().forEach(key => {
+    const section = document.getElementById('section-' + key);
+    if (!section) return;
+    const belongsToCurrentGroup = previewGroups[group].includes(key);
+    const isSelected = key === 'trade' ? activeTradeVariants.size > 0 : activeSlots.has(key);
+    section.style.display = belongsToCurrentGroup && isSelected ? '' : 'none';
+  });
+  v2CommonNodes.forEach(node => node.classList.toggle('v2-hidden', group !== 'common'));
+  const sections = {
+    baping: [document.getElementById('bapingLangSection')],
+    trade: [document.getElementById('tradeLangSection')],
+    rebate: [document.getElementById('pcrebateLangSection'), document.getElementById('apprebateLangSection'), document.getElementById('rebatePcAddLangButton'), document.getElementById('rebateAddLangButton')]
+  };
+  Object.entries(sections).forEach(([key, nodes]) => nodes.forEach(node => {
+    if (!node) return;
+    node.classList.toggle('v2-hidden', group !== key);
+    if (group === key) node.style.display = 'block';
+  }));
+  const copy = {
+    common: ['通用内容', '编辑共用文案和日间/夜间素材，绑定多个常规资源位。'],
+    baping: ['霸屏', '独立管理霸屏文案和配图。'],
+    trade: ['交易赛', '独立管理 App 与 Web 交易赛文案和素材。'],
+    rebate: ['返佣', '集中管理 PC返佣与 APP返佣，两套版式可分别配置。']
+  }[group];
+  const title = document.querySelector('.v2-editor-title');
+  const desc = document.querySelector('.v2-editor-desc');
+  if (title) title.textContent = copy[0];
+  if (desc) desc.textContent = copy[1];
+  restoreDownloadButton();
+  requestAnimationFrame(() => autoResizeAllTextAreas());
+}
+
+function initV2Workspace() {
+  const panel = document.querySelector('.panel');
+  const slotList = panel?.querySelector(':scope > .slot-list');
+  const slotMount = document.getElementById('v2SlotMount');
+  if (!panel || !slotList || !slotMount) return;
+  slotMount.appendChild(slotList);
+  const resourceTitle = Array.from(panel.querySelectorAll(':scope > .panel-title')).find(el => el.textContent.trim() === '资源位');
+  if (resourceTitle) resourceTitle.classList.add('v2-hidden');
+  const commonTitle = panel.querySelector('.v2-config-head > .panel-title');
+  if (commonTitle) commonTitle.classList.add('v2-panel-label');
+  const sharedImageTitle = Array.from(panel.querySelectorAll(':scope > .panel-title')).find(el => el.textContent.trim() === '配图（可选）');
+  if (sharedImageTitle) sharedImageTitle.classList.add('v2-panel-label');
+  const langList = document.getElementById('langList');
+  const commonAdd = langList?.nextElementSibling;
+  const sharedUpload = sharedImageTitle?.nextElementSibling;
+  v2CommonNodes = [langList, commonAdd, sharedImageTitle, sharedUpload].filter(Boolean);
+
+  panel.querySelectorAll(':scope > .divider').forEach(el => el.classList.add('v2-hidden'));
+  ['bapingLangSection','tradeLangSection','pcrebateLangSection','apprebateLangSection','rebatePcAddLangButton','rebateAddLangButton'].forEach(id => {
+    const section = document.getElementById(id);
+    if (section) section.classList.add('v2-hidden');
+  });
+  setV2Group(v2ActiveGroup);
+}
+
+function initImageDropUploads() {
+  document.querySelectorAll('.upload-btn').forEach(button => {
+    const input = button.nextElementSibling;
+    if (!(input instanceof HTMLInputElement) || input.type !== 'file') return;
+    const keepDropActive = event => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.dataTransfer) event.dataTransfer.dropEffect = 'copy';
+      button.classList.add('dragover');
+    };
+    button.addEventListener('dragenter', keepDropActive);
+    button.addEventListener('dragover', keepDropActive);
+    button.addEventListener('dragleave', event => {
+      event.preventDefault();
+      if (!button.contains(event.relatedTarget)) button.classList.remove('dragover');
+    });
+    button.addEventListener('drop', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      button.classList.remove('dragover');
+      const file = Array.from(event.dataTransfer?.files || []).find(item => item.type.startsWith('image/'));
+      if (!file) {
+        setDraftStatus('请拖入本地图片文件', true);
+        return;
+      }
+      const transfer = new DataTransfer();
+      transfer.items.add(file);
+      input.files = transfer.files;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  });
+}
+
 restoreDraft();
+initV2Workspace();
+initImageDropUploads();
+requestAnimationFrame(() => autoResizeAllTextAreas());
+
+let v2ScrollSaveTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(v2ScrollSaveTimer);
+  v2ScrollSaveTimer = setTimeout(() => sessionStorage.setItem(V2_SCROLL_KEY, String(window.scrollY)), 80);
+}, { passive: true });
+window.addEventListener('pagehide', () => {
+  sessionStorage.setItem(V2_SCROLL_KEY, String(window.scrollY));
+  localStorage.setItem(V2_ACTIVE_GROUP_KEY, v2ActiveGroup);
+});
+const savedV2ScrollY = Number(sessionStorage.getItem(V2_SCROLL_KEY));
+if (Number.isFinite(savedV2ScrollY) && savedV2ScrollY > 0) {
+  requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, savedV2ScrollY)));
+}
 
 </script>
 </body>
