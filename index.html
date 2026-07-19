@@ -887,6 +887,76 @@ body {
 @media (max-width: 760px) {
   .v2-nav, .panel { width: 100%; flex-basis: 100%; position: relative; top: auto; max-height: none; }
 }
+
+/* 投放素材模块 */
+.ad-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
+.ad-module.active { display: flex; }
+.ad-editor { width: 390px; flex: 0 0 390px; padding: 22px; background: #FFF; border-radius: 12px; position: sticky; top: 16px; }
+.ad-field { margin-bottom: 16px; }
+.ad-field label { display: block; margin-bottom: 7px; color: #667085; font-size: 11px; }
+.ad-field input,.ad-field select,.ad-field textarea { width: 100%; min-height: 40px; padding: 9px 11px; border: 1px solid #DDE3EA; border-radius: 7px; background: #FFF; color: #111827; font: inherit; font-size: 12px; outline: none; }
+.ad-field textarea { min-height: 72px; resize: vertical; line-height: 1.45; }
+.ad-field input:focus,.ad-field select:focus,.ad-field textarea:focus { border-color: var(--brand-blue); }
+.ad-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ad-layouts { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.ad-layout-btn { height: 62px; padding: 7px; border: 1px solid #DDE3EA; border-radius: 8px; background: #FFF; color: #667085; font: inherit; font-size: 11px; cursor: pointer; }
+.ad-layout-btn.active { border-color: #A8C8FF; background: #EFF5FF; color: var(--brand-blue); }
+.ad-upload { width: 100%; height: 44px; border: 0; border-radius: 8px; color: #7C899B; background: #F8FAFC; font: inherit; font-size: 12px; cursor: pointer; }
+.ad-preview-shell { flex: 1; min-width: 0; padding: clamp(20px,2.2vw,32px); border: 1px solid #DDE3EA; border-radius: 12px; background: transparent; }
+.ad-preview-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.ad-preview-title { color: #98A2B3; font-size: 11px; }
+.ad-canvas-stage { min-height: 240px; padding: 8px 0 0; display: flex; align-items: center; justify-content: center; overflow: auto; background: transparent; }
+.ad-canvas-stage .empty-state { width: 100%; height: 240px; border: 0; border-radius: 8px; background: #F8FAFC; }
+#adCanvas { display: block; max-width: 100%; max-height: 660px; }
+.ad-download { height: 36px; padding: 0 16px; border: 0; border-radius: 6px; color: #FFF; background: var(--brand-blue); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.ad-note { margin-top: 10px; color: #98A2B3; font-size: 11px; line-height: 1.5; }
+.ad-size-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+.ad-size-item { position: relative; padding: 12px; border-radius: 8px; background: #F8FAFC; }
+.ad-size-item .ad-two { padding-right: 26px; }
+.ad-size-remove { position: absolute; top: 10px; right: 10px; border: 0; background: transparent; color: #A0AABA; font-size: 18px; cursor: pointer; }
+.ad-size-remove:hover { color: #E5484D; }
+.ad-canvas-stage { flex-wrap: wrap; gap: 24px; align-content: flex-start; }
+.ad-canvas-item { min-width: 180px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ad-canvas-item canvas { display: block; max-width: 100%; max-height: 420px; }
+.ad-canvas-label { color: #98A2B3; font-size: 11px; font-weight: 400; line-height: 26px; letter-spacing: .01em; }
+.ad-site-card { padding: 12px; border-radius: 8px; background: #F8FAFC; }
+.ad-site-card + .ad-site-card { margin-top: 10px; }
+.ad-site-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.ad-site-head input { flex: 1; }
+.ad-site-size { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) 24px; gap: 8px; align-items: end; margin-top: 8px; }
+.ad-site-size > div input { width: 100%; box-sizing: border-box; }
+.ad-site-size .lang-remove { width: 18px; height: 20px; margin-bottom: 7px; }
+.ad-site-add-size { width: 100%; margin-top: 10px; padding: 0; border: 0; background: transparent; color: #667085; font: inherit; font-size: 11px; text-align: left; cursor: pointer; }
+.ad-lang-card { padding: 12px; border-radius: 8px; background: #F8FAFC; }
+.ad-lang-card + .ad-lang-card { margin-top: 10px; }
+.ad-lang-head { display: flex; gap: 8px; margin-bottom: 8px; }
+.ad-lang-head select { flex: 1; min-height: 24px; padding: 0; border: 0; background: transparent; color: #98A2B3; font-size: 11px; appearance: none; -webkit-appearance: none; }
+.ad-lang-head select:focus { border: 0; }
+.ad-lang-card input,.ad-lang-card textarea { border-color: #DDE3EA; background: #FFF; }
+.ad-lang-card textarea { min-height: 34px; height: 34px; resize: none; overflow-y: hidden; line-height: 1.5; }
+.ad-bg-settings { margin: 16px 0 20px; padding: 12px; border-radius: 8px; background: #F8FAFC; }
+.ad-bg-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+.ad-bg-mode-btn { height: 32px; border: 0; border-radius: 6px; background: #FFF; color: #667085; font: inherit; font-size: 11px; cursor: pointer; }
+.ad-bg-mode-btn.active { background: #EFF5FF; color: var(--brand-blue); }
+.ad-bg-panel { display: none; }
+.ad-bg-panel.active { display: block; }
+.ad-bg-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ad-bg-row + .ad-bg-row { margin-top: 10px; }
+.ad-bg-name { color: #667085; font-size: 11px; font-weight: 400; }
+.ad-color-input { width: 20px; height: 20px; padding: 0; border: 0; border-radius: 4px; overflow: hidden; background: transparent; appearance: none; -webkit-appearance: none; cursor: pointer; }
+.ad-color-input::-webkit-color-swatch-wrapper { padding: 0; border: 0; }
+.ad-color-input::-webkit-color-swatch { border: 0; border-radius: 4px; }
+.ad-color-input::-moz-color-swatch { border: 0; border-radius: 4px; }
+#adSiteNavSection { margin: -14px 0 22px; }
+#adSiteNavSection .v2-nav-title { margin: 0 0 8px; }
+#adSiteNavSection .ad-site-card { padding: 10px; background: #F8FAFC; }
+#adSiteNavSection .ad-site-head input,#adSiteNavSection .ad-site-size input { min-width: 0; height: 34px; padding: 7px 8px; border: 1px solid #DDE3EA; border-radius: 6px; outline: none; background: #FFF; color: #111827; font-family: inherit; font-size: 11px; }
+#adSiteNavSection .ad-site-head input:focus,#adSiteNavSection .ad-site-size input:focus { border-color: var(--brand-blue); }
+#adSiteNavSection input::placeholder { color: #A7B0BE; font-weight: 400; }
+#adSiteNavSection .ad-site-size { grid-template-columns: minmax(0,1fr) minmax(0,1fr) 18px; gap: 5px; }
+#adSiteNavSection .ad-site-size label { color: #98A2B3; font-size: 9px; font-weight: 400; }
+#adSiteNavSection .add-lang-btn { height: 40px; font-size: 12px; font-weight: 500; }
+@media (max-width: 1180px) { .ad-module.active { flex-wrap: wrap; } .ad-editor { width: 100%; flex-basis: 100%; position: relative; top: auto; } .ad-preview-shell { width: 100%; } }
 </style>
 </head>
 <body>
@@ -902,10 +972,34 @@ body {
       <button class="v2-group-btn" data-v2-group="baping" onclick="setV2Group('baping')"><span>霸屏</span></button>
       <button class="v2-group-btn" data-v2-group="trade" onclick="setV2Group('trade')"><span>交易赛</span></button>
       <button class="v2-group-btn" data-v2-group="rebate" onclick="setV2Group('rebate')"><span>返佣</span></button>
+      <button class="v2-group-btn" data-v2-group="ads" onclick="setV2Group('ads')"><span>投放素材</span></button>
     </div>
-    <div class="v2-nav-title">输出资源位</div>
+    <div id="adSiteNavSection" class="v2-hidden">
+      <div id="adSiteList"></div>
+      <button class="add-lang-btn" style="margin-top:8px" onclick="addAdSite()">+ 添加投放网站</button>
+    </div>
+    <div class="v2-nav-title" id="v2SlotTitle">输出资源位</div>
     <div id="v2SlotMount"></div>
   </aside>
+  <section class="ad-module" id="adModule">
+    <div class="ad-editor">
+      <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div><div class="draft-row"><button class="clear-draft-btn" onclick="clearDraft()">清空草稿</button></div></div>
+      <div class="ad-field"><div id="adLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addAdLanguage()">+ 添加语种</button></div>
+      <div class="panel-title v2-panel-label">背景设置</div>
+      <div class="ad-bg-settings">
+        <div class="ad-bg-modes"><button class="ad-bg-mode-btn" id="adSolidMode" onclick="updateAdBackground('gradient',false)">纯色</button><button class="ad-bg-mode-btn active" id="adGradientMode" onclick="updateAdBackground('gradient',true)">渐变</button></div>
+        <div class="ad-bg-panel" id="adSolidPanel"><div class="ad-bg-row"><span class="ad-bg-name">纯色</span><input class="ad-color-input" id="adSolidColor" type="color" value="#0066ff" oninput="updateAdBackground('solid',this.value)"></div></div>
+        <div class="ad-bg-panel active" id="adGradientPanel"><div class="ad-bg-row"><span class="ad-bg-name">起始色</span><input class="ad-color-input" id="adBgStart" type="color" value="#0066ff" oninput="updateAdBackground('start',this.value)"></div><div class="ad-bg-row"><span class="ad-bg-name">结束色</span><input class="ad-color-input" id="adBgEnd" type="color" value="#2692ff" oninput="updateAdBackground('end',this.value)"></div></div>
+      </div>
+      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图（可选）</div>
+      <div class="upload-area"><button class="upload-btn" id="adImageBtn" onclick="document.getElementById('adImageFile').click()">点击或拖拽上传</button><input id="adImageFile" type="file" accept="image/*,.svg" onchange="handleAdImage(event)"></div>
+      <button class="download-all-btn" id="adDownloadBtn" onclick="downloadAdCreative()">下载</button>
+    </div>
+    <div class="ad-preview-shell">
+      <div class="ad-preview-head"><div class="ad-preview-title" id="adPreviewMeta">投放素材</div></div>
+      <div class="ad-canvas-stage" id="adCanvasGrid"></div>
+    </div>
+  </section>
   <div class="panel">
     <div class="panel-title">资源位</div>
     <div class="slot-list">
@@ -939,7 +1033,6 @@ body {
     <div id="bapingLangSection" class="baping-lang-section" style="display:none">
       <hr class="divider">
       <div class="panel-title">霸屏文案配置</div>
-      <div class="panel-hint">填写霸屏文案，主标题可用 [文字] 标记蓝色高亮。</div>
       <div class="lang-list" id="bapingLangList"></div>
       <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
       <div class="panel-title" style="margin-top:16px;">配图（可选）</div>
@@ -1085,9 +1178,11 @@ const scaleState = {};
 const emailFontModes = {};
 const fontScaleTargets = {};
 const DRAFT_KEY = 'htxCreativeOSDraftV1';
+const AD_DRAFT_KEY = 'htxCreativeOSAdsDraftV1';
 const DEFAULT_LANG_CODES = ['en-us','zh-cn','zh-hk','ru-ru','tr-tr','vi-vi'];
 let isRestoringDraft = false;
 let _draftTimer = null;
+let _adDraftTimer = null;
 const workspaceUndoStack = [];
 let isApplyingWorkspaceHistory = false;
 const BAPING_ARROW_SVG = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#fff" stroke-width="1.5"/><path d="M7.5 12h8.2" stroke="#fff" stroke-width="1.8" stroke-linecap="butt"/><path d="M12 8.3l3.7 3.7-3.7 3.7" stroke="#fff" stroke-width="1.8" stroke-linecap="butt" stroke-linejoin="miter"/></svg>');
@@ -1181,6 +1276,55 @@ function scheduleDraftSave() {
   }, 200);
 }
 
+function scheduleAdDraftSave() {
+  if (isRestoringDraft) return;
+  clearTimeout(_adDraftTimer);
+  _adDraftTimer = setTimeout(() => {
+    _adDraftTimer = null;
+    saveAdDraft();
+  }, 120);
+}
+
+function saveAdDraft() {
+  if (isRestoringDraft) return;
+  const config = { version: 1, savedAt: Date.now(), adSites, adLanguages, adImageSrc, adSolidColor, adBackgroundStart, adBackgroundEnd, adGradientEnabled };
+  try {
+    localStorage.setItem(AD_DRAFT_KEY, JSON.stringify(config));
+  } catch (err) {
+    try {
+      localStorage.setItem(AD_DRAFT_KEY, JSON.stringify({ ...config, adImageSrc: null }));
+      setDraftStatus('配图较大，仅保留了网站、尺寸和文案');
+    } catch (fallbackErr) {
+      console.warn(fallbackErr);
+      setDraftStatus('投放素材草稿保存失败');
+    }
+  }
+}
+
+function restoreAdDraft() {
+  try {
+    const raw = localStorage.getItem(AD_DRAFT_KEY);
+    if (!raw) return false;
+    const draft = JSON.parse(raw);
+    if (!Array.isArray(draft.adSites) || !Array.isArray(draft.adLanguages)) return false;
+    adSites = draft.adSites;
+    adLanguages = draft.adLanguages.length ? draft.adLanguages : createDefaultAdLanguages();
+    adImageSrc = typeof draft.adImageSrc === 'string' ? draft.adImageSrc : null;
+    adSolidColor = typeof draft.adSolidColor === 'string' ? draft.adSolidColor : '#0066FF';
+    adBackgroundStart = typeof draft.adBackgroundStart === 'string' ? draft.adBackgroundStart : '#0066FF';
+    adBackgroundEnd = typeof draft.adBackgroundEnd === 'string' ? draft.adBackgroundEnd : '#2692FF';
+    adGradientEnabled = draft.adGradientEnabled !== false;
+    adImage = null;
+    adSiteId = Math.max(0, ...adSites.map(site => Number(site.id) || 0)) + 1;
+    adSizeId = Math.max(0, ...adSites.flatMap(site => (site.sizes || []).map(size => Number(size.id) || 0))) + 1;
+    adLangId = Math.max(0, ...adLanguages.map(lang => Number(lang.id) || 0)) + 1;
+    return true;
+  } catch (err) {
+    console.warn(err);
+    return false;
+  }
+}
+
 function saveDraft(statusText = '已自动保存') {
   if (isRestoringDraft) return;
   const draft = {
@@ -1204,6 +1348,13 @@ function saveDraft(statusText = '已自动保存') {
     apprebateConfigEnabled,
     apprebateLangs,
     apprebateImage,
+    adSites,
+    adLanguages,
+    adImageSrc,
+    adSolidColor,
+    adBackgroundStart,
+    adBackgroundEnd,
+    adGradientEnabled,
     hiddenLangCodes: Object.fromEntries(Object.entries(hiddenLangCodes).map(([key, value]) => [key, Array.from(value)])),
     images
   };
@@ -1312,6 +1463,17 @@ function resetToDefaultState() {
   apprebateLangs = {};
   apprebateConfigEnabled = true;
   apprebateImage = null;
+  adSites = [];
+  adLanguages = createDefaultAdLanguages();
+  adImage = null;
+  adImageSrc = null;
+  adSolidColor = '#0066FF';
+  adBackgroundStart = '#0066FF';
+  adBackgroundEnd = '#2692FF';
+  adGradientEnabled = true;
+  adSiteId = 1;
+  adSizeId = 1;
+  adLangId = 5;
   hiddenLangCodes = { common: new Set(), baping: new Set(), trade: new Set(), pcrebate: new Set(), apprebate: new Set() };
   Object.keys(scaleState).forEach(k => delete scaleState[k]);
   Object.keys(emailFontModes).forEach(k => delete emailFontModes[k]);
@@ -1349,6 +1511,17 @@ function restoreDraft() {
       apprebateLangs = draft.apprebateLangs || {};
       apprebateConfigEnabled = true;
       apprebateImage = draft.apprebateImage || null;
+      adSites = Array.isArray(draft.adSites) ? draft.adSites : [];
+      adLanguages = Array.isArray(draft.adLanguages) && draft.adLanguages.length ? draft.adLanguages : createDefaultAdLanguages();
+      adImageSrc = typeof draft.adImageSrc === 'string' ? draft.adImageSrc : null;
+      adSolidColor = typeof draft.adSolidColor === 'string' ? draft.adSolidColor : '#0066FF';
+      adBackgroundStart = typeof draft.adBackgroundStart === 'string' ? draft.adBackgroundStart : '#0066FF';
+      adBackgroundEnd = typeof draft.adBackgroundEnd === 'string' ? draft.adBackgroundEnd : '#2692FF';
+      adGradientEnabled = draft.adGradientEnabled !== false;
+      adImage = null;
+      adSiteId = Math.max(0, ...adSites.map(site => Number(site.id) || 0)) + 1;
+      adSizeId = Math.max(0, ...adSites.flatMap(site => (site.sizes || []).map(size => Number(size.id) || 0))) + 1;
+      adLangId = Math.max(0, ...adLanguages.map(lang => Number(lang.id) || 0)) + 1;
       hiddenLangCodes = Object.fromEntries(['common','baping','trade','pcrebate','apprebate'].map(key => [key, new Set(draft.hiddenLangCodes?.[key] || [])]));
       Object.keys(scaleState).forEach(k => delete scaleState[k]);
       Object.assign(scaleState, draft.scaleState || {});
@@ -1363,6 +1536,7 @@ function restoreDraft() {
     console.warn(err);
   }
   if (!restored) resetToDefaultState();
+  restoreAdDraft();
   isRestoringDraft = false;
   updateSlotControls();
   setUploadButtonState('light');
@@ -1385,6 +1559,10 @@ function restoreDraft() {
   renderTradeLangList();
   renderPcRebateLangList();
   renderAppRebateLangList();
+  renderAdConfigLists();
+  syncAdBackgroundControls();
+  restoreAdImage();
+  renderAdCreative();
   if (activeSlots.size) generate();
   if (restored && !sessionStorage.getItem('htxDraftRestoreNotified')) {
     sessionStorage.setItem('htxDraftRestoreNotified', '1');
@@ -1402,7 +1580,8 @@ function clearDraft() {
     common: ['new','old','email','appcal','pccal','share','feed','landing'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
-    rebate: ['pcrebate','apprebate']
+    rebate: ['pcrebate','apprebate'],
+    ads: []
   }[group] || [];
   const typeSet = new Set(groupTypes);
   Object.keys(scaleState).forEach(key => {
@@ -1432,6 +1611,18 @@ function clearDraft() {
     apprebateLangs = {};
     apprebateImage = null;
     apprebateConfigEnabled = true;
+  } else if (group === 'ads') {
+    adSites = [];
+    adLanguages = createDefaultAdLanguages();
+    adImage = null;
+    adImageSrc = null;
+    adSolidColor = '#0066FF';
+    adBackgroundStart = '#0066FF';
+    adBackgroundEnd = '#2692FF';
+    adGradientEnabled = true;
+    adSiteId = 1;
+    adSizeId = 1;
+    adLangId = 5;
   }
   setTradeUploadButtonState('light');
   setTradeUploadButtonState('dark');
@@ -1445,9 +1636,14 @@ function clearDraft() {
   renderTradeLangList();
   renderPcRebateLangList();
   renderAppRebateLangList();
+  renderAdConfigLists();
+  syncAdBackgroundControls();
+  restoreAdImage();
+  renderAdCreative();
   generate();
+  if (group === 'ads') saveAdDraft();
   saveDraft();
-  const groupName = { common:'通用内容', baping:'霸屏', trade:'交易赛', rebate:'返佣' }[group];
+  const groupName = { common:'通用内容', baping:'霸屏', trade:'交易赛', rebate:'返佣', ads:'投放素材' }[group];
   setDraftStatus(`${groupName}草稿已清空`);
 }
 
@@ -2030,17 +2226,17 @@ function renderLangList() {
 }
 
 function autoResizeTextArea(textarea) {
-  if (!(textarea instanceof HTMLTextAreaElement) || !textarea.closest('.lang-inputs')) return;
+  if (!(textarea instanceof HTMLTextAreaElement) || (!textarea.closest('.lang-inputs') && !textarea.closest('.ad-lang-card'))) return;
   textarea.style.height = '34px';
   textarea.style.height = `${Math.max(34, textarea.scrollHeight)}px`;
 }
 
 function autoResizeAllTextAreas(root = document) {
-  root.querySelectorAll?.('.lang-inputs textarea').forEach(autoResizeTextArea);
+  root.querySelectorAll?.('.lang-inputs textarea, .ad-lang-card textarea').forEach(autoResizeTextArea);
 }
 
 document.addEventListener('input', event => {
-  if (event.target.matches?.('.lang-inputs textarea')) {
+  if (event.target.matches?.('.lang-inputs textarea, .ad-lang-card textarea')) {
     if (!/\S/.test(event.target.value)) event.target.value = '';
     autoResizeTextArea(event.target);
   }
@@ -3666,19 +3862,272 @@ async function downloadAll() {
   }
 }
 
+let adLayout = 'split';
+let adImage = null;
+let adImageSrc = null;
+let adSolidColor = '#0066FF';
+let adBackgroundStart = '#0066FF';
+let adBackgroundEnd = '#2692FF';
+let adGradientEnabled = true;
+let adSites = [];
+function createDefaultAdLanguages() { return [
+  { id: 1, code: 'en', eyebrow: '', title: '' },
+  { id: 2, code: 'zh-CN', eyebrow: '', title: '' },
+  { id: 3, code: 'zh-TW', eyebrow: '', title: '' },
+  { id: 4, code: 'ru', eyebrow: '', title: '' }
+]; }
+let adLanguages = createDefaultAdLanguages();
+let adSiteId = 2, adSizeId = 3, adLangId = 5;
+const adLogoCache = {};
+function setAdLayout(layout) {
+  adLayout = layout;
+  document.querySelectorAll('.ad-layout-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.adLayout === layout));
+  renderAdCreative();
+}
+const adLanguageOptions = [['en','en-us'],['zh-CN','zh-cn'],['zh-TW','zh-hk'],['ru','ru-ru'],['vi','vi-vn'],['tr','tr-tr']];
+function getAdLanguageLabel(code) { return adLanguageOptions.find(([value]) => value === code)?.[1] || code; }
+function syncAdBackgroundControls() {
+  const solid = document.getElementById('adSolidColor');
+  const start = document.getElementById('adBgStart');
+  const end = document.getElementById('adBgEnd');
+  const solidMode = document.getElementById('adSolidMode');
+  const gradientMode = document.getElementById('adGradientMode');
+  const solidPanel = document.getElementById('adSolidPanel');
+  const gradientPanel = document.getElementById('adGradientPanel');
+  if (solid) solid.value = adSolidColor;
+  if (start) start.value = adBackgroundStart;
+  if (end) end.value = adBackgroundEnd;
+  solidMode?.classList.toggle('active', !adGradientEnabled);
+  gradientMode?.classList.toggle('active', adGradientEnabled);
+  solidPanel?.classList.toggle('active', !adGradientEnabled);
+  gradientPanel?.classList.toggle('active', adGradientEnabled);
+}
+function updateAdBackground(key, value) {
+  if (key === 'solid') adSolidColor = value;
+  if (key === 'start') adBackgroundStart = value;
+  if (key === 'end') adBackgroundEnd = value;
+  if (key === 'gradient') adGradientEnabled = Boolean(value);
+  syncAdBackgroundControls();
+  renderAdCreative();
+  saveAdChanges();
+}
+function renderAdConfigLists() {
+  const sites=document.getElementById('adSiteList'),langs=document.getElementById('adLangList'); if(!sites||!langs)return;
+  sites.innerHTML=adSites.map(site=>`<div class="ad-site-card"><div class="ad-site-head"><input value="${site.name}" placeholder="投放网站名称" oninput="updateAdSiteName(${site.id},this.value)"><button class="lang-remove" onclick="removeAdSite(${site.id})">✕</button></div>${site.sizes.map(size=>`<div class="ad-site-size"><div><label>宽度</label><input type="number" value="${size.width}" placeholder="0" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'width',this.value)"></div><div><label>高度</label><input type="number" value="${size.height}" placeholder="0" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'height',this.value)"></div><button class="lang-remove" onclick="removeAdSiteSize(${site.id},${size.id})" ${site.sizes.length===1?'style="visibility:hidden"':''}>✕</button></div>`).join('')}<button class="ad-site-add-size" onclick="addAdSiteSize(${site.id})">+ 添加尺寸</button></div>`).join('');
+  langs.innerHTML=adLanguages.map(lang=>`<div class="ad-lang-card"><div class="ad-lang-head"><select onchange="updateAdLanguage(${lang.id},'code',this.value)">${adLanguageOptions.map(([code,label])=>`<option value="${code}" ${lang.code===code?'selected':''}>${label}</option>`).join('')}</select><button class="lang-remove" onclick="removeAdLanguage(${lang.id})" ${adLanguages.length===1?'style="display:none"':''}>✕</button></div><textarea placeholder="主标题" oninput="updateAdLanguage(${lang.id},'eyebrow',this.value)">${lang.eyebrow}</textarea><textarea style="margin-top:8px" placeholder="副标题" oninput="updateAdLanguage(${lang.id},'title',this.value)">${lang.title}</textarea></div>`).join('');
+  requestAnimationFrame(()=>autoResizeAllTextAreas(langs));
+}
+function saveAdChanges(){scheduleAdDraftSave();scheduleDraftSave();}
+function addAdSite(){adSites.push({id:adSiteId++,name:'',sizes:[{id:adSizeId++,width:'',height:''}]});renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function removeAdSite(id){adSites=adSites.filter(site=>site.id!==id);renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function updateAdSiteName(id,value){const site=adSites.find(s=>s.id===id);if(site)site.name=value;renderAdCreative();saveAdChanges();}
+function addAdSiteSize(siteId){const site=adSites.find(s=>s.id===siteId);if(!site)return;const b=site.sizes[site.sizes.length-1];site.sizes.push({id:adSizeId++,width:b.width,height:b.height});renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function removeAdSiteSize(siteId,sizeId){const site=adSites.find(s=>s.id===siteId);if(!site||site.sizes.length<=1)return;site.sizes=site.sizes.filter(s=>s.id!==sizeId);renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function updateAdSiteSize(siteId,sizeId,key,value){const site=adSites.find(s=>s.id===siteId),size=site?.sizes.find(s=>s.id===sizeId);if(!size)return;size[key]=value===''?'':Math.max(1,Math.min(5000,Number(value)||0));renderAdCreative();saveAdChanges();}
+function addAdLanguage(){const used=new Set(adLanguages.map(l=>l.code)),next=adLanguageOptions.find(([code])=>!used.has(code))?.[0]||'en';adLanguages.push({id:adLangId++,code:next,eyebrow:'',title:''});renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function removeAdLanguage(id){if(adLanguages.length<=1)return;adLanguages=adLanguages.filter(l=>l.id!==id);renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function updateAdLanguage(id,key,value){const lang=adLanguages.find(l=>l.id===id);if(lang)lang[key]=value;renderAdCreative();saveAdChanges();
+}
+function handleAdImage(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    adImageSrc = String(reader.result || '');
+    const img = new Image();
+    img.onload = () => { adImage = img; document.getElementById('adImageBtn').textContent = file.name; renderAdCreative(); saveAdChanges(); };
+    img.src = adImageSrc;
+  };
+  reader.readAsDataURL(file);
+}
+function restoreAdImage() {
+  const btn = document.getElementById('adImageBtn');
+  if (!adImageSrc) {
+    adImage = null;
+    if (btn) btn.textContent = '点击或拖拽上传';
+    return;
+  }
+  const img = new Image();
+  img.onload = () => { adImage = img; if (btn) btn.textContent = '配图已上传'; renderAdCreative(); };
+  img.onerror = () => { adImage = null; adImageSrc = null; if (btn) btn.textContent = '点击或拖拽上传'; };
+  img.src = adImageSrc;
+}
+const AD_LOGO_CN='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODciIGhlaWdodD0iNDEiIHZpZXdCb3g9IjAgMCA4NyA0MSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjYzNzQgMTIuMjk5N0MxNy43NTk0IDYuMzk4ODQgMTQuMzQwNCAxLjI1Njk3IDEyLjU1OTggMC4wMjExNzU4QzEyLjU1MTcgMC4wMTMyMjg1IDEyLjM5MzEgLTAuMDcwMjE2NyAxMi40MDUzIDAuMTYwMjU0QzEyLjQwNTMgMC4xNjQyMjcgMTIuNDAxMyAwLjE2NDIyNiAxMi40MDEzIDAuMTY4MTk5QzEyLjIxODMgMTEuMzE0MiA2LjM1NjEgMTQuMzE4MyAzLjE3Mjk0IDE4LjQwMzJDLTMuOTAwNzYgMjcuNDg2OSAyLjAwMjEyIDM3Ljg1MDEgOS42NDkwMyAzOS44MTMxQzkuNzc5MTIgMzkuODQ0OCAxMC4xMzI4IDM5Ljk0ODIgMTAuODAzNiA0MC4wODMzQzExLjE1MzIgNDAuMTU0OCAxMS4yNTQ4IDM5Ljg2NDcgMTAuOTk4NyAzOS40MzE2QzEwLjA4NCAzNy44Nzc5IDguNDU3ODggMzUuMjU1MyA4LjEzNjcyIDMxLjg4NTdDNy40MDQ5NiAyNC4wNjE2IDE3LjQ5NTEgMTkuMTY2MSAxNy42Mzc0IDEyLjI5OTdaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjEuNDkxNSAxNi4wNzg5QzIxLjQzMDYgMTYuMDM1MSAyMS4zNDUyIDE2LjAzOTEgMjEuMzM3MSAxNi4xMTQ2QzIxLjE3NDUgMTcuNTMzMiAxOS42NzQzIDIwLjQ3MzcgMTcuNjk4NiAyMy4yMjM0QzExLjA0NzcgMzIuNDkzOSAxNC4zOTc1IDM2LjY5OCAxNi45OTkzIDM5LjYxNDZDMTcuNDc5IDQwLjE1NSAxNy43MTg5IDQwLjAzNTggMTcuOTcwOSAzOS42NTA0QzE4LjIwNjcgMzkuMjg0OCAxOC41NjQ1IDM4LjgxOTkgMjAuMTAxMiAzOC4xMDg2QzIwLjM0MSAzNy45OTc0IDI2LjE0NjQgMzQuOTg1NCAyNi43NzY1IDI4LjEyNjlDMjcuMzgyMiAyMS40ODcgMjMuMDI4MiAxNy4yOTQ4IDIxLjQ5MTUgMTYuMDc4OVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik00NS4zNTkxIDE0LjI4MzJINDcuMDA5OUM0OC4wMDI5IDE0LjI4MzIgNDguODA3NiAxNS4wNzA5IDQ4LjgwNjQgMTYuMDQxNEM0OC44MDI2IDE4LjAyMjIgNDguNzk1MSAyMC4yNjU3IDQ4LjgzODQgMjIuMDA2QzQ4Ljg3NiAyMy40ODYzIDQ5LjM0MDUgMjguMDEgNTEuOTUxMSAzMS4zNDZDNTMuODYxMSAzMy43NTMyIDU2LjQ3MDQgMzQuODI0OSA1OC4wMjE0IDM1LjI3NDZDNTguNzg2NiAzNS40OTY2IDU5LjMxMzkgMzYuMTggNTkuMzE4MiAzNi45NjAzQzU5LjMyMiAzNy41NjM0IDU5LjMzMzMgMzguMTg1NCA1OS4zMzUyIDM4LjY4MjlDNTkuMzM1MiAzOC43NTU5IDU5LjI3MTIgMzguODEzNiA1OS4xOTY1IDM4LjgwNTZDNTQuOTAwNiAzOC4zNTA0IDQ5LjQyNjUgMzUuMjgwMSA0Ny4wNjcxIDI5LjQ5MDlDNDYuOTMwMiAyOS44NDExIDQ1LjU4ODIgMzMuMTg1NyA0Mi4zNTM4IDM1LjcxOTlDMzkuMzM3MSAzOC4wODM2IDM1Ljc4NTYgMzguNjg4NSAzNS4wMjMgMzguNzkwM0MzNC45NDc3IDM4LjgwMDEgMzQuODgxMSAzOC43NDM3IDM0Ljg4MTEgMzguNjY5NEMzNC44ODA1IDM4LjE5MzQgMzQuODc2NyAzNy41NjY0IDM0Ljg3NTUgMzYuOTM5NUMzNC44NzQyIDM2LjE1NDkgMzUuNDA3OCAzNS40NjkgMzYuMTc4NiAzNS4yNTA2QzM4LjY4OTkgMzQuNTM5IDQwLjgxNTkgMzMuMTEyMSA0Mi40MTQgMzEuMDE1OUM0NC45NDU1IDI3Ljk4MyA0NS4zODExIDIyLjI4NDYgNDUuMzYzNSAyMC4xMjc2QzQ1LjM0OTEgMTguMzQ0MyA0NS4zNjA0IDE2LjU2MDQgNDUuMzYwNCAxNC43Nzc3VjE0LjI4MzJINDUuMzU5MVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zNi45MjUgMjYuNDM0NEMzNi44MzE1IDI1LjM5MjEgMzYuMTEwMiAxNy4zNDcyIDM2LjAwNzMgMTYuMTg3MkMzNi4wMDEgMTYuMTE2IDM2LjA1ODggMTYuMDU0NyAzNi4xMzIyIDE2LjA1NDdIMzcuODY2NUMzOC43OTc0IDE2LjA1NDcgMzkuNTczOCAxNi43NTA0IDM5LjY1NDggMTcuNjU2NEMzOS44OTMzIDIwLjMzNDggNDAuMzU0NyAyNS41MTc5IDQwLjQzMjUgMjYuNDE0MkM0MC40Mzg4IDI2LjQ4NTMgNDAuMzgxIDI2LjU0NjEgNDAuMzA4MiAyNi41NDYxSDM3LjA0OTlDMzYuOTg1MiAyNi41NDYxIDM2LjkzMTMgMjYuNDk3NiAzNi45MjU2IDI2LjQzNUwzNi45MjUgMjYuNDM0NFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik01OC4wNjU1IDE2LjE4NzJMNTcuMTQ2NiAyNi40MzMyQzU3LjE0MDkgMjYuNDk2NCA1Ny4wODYzIDI2LjU0NTUgNTcuMDIxNyAyNi41NDU1SDUzLjgwMTZDNTMuNzI4MiAyNi41NDU1IDUzLjY3MDUgMjYuNDgzNSA1My42NzY3IDI2LjQxMjNMNTQuNDYwNyAxNy42NTdDNTQuNTQxNyAxNi43NTA0IDU1LjMxODggMTYuMDU0NyA1Ni4yNTAzIDE2LjA1NDdINTcuOTQxMkM1OC4wMTQ3IDE2LjA1NDcgNTguMDcyNCAxNi4xMTY2IDU4LjA2NjIgMTYuMTg3OEw1OC4wNjU1IDE2LjE4NzJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNODYuNjU1MiAxNy4xNTA2TDg2LjU3MDIgMTUuNDMyNkM4Ni41MzUxIDE0LjczMSA4NS45NTIgMTQuMTg5OCA4NS4yNjkzIDE0LjIyNDJMNjQuMTIyNiAxNS4yOTIyVjE4LjI3ODhMNzMuODM4OCAxNy43OTQ4VjIxLjU3MTZINjQuOTA3OFYyMS42Mjg5SDY0Ljg1NTFWMzYuMDY2MUg2NC45MDc4VjM2LjA5NzZINjcuOTI4OFYyNC43NjQzSDczLjgzODhWMzguODA2M0g3Ni43OTgzVjI0Ljc2NDNIODMuMDI0OFYzMy4yNTE0SDc5Ljg5ODNWMzUuOTg1OUg4My41MzQ2Qzg0Ljk0OTkgMzUuOTg1OSA4Ni4wOTU2IDM0LjgxMTkgODYuMDk1NiAzMy4zNjNWMjQuMTk0NUM4Ni4wOTU2IDIyLjc0NTYgODQuOTQ5OSAyMS41NzE2IDgzLjUzNDYgMjEuNTcxNkg3Ni43OTgzVjE3LjY0NTlMODYuNjU4MSAxNy4xNDc3TDg2LjY1NTIgMTcuMTUwNloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=';
+const AD_LOGO_EN='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTA0IiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTA0IDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTcuMTk3MyAxMi4yNzA4QzE3LjMxNjIgNi4zODM4MyAxMy45ODI2IDEuMjU0MDIgMTIuMjQ2NCAwLjAyMTEyNjFDMTIuMjM4NSAwLjAxMzE5NzUgMTIuMDgzOSAtMC4wNzAwNTE5IDEyLjA5NTggMC4xNTk4NzdDMTIuMDk1OCAwLjE2Mzg0MiAxMi4wOTE4IDAuMTYzODQgMTIuMDkxOCAwLjE2NzgwNUMxMS45MTM0IDExLjI4NzcgNi4xOTc0OSAxNC4yODQ3IDMuMDkzNzYgMTguMzZDLTMuODAzNDIgMjcuNDIyNCAxLjk1MjE2IDM3Ljc2MTMgOS40MDgyNCAzOS43MTk2QzkuNTM1MDkgMzkuNzUxMyA5Ljg3OTk0IDM5Ljg1NDQgMTAuNTM0IDM5Ljk4OTJDMTAuODc0OSA0MC4wNjA1IDEwLjk3NCAzOS43NzEyIDEwLjcyNDMgMzkuMzM5QzkuODMyMzggMzcuNzg5IDguMjQ2ODIgMzUuMTcyNiA3LjkzMzY3IDMxLjgxMDhDNy4yMjAxNyAyNC4wMDUxIDE3LjA1ODYgMTkuMTIxMSAxNy4xOTczIDEyLjI3MDhaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAuOTU0NyAxNi4wMzk3QzIwLjg5NTIgMTUuOTk2MSAyMC44MTIgMTYuMDAwMSAyMC44MDQxIDE2LjA3NTRDMjAuNjQ1NSAxNy40OTA3IDE5LjE4MjggMjAuNDI0MiAxNy4yNTY0IDIzLjE2NzVDMTAuNzcxNCAzMi40MTYzIDE0LjAzNzcgMzYuNjEwNSAxNi41NzQ2IDM5LjUyMDNDMTcuMDQyMyA0MC4wNTk0IDE3LjI3NjIgMzkuOTQwNSAxNy41MjE5IDM5LjU1NkMxNy43NTE4IDM5LjE5MTIgMTguMTAwNyAzOC43Mjc0IDE5LjU5OSAzOC4wMTc4QzE5LjgzMjkgMzcuOTA2OCAyNS40OTMzIDM0LjkwMTkgMjYuMTA3NyAyOC4wNTk1QzI2LjY5ODQgMjEuNDM1MSAyMi40NTMgMTcuMjUyOCAyMC45NTQ3IDE2LjAzOTdaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNTQuNjI4MiAxNC4zNTE2VjM4LjY4ODRINDkuNDA3OFYyOC44NTY5SDM5LjM3NTJWMzguNjg4NEgzNC4wMjM5VjE0LjM1MTZIMzkuMzc1MlYyNC4xODNINDkuNDA3OFYxNC4zNTE2SDU0LjYyODJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNzguNzY0OCAxNC4zNTE2VjE5LjE2NDJINzYuMjc5NUg3MS4yNjkxVjM4LjY4NDRINjUuODk4VjE5LjE2ODJINjEuMDIyNUg1OC41MzcxVjE0LjM1MTZINzguNzY0OFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik05My4zODkyIDE4LjgxMTNMOTYuNDQ1MyAyMy4wMTc1TDEwMi41MDIgMTQuMzU1NUg5Ni41ODQxTDkzLjM4OTIgMTguODExM1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOTcuNzczMiAzOC43MThMOTEuNjM3IDMwLjI1MDNMODUuNTQ4NSAzOC42ODI0TDc5LjU5NDcgMzguNjkwM0w4OC42MjA1IDI2LjI2NjJMODAuMTAyMSAxNC4zNTc0SDg2LjA1MTlMMTAzLjY5OSAzOC43MThIOTcuNzczMloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=';
+function loadAdLogo(src) {
+  if (adLogoCache[src]) return Promise.resolve(adLogoCache[src]);
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => { adLogoCache[src] = img; resolve(img); };
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+function adTextLines(ctx, text, maxWidth) {
+  const lines = [];
+  String(text || '').split(/\r?\n/).forEach(paragraph => {
+    const source=paragraph.trim();
+    if(!source){lines.push('');return;}
+    const usesWords=/\s/.test(source),parts=usesWords?source.split(/\s+/):Array.from(source);
+    let line='';
+    parts.forEach(part=>{
+      const spacer=usesWords&&line?' ':'';
+      const test=line+spacer+part;
+      if(line&&ctx.measureText(test).width>maxWidth){lines.push(line);line=part;}else line=test;
+    });
+    if(line)lines.push(line);
+  });
+  return lines;
+}
+function fitAdText(ctx, text, maxWidth, maxHeight, maxSize, minSize, maxLines) {
+  for (let size = maxSize; size >= minSize; size -= Math.max(1, Math.round(maxSize / 40))) {
+    ctx.font = `normal 700 ${size}px Arial, "PingFang SC", "Microsoft YaHei", sans-serif`;
+    const lines = adTextLines(ctx, text, maxWidth);
+    const lineHeight = size * 1.16;
+    if (lines.length <= maxLines && lines.length * lineHeight <= maxHeight) return { size, lines, lineHeight };
+  }
+  ctx.font = `normal 700 ${minSize}px Arial, "PingFang SC", "Microsoft YaHei", sans-serif`;
+  return { size:minSize, lines:adTextLines(ctx,text,maxWidth).slice(0,maxLines), lineHeight:minSize*1.16 };
+}
+function drawAdFallback(ctx, x, y, size) {
+  const g = ctx.createRadialGradient(x-size*.2,y-size*.25,size*.1,x,y,size*.55);
+  g.addColorStop(0,'#FFD17A'); g.addColorStop(1,'#FF7A00');
+  ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.beginPath(); ctx.arc(x-size*.24,y-size*.28,size*.35,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x,y,size*.42,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#FFF'; ctx.lineWidth = Math.max(2,size*.035); ctx.stroke();
+  ctx.fillStyle='#FFF'; ctx.font=`700 ${size*.38}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('₿',x,y);
+}
+function classifyAdFormat(w,h) {
+  const aspect=w/h;
+  if(aspect<.8)return 'vertical';
+  if(aspect<=1.2)return 'square';
+  if(aspect<3)return 'horizontal';
+  return 'narrow';
+}
+async function drawAdCreative(canvas,w,h,lang) {
+  canvas.width=w; canvas.height=h; const ctx=canvas.getContext('2d');
+  if (adGradientEnabled) { const g=ctx.createLinearGradient(0,0,w,h); g.addColorStop(0,adBackgroundStart); g.addColorStop(1,adBackgroundEnd); ctx.fillStyle=g; }
+  else ctx.fillStyle=adSolidColor;
+  ctx.fillRect(0,0,w,h);
+  const aspect = w / h, format=classifyAdFormat(w,h), short=format==='narrow';
+  let padX, padY;
+  if (format==='narrow') { padX = w * .04; padY = h * .12; }
+  else if (format==='vertical') { padX = w * .10; padY = h * .06; }
+  else if (format==='square') { padX = padY = Math.min(w,h) * .055; }
+  else { padX = padY = Math.min(w,h) * .08; }
+  const visualInset=Math.min(w,h)*(format==='square'?.025:.035),contentX=padX+visualInset,contentY=padY+visualInset;
+  const logoSrc=lang.code==='zh-CN'?AD_LOGO_CN:AD_LOGO_EN, logo=await loadAdLogo(logoSrc);
+  let lw=0,lh=0;
+  if(logo){
+    let maxLW,maxLH;
+    if(format==='narrow'){maxLW=w*.12;maxLH=h*.28;}
+    else if(format==='vertical'){maxLW=w*.20;maxLH=h*.08;}
+    else{maxLW=w*.16;maxLH=h*.08;}
+    const lr=Math.min(maxLW/logo.width,maxLH/logo.height);lw=logo.width*lr;lh=logo.height*lr;
+  }
+  const mainTitle=lang.eyebrow.trim()||'活动主标题', subTitle=lang.title.trim();
+  let tx,ty,tw,th,align='left', ix,iy,is;
+  if(format==='vertical') {
+    tw=w-contentX*2;th=h*.44;tx=w/2;ty=Math.max(contentY,h*.10);align='center';
+    is=Math.min(w*.68,h*.42);ix=w/2;iy=h*.72;
+  } else if(format==='narrow') {
+    is=Math.min(w*.28,h*.86);ix=w-padX-is*.72;iy=h/2;
+    tx=contentX+lw+w*.025;tw=Math.max(w*.24,ix-is*.50-tx-w*.025);th=h-contentY*2;ty=contentY;
+  } else {
+    tw=w-contentX*2;th=h*.52;tx=contentX;ty=contentY;
+    is=Math.min(w*.43,h*.55);ix=w-padX-is*.50;iy=h-padY-is*.50;
+  }
+  const vertical = format==='vertical';
+  const isChinese=/^zh-/i.test(lang.code);
+  const maxTitle=vertical ? Math.min(w*.14,h*.12,64) : short ? (isChinese?Math.min(h*.42,w*.095,58):Math.min(h*.30,w*.075,48)) : Math.min(h*.16,w*.09,86);
+  const minTitle=short ? Math.max(16,Math.min(24,h*.20)) : Math.max(10,Math.min(vertical?28:24,h*.12));
+  const renderedMainTitle=short?mainTitle.replace(/\s*\r?\n\s*/g,' '):mainTitle;
+  const fitted=fitAdText(ctx,renderedMainTitle,tw,th*.72,maxTitle,minTitle,short?1:3);
+  const titleSize=short&&isChinese?fitted.size*.88:fitted.size;
+  const titleLineHeight=titleSize*1.16;
+  const titleFont=`normal 700 ${titleSize}px Arial, "PingFang SC", "Microsoft YaHei", sans-serif`;
+  const subRatio=vertical?.06:(short?.17:.055);
+  const subSize=Math.max(9,Math.min(short?36:40,Math.min(w,h)*subRatio));
+  ctx.font=`normal 400 ${subSize}px "HarmonyOS Sans SC", Arial, sans-serif`;
+  const subLines=subTitle?adTextLines(ctx,subTitle,tw).slice(0,short?1:2):[];
+  if(format==='narrow'){const gap=subLines.length?subSize*.35:0,totalH=fitted.lines.length*titleLineHeight+gap+subLines.length*subSize*1.35;ty=Math.max(contentY,(h-totalH)/2);}
+  ctx.font=titleFont;
+  ctx.textAlign=align;ctx.textBaseline='top';ctx.fillStyle='#FFF';fitted.lines.forEach((line,i)=>ctx.fillText(line,tx,ty+i*titleLineHeight));
+  if(subLines.length){const subY=ty+fitted.lines.length*titleLineHeight+subSize*(short?.35:.65);ctx.font=`normal 400 ${subSize}px "HarmonyOS Sans SC", Arial, sans-serif`;ctx.fillStyle='rgba(255,255,255,.78)';subLines.forEach((line,i)=>ctx.fillText(line,tx,subY+i*subSize*1.35));}
+  if(adImage){
+    const ratio=Math.min(is/adImage.width,is/adImage.height),iw=adImage.width*ratio,ih=adImage.height*ratio;
+    const imageY=(format==='horizontal'||format==='square')?h-contentY-ih:iy-ih/2;
+    ctx.drawImage(adImage,ix-iw/2,imageY,iw,ih);
+  }
+  if(logo){
+    const logoX=format==='vertical'?(w-lw)/2:contentX;
+    const logoY=format==='narrow'?(h-lh)/2:h-contentY-lh;
+    ctx.drawImage(logo,logoX,logoY,lw,lh);
+  }
+}
+async function renderAdCreative() {
+  const grid=document.getElementById('adCanvasGrid'); if(!grid)return;
+  const tasks=adSites.flatMap(site=>site.sizes.filter(size=>Number(size.width)>0&&Number(size.height)>0).flatMap(size=>adLanguages.map(lang=>({site,size,lang,key:`${site.id}-${size.id}-${lang.id}`}))));
+  if(!tasks.length){grid.innerHTML='<div class="empty-state">添加投放网站和尺寸后将自动预览</div>';document.getElementById('adPreviewMeta').textContent='投放素材';return;}
+  grid.innerHTML=tasks.map(t=>`<div class="ad-canvas-item"><canvas id="adCanvas-${t.key}"></canvas><div class="ad-canvas-label">${t.site.name} / ${t.size.width}×${t.size.height} / ${getAdLanguageLabel(t.lang.code)}</div></div>`).join('');
+  await Promise.all(tasks.map(t=>drawAdCreative(document.getElementById(`adCanvas-${t.key}`),t.size.width,t.size.height,t.lang)));
+  document.getElementById('adPreviewMeta').textContent='投放素材';
+}
+let adCrcTable;
+function adCrc32(bytes){
+  if(!adCrcTable)adCrcTable=Array.from({length:256},(_,n)=>{let c=n;for(let k=0;k<8;k++)c=(c&1)?0xEDB88320^(c>>>1):c>>>1;return c>>>0;});
+  let crc=0xFFFFFFFF;for(const byte of bytes)crc=adCrcTable[(crc^byte)&255]^(crc>>>8);return (crc^0xFFFFFFFF)>>>0;
+}
+function adWrite16(view,offset,value){view.setUint16(offset,value,true);}
+function adWrite32(view,offset,value){view.setUint32(offset,value>>>0,true);}
+function createAdZip(files){
+  const encoder=new TextEncoder(),locals=[],centrals=[];let offset=0;
+  const now=new Date(),dosTime=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1),dosDate=((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+  files.forEach(file=>{
+    const name=encoder.encode(file.name),data=file.data,crc=adCrc32(data);
+    const local=new Uint8Array(30+name.length+data.length),lv=new DataView(local.buffer);
+    adWrite32(lv,0,0x04034B50);adWrite16(lv,4,20);adWrite16(lv,6,0x0800);adWrite16(lv,8,0);adWrite16(lv,10,dosTime);adWrite16(lv,12,dosDate);adWrite32(lv,14,crc);adWrite32(lv,18,data.length);adWrite32(lv,22,data.length);adWrite16(lv,26,name.length);adWrite16(lv,28,0);local.set(name,30);local.set(data,30+name.length);locals.push(local);
+    const central=new Uint8Array(46+name.length),cv=new DataView(central.buffer);
+    adWrite32(cv,0,0x02014B50);adWrite16(cv,4,20);adWrite16(cv,6,20);adWrite16(cv,8,0x0800);adWrite16(cv,10,0);adWrite16(cv,12,dosTime);adWrite16(cv,14,dosDate);adWrite32(cv,16,crc);adWrite32(cv,20,data.length);adWrite32(cv,24,data.length);adWrite16(cv,28,name.length);adWrite16(cv,30,0);adWrite16(cv,32,0);adWrite16(cv,34,0);adWrite16(cv,36,0);adWrite32(cv,38,0);adWrite32(cv,42,offset);central.set(name,46);centrals.push(central);offset+=local.length;
+  });
+  const centralSize=centrals.reduce((sum,item)=>sum+item.length,0),end=new Uint8Array(22),ev=new DataView(end.buffer);
+  adWrite32(ev,0,0x06054B50);adWrite16(ev,4,0);adWrite16(ev,6,0);adWrite16(ev,8,files.length);adWrite16(ev,10,files.length);adWrite32(ev,12,centralSize);adWrite32(ev,16,offset);adWrite16(ev,20,0);
+  return new Blob([...locals,...centrals,end],{type:'application/zip'});
+}
+async function downloadAdCreative() {
+  if(!adSites.length){alert('请先添加投放网站和尺寸');return;}
+  if(!adSites.some(site=>site.sizes.some(size=>Number(size.width)>0&&Number(size.height)>0))){alert('请填写有效的宽度和高度');return;}
+  const button=document.getElementById('adDownloadBtn'),originalText=button?.textContent;
+  if(button){button.disabled=true;button.textContent='生成中…';}
+  try{
+    await renderAdCreative();
+    const files=[];
+    for(const site of adSites)for(const size of site.sizes.filter(item=>Number(item.width)>0&&Number(item.height)>0))for(const lang of adLanguages){
+      const key=`${site.id}-${size.id}-${lang.id}`,canvas=document.getElementById(`adCanvas-${key}`),name=(site.name||'投放网站').replace(/[\\/:*?"<>|]/g,'_');
+      if(!canvas)continue;
+      const blob=await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
+      files.push({name:`${name}/${getAdLanguageLabel(lang.code)}/${name}_${size.width}x${size.height}.png`,data:new Uint8Array(await blob.arrayBuffer())});
+    }
+    if(!files.length)throw new Error('暂无可下载素材');
+    const blob=createAdZip(files),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='投放素材.zip';a.style.display='none';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
+  }catch(error){console.error(error);alert(error.message||'下载失败，请重试');}
+  finally{if(button){button.disabled=false;button.textContent=originalText||'下载';}}
+}
+
 const V2_ACTIVE_GROUP_KEY = 'htx-visual-workbench-active-group';
 const V2_SCROLL_KEY = 'htx-visual-workbench-scroll-y';
 const hashV2Group = location.hash.replace(/^#/, '');
-const savedV2Group = ['common','baping','trade','rebate'].includes(hashV2Group)
+const savedV2Group = ['common','baping','trade','rebate','ads'].includes(hashV2Group)
   ? hashV2Group
   : localStorage.getItem(V2_ACTIVE_GROUP_KEY);
-let v2ActiveGroup = ['common','baping','trade','rebate'].includes(savedV2Group) ? savedV2Group : 'common';
+let v2ActiveGroup = ['common','baping','trade','rebate','ads'].includes(savedV2Group) ? savedV2Group : 'common';
 let v2CommonNodes = [];
 const v2SlotGroups = {
   common: ['new','old','email','appcal','pccal','share','feed','landing'],
   baping: ['baping'],
   trade: ['tradeapp-light','tradeapp-dark','tradeweb'],
-  rebate: ['pcrebate','apprebate']
+  rebate: ['pcrebate','apprebate'],
+  ads: []
 };
 
 function setV2Group(group, updateButtons = true) {
@@ -3695,7 +4144,8 @@ function setV2Group(group, updateButtons = true) {
     common: ['new','old','email','appcal','pccal','share','feed','landing'],
     baping: ['baping'],
     trade: ['trade'],
-    rebate: ['pcrebate','apprebate']
+    rebate: ['pcrebate','apprebate'],
+    ads: []
   };
   Object.values(previewGroups).flat().forEach(key => {
     const section = document.getElementById('section-' + key);
@@ -3705,6 +4155,18 @@ function setV2Group(group, updateButtons = true) {
     section.style.display = belongsToCurrentGroup && isSelected ? '' : 'none';
   });
   v2CommonNodes.forEach(node => node.classList.toggle('v2-hidden', group !== 'common'));
+  const adModule = document.getElementById('adModule');
+  const editorPanel = document.querySelector('.tool-layout > .panel');
+  const previewArea = document.querySelector('.tool-layout > .preview-area');
+  const slotTitle = document.getElementById('v2SlotTitle');
+  const slotMount = document.getElementById('v2SlotMount');
+  const adSiteNavSection = document.getElementById('adSiteNavSection');
+  if (adModule) adModule.classList.toggle('active', group === 'ads');
+  if (editorPanel) editorPanel.classList.toggle('v2-hidden', group === 'ads');
+  if (previewArea) previewArea.classList.toggle('v2-hidden', group === 'ads');
+  if (slotTitle) slotTitle.classList.toggle('v2-hidden', group === 'ads');
+  if (slotMount) slotMount.classList.toggle('v2-hidden', group === 'ads');
+  if (adSiteNavSection) adSiteNavSection.classList.toggle('v2-hidden', group !== 'ads');
   const sections = {
     baping: [document.getElementById('bapingLangSection')],
     trade: [document.getElementById('tradeLangSection')],
@@ -3719,13 +4181,15 @@ function setV2Group(group, updateButtons = true) {
     common: ['通用内容', '编辑共用文案和日间/夜间素材，绑定多个常规资源位。'],
     baping: ['霸屏', '独立管理霸屏文案和配图。'],
     trade: ['交易赛', '独立管理 App 与 Web 交易赛文案和素材。'],
-    rebate: ['返佣', '集中管理 PC返佣与 APP返佣，两套版式可分别配置。']
+    rebate: ['返佣', '集中管理 PC返佣与 APP返佣，两套版式可分别配置。'],
+    ads: ['投放素材', '按三种固定版式生成多语言、多尺寸投放素材。']
   }[group];
   const title = document.querySelector('.v2-editor-title');
   const desc = document.querySelector('.v2-editor-desc');
   if (title) title.textContent = copy[0];
   if (desc) desc.textContent = copy[1];
   restoreDownloadButton();
+  if (group === 'ads') renderAdCreative();
   requestAnimationFrame(() => autoResizeAllTextAreas());
 }
 
@@ -3787,6 +4251,7 @@ function initImageDropUploads() {
   });
 }
 
+renderAdConfigLists();
 restoreDraft();
 initV2Workspace();
 initImageDropUploads();
@@ -3798,6 +4263,16 @@ window.addEventListener('scroll', () => {
   v2ScrollSaveTimer = setTimeout(() => sessionStorage.setItem(V2_SCROLL_KEY, String(window.scrollY)), 80);
 }, { passive: true });
 window.addEventListener('pagehide', () => {
+  if (_adDraftTimer !== null) {
+    clearTimeout(_adDraftTimer);
+    _adDraftTimer = null;
+    saveAdDraft();
+  }
+  if (_draftTimer !== null) {
+    clearTimeout(_draftTimer);
+    _draftTimer = null;
+    saveDraft();
+  }
   sessionStorage.setItem(V2_SCROLL_KEY, String(window.scrollY));
   localStorage.setItem(V2_ACTIVE_GROUP_KEY, v2ActiveGroup);
 });
