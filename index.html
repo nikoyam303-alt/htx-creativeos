@@ -219,6 +219,15 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .b-landing.light .tit { font-size: 28px; line-height: 38px; color: #000000; }
   .b-landing.dark .tit { font-size: 28px; line-height: 38px; color: #FFFFFF; }
 
+  .sw-landingweb { width: 300px; height: 75px; overflow: hidden; position: relative; flex-shrink: 0; }
+  .si-landingweb { width: 1200px; height: 299px; transform: scale(0.25); transform-origin: top left; position: absolute; }
+  .b-landingweb { width: 1200px; height: 299px; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; background: #FFFFFF; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
+  .b-landingweb .imgw { width: 126px; height: 126px; flex: 0 0 126px; display: flex; align-items: center; justify-content: center; }
+  .b-landingweb .imgw img { width: 126px; height: 126px; display: block; object-fit: contain; }
+  .b-landingweb .txt { width: 100%; margin-top: auto; text-align: center; }
+  .b-landingweb .sub { margin: 0; color: #595959; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; font-size: 22px; font-weight: 400; line-height: 1.2; }
+  .b-landingweb .tit { margin: 12px 0 0; color: #000000; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; font-size: 40px; font-weight: 700; line-height: 1.2; }
+
   .sw-baping { width: 183px; height: 220px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 12px; }
   .si-baping { width: 550px; height: 660px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
   .b-baping { width: 550px; height: 660px; border-radius: 36px; overflow: hidden; background: #FFFFFF; display: flex; flex-direction: column; font-family: 'PingFang SC','Noto Sans SC',sans-serif; box-sizing: border-box; }
@@ -699,6 +708,7 @@ body {
 #gridTrade { grid-template-columns: 1fr; row-gap: 32px; }
 #gridShare { grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); }
 #gridLanding { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+#gridLandingWeb { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
 #gridBaping { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
 .preview-section .lang-group {
   width: 100%;
@@ -748,6 +758,43 @@ body {
   width: auto;
   justify-content: flex-start;
 }
+#gridLanding .landing-version-section { width: 100%; min-width: 0; }
+#gridLanding .landing-version-section + .landing-version-section { margin-top: 8px; }
+#gridLanding .landing-version-title {
+  margin-bottom: 14px;
+  color: #667085;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+#gridLanding .landing-version-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 28px 24px;
+  width: 100%;
+}
+#gridLanding .landing-lang-group {
+  width: 300px;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+}
+#gridLanding .landing-lang-group .lang-group-header {
+  width: 100%;
+  min-height: 26px;
+  margin-bottom: 8px;
+  justify-content: flex-start;
+}
+#gridLanding .landing-app-row,
+#gridLanding .landing-web-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+#gridLanding .landing-web-row .card-wrapper,
+#gridLanding .landing-app-row .card-wrapper { align-items: flex-start; }
 .preview-section .lang-group-header {
   min-height: 26px;
   margin-bottom: 8px;
@@ -786,6 +833,7 @@ body {
 #gridShare .cards-row { zoom: 1.05; }
 #gridFeed .cards-row { zoom: .72; }
 #gridLanding .cards-row { zoom: .95; }
+#gridLandingWeb .cards-row { zoom: 1; }
 #gridBaping .cards-row { zoom: 1; }
 #gridTrade .cards-row { zoom: 1; }
 #gridTrade .trade-preview-stack {
@@ -1125,8 +1173,12 @@ body {
       <div class="cards-grid" id="gridFeed"><div class="empty-state">填写文案后将自动预览</div></div>
     </div>
     <div class="preview-section" id="section-landing" style="display:none;">
-      <div class="preview-section-title">聚合落地页</div>
+      <div class="preview-section-title">APP 聚合落地页</div>
       <div class="cards-grid" id="gridLanding"><div class="empty-state">填写文案后将自动预览</div></div>
+    </div>
+    <div class="preview-section" id="section-landingweb" style="display:none;">
+      <div class="preview-section-title">WEB 聚合落地页</div>
+      <div class="cards-grid" id="gridLandingWeb"><div class="empty-state">填写文案后将自动预览</div></div>
     </div>
     <div class="preview-section" id="section-baping" style="display:none;">
       <div class="preview-section-title">霸屏</div>
@@ -1196,6 +1248,7 @@ const SPECS = {
   share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:24, boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF', titLH:1.2 },
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0, transparent:false },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
+  landingweb:{ W:1200, H:299, PAD:30, subSz:22, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:40, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:126, imgPos:'vt', radius:0, boldTit:true, subLH:1.2, titLH:1.2, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000' },
   baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:2, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
   tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:110, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
@@ -1212,6 +1265,7 @@ const SLOT_TEXT_SPECS = {
   share:  { maxH: 900, subMax: 42, subMin: 32, titMax: 90, titMin: 60, gap: 24 },
   feed:   { maxH: 160, subMax: 28, subMin: 24, titMax: 32, titMin: 28, gap: 16 },
   landing:{ maxH: 104, subMax: 14, subMin: 12, titMax: 28, titMin: 18, gap: 4, subLH: 20/14, titLH: 38/28 },
+  landingweb:{ maxH: 101, subMax: 22, subMin: 18, titMax: 40, titMin: 30, gap: 12, subLH: 1.2, titLH: 1.2 },
   baping: { maxH: 436, subMax: 36, subMin: 28, titMax: 48, titMin: 38, gap: 16, subLH: 1.4, titLH: 1.4 },
   tradeapp: { maxH: 72, subMax: 14, subMin: 11, titMax: 24, titMin: 18, gap: 3, subLH: 20/14, titLH: 28/24 },
   tradeweb: { maxH: 94, subMax: 24, subMin: 18, titMax: 42, titMin: 30, gap: 16, subLH: 1.1, titLH: 1.1 },
@@ -1221,7 +1275,7 @@ const SLOT_TEXT_SPECS = {
 
 const SLOT_LABELS = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
-  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', baping: '霸屏', trade: '交易赛', pcrebate: 'PC返佣', apprebate: 'APP返佣',
+  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web', baping: '霸屏', trade: '交易赛', pcrebate: 'PC返佣', apprebate: 'APP返佣',
 };
 const AUTO_SCALE_BASE_RATIO = 0.9;
 
@@ -2599,6 +2653,15 @@ function langGroupHtml(slotType, lang, cardsHtml) {
   return `<div class="lang-group"><div class="lang-group-header"><span class="lang-group-label">${eh(code)}</span></div><div class="cards-row">${cardsHtml}</div></div>`;
 }
 
+function landingVersionLangHtml(lang, cardsHtml, rowClass) {
+  const code = String(lang?.code || '').trim() || '未设置语种';
+  return `<div class="landing-lang-group"><div class="lang-group-header"><span class="lang-group-label">${eh(code)}</span></div><div class="${rowClass}">${cardsHtml}</div></div>`;
+}
+
+function landingVersionSectionHtml(label, groupsHtml) {
+  return `<div class="landing-version-section"><div class="landing-version-title">${eh(label)}</div><div class="landing-version-grid">${groupsHtml}</div></div>`;
+}
+
 function tradeAppLangGroupHtml(lang) {
   const appCards =
     (activeTradeVariants.has('tradeapp-light') ? wrap('tradeapp','sw-tradeapp','si-tradeapp', cardTradeApp(lang,'light',tradeImages.light), 'App 白天', lang, 'tradeapp', 'light') : '') +
@@ -2706,6 +2769,12 @@ function cardLanding(l, theme, img, cardH) {
   return `<div class="b-landing ${theme}" data-langid="${l.id}" style="height:${h}px"><div class="imgw">${img ? `<img src="${img}">` : ''}</div><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div></div>`;
 }
 
+function cardLandingWeb(l, img) {
+  const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
+  const titHtml = eh(l.title).replace(/\n/g,'<br>');
+  return `<div class="b-landingweb light" data-langid="${l.id}"><div class="imgw">${img ? `<img src="${img}">` : ''}</div><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div></div>`;
+}
+
 function cardBaping(l, img) {
   const text = getBapingText(l);
   const barHtml = eh(text.barText);
@@ -2755,7 +2824,10 @@ function getPlainText(domEl) {
 
 function getTextWithBreaks(el) { return getPlainText(el); }
 
-function bapingTextW(s) { return s.W - s.PAD * 2; }
+function bapingTextW(s) {
+  const padX = s.PADX || s.PAD;
+  return s.W - padX * 2;
+}
 function subFontFamily(s) {
   return s.subFont ? `'${s.subFont}','PingFang SC',sans-serif` : `'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif`;
 }
@@ -2920,7 +2992,7 @@ const OVERFLOW_RESOURCE_META = [
   ['b-new','瓷片区banner','common','new'], ['b-old','旧版banner','common','old'],
   ['b-appcal','App 日历','common','appcal'], ['b-pccal','PC 日历','common','pccal'],
   ['b-share','分享页','common','share'], ['b-feed','Feed流','common','feed'],
-  ['b-landing','聚合落地页','common','landing'], ['b-baping','霸屏','baping','baping'],
+  ['b-landing','聚合落地页','common','landing'], ['b-landingweb','聚合落地页 web','common','landingweb'], ['b-baping','霸屏','baping','baping'],
   ['b-tradeapp','交易赛 App','trade','tradeapp'], ['b-tradeweb','交易赛 Web','trade','tradeweb'],
   ['b-pcrebate','PC返佣','pcrebate','pcrebate'], ['b-apprebate','APP返佣','apprebate','apprebate']
 ];
@@ -3175,7 +3247,7 @@ function applySlotClip(slotType, langId, autoScale) {
     const subFont = subFontFamily(s);
     const padX = s.PADX || s.PAD;
     const W = s.W;
-    const textW = (s.imgPos === 'rb' || s.imgPos === 'vt') ? (W - s.PAD * 2) : (W - padX * 2 - s.imgW - padX);
+    const textW = (s.imgPos === 'rb' || s.imgPos === 'vt') ? bapingTextW(s) : (W - padX * 2 - s.imgW - padX);
     const subLH = spec.subLH || s.subLH || 1.3;
     const isDark = el.classList.contains('dark');
     const titMax = (spec.titMaxDark && isDark) ? spec.titMaxDark : spec.titMax;
@@ -3223,8 +3295,9 @@ function generate() {
   validAppRebateLangsCache = validAppRebate;
   const li = images.light, di = images.dark;
 
-  ['new','old','email','appcal','pccal','share','feed','landing','baping','trade','pcrebate','apprebate'].forEach(key => {
-    const sec = document.getElementById('section-' + key); if (sec) sec.style.display = activeSlots.has(key) ? '' : 'none';
+  ['new','old','email','appcal','pccal','share','feed','landing','landingweb','baping','trade','pcrebate','apprebate'].forEach(key => {
+    const sec = document.getElementById('section-' + key);
+    if (sec) sec.style.display = (key === 'landingweb' ? activeSlots.has('landing') : activeSlots.has(key)) ? '' : 'none';
   });
 
   if (activeSlots.has('new')) {
@@ -3300,16 +3373,24 @@ function generate() {
   }
 
   if (activeSlots.has('landing')) {
-    if (!valid.length) document.getElementById('gridLanding').innerHTML = empty;
+    if (!valid.length) {
+      document.getElementById('gridLanding').innerHTML = empty;
+      document.getElementById('gridLandingWeb').innerHTML = empty;
+    }
     else {
       document.getElementById('gridLanding').innerHTML = valid.map(l => {
         const h = getLandingHeight(l);
-        return langGroupHtml('landing', l,
+        const appCards =
           wrap('landing','sw-landing','si-landing', cardLanding(l,'light',li,h), '白天', l, 'landing', 'light', '', { h }) +
-          wrap('landing','sw-landing','si-landing', cardLanding(l,'dark',di,h),  '黑天', l, 'landing', 'dark',  '', { h })
-        );
+          wrap('landing','sw-landing','si-landing', cardLanding(l,'dark',di,h),  '黑天', l, 'landing', 'dark',  '', { h });
+        return langGroupHtml('landing', l, appCards);
+      }).join('');
+      document.getElementById('gridLandingWeb').innerHTML = valid.map(l => {
+        const webCard = wrap('landingweb','sw-landingweb','si-landingweb', cardLandingWeb(l,li), 'web', l, 'landingweb', 'light');
+        return langGroupHtml('landingweb', l, webCard);
       }).join('');
       valid.forEach(l => applySlotClip('landing', l.id, !!scaleState[slotLangKey('landing', l.id)]));
+      valid.forEach(l => applySlotClip('landingweb', l.id, !!scaleState[slotLangKey('landingweb', l.id)]));
     }
   }
 
@@ -3504,7 +3585,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   else if (type === 'baping') imgSrc = bapingImage;
   else if (type === 'tradeapp') imgSrc = theme === 'light' ? tradeImages.light : tradeImages.dark;
   else if (type === 'tradeweb') imgSrc = tradeImages.dark;
-  else if (type === 'email' || type === 'appcal') imgSrc = images.light;
+  else if (type === 'email' || type === 'appcal' || type === 'landingweb') imgSrc = images.light;
   else if (s.subClr && type !== 'pccal' && type !== 'share') imgSrc = images.dark;
   else if (type === 'pccal' || type === 'share') imgSrc = images.light;
   else imgSrc = theme === 'light' ? images.light : images.dark;
@@ -3745,7 +3826,7 @@ async function downloadCard(type, theme, langId) {
 
 const DOWNLOAD_RESOURCE_NAMES = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
-  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页',
+  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web',
   baping: '霸屏', tradeapp: '交易赛APP', tradeweb: '交易赛Web',
   pcrebate: 'PC返佣', apprebate: 'APP返佣'
 };
@@ -3759,7 +3840,7 @@ function downloadFileName(type, code, theme = '') {
 function currentGroupAllowsResource(type) {
   const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const resources = {
-    common: ['new','old','email','appcal','pccal','share','feed','landing'],
+    common: ['new','old','email','appcal','pccal','share','feed','landing','landingweb'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
     rebate: ['pcrebate','apprebate']
@@ -3799,6 +3880,7 @@ async function downloadAll() {
     if (activeSlots.has('landing')) {
       tasks.push({ id:`landing-${l.id}-light`, fn:downloadFileName('landing', l.code, 'light'), folder:'聚合落地页', type:'landing', theme:'light', langId:l.id });
       tasks.push({ id:`landing-${l.id}-dark`,  fn:downloadFileName('landing', l.code, 'dark'),  folder:'聚合落地页', type:'landing', theme:'dark',  langId:l.id });
+      tasks.push({ id:`landingweb-${l.id}-light`, fn:downloadFileName('landingweb', l.code, 'light'), folder:'聚合落地页', type:'landingweb', theme:'light', langId:l.id });
     }
   }
 
@@ -4141,7 +4223,7 @@ function setV2Group(group, updateButtons = true) {
     if (item) item.style.display = v2SlotGroups[group].includes(key) ? '' : 'none';
   });
   const previewGroups = {
-    common: ['new','old','email','appcal','pccal','share','feed','landing'],
+    common: ['new','old','email','appcal','pccal','share','feed','landing','landingweb'],
     baping: ['baping'],
     trade: ['trade'],
     rebate: ['pcrebate','apprebate'],
@@ -4151,7 +4233,7 @@ function setV2Group(group, updateButtons = true) {
     const section = document.getElementById('section-' + key);
     if (!section) return;
     const belongsToCurrentGroup = previewGroups[group].includes(key);
-    const isSelected = key === 'trade' ? activeTradeVariants.size > 0 : activeSlots.has(key);
+    const isSelected = key === 'trade' ? activeTradeVariants.size > 0 : key === 'landingweb' ? activeSlots.has('landing') : activeSlots.has(key);
     section.style.display = belongsToCurrentGroup && isSelected ? '' : 'none';
   });
   v2CommonNodes.forEach(node => node.classList.toggle('v2-hidden', group !== 'common'));
