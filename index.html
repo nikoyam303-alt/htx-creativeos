@@ -145,6 +145,8 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .sw-feed.light { background: #F5F5F5; }
   .sw-feed.dark  { background: #1a1a1a; }
   .si-feed  { width: 750px; height: 240px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
+.sw-community { width: 375px; height: 110px; overflow: hidden; position: relative; flex-shrink: 0; }
+  .si-community { width: 750px; height: 220px; transform: scale(0.5); transform-origin: top left; position: absolute; }
   .sub, .tit { max-width: 100%; white-space: normal; word-break: normal; overflow-wrap: anywhere; }
   .txt { min-width: 0; }
 
@@ -163,7 +165,11 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .b-share { width: 825px; height: 1170px; padding: 90px 60px; box-sizing: border-box; position: relative; background: #fff; border-radius: 24px; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
   .b-share .sub { margin: 0; font-size: 42px; font-weight: 400; line-height: 1.3; color: #242424; word-break: break-word; overflow-wrap: anywhere; }
   .b-share .tit { margin: 24px 0 0 0; font-size: 90px; font-weight: 700; line-height: 1.2; color: #0066FF; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; word-break: break-word; overflow-wrap: anywhere; }
+  .b-share .desc { margin: 30px 0 0 0; max-width: calc(100% - 180px); font-size: 30px; font-weight: 400; line-height: 1.4; color: #595959; word-break: break-word; overflow-wrap: anywhere; }
   .b-share .img { position: absolute; right: 60px; bottom: 90px; width: 420px; height: 420px; display: block; object-fit: contain; }
+  .b-community { width: 750px; height: 220px; position: relative; background: #F3F3F3; overflow: hidden; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; }
+  .b-community .tit { position: absolute; left: 32px; top: 50%; width: 498px; margin: 0; transform: translateY(-50%); font-size: 36px; font-weight: 500; line-height: 1.2; color: #000000; word-break: break-word; overflow-wrap: anywhere; }
+  .b-community .img { position: absolute; right: 0; top: 0; width: 220px; height: 220px; object-fit: contain; }
   .sw-share { width: 149px; height: 211px; overflow: hidden; position: relative; flex-shrink: 0; }
   .si-share { width: 825px; height: 1170px; transform: scale(0.18); transform-origin: top left; position: absolute; }
   .b-new { width: 474px; height: 600px; padding: 36px; box-sizing: border-box; position: relative; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
@@ -707,6 +713,11 @@ body {
 }
 #gridTrade { grid-template-columns: 1fr; row-gap: 32px; }
 #gridShare { grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); }
+#gridCommunity { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; row-gap: 28px; }
+#gridCommunity .lang-group { align-items: flex-start; }
+#gridCommunity .lang-group-header { width: auto; }
+#gridCommunity .cards-row { width: auto; justify-content: flex-start; zoom: .85; }
+@media (max-width: 980px) { #gridCommunity { grid-template-columns: 1fr; } }
 #gridLanding { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 #gridLandingWeb { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
 #gridBaping { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
@@ -1068,6 +1079,7 @@ body {
       <button class="v2-group-btn active" data-v2-group="common" onclick="setV2Group('common')"><span>通用内容</span></button>
       <button class="v2-group-btn" data-v2-group="baping" onclick="setV2Group('baping')"><span>霸屏</span></button>
       <button class="v2-group-btn" data-v2-group="trade" onclick="setV2Group('trade')"><span>交易赛</span></button>
+      <button class="v2-group-btn" data-v2-group="share" onclick="setV2Group('share')"><span>分享页</span></button>
       <button class="v2-group-btn" data-v2-group="rebate" onclick="setV2Group('rebate')"><span>返佣</span></button>
       <button class="v2-group-btn" data-v2-group="ads" onclick="setV2Group('ads')"><span>投放素材</span></button>
       <button class="v2-group-btn" data-v2-group="zero" onclick="setV2Group('zero')"><span>0元购页banner</span></button>
@@ -1176,6 +1188,7 @@ body {
       <div class="slot-item" id="slot-appcal" onclick="toggleSlot('appcal')"><div class="slot-check"></div><span>App 日历</span></div>
       <div class="slot-item" id="slot-pccal" onclick="toggleSlot('pccal')"><div class="slot-check"></div><span>PC 日历</span></div>
       <div class="slot-item" id="slot-share" onclick="toggleSlot('share')"><div class="slot-check"></div><span>分享页</span></div>
+      <div class="slot-item" id="slot-community" onclick="toggleSlot('community')"><div class="slot-check"></div><span>社区</span></div>
       <div class="slot-item" id="slot-feed" onclick="toggleSlot('feed')"><div class="slot-check"></div><span>Feed流</span></div>
       <div class="slot-item" id="slot-landing" onclick="toggleSlot('landing')"><div class="slot-check"></div><span>聚合落地页</span></div>
       <div class="slot-item" id="slot-baping" onclick="toggleSlot('baping')"><div class="slot-check"></div><span>霸屏</span></div>
@@ -1222,6 +1235,14 @@ body {
           <input type="file" id="tradeDarkFile" accept="image/*" onchange="handleTradeUpload(event,'dark')">
         </div>
       </div>
+    </div>
+
+    <div id="shareLangSection" class="baping-lang-section" style="display:none">
+      <hr class="divider">
+      <div class="panel-title">分享页文案配置</div>
+      <div class="lang-list" id="shareLangList"></div>
+      <div class="panel-title" style="margin-top:16px;">配图（可选）</div>
+      <div class="upload-area"><button class="upload-btn" id="shareImageBtn" onclick="document.getElementById('shareImageFile').click()">点击或拖拽上传</button><input type="file" id="shareImageFile" accept="image/*" onchange="handleShareImage(event)"></div>
     </div>
 
     <div id="pcrebateLangSection" class="baping-lang-section" style="display:none">
@@ -1286,6 +1307,10 @@ body {
     <div class="preview-section" id="section-share" style="display:none;">
       <div class="preview-section-title">分享页</div>
       <div class="cards-grid" id="gridShare"><div class="empty-state">填写文案后将自动预览</div></div>
+    </div>
+    <div class="preview-section" id="section-community" style="display:none;">
+      <div class="preview-section-title">社区</div>
+      <div class="cards-grid" id="gridCommunity"><div class="empty-state">填写文案后将自动预览</div></div>
     </div>
     <div class="preview-section" id="section-feed" style="display:none;">
       <div class="preview-section-title">Feed流</div>
@@ -1365,6 +1390,7 @@ const SPECS = {
   appcal: { W:1029, H:330,  PAD:48,  subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:54, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:12, imgW:234, imgPos:'rc', radius:0,  bg:'#0066FF', subClr:'rgba(255,255,255,0.8)', titClr:'#FFFFFF' },
   pccal:  { W:2400, H:400,  PAD:44,  PADX:90, subSz:50, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:68, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:18, imgW:300, imgPos:'rc', radius:24, bg:'#FAFAFA', subClr:'#8C8C8C', titClr:'#0F0F0F' },
   share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:24, boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF', titLH:1.2 },
+  community:{ W:750, H:220, PAD:0, PADX:32, subSz:1, subWeight:'400', titSz:36, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:0, imgW:220, imgPos:'rc', radius:0, bg:'#F3F3F3', subClr:'#000000', titClr:'#000000', titLH:1.2 },
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0, transparent:false },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
   landingweb:{ W:1200, H:299, PAD:30, subSz:22, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:40, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:126, imgPos:'vt', radius:0, boldTit:true, subLH:1.2, titLH:1.2, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000' },
@@ -1382,6 +1408,7 @@ const SLOT_TEXT_SPECS = {
   appcal: { maxH: 234, subMax: 36, subMin: 28, titMax: 54, titMin: 40, gap: 12 },
   pccal:  { maxH: 312, subMax: 50, subMin: 36, titMax: 68, titMin: 48, gap: 18 },
   share:  { maxH: 900, subMax: 42, subMin: 32, titMax: 90, titMin: 60, gap: 24 },
+  community:{ maxH:220, subMax:1, subMin:1, titMax:36, titMin:30, gap:0, subLH:1, titLH:1.2 },
   feed:   { maxH: 160, subMax: 28, subMin: 24, titMax: 32, titMin: 28, gap: 16 },
   landing:{ maxH: 104, subMax: 14, subMin: 12, titMax: 28, titMin: 18, gap: 4, subLH: 20/14, titLH: 38/28 },
   landingweb:{ maxH: 101, subMax: 22, subMin: 18, titMax: 40, titMin: 30, gap: 12, subLH: 1.2, titLH: 1.2 },
@@ -1394,7 +1421,7 @@ const SLOT_TEXT_SPECS = {
 
 const SLOT_LABELS = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
-  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web', baping: '霸屏', trade: '交易赛', pcrebate: 'PC返佣', apprebate: 'APP返佣',
+  pccal: 'PC 日历', share: '分享页', community:'社区', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web', baping: '霸屏', trade: '交易赛', pcrebate: 'PC返佣', apprebate: 'APP返佣',
 };
 const AUTO_SCALE_BASE_RATIO = 0.9;
 
@@ -1576,7 +1603,7 @@ document.addEventListener('keydown', event => {
 });
 
 function updateSlotControls() {
-  ['new','old','email','appcal','pccal','share','feed','landing','baping','pcrebate','apprebate'].forEach(key => {
+  ['new','old','email','appcal','pccal','share','community','feed','landing','baping','pcrebate','apprebate'].forEach(key => {
     const el = document.getElementById('slot-' + key);
     const sec = document.getElementById('section-' + key);
     if (el) el.classList.toggle('checked', activeSlots.has(key));
@@ -1744,15 +1771,16 @@ function restoreDraft() {
 }
 
 function clearDraft() {
-  if (!localStorage.getItem(DRAFT_KEY)) {
+  const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
+  if (!localStorage.getItem(DRAFT_KEY) && !(group === 'share' && localStorage.getItem(SHARE_DRAFT_KEY))) {
     setDraftStatus('暂无可清空的草稿');
     return;
   }
-  const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const groupTypes = {
-    common: ['new','old','email','appcal','pccal','share','feed','landing'],
+    common: ['new','old','email','appcal','pccal','community','feed','landing'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
+    share: ['share'],
     rebate: ['pcrebate','apprebate'],
     ads: []
   }[group] || [];
@@ -1777,6 +1805,10 @@ function clearDraft() {
     tradeLangs = {};
     tradeImages = { light: null, dark: null };
     tradeConfigEnabled = true;
+  } else if (group === 'share') {
+    shareLangs = DEFAULT_LANG_CODES.map((code,index)=>({ id:index+1, code, subtitle:'', title:'', description:'' }));
+    shareImage = null;
+    saveShareDraft();
   } else if (group === 'rebate') {
     pcrebateLangs = {};
     pcrebateImage = null;
@@ -1807,6 +1839,7 @@ function clearDraft() {
   renderLangList();
   renderBapingLangList();
   renderTradeLangList();
+  renderShareLangList();
   renderPcRebateLangList();
   renderAppRebateLangList();
   renderAdConfigLists();
@@ -2657,12 +2690,14 @@ function restoreDownloadButton() {
   if (!btn) return;
   const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const hasDownloadable = group === 'common'
-    ? validLangsCache.length > 0 && ['new','old','email','appcal','pccal','share','feed','landing'].some(type => activeSlots.has(type))
+    ? validLangsCache.length > 0 && ['new','old','email','appcal','pccal','community','feed','landing'].some(type => activeSlots.has(type))
     : group === 'baping'
       ? activeSlots.has('baping') && validBapingLangsCache.length > 0
       : group === 'trade'
         ? activeSlots.has('trade') && activeTradeVariants.size > 0 && validTradeLangsCache.length > 0
-        : (activeSlots.has('pcrebate') && validPcRebateLangsCache.length > 0) || (activeSlots.has('apprebate') && validAppRebateLangsCache.length > 0);
+        : group === 'share'
+          ? activeSlots.has('share') && shareLangs.some(item => item.code && (item.subtitle || item.title || item.description))
+          : (activeSlots.has('pcrebate') && validPcRebateLangsCache.length > 0) || (activeSlots.has('apprebate') && validAppRebateLangsCache.length > 0);
   btn.disabled = !hasDownloadable;
   btn.textContent = '下载';
 }
@@ -2846,7 +2881,13 @@ function cardPcCal(l, img) {
 function cardShare(l, img) {
   const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
   const titHtml = eh(l.title).replace(/\n/g,'<br>');
-  return `<div class="b-share" data-langid="${l.id}"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p>${img ? `<img class="img" src="${img}">` : ''}</div>`;
+  const descHtml = eh(l.description || '').replace(/\n/g,'<br>');
+  return `<div class="b-share" data-langid="${l.id}"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p><p class="desc">${descHtml}</p>${img ? `<img class="img" src="${img}">` : ''}</div>`;
+}
+
+function cardCommunity(l, img) {
+  const titleHtml = eh(l.title).replace(/\n/g,'<br>');
+  return `<div class="b-community" data-langid="${l.id}"><p class="tit">${titleHtml}</p>${img ? `<img class="img" src="${img}">` : ''}</div>`;
 }
 
 function cardFeed(l, theme, img) {
@@ -3414,7 +3455,7 @@ function generate() {
   validAppRebateLangsCache = validAppRebate;
   const li = images.light, di = images.dark;
 
-  ['new','old','email','appcal','pccal','share','feed','landing','landingweb','baping','trade','pcrebate','apprebate'].forEach(key => {
+  ['new','old','email','appcal','pccal','share','community','feed','landing','landingweb','baping','trade','pcrebate','apprebate'].forEach(key => {
     const sec = document.getElementById('section-' + key);
     if (sec) sec.style.display = (key === 'landingweb' ? activeSlots.has('landing') : activeSlots.has(key)) ? '' : 'none';
   });
@@ -3471,12 +3512,23 @@ function generate() {
   }
 
   if (activeSlots.has('share')) {
-    if (!valid.length) document.getElementById('gridShare').innerHTML = empty;
+    const validShare = shareLangs.filter(l => l.code && (l.subtitle || l.title || l.description));
+    if (!validShare.length) document.getElementById('gridShare').innerHTML = empty;
     else {
-      document.getElementById('gridShare').innerHTML = valid.map(l => langGroupHtml('share', l,
-        wrap('share','sw-share','si-share', cardShare(l, li), '分享页', l, 'share', '')
+      document.getElementById('gridShare').innerHTML = validShare.map(l => langGroupHtml('share', l,
+        wrap('share','sw-share','si-share', cardShare(l, shareImage || images.light), '分享页', l, 'share', '')
       )).join('');
-      valid.forEach(l => applySlotClip('share', l.id, !!scaleState[slotLangKey('share', l.id)]));
+      validShare.forEach(l => applySlotClip('share', l.id, !!scaleState[slotLangKey('share', l.id)]));
+    }
+  }
+
+  if (activeSlots.has('community')) {
+    if (!valid.length) document.getElementById('gridCommunity').innerHTML = empty;
+    else {
+      document.getElementById('gridCommunity').innerHTML = valid.map(l => langGroupHtml('community',l,
+        wrap('community','sw-community','si-community',cardCommunity(l,li),'社区',l,'community','')
+      )).join('');
+      valid.forEach(l => applySlotClip('community',l.id,!!scaleState[slotLangKey('community',l.id)]));
     }
   }
 
@@ -3659,12 +3711,14 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
 
   const sub = inner.querySelector('.sub');
   const tit = inner.querySelector('.tit');
+  const desc = inner.querySelector('.desc');
   const subTxt = getPlainText(sub);
   const titTxt = getPlainText(tit);
+  const descTxt = getPlainText(desc);
   const font = "'HarmonyOS Sans SC','PingFang SC',sans-serif";
   const titFont = titFontFamily(s, s.boldTit ? "'HarmonyOS Bold','PingFang SC',sans-serif" : font);
   const imgW = s.imgW;
-  const textW = (s.imgPos === 'baping' || s.imgPos === 'rb' || s.imgPos === 'vt') ? bapingTextW(s) : (W - padX * 2 - imgW - padX);
+  const textW = type === 'community' ? W - imgW - padX : (s.imgPos === 'baping' || s.imgPos === 'rb' || s.imgPos === 'vt') ? bapingTextW(s) : (W - padX * 2 - imgW - padX);
 
   const subLH = spec.subLH || s.subLH || 1.3;
   const titLH = (theme === 'dark' && (spec.titLHDark || s.titLHDark)) ? (spec.titLHDark || s.titLHDark) : (spec.titLH || s.titLH || 1.3);
@@ -3817,7 +3871,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
       ctx.fill();
       if (imgSrc) await drawImgCoverRounded(ctx, imgSrc, W - padX - imgW + 16, imgY + 16, 128, 128, 8);
     } else if (imgSrc) {
-      await drawImgContain(ctx, imgSrc, W - padX - imgW, imgY, imgW, imgW);
+      await drawImgContain(ctx, imgSrc, type === 'community' ? W - imgW : W - padX - imgW, imgY, imgW, imgW);
     }
   } else if (s.imgPos === 'rb') {
     ctx.fillStyle = c.sub;
@@ -3827,8 +3881,15 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     ctx.fillStyle = c.tit;
     if (s.boldTit) ctx.filter = 'blur(0.4px)';
     ctx.font = `${titW} ${titSz}px ${titFont}`;
-    drawMultilineText(ctx, titTxt, padX, titStartY, textW, titSz, titLH, titSz, H * 0.6);
+    const titleDrawn = drawMultilineText(ctx, titTxt, padX, titStartY, textW, titSz, titLH, titSz, H * 0.6);
     ctx.filter = 'none';
+    if (type === 'share' && descTxt) {
+      const descSz = 30;
+      const descLH = 1.4;
+      ctx.fillStyle = '#595959';
+      ctx.font = `400 ${descSz}px ${font}`;
+      drawMultilineText(ctx, descTxt, padX, titStartY - titSz + titleDrawn + 30 + descSz, textW, descSz, descLH, descSz, H * 0.35);
+    }
     if (imgSrc) await drawImgContain(ctx, imgSrc, W - padX - imgW, H - padY - imgW, imgW, imgW);
   } else if (s.imgPos === 'vt') {
     const textFullW = W - padX * 2;
@@ -3932,7 +3993,7 @@ async function downloadCard(type, theme, langId) {
   const autoScale = !!scaleState[slotLangKey(type, langId)];
   const dataUrl = await renderToDataUrl(type, theme, langId, autoScale);
   if (!dataUrl) return;
-  const lang = langs.find(l => l.id === langId);
+  const lang = type === 'share' ? shareLangs.find(l => l.id === langId) : langs.find(l => l.id === langId);
   const code = lang ? lang.code : langId;
   const resourceName = DOWNLOAD_RESOURCE_NAMES[type] || SLOT_LABELS[type] || type;
   const themeName = theme === 'light' ? '白天' : theme === 'dark' ? '黑天' : '';
@@ -3945,7 +4006,7 @@ async function downloadCard(type, theme, langId) {
 
 const DOWNLOAD_RESOURCE_NAMES = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
-  pccal: 'PC 日历', share: '分享页', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web',
+  pccal: 'PC 日历', share: '分享页', community:'社区', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web',
   baping: '霸屏', tradeapp: '交易赛APP', tradeweb: '交易赛Web',
   pcrebate: 'PC返佣', apprebate: 'APP返佣'
 };
@@ -3959,9 +4020,10 @@ function downloadFileName(type, code, theme = '') {
 function currentGroupAllowsResource(type) {
   const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const resources = {
-    common: ['new','old','email','appcal','pccal','share','feed','landing','landingweb'],
+    common: ['new','old','email','appcal','pccal','community','feed','landing','landingweb'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
+    share: ['share'],
     rebate: ['pcrebate','apprebate']
   };
   return (resources[group] || []).includes(type);
@@ -3991,7 +4053,7 @@ async function downloadAll() {
     if (activeSlots.has('email')) tasks.push({ id:`email-${l.id}`, fn:downloadFileName('email', l.code), folder:'Email Banner', type:'email', theme:'', langId:l.id });
     if (activeSlots.has('appcal')) tasks.push({ id:`appcal-${l.id}`, fn:downloadFileName('appcal', l.code), folder:'App 日历', type:'appcal', theme:'', langId:l.id });
     if (activeSlots.has('pccal')) tasks.push({ id:`pccal-${l.id}`, fn:downloadFileName('pccal', l.code), folder:'PC 日历', type:'pccal', theme:'', langId:l.id });
-    if (activeSlots.has('share')) tasks.push({ id:`share-${l.id}`, fn:downloadFileName('share', l.code), folder:'分享页', type:'share', theme:'', langId:l.id });
+    if (activeSlots.has('community')) tasks.push({ id:`community-${l.id}`, fn:downloadFileName('community', l.code), folder:'社区', type:'community', theme:'', langId:l.id });
     if (activeSlots.has('feed')) {
       tasks.push({ id:`feed-${l.id}-light`, fn:downloadFileName('feed', l.code, 'light'), folder:'Feed流', type:'feed', theme:'light', langId:l.id });
       tasks.push({ id:`feed-${l.id}-dark`,  fn:downloadFileName('feed', l.code, 'dark'),  folder:'Feed流', type:'feed', theme:'dark',  langId:l.id });
@@ -4000,6 +4062,12 @@ async function downloadAll() {
       tasks.push({ id:`landing-${l.id}-light`, fn:downloadFileName('landing', l.code, 'light'), folder:'聚合落地页', type:'landing', theme:'light', langId:l.id });
       tasks.push({ id:`landing-${l.id}-dark`,  fn:downloadFileName('landing', l.code, 'dark'),  folder:'聚合落地页', type:'landing', theme:'dark',  langId:l.id });
       tasks.push({ id:`landingweb-${l.id}-light`, fn:downloadFileName('landingweb', l.code, 'light'), folder:'聚合落地页', type:'landingweb', theme:'light', langId:l.id });
+    }
+  }
+
+  if (currentGroupAllowsResource('share') && activeSlots.has('share')) {
+    for (const l of shareLangs.filter(item => item.code && (item.subtitle || item.title || item.description))) {
+      tasks.push({ id:`share-${l.id}`, fn:downloadFileName('share', l.code), folder:'分享页', type:'share', theme:'', langId:l.id });
     }
   }
 
@@ -4880,18 +4948,86 @@ async function downloadOtcBanner() {
 loadOtcDraft();
 renderOtcEditor();
 
+const SHARE_DRAFT_KEY = 'htxSharePageV1';
+let shareLangs = DEFAULT_LANG_CODES.map((code,index)=>({ id:index+1, code, subtitle:'', title:'', description:'' }));
+let shareImage = null;
+let shareImageInitialized = false;
+
+function loadShareDraft() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SHARE_DRAFT_KEY) || 'null');
+    if (Array.isArray(saved?.langs)) shareLangs = saved.langs;
+    if (typeof saved?.image === 'string') shareImage = saved.image;
+    shareImageInitialized = saved?.imageInitialized === true;
+  } catch (_) {}
+}
+
+function saveShareDraft() {
+  try { localStorage.setItem(SHARE_DRAFT_KEY,JSON.stringify({ langs:shareLangs, image:shareImage, imageInitialized:shareImageInitialized })); } catch (_) {}
+}
+
+function migrateShareImageFromCommon() {
+  if (shareImageInitialized) return;
+  if (!shareImage && images.light) shareImage = images.light;
+  shareImageInitialized = true;
+  saveShareDraft();
+  renderShareLangList();
+}
+
+function renderShareLangList() {
+  const list = document.getElementById('shareLangList');
+  if (!list) return;
+  list.innerHTML = shareLangs.map(item=>`<div class="lang-item"><div class="lang-item-header"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" aria-label="语种" oninput="updateShareText(${item.id},'code',this.value)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeShareLang(${item.id})">✕</button></div><div class="lang-inputs"><textarea placeholder="副标题" oninput="updateShareText(${item.id},'subtitle',this.value)">${eh(item.subtitle)}</textarea><textarea placeholder="主标题" oninput="updateShareText(${item.id},'title',this.value)">${eh(item.title)}</textarea><textarea placeholder="说明文字" oninput="updateShareText(${item.id},'description',this.value)">${eh(item.description || '')}</textarea></div></div>`).join('');
+  const button = document.getElementById('shareImageBtn');
+  if (button) { button.textContent = shareImage ? '配图已上传' : '点击或拖拽上传'; button.className = shareImage ? 'upload-btn loaded' : 'upload-btn'; }
+  requestAnimationFrame(autoResizeAllTextAreas);
+}
+
+function updateShareText(id,field,value) {
+  const item = shareLangs.find(lang=>lang.id===id);
+  if (!item) return;
+  item[field] = field === 'code' ? value : emptyWhitespaceToBlank(value);
+  saveShareDraft();
+  schedulePreview();
+}
+
+function removeShareLang(id) {
+  shareLangs = shareLangs.filter(lang=>lang.id!==id);
+  saveShareDraft();
+  renderShareLangList();
+  schedulePreview();
+}
+
+function handleShareImage(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    shareImage = reader.result;
+    shareImageInitialized = true;
+    saveShareDraft();
+    renderShareLangList();
+    schedulePreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+loadShareDraft();
+renderShareLangList();
+
 const V2_ACTIVE_GROUP_KEY = 'htx-visual-workbench-active-group';
 const V2_SCROLL_KEY = 'htx-visual-workbench-scroll-y';
 const hashV2Group = location.hash.replace(/^#/, '');
-const savedV2Group = ['common','baping','trade','rebate','ads','zero','follow','gridbanner','otc'].includes(hashV2Group)
+const savedV2Group = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc'].includes(hashV2Group)
   ? hashV2Group
   : localStorage.getItem(V2_ACTIVE_GROUP_KEY);
-let v2ActiveGroup = ['common','baping','trade','rebate','ads','zero','follow','gridbanner','otc'].includes(savedV2Group) ? savedV2Group : 'common';
+let v2ActiveGroup = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc'].includes(savedV2Group) ? savedV2Group : 'common';
 let v2CommonNodes = [];
 const v2SlotGroups = {
-  common: ['new','old','email','appcal','pccal','share','feed','landing'],
+  common: ['new','old','email','appcal','pccal','community','feed','landing'],
   baping: ['baping'],
   trade: ['tradeapp-light','tradeapp-dark','tradeweb'],
+  share: ['share'],
   rebate: ['pcrebate','apprebate'],
   ads: [],
   zero: [],
@@ -4911,9 +5047,10 @@ function setV2Group(group, updateButtons = true) {
     if (item) item.style.display = v2SlotGroups[group].includes(key) ? '' : 'none';
   });
   const previewGroups = {
-    common: ['new','old','email','appcal','pccal','share','feed','landing','landingweb'],
+    common: ['new','old','email','appcal','pccal','community','feed','landing','landingweb'],
     baping: ['baping'],
     trade: ['trade'],
+    share: ['share'],
     rebate: ['pcrebate','apprebate'],
     ads: [],
     zero: [],
@@ -4953,6 +5090,7 @@ function setV2Group(group, updateButtons = true) {
   const sections = {
     baping: [document.getElementById('bapingLangSection')],
     trade: [document.getElementById('tradeLangSection')],
+    share: [document.getElementById('shareLangSection')],
     rebate: [document.getElementById('pcrebateLangSection'), document.getElementById('apprebateLangSection'), document.getElementById('rebatePcAddLangButton'), document.getElementById('rebateAddLangButton')]
   };
   Object.entries(sections).forEach(([key, nodes]) => nodes.forEach(node => {
@@ -4964,6 +5102,7 @@ function setV2Group(group, updateButtons = true) {
     common: ['通用内容', '编辑共用文案和日间/夜间素材，绑定多个常规资源位。'],
     baping: ['霸屏', '独立管理霸屏文案和配图。'],
     trade: ['交易赛', '独立管理 App 与 Web 交易赛文案和素材。'],
+    share: ['分享页', '独立管理分享页的多语种副标题、主标题和说明文字。'],
     rebate: ['返佣', '集中管理 PC返佣与 APP返佣，两套版式可分别配置。'],
     ads: ['投放素材', '按三种固定版式生成多语言、多尺寸投放素材。'],
     zero: ['0元购页banner', '独立管理多语种文案与白天/黑天配图。'],
@@ -5002,7 +5141,7 @@ function initV2Workspace() {
   v2CommonNodes = [langList, commonAdd, sharedImageTitle, sharedUpload].filter(Boolean);
 
   panel.querySelectorAll(':scope > .divider').forEach(el => el.classList.add('v2-hidden'));
-  ['bapingLangSection','tradeLangSection','pcrebateLangSection','apprebateLangSection','rebatePcAddLangButton','rebateAddLangButton'].forEach(id => {
+  ['bapingLangSection','tradeLangSection','shareLangSection','pcrebateLangSection','apprebateLangSection','rebatePcAddLangButton','rebateAddLangButton'].forEach(id => {
     const section = document.getElementById(id);
     if (section) section.classList.add('v2-hidden');
   });
@@ -5044,6 +5183,7 @@ function initImageDropUploads() {
 
 renderAdConfigLists();
 restoreDraft();
+migrateShareImageFromCommon();
 initV2Workspace();
 initImageDropUploads();
 requestAnimationFrame(() => autoResizeAllTextAreas());
