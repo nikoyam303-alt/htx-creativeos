@@ -1005,6 +1005,55 @@ body {
 #adSiteNavSection .ad-site-size label { color: #98A2B3; font-size: 9px; font-weight: 400; }
 #adSiteNavSection .add-lang-btn { height: 40px; font-size: 12px; font-weight: 500; }
 @media (max-width: 1180px) { .ad-module.active { flex-wrap: wrap; } .ad-editor { width: 100%; flex-basis: 100%; position: relative; top: auto; } .ad-preview-shell { width: 100%; } }
+
+/* 0元购页 banner */
+.zero-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
+.zero-module.active { display: flex; }
+.zero-lang-card { padding: 12px; border-radius: 8px; background: #F8FAFC; }
+.zero-lang-card + .zero-lang-card { margin-top: 10px; }
+.zero-lang-head { margin-bottom: 8px; color: #98A2B3; font-size: 11px; }
+.zero-lang-card input { width: 100%; height: 36px; box-sizing: border-box; padding: 8px 10px; border: 1px solid #DDE3EA; border-radius: 6px; background: #FFF; color: #111827; font: inherit; font-size: 12px; outline: none; }
+.zero-lang-card input + input { margin-top: 6px; }
+.zero-lang-card input:focus { border-color: var(--brand-blue); }
+.zero-preview-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,680px),1fr)); gap: 28px 24px; width: 100%; }
+.zero-preview-item { min-width: 0; }
+.zero-preview-label { margin-bottom: 8px; color: #98A2B3; font-size: 11px; line-height: 26px; }
+.zero-preview-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.zero-preview-card { display: flex; flex-direction: column; gap: 6px; color: #98A2B3; font-size: 10px; }
+.zero-preview-card canvas { display: block; width: 328.52px; max-width: 100%; height: auto; }
+@media (max-width: 1180px) { .zero-module.active { flex-wrap: wrap; } }
+
+/* 跟单页 banner */
+.follow-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
+.follow-module.active { display: flex; }
+.follow-preview-grid { display: flex; flex-direction: column; gap: 32px; width: 100%; }
+.follow-version-title { margin-bottom: 14px; color: #98A2B3; font-size: 11px; font-weight: 400; }
+.follow-lang-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,680px),1fr)); gap: 28px 24px; }
+.follow-preview-item { min-width: 0; }
+.follow-preview-label { margin-bottom: 8px; color: #98A2B3; font-size: 11px; line-height: 26px; }
+.follow-preview-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+.follow-preview-card { display: flex; flex-direction: column; gap: 6px; color: #98A2B3; font-size: 10px; }
+.follow-preview-card canvas { display: block; max-width: 100%; height: auto; }
+.follow-preview-card.app canvas { width: 328.52px; }
+.follow-preview-card.web canvas { width: 383.11px; }
+@media (max-width: 1180px) { .follow-module.active { flex-wrap: wrap; } }
+
+/* 网格 banner */
+.grid-banner-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
+.grid-banner-module.active { display: flex; }
+.grid-banner-preview-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,680px),1fr)); gap: 28px 24px; width: 100%; }
+.grid-banner-preview-card canvas { display: block; width: 328.52px; max-width: 100%; height: auto; }
+@media (max-width: 1180px) { .grid-banner-module.active { flex-wrap: wrap; } }
+
+/* OTC */
+.otc-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
+.otc-module.active { display: flex; }
+.otc-preview-grid { display: flex; flex-direction: column; gap: 32px; width: 100%; }
+.otc-preview-card canvas { display: block; max-width: 100%; height: auto; }
+.otc-preview-card.app canvas { width: 328.52px; }
+.otc-preview-card.web canvas { width: min(100%,1149.33px); }
+.otc-lang-head { display: flex; align-items: center; justify-content: space-between; }
+@media (max-width: 1180px) { .otc-module.active { flex-wrap: wrap; } }
 </style>
 </head>
 <body>
@@ -1021,6 +1070,10 @@ body {
       <button class="v2-group-btn" data-v2-group="trade" onclick="setV2Group('trade')"><span>交易赛</span></button>
       <button class="v2-group-btn" data-v2-group="rebate" onclick="setV2Group('rebate')"><span>返佣</span></button>
       <button class="v2-group-btn" data-v2-group="ads" onclick="setV2Group('ads')"><span>投放素材</span></button>
+      <button class="v2-group-btn" data-v2-group="zero" onclick="setV2Group('zero')"><span>0元购页banner</span></button>
+      <button class="v2-group-btn" data-v2-group="follow" onclick="setV2Group('follow')"><span>跟单页banner</span></button>
+      <button class="v2-group-btn" data-v2-group="gridbanner" onclick="setV2Group('gridbanner')"><span>网格banner</span></button>
+      <button class="v2-group-btn" data-v2-group="otc" onclick="setV2Group('otc')"><span>OTC</span></button>
     </div>
     <div id="adSiteNavSection" class="v2-hidden">
       <div id="adSiteList"></div>
@@ -1046,6 +1099,72 @@ body {
     <div class="ad-preview-shell">
       <div class="ad-preview-head"><div class="ad-preview-title" id="adPreviewMeta">投放素材</div></div>
       <div class="ad-canvas-stage" id="adCanvasGrid"></div>
+    </div>
+  </section>
+  <section class="zero-module" id="zeroModule">
+    <div class="ad-editor">
+      <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
+      <div class="ad-field"><div id="zeroLangList"></div></div>
+      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
+      <div class="upload-area">
+        <button class="upload-btn" id="zeroLightBtn" onclick="document.getElementById('zeroLightFile').click()">白天配图</button><input id="zeroLightFile" type="file" accept="image/*,.svg" onchange="handleZeroImage(event,'light')">
+        <button class="upload-btn" id="zeroDarkBtn" onclick="document.getElementById('zeroDarkFile').click()">黑天配图</button><input id="zeroDarkFile" type="file" accept="image/*,.svg" onchange="handleZeroImage(event,'dark')">
+      </div>
+      <button class="download-all-btn" id="zeroDownloadBtn" onclick="downloadZeroBanner()">下载</button>
+    </div>
+    <div class="ad-preview-shell">
+      <div class="ad-preview-head"><div class="ad-preview-title">0元购页banner</div></div>
+      <div class="zero-preview-grid" id="zeroPreviewGrid"></div>
+    </div>
+  </section>
+  <section class="follow-module" id="followModule">
+    <div class="ad-editor">
+      <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
+      <div class="ad-field"><div id="followLangList"></div></div>
+      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
+      <div class="upload-area">
+        <button class="upload-btn" id="followAppLightBtn" onclick="document.getElementById('followAppLightFile').click()">白天配图</button><input id="followAppLightFile" type="file" accept="image/*,.svg" onchange="handleFollowImage(event,'appLight')">
+        <button class="upload-btn" id="followAppDarkBtn" onclick="document.getElementById('followAppDarkFile').click()">黑天配图</button><input id="followAppDarkFile" type="file" accept="image/*,.svg" onchange="handleFollowImage(event,'appDark')">
+      </div>
+      <div class="upload-area"><button class="upload-btn" id="followWebBtn" onclick="document.getElementById('followWebFile').click()">Web 配图</button><input id="followWebFile" type="file" accept="image/*,.svg" onchange="handleFollowImage(event,'web')"></div>
+      <button class="download-all-btn" id="followDownloadBtn" onclick="downloadFollowBanner()">下载</button>
+    </div>
+    <div class="ad-preview-shell">
+      <div class="ad-preview-head"><div class="ad-preview-title">跟单页banner</div></div>
+      <div class="follow-preview-grid" id="followPreviewGrid"></div>
+    </div>
+  </section>
+  <section class="grid-banner-module" id="gridBannerModule">
+    <div class="ad-editor">
+      <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
+      <div class="ad-field"><div id="gridBannerLangList"></div></div>
+      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
+      <div class="upload-area">
+        <button class="upload-btn" id="gridBannerLightBtn" onclick="document.getElementById('gridBannerLightFile').click()">白天配图</button><input id="gridBannerLightFile" type="file" accept="image/*,.svg" onchange="handleGridBannerImage(event,'light')">
+        <button class="upload-btn" id="gridBannerDarkBtn" onclick="document.getElementById('gridBannerDarkFile').click()">黑天配图</button><input id="gridBannerDarkFile" type="file" accept="image/*,.svg" onchange="handleGridBannerImage(event,'dark')">
+      </div>
+      <button class="download-all-btn" id="gridBannerDownloadBtn" onclick="downloadGridBanner()">下载</button>
+    </div>
+    <div class="ad-preview-shell">
+      <div class="ad-preview-head"><div class="ad-preview-title">网格banner</div></div>
+      <div class="grid-banner-preview-grid" id="gridBannerPreviewGrid"></div>
+    </div>
+  </section>
+  <section class="otc-module" id="otcModule">
+    <div class="ad-editor">
+      <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
+      <div class="ad-field"><div id="otcLangList"></div></div>
+      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
+      <div class="upload-area">
+        <button class="upload-btn" id="otcClassicLightBtn" onclick="document.getElementById('otcClassicLightFile').click()">经典白天配图</button><input id="otcClassicLightFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'classicLight')">
+        <button class="upload-btn" id="otcClassicDarkBtn" onclick="document.getElementById('otcClassicDarkFile').click()">经典黑天配图</button><input id="otcClassicDarkFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'classicDark')">
+      </div>
+      <div class="upload-area"><button class="upload-btn" id="otcSelectedBtn" onclick="document.getElementById('otcSelectedFile').click()">甄选配图</button><input id="otcSelectedFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'selected')"></div>
+      <button class="download-all-btn" id="otcDownloadBtn" onclick="downloadOtcBanner()">下载</button>
+    </div>
+    <div class="ad-preview-shell">
+      <div class="ad-preview-head"><div class="ad-preview-title">OTC</div></div>
+      <div class="otc-preview-grid" id="otcPreviewGrid"></div>
     </div>
   </section>
   <div class="panel">
@@ -4196,20 +4315,589 @@ async function downloadAdCreative() {
   finally{if(button){button.disabled=false;button.textContent=originalText||'下载';}}
 }
 
+const ZERO_BANNER_DRAFT_KEY = 'htxZeroPurchaseBannerV1';
+const ZERO_BANNER_W = 986;
+const ZERO_BANNER_H = 195;
+const ZERO_BANNER_PAD = 42;
+const ZERO_BANNER_IMAGE = 195;
+let zeroBannerLangs = DEFAULT_LANG_CODES.map((code,index)=>({ id:index+1, code, subtitle:'', title:'' }));
+let zeroBannerImages = { light:null, dark:null };
+
+function saveZeroBannerDraft() {
+  try { localStorage.setItem(ZERO_BANNER_DRAFT_KEY, JSON.stringify({ langs:zeroBannerLangs, images:zeroBannerImages })); } catch (_) {}
+}
+
+function loadZeroBannerDraft() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(ZERO_BANNER_DRAFT_KEY) || 'null');
+    if (Array.isArray(saved?.langs)) zeroBannerLangs = saved.langs;
+    if (saved?.images) zeroBannerImages = { light:saved.images.light || null, dark:saved.images.dark || null };
+  } catch (_) {}
+}
+
+function renderZeroBannerEditor() {
+  const list = document.getElementById('zeroLangList');
+  if (!list) return;
+  list.innerHTML = zeroBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><span>${eh(item.code)}</span><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeZeroBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="小标题" oninput="updateZeroBannerText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="大标题" oninput="updateZeroBannerText(${item.id},'title',this.value)"></div>`).join('');
+  setZeroUploadButtonState('light');
+  setZeroUploadButtonState('dark');
+}
+
+function removeZeroBannerLang(id) {
+  zeroBannerLangs = zeroBannerLangs.filter(lang=>lang.id!==id);
+  saveZeroBannerDraft();
+  renderZeroBannerEditor();
+  renderZeroBannerPreview();
+}
+
+function updateZeroBannerText(id, field, value) {
+  const item = zeroBannerLangs.find(lang=>lang.id===id);
+  if (!item) return;
+  item[field] = value;
+  saveZeroBannerDraft();
+  renderZeroBannerPreview();
+}
+
+function setZeroUploadButtonState(theme) {
+  const button = document.getElementById(theme === 'light' ? 'zeroLightBtn' : 'zeroDarkBtn');
+  if (!button) return;
+  button.textContent = zeroBannerImages[theme] ? `${theme === 'light' ? '白天' : '黑天'}配图已上传` : `${theme === 'light' ? '白天' : '黑天'}配图`;
+  button.className = zeroBannerImages[theme] ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handleZeroImage(event, theme) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    zeroBannerImages[theme] = reader.result;
+    setZeroUploadButtonState(theme);
+    saveZeroBannerDraft();
+    renderZeroBannerPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+async function drawZeroBanner(canvas, lang, theme) {
+  canvas.width = ZERO_BANNER_W;
+  canvas.height = ZERO_BANNER_H;
+  const ctx = canvas.getContext('2d');
+  const isDark = theme === 'dark';
+  ctx.fillStyle = isDark ? '#000000' : '#FFFFFF';
+  ctx.fillRect(0,0,ZERO_BANNER_W,ZERO_BANNER_H);
+  const imageX = ZERO_BANNER_W - ZERO_BANNER_IMAGE;
+  if (zeroBannerImages[theme]) await drawImgContain(ctx, zeroBannerImages[theme], imageX, 0, ZERO_BANNER_IMAGE, ZERO_BANNER_IMAGE);
+  const textW = imageX - ZERO_BANNER_PAD * 2;
+  const subSize = 30;
+  const titleSize = 42;
+  const subLH = 1.2;
+  const titleLH = 1.2;
+  const gap = 12;
+  const font = "'HarmonyOS Sans SC','PingFang SC',sans-serif";
+  const boldFont = "'HarmonyOS Bold','PingFang SC',sans-serif";
+  ctx.font = `400 ${subSize}px ${font}`;
+  let subLines = 0;
+  for (const segment of String(lang.subtitle || '').split('\n')) subLines += countLinesForText(ctx, segment, textW);
+  ctx.font = `700 ${titleSize}px ${boldFont}`;
+  let titleLines = 0;
+  for (const segment of String(lang.title || '').split('\n')) titleLines += countLinesForText(ctx, segment, textW);
+  const subH = subLines * subSize * subLH;
+  const titleH = titleLines * titleSize * titleLH;
+  const blockGap = subLines && titleLines ? gap : 0;
+  const blockTop = (ZERO_BANNER_H - subH - blockGap - titleH) / 2;
+  ctx.fillStyle = isDark ? '#808080' : '#565656';
+  ctx.font = `400 ${subSize}px ${font}`;
+  if (subLines) drawMultilineText(ctx, lang.subtitle, ZERO_BANNER_PAD, blockTop + subSize, textW, subSize, subLH, subSize, subH);
+  ctx.fillStyle = isDark ? '#FFFFFF' : '#000000';
+  ctx.font = `700 ${titleSize}px ${boldFont}`;
+  if (titleLines) drawMultilineText(ctx, lang.title, ZERO_BANNER_PAD, blockTop + subH + blockGap + titleSize, textW, titleSize, titleLH, titleSize, titleH);
+}
+
+async function renderZeroBannerPreview() {
+  const grid = document.getElementById('zeroPreviewGrid');
+  if (!grid) return;
+  grid.innerHTML = zeroBannerLangs.map(lang=>`<div class="zero-preview-item"><div class="zero-preview-label">${eh(lang.code)}</div><div class="zero-preview-row"><div class="zero-preview-card"><span>白天</span><canvas id="zero-${lang.id}-light"></canvas></div><div class="zero-preview-card"><span>黑天</span><canvas id="zero-${lang.id}-dark"></canvas></div></div></div>`).join('');
+  await Promise.all(zeroBannerLangs.flatMap(lang=>['light','dark'].map(theme=>drawZeroBanner(document.getElementById(`zero-${lang.id}-${theme}`),lang,theme))));
+}
+
+async function downloadZeroBanner() {
+  const button = document.getElementById('zeroDownloadBtn');
+  if (button) { button.disabled = true; button.textContent = '生成中…'; }
+  try {
+    await ensureExportFontsReady();
+    const files = [];
+    for (const lang of zeroBannerLangs) for (const theme of ['light','dark']) {
+      const canvas = document.createElement('canvas');
+      await drawZeroBanner(canvas,lang,theme);
+      const blob = await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
+      files.push({ name:`0元购页banner/${lang.code}/0元购页banner_${lang.code}_${theme === 'light' ? '白天' : '黑天'}.png`, data:new Uint8Array(await blob.arrayBuffer()) });
+    }
+    const blob = createAdZip(files);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = '0元购页banner.zip'; link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+  } catch (error) { console.error(error); alert(error.message || '下载失败'); }
+  finally { if (button) { button.disabled = false; button.textContent = '下载'; } }
+}
+
+loadZeroBannerDraft();
+renderZeroBannerEditor();
+
+const FOLLOW_BANNER_DRAFT_KEY = 'htxFollowBannerV1';
+const FOLLOW_APP = { W:986, H:184, radius:46, padX:46, padY:33, image:184, title:42 };
+const FOLLOW_WEB = { W:766, H:364, radius:31, padX:50, padY:96, image:200, title:44 };
+let followBannerLangs = DEFAULT_LANG_CODES.map((code,index)=>({ id:index+1, code, title:'' }));
+let followBannerImages = { appLight:null, appDark:null, web:null };
+
+function saveFollowBannerDraft() {
+  try { localStorage.setItem(FOLLOW_BANNER_DRAFT_KEY, JSON.stringify({ langs:followBannerLangs, images:followBannerImages })); } catch (_) {}
+}
+
+function loadFollowBannerDraft() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(FOLLOW_BANNER_DRAFT_KEY) || 'null');
+    if (Array.isArray(saved?.langs)) followBannerLangs = saved.langs;
+    if (saved?.images) followBannerImages = { appLight:saved.images.appLight || null, appDark:saved.images.appDark || null, web:saved.images.web || null };
+  } catch (_) {}
+}
+
+function renderFollowBannerEditor() {
+  const list = document.getElementById('followLangList');
+  if (!list) return;
+  list.innerHTML = followBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><span>${eh(item.code)}</span><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFollowBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="标题" oninput="updateFollowBannerText(${item.id},this.value)"></div>`).join('');
+  ['appLight','appDark','web'].forEach(setFollowUploadButtonState);
+}
+
+function removeFollowBannerLang(id) {
+  followBannerLangs = followBannerLangs.filter(lang=>lang.id!==id);
+  saveFollowBannerDraft();
+  renderFollowBannerEditor();
+  renderFollowBannerPreview();
+}
+
+function updateFollowBannerText(id, value) {
+  const item = followBannerLangs.find(lang=>lang.id===id);
+  if (!item) return;
+  item.title = value;
+  saveFollowBannerDraft();
+  renderFollowBannerPreview();
+}
+
+function followImageLabel(kind) {
+  return kind === 'appLight' ? '白天配图' : kind === 'appDark' ? '黑天配图' : 'Web 配图';
+}
+
+function setFollowUploadButtonState(kind) {
+  const ids = { appLight:'followAppLightBtn', appDark:'followAppDarkBtn', web:'followWebBtn' };
+  const button = document.getElementById(ids[kind]);
+  if (!button) return;
+  button.textContent = followBannerImages[kind] ? `${followImageLabel(kind)}已上传` : followImageLabel(kind);
+  button.className = followBannerImages[kind] ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handleFollowImage(event, kind) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    followBannerImages[kind] = reader.result;
+    setFollowUploadButtonState(kind);
+    saveFollowBannerDraft();
+    renderFollowBannerPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function fillFollowRoundedBackground(ctx, spec, color) {
+  ctx.clearRect(0,0,spec.W,spec.H);
+  ctx.beginPath();
+  ctx.roundRect(0,0,spec.W,spec.H,spec.radius);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.clip();
+}
+
+function drawFollowCenteredTitle(ctx, text, spec, textW, color, font, maxLines = Infinity) {
+  ctx.fillStyle = color;
+  ctx.font = `700 ${spec.title}px ${font}`;
+  const wrappedLines = String(text || '').split('\n').flatMap(segment=>wrapTextLines(ctx,segment,textW));
+  const isTruncated = wrappedLines.length > maxLines;
+  const visibleLines = wrappedLines.slice(0,maxLines);
+  if (isTruncated && visibleLines.length) {
+    const ellipsis = '...';
+    let lastLine = visibleLines[visibleLines.length - 1].replace(/\s+$/g,'');
+    while (lastLine && ctx.measureText(lastLine + ellipsis).width > textW) lastLine = [...lastLine].slice(0,-1).join('').replace(/\s+$/g,'');
+    visibleLines[visibleLines.length - 1] = lastLine + ellipsis;
+  }
+  const lines = visibleLines.length;
+  const lineH = 1.2;
+  const blockH = lines * spec.title * lineH;
+  let y = (spec.H - blockH) / 2 + spec.title;
+  for (const line of visibleLines) {
+    ctx.fillText(line,spec.padX,y);
+    y += spec.title * lineH;
+  }
+}
+
+function followTitleMaxLines(lang) {
+  return ['ru-ru','tr-tr','vi-vi'].includes(String(lang?.code || '').toLowerCase()) ? 2 : Infinity;
+}
+
+async function drawFollowApp(canvas, lang, theme) {
+  const spec = FOLLOW_APP;
+  canvas.width = spec.W; canvas.height = spec.H;
+  const ctx = canvas.getContext('2d');
+  const isDark = theme === 'dark';
+  ctx.save();
+  fillFollowRoundedBackground(ctx,spec,isDark ? '#000000' : '#FFFFFF');
+  const imageX = spec.W - spec.padX - spec.image;
+  const image = isDark ? followBannerImages.appDark : followBannerImages.appLight;
+  if (image) await drawImgContain(ctx,image,imageX,0,spec.image,spec.image);
+        const textW = imageX - spec.padX * 2;
+  drawFollowCenteredTitle(ctx,lang.title,spec,textW,isDark ? '#FFFFFF' : '#000000',"'HarmonyOS Bold','PingFang SC',sans-serif",followTitleMaxLines(lang));
+  ctx.restore();
+}
+
+async function drawFollowWeb(canvas, lang) {
+  const spec = FOLLOW_WEB;
+  canvas.width = spec.W; canvas.height = spec.H;
+  const ctx = canvas.getContext('2d');
+  ctx.save();
+  fillFollowRoundedBackground(ctx,spec,'#FFFFFF');
+  const imageX = spec.W - spec.padX - spec.image;
+  const imageY = (spec.H - spec.image) / 2;
+  const webImage = followBannerImages.web || followBannerImages.appLight;
+  if (webImage) await drawImgContain(ctx,webImage,imageX,imageY,spec.image,spec.image);
+  const textW = imageX - spec.padX * 2;
+  drawFollowCenteredTitle(ctx,lang.title,spec,textW,'#000000',"'HarmonyOS Bold','PingFang SC',sans-serif",followTitleMaxLines(lang));
+  const strokeWidth = 1.92;
+  const strokeInset = strokeWidth / 2;
+  ctx.beginPath();
+  ctx.roundRect(strokeInset,strokeInset,spec.W - strokeWidth,spec.H - strokeWidth,spec.radius - strokeInset);
+  ctx.strokeStyle = '#EBEBEB';
+  ctx.lineWidth = strokeWidth;
+  ctx.stroke();
+  ctx.restore();
+}
+
+async function renderFollowBannerPreview() {
+  const grid = document.getElementById('followPreviewGrid');
+  if (!grid) return;
+  const appItems = followBannerLangs.map(lang=>`<div class="follow-preview-item"><div class="follow-preview-label">${eh(lang.code)}</div><div class="follow-preview-row"><div class="follow-preview-card app"><span>白天</span><canvas id="follow-app-${lang.id}-light"></canvas></div><div class="follow-preview-card app"><span>黑天</span><canvas id="follow-app-${lang.id}-dark"></canvas></div></div></div>`).join('');
+  const webItems = followBannerLangs.map(lang=>`<div class="follow-preview-item"><div class="follow-preview-label">${eh(lang.code)}</div><div class="follow-preview-row"><div class="follow-preview-card web"><canvas id="follow-web-${lang.id}"></canvas></div></div></div>`).join('');
+  grid.innerHTML = `<div><div class="follow-version-title">APP</div><div class="follow-lang-grid">${appItems}</div></div><div><div class="follow-version-title">WEB</div><div class="follow-lang-grid">${webItems}</div></div>`;
+  await Promise.all(followBannerLangs.flatMap(lang=>[
+    drawFollowApp(document.getElementById(`follow-app-${lang.id}-light`),lang,'light'),
+    drawFollowApp(document.getElementById(`follow-app-${lang.id}-dark`),lang,'dark'),
+    drawFollowWeb(document.getElementById(`follow-web-${lang.id}`),lang)
+  ]));
+}
+
+async function downloadFollowBanner() {
+  const button = document.getElementById('followDownloadBtn');
+  if (button) { button.disabled = true; button.textContent = '生成中…'; }
+  try {
+    await ensureExportFontsReady();
+    const files = [];
+    for (const lang of followBannerLangs) {
+      for (const theme of ['light','dark']) {
+        const canvas = document.createElement('canvas');
+        await drawFollowApp(canvas,lang,theme);
+        const blob = await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
+        files.push({ name:`跟单页banner/APP/${lang.code}/跟单页banner_APP_${lang.code}_${theme === 'light' ? '白天' : '黑天'}.png`, data:new Uint8Array(await blob.arrayBuffer()) });
+      }
+      const webCanvas = document.createElement('canvas');
+      await drawFollowWeb(webCanvas,lang);
+      const webBlob = await new Promise((resolve,reject)=>webCanvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
+      files.push({ name:`跟单页banner/WEB/${lang.code}/跟单页banner_WEB_${lang.code}.png`, data:new Uint8Array(await webBlob.arrayBuffer()) });
+    }
+    const blob = createAdZip(files);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = '跟单页banner.zip'; link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+  } catch (error) { console.error(error); alert(error.message || '下载失败'); }
+  finally { if (button) { button.disabled = false; button.textContent = '下载'; } }
+}
+
+loadFollowBannerDraft();
+renderFollowBannerEditor();
+
+const GRID_BANNER_DRAFT_KEY = 'htxGridBannerV1';
+const GRID_BANNER_SPEC = { W:986, H:172, radius:34, padX:48, padY:27, image:150, title:36 };
+let gridBannerLangs = DEFAULT_LANG_CODES.map((code,index)=>({ id:index+1, code, title:'' }));
+let gridBannerImages = { light:null, dark:null };
+
+function saveGridBannerDraft() {
+  try { localStorage.setItem(GRID_BANNER_DRAFT_KEY, JSON.stringify({ langs:gridBannerLangs, images:gridBannerImages })); } catch (_) {}
+}
+
+function loadGridBannerDraft() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(GRID_BANNER_DRAFT_KEY) || 'null');
+    if (Array.isArray(saved?.langs)) gridBannerLangs = saved.langs;
+    if (saved?.images) gridBannerImages = { light:saved.images.light || null, dark:saved.images.dark || null };
+  } catch (_) {}
+}
+
+function renderGridBannerEditor() {
+  const list = document.getElementById('gridBannerLangList');
+  if (!list) return;
+  list.innerHTML = gridBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><span>${eh(item.code)}</span><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeGridBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="标题" oninput="updateGridBannerText(${item.id},this.value)"></div>`).join('');
+  ['light','dark'].forEach(setGridBannerUploadButtonState);
+}
+
+function removeGridBannerLang(id) {
+  gridBannerLangs = gridBannerLangs.filter(lang=>lang.id!==id);
+  saveGridBannerDraft();
+  renderGridBannerEditor();
+  renderGridBannerPreview();
+}
+
+function updateGridBannerText(id, value) {
+  const item = gridBannerLangs.find(lang=>lang.id===id);
+  if (!item) return;
+  item.title = value;
+  saveGridBannerDraft();
+  renderGridBannerPreview();
+}
+
+function setGridBannerUploadButtonState(theme) {
+  const button = document.getElementById(theme === 'light' ? 'gridBannerLightBtn' : 'gridBannerDarkBtn');
+  if (!button) return;
+  const label = `${theme === 'light' ? '白天' : '黑天'}配图`;
+  button.textContent = gridBannerImages[theme] ? `${label}已上传` : label;
+  button.className = gridBannerImages[theme] ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handleGridBannerImage(event, theme) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    gridBannerImages[theme] = reader.result;
+    setGridBannerUploadButtonState(theme);
+    saveGridBannerDraft();
+    renderGridBannerPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+async function drawGridBanner(canvas, lang, theme) {
+  const spec = GRID_BANNER_SPEC;
+  canvas.width = spec.W; canvas.height = spec.H;
+  const ctx = canvas.getContext('2d');
+  const isDark = theme === 'dark';
+  ctx.save();
+  fillFollowRoundedBackground(ctx,spec,isDark ? '#000000' : '#FFFFFF');
+  const imageX = spec.W - spec.padX - spec.image;
+  const imageY = (spec.H - spec.image) / 2;
+  if (gridBannerImages[theme]) await drawImgContain(ctx,gridBannerImages[theme],imageX,imageY,spec.image,spec.image);
+  const textW = imageX - spec.padX;
+  drawFollowCenteredTitle(ctx,lang.title,spec,textW,isDark ? '#FFFFFF' : '#000000',"'HarmonyOS Bold','PingFang SC',sans-serif");
+  ctx.restore();
+}
+
+async function renderGridBannerPreview() {
+  const grid = document.getElementById('gridBannerPreviewGrid');
+  if (!grid) return;
+  grid.innerHTML = gridBannerLangs.map(lang=>`<div class="follow-preview-item"><div class="follow-preview-label">${eh(lang.code)}</div><div class="follow-preview-row"><div class="follow-preview-card grid-banner-preview-card"><span>白天</span><canvas id="grid-banner-${lang.id}-light"></canvas></div><div class="follow-preview-card grid-banner-preview-card"><span>黑天</span><canvas id="grid-banner-${lang.id}-dark"></canvas></div></div></div>`).join('');
+  await Promise.all(gridBannerLangs.flatMap(lang=>['light','dark'].map(theme=>drawGridBanner(document.getElementById(`grid-banner-${lang.id}-${theme}`),lang,theme))));
+}
+
+async function downloadGridBanner() {
+  const button = document.getElementById('gridBannerDownloadBtn');
+  if (button) { button.disabled = true; button.textContent = '生成中…'; }
+  try {
+    await ensureExportFontsReady();
+    const files = [];
+    for (const lang of gridBannerLangs) for (const theme of ['light','dark']) {
+      const canvas = document.createElement('canvas');
+      await drawGridBanner(canvas,lang,theme);
+      const blob = await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
+      files.push({ name:`网格banner/${lang.code}/网格banner_${lang.code}_${theme === 'light' ? '白天' : '黑天'}.png`, data:new Uint8Array(await blob.arrayBuffer()) });
+    }
+    const blob = createAdZip(files);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = '网格banner.zip'; link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+  } catch (error) { console.error(error); alert(error.message || '下载失败'); }
+  finally { if (button) { button.disabled = false; button.textContent = '下载'; } }
+}
+
+loadGridBannerDraft();
+renderGridBannerEditor();
+
+const OTC_DRAFT_KEY = 'htxOtcBannerV1';
+const OTC_WEB = { W:2299, H:364, image:364, padTop:77, padBottom:126, title:68, subtitle:46, gap:15.32 };
+const OTC_APP = { W:986, H:155, image:155, padX:3, padTop:23, padBottom:12, title:46, subtitle:34, gap:5.76 };
+let otcLangs = DEFAULT_LANG_CODES.map((code,index)=>({ id:index+1, code, subtitle:'', title:'' }));
+let otcImages = { classicLight:null, classicDark:null, selected:null };
+
+function saveOtcDraft() {
+  try { localStorage.setItem(OTC_DRAFT_KEY,JSON.stringify({ langs:otcLangs, images:otcImages })); } catch (_) {}
+}
+
+function loadOtcDraft() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(OTC_DRAFT_KEY) || 'null');
+    if (Array.isArray(saved?.langs)) otcLangs = saved.langs;
+    if (saved?.images) otcImages = { classicLight:saved.images.classicLight || null, classicDark:saved.images.classicDark || null, selected:saved.images.selected || null };
+  } catch (_) {}
+}
+
+function renderOtcEditor() {
+  const list = document.getElementById('otcLangList');
+  if (!list) return;
+  list.innerHTML = otcLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><span>${eh(item.code)}</span><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeOtcLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题" oninput="updateOtcText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="主标题" oninput="updateOtcText(${item.id},'title',this.value)"></div>`).join('');
+  ['classicLight','classicDark','selected'].forEach(setOtcUploadButtonState);
+}
+
+function removeOtcLang(id) {
+  otcLangs = otcLangs.filter(lang=>lang.id!==id);
+  saveOtcDraft();
+  renderOtcEditor();
+  renderOtcPreview();
+}
+
+function updateOtcText(id,field,value) {
+  const item = otcLangs.find(lang=>lang.id===id);
+  if (!item) return;
+  item[field] = value;
+  saveOtcDraft();
+  renderOtcPreview();
+}
+
+function otcImageLabel(kind) {
+  return kind === 'classicLight' ? '经典白天配图' : kind === 'classicDark' ? '经典黑天配图' : '甄选配图';
+}
+
+function setOtcUploadButtonState(kind) {
+  const ids = { classicLight:'otcClassicLightBtn', classicDark:'otcClassicDarkBtn', selected:'otcSelectedBtn' };
+  const button = document.getElementById(ids[kind]);
+  if (!button) return;
+  button.textContent = otcImages[kind] ? `${otcImageLabel(kind)}已上传` : otcImageLabel(kind);
+  button.className = otcImages[kind] ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handleOtcImage(event,kind) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    otcImages[kind] = reader.result;
+    setOtcUploadButtonState(kind);
+    saveOtcDraft();
+    renderOtcPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function drawOtcTextPair(ctx,lang,spec,textW,colors) {
+  const x = spec.padX || 0;
+  const lineH = 1.2;
+  ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Regular','PingFang SC',sans-serif`;
+  const subtitleLines = String(lang.subtitle || '').split('\n').flatMap(segment=>wrapTextLines(ctx,segment,textW));
+  ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+  const titleLines = String(lang.title || '').split('\n').flatMap(segment=>wrapTextLines(ctx,segment,textW));
+  const titleGap = subtitleLines.length && titleLines.length ? spec.gap : 0;
+  const blockH = subtitleLines.length * spec.subtitle * lineH + titleGap + titleLines.length * spec.title * lineH;
+  const safeTop = spec.padTop;
+  const safeBottom = spec.H - spec.padBottom;
+  let y = safeTop + Math.max(0,(safeBottom - safeTop - blockH) / 2);
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = colors.subtitle;
+  ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Regular','PingFang SC',sans-serif`;
+  for (const line of subtitleLines) { ctx.fillText(line,x,y); y += spec.subtitle * lineH; }
+  y += titleGap;
+  ctx.fillStyle = colors.title;
+  ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+  for (const line of titleLines) { ctx.fillText(line,x,y); y += spec.title * lineH; }
+}
+
+async function drawOtcBanner(canvas,lang,platform,variant,theme='light') {
+  const spec = platform === 'web' ? OTC_WEB : OTC_APP;
+  const isSelected = variant === 'selected';
+  const isDark = isSelected || theme === 'dark';
+  canvas.width = spec.W; canvas.height = spec.H;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = isDark ? '#000000' : '#FFFFFF';
+  ctx.fillRect(0,0,spec.W,spec.H);
+  const image = isSelected ? otcImages.selected : isDark ? otcImages.classicDark : otcImages.classicLight;
+  const imageX = spec.W - spec.image;
+  if (image) await drawImgContain(ctx,image,imageX,0,spec.image,spec.image);
+  const textW = imageX - (spec.padX || 0);
+  drawOtcTextPair(ctx,lang,spec,textW,{
+    title:isDark ? '#FFFFFF' : '#000000',
+    subtitle:isDark ? '#8C8C93' : platform === 'web' ? '#595959' : '#8C8C8C'
+  });
+}
+
+async function renderOtcPreview() {
+  const grid = document.getElementById('otcPreviewGrid');
+  if (!grid) return;
+  const appClassic = otcLangs.map(lang=>`<div class="follow-preview-item"><div class="follow-preview-label">${eh(lang.code)}</div><div class="follow-preview-row"><div class="follow-preview-card app otc-preview-card"><span>白天</span><canvas id="otc-app-classic-${lang.id}-light"></canvas></div><div class="follow-preview-card app otc-preview-card"><span>黑天</span><canvas id="otc-app-classic-${lang.id}-dark"></canvas></div></div></div>`).join('');
+  const appSelected = otcLangs.map(lang=>`<div class="follow-preview-item"><div class="follow-preview-label">${eh(lang.code)}</div><div class="follow-preview-row"><div class="follow-preview-card app otc-preview-card"><canvas id="otc-app-selected-${lang.id}"></canvas></div></div></div>`).join('');
+  const webClassic = otcLangs.map(lang=>`<div class="follow-preview-item"><div class="follow-preview-label">${eh(lang.code)}</div><div class="follow-preview-row"><div class="follow-preview-card web otc-preview-card"><canvas id="otc-web-classic-${lang.id}"></canvas></div></div></div>`).join('');
+  const webSelected = otcLangs.map(lang=>`<div class="follow-preview-item"><div class="follow-preview-label">${eh(lang.code)}</div><div class="follow-preview-row"><div class="follow-preview-card web otc-preview-card"><canvas id="otc-web-selected-${lang.id}"></canvas></div></div></div>`).join('');
+  grid.innerHTML = `<div><div class="follow-version-title">APP · 经典</div><div class="follow-lang-grid">${appClassic}</div></div><div><div class="follow-version-title">APP · 甄选</div><div class="follow-lang-grid">${appSelected}</div></div><div><div class="follow-version-title">WEB · 经典</div><div class="follow-lang-grid">${webClassic}</div></div><div><div class="follow-version-title">WEB · 甄选</div><div class="follow-lang-grid">${webSelected}</div></div>`;
+  await Promise.all(otcLangs.flatMap(lang=>[
+    drawOtcBanner(document.getElementById(`otc-app-classic-${lang.id}-light`),lang,'app','classic','light'),
+    drawOtcBanner(document.getElementById(`otc-app-classic-${lang.id}-dark`),lang,'app','classic','dark'),
+    drawOtcBanner(document.getElementById(`otc-app-selected-${lang.id}`),lang,'app','selected'),
+    drawOtcBanner(document.getElementById(`otc-web-classic-${lang.id}`),lang,'web','classic'),
+    drawOtcBanner(document.getElementById(`otc-web-selected-${lang.id}`),lang,'web','selected')
+  ]));
+}
+
+async function downloadOtcBanner() {
+  const button = document.getElementById('otcDownloadBtn');
+  if (button) { button.disabled = true; button.textContent = '生成中…'; }
+  try {
+    await ensureExportFontsReady();
+    const files = [];
+    const variants = [
+      ['APP','经典','light','白天'], ['APP','经典','dark','黑天'], ['APP','甄选','light','甄选'],
+      ['WEB','经典','light','经典'], ['WEB','甄选','light','甄选']
+    ];
+    for (const lang of otcLangs) for (const [platformLabel,variantLabel,theme,fileLabel] of variants) {
+      const canvas = document.createElement('canvas');
+      await drawOtcBanner(canvas,lang,platformLabel.toLowerCase(),variantLabel === '甄选' ? 'selected' : 'classic',theme);
+      const blob = await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
+      files.push({ name:`OTC/${platformLabel}/${variantLabel}/${lang.code}/OTC_${platformLabel}_${variantLabel}_${lang.code}_${fileLabel}.png`,data:new Uint8Array(await blob.arrayBuffer()) });
+    }
+    const blob = createAdZip(files);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = 'OTC.zip'; link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+  } catch (error) { console.error(error); alert(error.message || '下载失败'); }
+  finally { if (button) { button.disabled = false; button.textContent = '下载'; } }
+}
+
+loadOtcDraft();
+renderOtcEditor();
+
 const V2_ACTIVE_GROUP_KEY = 'htx-visual-workbench-active-group';
 const V2_SCROLL_KEY = 'htx-visual-workbench-scroll-y';
 const hashV2Group = location.hash.replace(/^#/, '');
-const savedV2Group = ['common','baping','trade','rebate','ads'].includes(hashV2Group)
+const savedV2Group = ['common','baping','trade','rebate','ads','zero','follow','gridbanner','otc'].includes(hashV2Group)
   ? hashV2Group
   : localStorage.getItem(V2_ACTIVE_GROUP_KEY);
-let v2ActiveGroup = ['common','baping','trade','rebate','ads'].includes(savedV2Group) ? savedV2Group : 'common';
+let v2ActiveGroup = ['common','baping','trade','rebate','ads','zero','follow','gridbanner','otc'].includes(savedV2Group) ? savedV2Group : 'common';
 let v2CommonNodes = [];
 const v2SlotGroups = {
   common: ['new','old','email','appcal','pccal','share','feed','landing'],
   baping: ['baping'],
   trade: ['tradeapp-light','tradeapp-dark','tradeweb'],
   rebate: ['pcrebate','apprebate'],
-  ads: []
+  ads: [],
+  zero: [],
+  follow: [],
+  gridbanner: [],
+  otc: []
 };
 
 function setV2Group(group, updateButtons = true) {
@@ -4227,7 +4915,11 @@ function setV2Group(group, updateButtons = true) {
     baping: ['baping'],
     trade: ['trade'],
     rebate: ['pcrebate','apprebate'],
-    ads: []
+    ads: [],
+    zero: [],
+    follow: [],
+    gridbanner: [],
+    otc: []
   };
   Object.values(previewGroups).flat().forEach(key => {
     const section = document.getElementById('section-' + key);
@@ -4238,16 +4930,25 @@ function setV2Group(group, updateButtons = true) {
   });
   v2CommonNodes.forEach(node => node.classList.toggle('v2-hidden', group !== 'common'));
   const adModule = document.getElementById('adModule');
+  const zeroModule = document.getElementById('zeroModule');
+  const followModule = document.getElementById('followModule');
+  const gridBannerModule = document.getElementById('gridBannerModule');
+  const otcModule = document.getElementById('otcModule');
   const editorPanel = document.querySelector('.tool-layout > .panel');
   const previewArea = document.querySelector('.tool-layout > .preview-area');
   const slotTitle = document.getElementById('v2SlotTitle');
   const slotMount = document.getElementById('v2SlotMount');
   const adSiteNavSection = document.getElementById('adSiteNavSection');
   if (adModule) adModule.classList.toggle('active', group === 'ads');
-  if (editorPanel) editorPanel.classList.toggle('v2-hidden', group === 'ads');
-  if (previewArea) previewArea.classList.toggle('v2-hidden', group === 'ads');
-  if (slotTitle) slotTitle.classList.toggle('v2-hidden', group === 'ads');
-  if (slotMount) slotMount.classList.toggle('v2-hidden', group === 'ads');
+  if (zeroModule) zeroModule.classList.toggle('active', group === 'zero');
+  if (followModule) followModule.classList.toggle('active', group === 'follow');
+  if (gridBannerModule) gridBannerModule.classList.toggle('active', group === 'gridbanner');
+  if (otcModule) otcModule.classList.toggle('active', group === 'otc');
+  const standaloneGroup = group === 'ads' || group === 'zero' || group === 'follow' || group === 'gridbanner' || group === 'otc';
+  if (editorPanel) editorPanel.classList.toggle('v2-hidden', standaloneGroup);
+  if (previewArea) previewArea.classList.toggle('v2-hidden', standaloneGroup);
+  if (slotTitle) slotTitle.classList.toggle('v2-hidden', standaloneGroup);
+  if (slotMount) slotMount.classList.toggle('v2-hidden', standaloneGroup);
   if (adSiteNavSection) adSiteNavSection.classList.toggle('v2-hidden', group !== 'ads');
   const sections = {
     baping: [document.getElementById('bapingLangSection')],
@@ -4264,7 +4965,11 @@ function setV2Group(group, updateButtons = true) {
     baping: ['霸屏', '独立管理霸屏文案和配图。'],
     trade: ['交易赛', '独立管理 App 与 Web 交易赛文案和素材。'],
     rebate: ['返佣', '集中管理 PC返佣与 APP返佣，两套版式可分别配置。'],
-    ads: ['投放素材', '按三种固定版式生成多语言、多尺寸投放素材。']
+    ads: ['投放素材', '按三种固定版式生成多语言、多尺寸投放素材。'],
+    zero: ['0元购页banner', '独立管理多语种文案与白天/黑天配图。'],
+    follow: ['跟单页banner', '独立管理 App 与 Web 版式的多语种标题和配图。'],
+    gridbanner: ['网格banner', '独立管理多语种标题与白天/黑天配图。'],
+    otc: ['OTC', '独立管理 App 与 Web 的经典、甄选版式和多语种文案。']
   }[group];
   const title = document.querySelector('.v2-editor-title');
   const desc = document.querySelector('.v2-editor-desc');
@@ -4272,6 +4977,10 @@ function setV2Group(group, updateButtons = true) {
   if (desc) desc.textContent = copy[1];
   restoreDownloadButton();
   if (group === 'ads') renderAdCreative();
+  if (group === 'zero') renderZeroBannerPreview();
+  if (group === 'follow') renderFollowBannerPreview();
+  if (group === 'gridbanner') renderGridBannerPreview();
+  if (group === 'otc') renderOtcPreview();
   requestAnimationFrame(() => autoResizeAllTextAreas());
 }
 
