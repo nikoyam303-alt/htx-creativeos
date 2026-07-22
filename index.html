@@ -4344,16 +4344,17 @@ async function drawAdCreative(canvas,w,h,lang) {
   // Long translations still shrink through fitAdText when the available width
   // requires it.
   const maxTitle=vertical ? Math.min(w*.14,h*.12,64) : short ? Math.min(h*.34,w*.075,96) : Math.min(h*.16,w*.09,86);
-  const minTitle=short ? Math.max(28,Math.min(54,h*.22)) : Math.max(10,Math.min(vertical?28:24,h*.12));
+  const minTitle=short ? Math.min(maxTitle,Math.max(10,Math.min(54,h*.19))) : Math.max(10,Math.min(vertical?28:24,h*.12));
   const renderedMainTitle=short?mainTitle.replace(/\s*\r?\n\s*/g,' '):mainTitle;
   const fitted=fitAdText(ctx,renderedMainTitle,tw,th*.72,maxTitle,minTitle,short?1:3);
   const titleSize=fitted.size;
   const titleLineHeight=titleSize*1.16;
   const titleFont=`normal 700 ${titleSize}px Arial, "PingFang SC", "Microsoft YaHei", sans-serif`;
-  const subRatio=vertical?.06:(short?.20:.055);
+  const subRatio=vertical?.075:(short?.20:.055);
   const subSize=Math.max(9,Math.min(short?58:40,Math.min(w,h)*subRatio));
   ctx.font=`normal 400 ${subSize}px "HarmonyOS Sans SC", Arial, sans-serif`;
-  const subLines=subTitle?adTextLines(ctx,subTitle,tw).slice(0,short?1:2):[];
+  const subMaxLines=short?1:vertical?4:2;
+  const subLines=subTitle?adTextLines(ctx,subTitle,tw).slice(0,subMaxLines):[];
   if(format==='narrow'){const gap=subLines.length?subSize*.35:0,totalH=fitted.lines.length*titleLineHeight+gap+subLines.length*subSize*1.35;ty=Math.max(contentY,(h-totalH)/2);}
   ctx.font=titleFont;
   ctx.textAlign=align;ctx.textBaseline='top';ctx.fillStyle='#FFF';fitted.lines.forEach((line,i)=>ctx.fillText(line,tx,ty+i*titleLineHeight));
