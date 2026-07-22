@@ -985,6 +985,8 @@ body {
 .ad-site-size { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) 24px; gap: 8px; align-items: end; margin-top: 8px; }
 .ad-site-size > div input { width: 100%; box-sizing: border-box; }
 .ad-site-size .lang-remove { width: 18px; height: 20px; margin-bottom: 7px; }
+.ad-site-safezone { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) 24px; gap: 8px; padding: 8px; border-radius: 6px; background: #F8FAFC; }
+.ad-site-safezone-note { grid-column: 1 / -1; color: #98A2B3; font-size: 9px; line-height: 1.35; }
 .ad-site-add-size { width: 100%; margin-top: 10px; padding: 0; border: 0; background: transparent; color: #667085; font: inherit; font-size: 11px; text-align: left; cursor: pointer; }
 .ad-lang-card { padding: 12px; border-radius: 8px; background: #F8FAFC; }
 .ad-lang-card + .ad-lang-card { margin-top: 10px; }
@@ -1014,6 +1016,7 @@ body {
 #adSiteNavSection input::placeholder { color: #A7B0BE; font-weight: 400; }
 #adSiteNavSection .ad-site-size { grid-template-columns: minmax(0,1fr) minmax(0,1fr) 18px; gap: 5px; }
 #adSiteNavSection .ad-site-size label { color: #98A2B3; font-size: 9px; font-weight: 400; }
+#adSiteNavSection .ad-site-safezone { grid-template-columns: minmax(0,1fr) minmax(0,1fr) 18px; gap: 5px; }
 #adSiteNavSection .add-lang-btn { height: 40px; font-size: 12px; font-weight: 500; }
 @media (max-width: 1180px) { .ad-module.active { flex-wrap: wrap; } .ad-editor { width: 100%; flex-basis: 100%; position: relative; top: auto; } .ad-preview-shell { width: 100%; } }
 
@@ -4204,15 +4207,15 @@ function updateAdBackground(key, value) {
 }
 function renderAdConfigLists() {
   const sites=document.getElementById('adSiteList'),langs=document.getElementById('adLangList'); if(!sites||!langs)return;
-  sites.innerHTML=adSites.map(site=>`<div class="ad-site-card"><div class="ad-site-head"><input value="${site.name}" placeholder="投放网站名称" oninput="updateAdSiteName(${site.id},this.value)"><button class="lang-remove" onclick="removeAdSite(${site.id})">✕</button></div>${site.sizes.map(size=>`<div class="ad-site-size"><div><label>宽度</label><input type="number" value="${size.width}" placeholder="0" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'width',this.value)"></div><div><label>高度</label><input type="number" value="${size.height}" placeholder="0" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'height',this.value)"></div><button class="lang-remove" onclick="removeAdSiteSize(${site.id},${size.id})" ${site.sizes.length===1?'style="visibility:hidden"':''}>✕</button></div>`).join('')}<button class="ad-site-add-size" onclick="addAdSiteSize(${site.id})">+ 添加尺寸</button></div>`).join('');
+  sites.innerHTML=adSites.map(site=>`<div class="ad-site-card"><div class="ad-site-head"><input value="${site.name}" placeholder="投放网站名称" oninput="updateAdSiteName(${site.id},this.value)"><button class="lang-remove" onclick="removeAdSite(${site.id})">✕</button></div>${site.sizes.map(size=>`<div class="ad-site-size"><div><label>宽度</label><input type="number" value="${size.width}" placeholder="0" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'width',this.value)"></div><div><label>高度</label><input type="number" value="${size.height}" placeholder="0" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'height',this.value)"></div><button class="lang-remove" onclick="removeAdSiteSize(${site.id},${size.id})" ${site.sizes.length===1?'style="visibility:hidden"':''}>✕</button><div class="ad-site-safezone"><div><label>安全区宽（可选）</label><input type="number" value="${size.safeWidth || ''}" placeholder="如 728" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'safeWidth',this.value)"></div><div><label>安全区高（可选）</label><input type="number" value="${size.safeHeight || ''}" placeholder="如 90" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'safeHeight',this.value)"></div><span></span><div class="ad-site-safezone-note">留空则使用完整画布；填写后安全区自动居中</div></div></div>`).join('')}<button class="ad-site-add-size" onclick="addAdSiteSize(${site.id})">+ 添加尺寸</button></div>`).join('');
   langs.innerHTML=adLanguages.map(lang=>`<div class="ad-lang-card"><div class="ad-lang-head"><select onchange="updateAdLanguage(${lang.id},'code',this.value)">${adLanguageOptions.map(([code,label])=>`<option value="${code}" ${lang.code===code?'selected':''}>${label}</option>`).join('')}</select><button class="lang-remove" onclick="removeAdLanguage(${lang.id})">✕</button></div><textarea placeholder="主标题" oninput="updateAdLanguage(${lang.id},'eyebrow',this.value)">${lang.eyebrow}</textarea><textarea style="margin-top:8px" placeholder="副标题" oninput="updateAdLanguage(${lang.id},'title',this.value)">${lang.title}</textarea></div>`).join('');
   requestAnimationFrame(()=>autoResizeAllTextAreas(langs));
 }
 function saveAdChanges(){scheduleAdDraftSave();scheduleDraftSave();}
-function addAdSite(){adSites.push({id:adSiteId++,name:'',sizes:[{id:adSizeId++,width:'',height:''}]});renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function addAdSite(){adSites.push({id:adSiteId++,name:'',sizes:[{id:adSizeId++,width:'',height:'',safeWidth:'',safeHeight:''}]});renderAdConfigLists();renderAdCreative();saveAdChanges();}
 function removeAdSite(id){adSites=adSites.filter(site=>site.id!==id);renderAdConfigLists();renderAdCreative();saveAdChanges();}
 function updateAdSiteName(id,value){const site=adSites.find(s=>s.id===id);if(site)site.name=value;renderAdCreative();saveAdChanges();}
-function addAdSiteSize(siteId){const site=adSites.find(s=>s.id===siteId);if(!site)return;const b=site.sizes[site.sizes.length-1];site.sizes.push({id:adSizeId++,width:b.width,height:b.height});renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function addAdSiteSize(siteId){const site=adSites.find(s=>s.id===siteId);if(!site)return;const b=site.sizes[site.sizes.length-1];site.sizes.push({id:adSizeId++,width:b.width,height:b.height,safeWidth:'',safeHeight:''});renderAdConfigLists();renderAdCreative();saveAdChanges();}
 function removeAdSiteSize(siteId,sizeId){const site=adSites.find(s=>s.id===siteId);if(!site||site.sizes.length<=1)return;site.sizes=site.sizes.filter(s=>s.id!==sizeId);renderAdConfigLists();renderAdCreative();saveAdChanges();}
 function updateAdSiteSize(siteId,sizeId,key,value){const site=adSites.find(s=>s.id===siteId),size=site?.sizes.find(s=>s.id===sizeId);if(!size)return;size[key]=value===''?'':Math.max(1,Math.min(5000,Number(value)||0));renderAdCreative();saveAdChanges();}
 function addAdLanguage(){const restored=removedLanguageCache.ad.pop();if(restored)adLanguages.push(restored);else{const used=new Set(adLanguages.map(l=>l.code)),next=adLanguageOptions.find(([code])=>!used.has(code))?.[0]||'en';adLanguages.push({id:adLangId++,code:next,eyebrow:'',title:''});}renderAdConfigLists();renderAdCreative();saveAdChanges();}
@@ -4295,11 +4298,18 @@ function classifyAdFormat(w,h) {
   if(aspect<3)return 'horizontal';
   return 'narrow';
 }
-async function drawAdCreative(canvas,w,h,lang) {
+async function drawAdCreative(canvas,w,h,lang,safeWidth='',safeHeight='') {
   canvas.width=w; canvas.height=h; const ctx=canvas.getContext('2d');
   if (adGradientEnabled) { const g=ctx.createLinearGradient(0,0,w,h); g.addColorStop(0,adBackgroundStart); g.addColorStop(1,adBackgroundEnd); ctx.fillStyle=g; }
   else ctx.fillStyle=adSolidColor;
   ctx.fillRect(0,0,w,h);
+  const fullW=w,fullH=h;
+  const requestedSafeW=Number(safeWidth),requestedSafeH=Number(safeHeight);
+  const hasSafeZone=requestedSafeW>0&&requestedSafeH>0;
+  if(hasSafeZone){
+    w=Math.min(fullW,requestedSafeW);h=Math.min(fullH,requestedSafeH);
+    ctx.save();ctx.translate((fullW-w)/2,(fullH-h)/2);
+  }
   const aspect = w / h, format=classifyAdFormat(w,h), short=format==='narrow';
   let padX, padY;
   if (format==='narrow') { padX = w * .04; padY = h * .12; }
@@ -4370,13 +4380,14 @@ async function drawAdCreative(canvas,w,h,lang) {
     const logoY=format==='narrow'?(h-lh)/2:format==='vertical'?contentY:h-contentY-lh;
     ctx.drawImage(logo,logoX,logoY,lw,lh);
   }
+  if(hasSafeZone)ctx.restore();
 }
 async function renderAdCreative() {
   const grid=document.getElementById('adCanvasGrid'); if(!grid)return;
   const tasks=adSites.flatMap(site=>site.sizes.filter(size=>Number(size.width)>0&&Number(size.height)>0).flatMap(size=>adLanguages.map(lang=>({site,size,lang,key:`${site.id}-${size.id}-${lang.id}`}))));
   if(!tasks.length){grid.innerHTML='<div class="empty-state">添加投放网站和尺寸后将自动预览</div>';document.getElementById('adPreviewMeta').textContent='投放素材';return;}
   grid.innerHTML=tasks.map(t=>`<div class="ad-canvas-item"><canvas id="adCanvas-${t.key}"></canvas><div class="ad-canvas-label">${t.site.name} / ${t.size.width}×${t.size.height} / ${getAdLanguageLabel(t.lang.code)}</div></div>`).join('');
-  await Promise.all(tasks.map(t=>drawAdCreative(document.getElementById(`adCanvas-${t.key}`),t.size.width,t.size.height,t.lang)));
+  await Promise.all(tasks.map(t=>drawAdCreative(document.getElementById(`adCanvas-${t.key}`),t.size.width,t.size.height,t.lang,t.size.safeWidth,t.size.safeHeight)));
   document.getElementById('adPreviewMeta').textContent='投放素材';
 }
 let adCrcTable;
