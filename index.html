@@ -1116,7 +1116,7 @@ body {
   <section class="zero-module" id="zeroModule">
     <div class="ad-editor">
       <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
-      <div class="ad-field"><div id="zeroLangList"></div></div>
+      <div class="ad-field"><div id="zeroLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addZeroBannerLang()">+ 添加语种</button></div>
       <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
       <div class="upload-area">
         <button class="upload-btn" id="zeroLightBtn" onclick="document.getElementById('zeroLightFile').click()">白天配图</button><input id="zeroLightFile" type="file" accept="image/*,.svg" onchange="handleZeroImage(event,'light')">
@@ -1132,7 +1132,7 @@ body {
   <section class="follow-module" id="followModule">
     <div class="ad-editor">
       <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
-      <div class="ad-field"><div id="followLangList"></div></div>
+      <div class="ad-field"><div id="followLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addFollowBannerLang()">+ 添加语种</button></div>
       <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
       <div class="upload-area">
         <button class="upload-btn" id="followAppLightBtn" onclick="document.getElementById('followAppLightFile').click()">白天配图</button><input id="followAppLightFile" type="file" accept="image/*,.svg" onchange="handleFollowImage(event,'appLight')">
@@ -1149,7 +1149,7 @@ body {
   <section class="grid-banner-module" id="gridBannerModule">
     <div class="ad-editor">
       <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
-      <div class="ad-field"><div id="gridBannerLangList"></div></div>
+      <div class="ad-field"><div id="gridBannerLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addGridBannerLang()">+ 添加语种</button></div>
       <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
       <div class="upload-area">
         <button class="upload-btn" id="gridBannerLightBtn" onclick="document.getElementById('gridBannerLightFile').click()">白天配图</button><input id="gridBannerLightFile" type="file" accept="image/*,.svg" onchange="handleGridBannerImage(event,'light')">
@@ -1165,7 +1165,7 @@ body {
   <section class="otc-module" id="otcModule">
     <div class="ad-editor">
       <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
-      <div class="ad-field"><div id="otcLangList"></div></div>
+      <div class="ad-field"><div id="otcLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addOtcLang()">+ 添加语种</button></div>
       <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
       <div class="upload-area">
         <button class="upload-btn" id="otcClassicAppLightBtn" onclick="document.getElementById('otcClassicAppLightFile').click()">经典 APP 白天配图</button><input id="otcClassicAppLightFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'classicAppLight')">
@@ -1212,13 +1212,13 @@ body {
       </div>
     </div>
     <div class="lang-list" id="langList"></div>
-    <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
+    <button class="add-lang-btn" onclick="addLangToGroup('common')">+ 添加语种</button>
 
     <div id="bapingLangSection" class="baping-lang-section" style="display:none">
       <hr class="divider">
       <div class="panel-title">霸屏文案配置</div>
       <div class="lang-list" id="bapingLangList"></div>
-      <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
+      <button class="add-lang-btn" onclick="addLangToGroup('baping')">+ 添加语种</button>
       <div class="panel-title" style="margin-top:16px;">配图（可选）</div>
       <div class="upload-area">
         <button class="upload-btn" id="bapingImageBtn" onclick="document.getElementById('bapingImageFile').click()">点击或拖拽上传</button>
@@ -1230,7 +1230,7 @@ body {
       <hr class="divider">
       <div class="panel-title">交易赛配置</div>
       <div class="lang-list" id="tradeLangList"></div>
-      <button class="add-lang-btn" onclick="addLang()">+ 添加语种</button>
+      <button class="add-lang-btn" onclick="addLangToGroup('trade')">+ 添加语种</button>
       <div id="tradeImagePanel" style="display:none">
         <div class="upload-area">
           <button class="upload-btn" id="tradeLightBtn" onclick="document.getElementById('tradeLightFile').click()">点击或拖拽上传</button>
@@ -1245,6 +1245,7 @@ body {
       <hr class="divider">
       <div class="panel-title">分享页文案配置</div>
       <div class="lang-list" id="shareLangList"></div>
+      <button class="add-lang-btn" onclick="addShareLang()">+ 添加语种</button>
       <div class="panel-title" style="margin-top:16px;">配图（可选）</div>
       <div class="upload-area"><button class="upload-btn" id="shareImageBtn" onclick="document.getElementById('shareImageFile').click()">点击或拖拽上传</button><input type="file" id="shareImageFile" accept="image/*" onchange="handleShareImage(event)"></div>
     </div>
@@ -1253,7 +1254,7 @@ body {
       <hr class="divider">
       <div class="rebate-category-label">PC 返佣</div>
       <div class="lang-list" id="pcrebateLangList"></div>
-      <button id="rebatePcAddLangButton" class="add-lang-btn" style="display:none" onclick="addLang()">+ 添加语种</button>
+      <button id="rebatePcAddLangButton" class="add-lang-btn" style="display:none" onclick="addLangToGroup('pcrebate')">+ 添加语种</button>
       <div id="pcrebateImagePanel" style="display:none">
         <div class="upload-area">
           <button class="upload-btn" id="pcrebateImageBtn" onclick="document.getElementById('pcrebateImageFile').click()">点击或拖拽上传</button>
@@ -1266,7 +1267,7 @@ body {
       <hr class="divider">
       <div class="rebate-category-label">APP 返佣</div>
       <div class="lang-list" id="apprebateLangList"></div>
-      <button id="rebateAddLangButton" class="add-lang-btn" style="display:none" onclick="addLang()">+ 添加语种</button>
+      <button id="rebateAddLangButton" class="add-lang-btn" style="display:none" onclick="addLangToGroup('apprebate')">+ 添加语种</button>
       <div id="apprebateImagePanel" style="display:none">
         <div class="upload-area"><button class="upload-btn" id="apprebateImageBtn" onclick="document.getElementById('apprebateImageFile').click()">点击或拖拽上传</button><input type="file" id="apprebateImageFile" accept="image/*" onchange="handleAppRebateUpload(event)"></div>
       </div>
@@ -2214,6 +2215,24 @@ function addLang(code='', subtitle='', title='') {
   schedulePreview();
 }
 
+function addLangToGroup(group='common') {
+  const hidden = hiddenLangCodes[group] || new Set();
+  const restorableCode = Array.from(hidden).find(code => langs.some(lang => lang.code === code));
+  if (restorableCode !== undefined) {
+    hidden.delete(restorableCode);
+    hiddenLangCodes[group] = hidden;
+    if (group === 'baping') ensureBapingLang(restorableCode);
+    if (group === 'trade') ensureTradeLang(restorableCode);
+    if (group === 'pcrebate') ensurePcRebateLang(restorableCode);
+    if (group === 'apprebate') ensureAppRebateLang(restorableCode);
+    renderLangList();
+    scheduleDraftSave();
+    schedulePreview();
+    return;
+  }
+  addLang(nextStandaloneLangCode(langs));
+}
+
 function removeLang(id) {
   const removed = langs.find(l => l.id === id);
   langs = langs.filter(l => l.id !== id);
@@ -2236,10 +2255,8 @@ function removeLangFromGroup(group, id) {
   if (!lang) return;
   if (!hiddenLangCodes[group]) hiddenLangCodes[group] = new Set();
   hiddenLangCodes[group].add(lang.code);
-  if (group === 'baping') removeBapingLangByCode(lang.code);
-  if (group === 'trade') removeTradeLangByCode(lang.code);
-  if (group === 'pcrebate') removePcRebateLangByCode(lang.code);
-  if (group === 'apprebate') removeAppRebateLangByCode(lang.code);
+  // Group-level deletion is reversible: keep the group's copy in memory and
+  // in the draft so restoring the language also restores all previous text.
   renderLangList();
   scheduleDraftSave();
   schedulePreview();
@@ -4151,6 +4168,7 @@ function createDefaultAdLanguages() { return [
 ]; }
 let adLanguages = createDefaultAdLanguages();
 let adSiteId = 2, adSizeId = 3, adLangId = 5;
+const removedLanguageCache = { ad:[], zero:[], follow:[], gridbanner:[], otc:[], share:[] };
 const adLogoCache = {};
 function setAdLayout(layout) {
   adLayout = layout;
@@ -4187,7 +4205,7 @@ function updateAdBackground(key, value) {
 function renderAdConfigLists() {
   const sites=document.getElementById('adSiteList'),langs=document.getElementById('adLangList'); if(!sites||!langs)return;
   sites.innerHTML=adSites.map(site=>`<div class="ad-site-card"><div class="ad-site-head"><input value="${site.name}" placeholder="投放网站名称" oninput="updateAdSiteName(${site.id},this.value)"><button class="lang-remove" onclick="removeAdSite(${site.id})">✕</button></div>${site.sizes.map(size=>`<div class="ad-site-size"><div><label>宽度</label><input type="number" value="${size.width}" placeholder="0" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'width',this.value)"></div><div><label>高度</label><input type="number" value="${size.height}" placeholder="0" min="1" max="5000" oninput="updateAdSiteSize(${site.id},${size.id},'height',this.value)"></div><button class="lang-remove" onclick="removeAdSiteSize(${site.id},${size.id})" ${site.sizes.length===1?'style="visibility:hidden"':''}>✕</button></div>`).join('')}<button class="ad-site-add-size" onclick="addAdSiteSize(${site.id})">+ 添加尺寸</button></div>`).join('');
-  langs.innerHTML=adLanguages.map(lang=>`<div class="ad-lang-card"><div class="ad-lang-head"><select onchange="updateAdLanguage(${lang.id},'code',this.value)">${adLanguageOptions.map(([code,label])=>`<option value="${code}" ${lang.code===code?'selected':''}>${label}</option>`).join('')}</select><button class="lang-remove" onclick="removeAdLanguage(${lang.id})" ${adLanguages.length===1?'style="display:none"':''}>✕</button></div><textarea placeholder="主标题" oninput="updateAdLanguage(${lang.id},'eyebrow',this.value)">${lang.eyebrow}</textarea><textarea style="margin-top:8px" placeholder="副标题" oninput="updateAdLanguage(${lang.id},'title',this.value)">${lang.title}</textarea></div>`).join('');
+  langs.innerHTML=adLanguages.map(lang=>`<div class="ad-lang-card"><div class="ad-lang-head"><select onchange="updateAdLanguage(${lang.id},'code',this.value)">${adLanguageOptions.map(([code,label])=>`<option value="${code}" ${lang.code===code?'selected':''}>${label}</option>`).join('')}</select><button class="lang-remove" onclick="removeAdLanguage(${lang.id})">✕</button></div><textarea placeholder="主标题" oninput="updateAdLanguage(${lang.id},'eyebrow',this.value)">${lang.eyebrow}</textarea><textarea style="margin-top:8px" placeholder="副标题" oninput="updateAdLanguage(${lang.id},'title',this.value)">${lang.title}</textarea></div>`).join('');
   requestAnimationFrame(()=>autoResizeAllTextAreas(langs));
 }
 function saveAdChanges(){scheduleAdDraftSave();scheduleDraftSave();}
@@ -4197,8 +4215,8 @@ function updateAdSiteName(id,value){const site=adSites.find(s=>s.id===id);if(sit
 function addAdSiteSize(siteId){const site=adSites.find(s=>s.id===siteId);if(!site)return;const b=site.sizes[site.sizes.length-1];site.sizes.push({id:adSizeId++,width:b.width,height:b.height});renderAdConfigLists();renderAdCreative();saveAdChanges();}
 function removeAdSiteSize(siteId,sizeId){const site=adSites.find(s=>s.id===siteId);if(!site||site.sizes.length<=1)return;site.sizes=site.sizes.filter(s=>s.id!==sizeId);renderAdConfigLists();renderAdCreative();saveAdChanges();}
 function updateAdSiteSize(siteId,sizeId,key,value){const site=adSites.find(s=>s.id===siteId),size=site?.sizes.find(s=>s.id===sizeId);if(!size)return;size[key]=value===''?'':Math.max(1,Math.min(5000,Number(value)||0));renderAdCreative();saveAdChanges();}
-function addAdLanguage(){const used=new Set(adLanguages.map(l=>l.code)),next=adLanguageOptions.find(([code])=>!used.has(code))?.[0]||'en';adLanguages.push({id:adLangId++,code:next,eyebrow:'',title:''});renderAdConfigLists();renderAdCreative();saveAdChanges();}
-function removeAdLanguage(id){if(adLanguages.length<=1)return;adLanguages=adLanguages.filter(l=>l.id!==id);renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function addAdLanguage(){const restored=removedLanguageCache.ad.pop();if(restored)adLanguages.push(restored);else{const used=new Set(adLanguages.map(l=>l.code)),next=adLanguageOptions.find(([code])=>!used.has(code))?.[0]||'en';adLanguages.push({id:adLangId++,code:next,eyebrow:'',title:''});}renderAdConfigLists();renderAdCreative();saveAdChanges();}
+function removeAdLanguage(id){const removed=adLanguages.find(l=>l.id===id);if(removed)removedLanguageCache.ad.push({...removed});adLanguages=adLanguages.filter(l=>l.id!==id);renderAdConfigLists();renderAdCreative();saveAdChanges();}
 function updateAdLanguage(id,key,value){const lang=adLanguages.find(l=>l.id===id);if(lang)lang[key]=value;renderAdCreative();saveAdChanges();
 }
 function handleAdImage(event) {
@@ -4301,26 +4319,39 @@ async function drawAdCreative(canvas,w,h,lang) {
   const mainTitle=lang.eyebrow.trim()||'活动主标题', subTitle=lang.title.trim();
   let tx,ty,tw,th,align='left', ix,iy,is;
   if(format==='vertical') {
-    tw=w-contentX*2;th=h*.44;tx=w/2;ty=Math.max(contentY,h*.10);align='center';
-    is=Math.min(w*.68,h*.42);ix=w/2;iy=h*.72;
+    // Reserve a dedicated header zone for the top logo. Vertical copy starts
+    // below the actual rendered logo plus a proportional safety gap.
+    const verticalLogoBottom=contentY+lh;
+    const verticalTextGap=Math.max(18,h*.035);
+    tw=w-contentX*2;th=h*.36;tx=w/2;ty=Math.max(verticalLogoBottom+verticalTextGap,h*.14);align='center';
+    is=Math.min(w*.78,h*.46);ix=w/2;iy=h;
   } else if(format==='narrow') {
-    is=Math.min(w*.28,h*.86);ix=w-padX-is*.72;iy=h/2;
+    // Let the campaign artwork use the full banner height. Transparent source
+    // images therefore visually touch both the top and bottom of narrow slots.
+    is=h;ix=w-padX-is*.58;iy=h/2;
     tx=contentX+lw+w*.025;tw=Math.max(w*.24,ix-is*.50-tx-w*.025);th=h-contentY*2;ty=contentY;
+  } else if(format==='square') {
+    tw=w-contentX*2;th=h*.52;tx=contentX;ty=contentY;
+    is=Math.min(w*.62,h*.62);ix=w-contentX-is*.50;iy=h;
   } else {
     tw=w-contentX*2;th=h*.52;tx=contentX;ty=contentY;
     is=Math.min(w*.43,h*.55);ix=w-padX-is*.50;iy=h-padY-is*.50;
   }
   const vertical = format==='vertical';
   const isChinese=/^zh-/i.test(lang.code);
-  const maxTitle=vertical ? Math.min(w*.14,h*.12,64) : short ? (isChinese?Math.min(h*.42,w*.095,58):Math.min(h*.30,w*.075,48)) : Math.min(h*.16,w*.09,86);
-  const minTitle=short ? Math.max(16,Math.min(24,h*.20)) : Math.max(10,Math.min(vertical?28:24,h*.12));
+  // Narrow banners are usually displayed after heavy down-scaling. Size their
+  // typography from the banner height instead of imposing the old 48/58px cap.
+  // Long translations still shrink through fitAdText when the available width
+  // requires it.
+  const maxTitle=vertical ? Math.min(w*.14,h*.12,64) : short ? Math.min(h*.34,w*.075,96) : Math.min(h*.16,w*.09,86);
+  const minTitle=short ? Math.max(28,Math.min(54,h*.22)) : Math.max(10,Math.min(vertical?28:24,h*.12));
   const renderedMainTitle=short?mainTitle.replace(/\s*\r?\n\s*/g,' '):mainTitle;
   const fitted=fitAdText(ctx,renderedMainTitle,tw,th*.72,maxTitle,minTitle,short?1:3);
-  const titleSize=short&&isChinese?fitted.size*.88:fitted.size;
+  const titleSize=fitted.size;
   const titleLineHeight=titleSize*1.16;
   const titleFont=`normal 700 ${titleSize}px Arial, "PingFang SC", "Microsoft YaHei", sans-serif`;
-  const subRatio=vertical?.06:(short?.17:.055);
-  const subSize=Math.max(9,Math.min(short?36:40,Math.min(w,h)*subRatio));
+  const subRatio=vertical?.06:(short?.20:.055);
+  const subSize=Math.max(9,Math.min(short?58:40,Math.min(w,h)*subRatio));
   ctx.font=`normal 400 ${subSize}px "HarmonyOS Sans SC", Arial, sans-serif`;
   const subLines=subTitle?adTextLines(ctx,subTitle,tw).slice(0,short?1:2):[];
   if(format==='narrow'){const gap=subLines.length?subSize*.35:0,totalH=fitted.lines.length*titleLineHeight+gap+subLines.length*subSize*1.35;ty=Math.max(contentY,(h-totalH)/2);}
@@ -4328,13 +4359,14 @@ async function drawAdCreative(canvas,w,h,lang) {
   ctx.textAlign=align;ctx.textBaseline='top';ctx.fillStyle='#FFF';fitted.lines.forEach((line,i)=>ctx.fillText(line,tx,ty+i*titleLineHeight));
   if(subLines.length){const subY=ty+fitted.lines.length*titleLineHeight+subSize*(short?.35:.65);ctx.font=`normal 400 ${subSize}px "HarmonyOS Sans SC", Arial, sans-serif`;ctx.fillStyle='rgba(255,255,255,.78)';subLines.forEach((line,i)=>ctx.fillText(line,tx,subY+i*subSize*1.35));}
   if(adImage){
-    const ratio=Math.min(is/adImage.width,is/adImage.height),iw=adImage.width*ratio,ih=adImage.height*ratio;
-    const imageY=(format==='horizontal'||format==='square')?h-contentY-ih:iy-ih/2;
-    ctx.drawImage(adImage,ix-iw/2,imageY,iw,ih);
+    const ratio=format==='narrow'?h/adImage.height:Math.min(is/adImage.width,is/adImage.height),iw=adImage.width*ratio,ih=adImage.height*ratio;
+    const imageX=format==='narrow'?w-padX-iw:format==='square'?w-contentX-iw:ix-iw/2;
+    const imageY=format==='narrow'?0:(format==='square'||format==='vertical'||format==='horizontal')?h-ih:iy-ih/2;
+    ctx.drawImage(adImage,imageX,imageY,iw,ih);
   }
   if(logo){
     const logoX=format==='vertical'?(w-lw)/2:contentX;
-    const logoY=format==='narrow'?(h-lh)/2:h-contentY-lh;
+    const logoY=format==='narrow'?(h-lh)/2:format==='vertical'?contentY:h-contentY-lh;
     ctx.drawImage(logo,logoX,logoY,lw,lh);
   }
 }
@@ -4387,6 +4419,13 @@ async function downloadAdCreative() {
   finally{if(button){button.disabled=false;button.textContent=originalText||'下载';}}
 }
 
+function nextStandaloneLangCode(list) {
+  return DEFAULT_LANG_CODES.find(code=>!list.some(item=>item.code===code)) || '';
+}
+function nextStandaloneLangId(list) {
+  return Math.max(0,...list.map(item=>Number(item.id) || 0)) + 1;
+}
+
 const ZERO_BANNER_DRAFT_KEY = 'htxZeroPurchaseBannerV1';
 const ZERO_BANNER_W = 986;
 const ZERO_BANNER_H = 195;
@@ -4410,12 +4449,20 @@ function loadZeroBannerDraft() {
 function renderZeroBannerEditor() {
   const list = document.getElementById('zeroLangList');
   if (!list) return;
-  list.innerHTML = zeroBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><span>${eh(item.code)}</span><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeZeroBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="小标题" oninput="updateZeroBannerText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="大标题" oninput="updateZeroBannerText(${item.id},'title',this.value)"></div>`).join('');
+  list.innerHTML = zeroBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateZeroBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeZeroBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="小标题" oninput="updateZeroBannerText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="大标题" oninput="updateZeroBannerText(${item.id},'title',this.value)"></div>`).join('');
   setZeroUploadButtonState('light');
   setZeroUploadButtonState('dark');
 }
 
+function addZeroBannerLang() {
+  const restored = removedLanguageCache.zero.pop();
+  zeroBannerLangs.push(restored || { id:nextStandaloneLangId(zeroBannerLangs), code:nextStandaloneLangCode(zeroBannerLangs), subtitle:'', title:'' });
+  saveZeroBannerDraft(); renderZeroBannerEditor(); renderZeroBannerPreview();
+}
+
 function removeZeroBannerLang(id) {
+  const removed = zeroBannerLangs.find(lang=>lang.id===id);
+  if (removed) removedLanguageCache.zero.push({...removed});
   zeroBannerLangs = zeroBannerLangs.filter(lang=>lang.id!==id);
   saveZeroBannerDraft();
   renderZeroBannerEditor();
@@ -4537,11 +4584,24 @@ function loadFollowBannerDraft() {
 function renderFollowBannerEditor() {
   const list = document.getElementById('followLangList');
   if (!list) return;
-  list.innerHTML = followBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><span>${eh(item.code)}</span><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFollowBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="标题" oninput="updateFollowBannerText(${item.id},this.value)"></div>`).join('');
+  list.innerHTML = followBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFollowBannerCode(${item.id},this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFollowBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="标题" oninput="updateFollowBannerText(${item.id},this.value)"></div>`).join('');
   ['appLight','appDark','web'].forEach(setFollowUploadButtonState);
 }
 
+function addFollowBannerLang() {
+  const restored = removedLanguageCache.follow.pop();
+  followBannerLangs.push(restored || { id:nextStandaloneLangId(followBannerLangs), code:nextStandaloneLangCode(followBannerLangs), title:'' });
+  saveFollowBannerDraft(); renderFollowBannerEditor(); renderFollowBannerPreview();
+}
+
+function updateFollowBannerCode(id,value) {
+  const item = followBannerLangs.find(lang=>lang.id===id); if (!item) return;
+  item.code = value; saveFollowBannerDraft(); renderFollowBannerPreview();
+}
+
 function removeFollowBannerLang(id) {
+  const removed = followBannerLangs.find(lang=>lang.id===id);
+  if (removed) removedLanguageCache.follow.push({...removed});
   followBannerLangs = followBannerLangs.filter(lang=>lang.id!==id);
   saveFollowBannerDraft();
   renderFollowBannerEditor();
@@ -4716,11 +4776,24 @@ function loadGridBannerDraft() {
 function renderGridBannerEditor() {
   const list = document.getElementById('gridBannerLangList');
   if (!list) return;
-  list.innerHTML = gridBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><span>${eh(item.code)}</span><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeGridBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="标题" oninput="updateGridBannerText(${item.id},this.value)"></div>`).join('');
+  list.innerHTML = gridBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateGridBannerCode(${item.id},this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeGridBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="标题" oninput="updateGridBannerText(${item.id},this.value)"></div>`).join('');
   ['light','dark'].forEach(setGridBannerUploadButtonState);
 }
 
+function addGridBannerLang() {
+  const restored = removedLanguageCache.gridbanner.pop();
+  gridBannerLangs.push(restored || { id:nextStandaloneLangId(gridBannerLangs), code:nextStandaloneLangCode(gridBannerLangs), title:'' });
+  saveGridBannerDraft(); renderGridBannerEditor(); renderGridBannerPreview();
+}
+
+function updateGridBannerCode(id,value) {
+  const item = gridBannerLangs.find(lang=>lang.id===id); if (!item) return;
+  item.code = value; saveGridBannerDraft(); renderGridBannerPreview();
+}
+
 function removeGridBannerLang(id) {
+  const removed = gridBannerLangs.find(lang=>lang.id===id);
+  if (removed) removedLanguageCache.gridbanner.push({...removed});
   gridBannerLangs = gridBannerLangs.filter(lang=>lang.id!==id);
   saveGridBannerDraft();
   renderGridBannerEditor();
@@ -4832,11 +4905,19 @@ function loadOtcDraft() {
 function renderOtcEditor() {
   const list = document.getElementById('otcLangList');
   if (!list) return;
-  list.innerHTML = otcLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><span>${eh(item.code)}</span><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeOtcLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题" oninput="updateOtcText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="主标题" oninput="updateOtcText(${item.id},'title',this.value)"></div>`).join('');
+  list.innerHTML = otcLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateOtcText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeOtcLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题" oninput="updateOtcText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="主标题" oninput="updateOtcText(${item.id},'title',this.value)"></div>`).join('');
   ['classicAppLight','classicAppDark','classicWeb','selectedApp','selectedWeb'].forEach(setOtcUploadButtonState);
 }
 
+function addOtcLang() {
+  const restored = removedLanguageCache.otc.pop();
+  otcLangs.push(restored || { id:nextStandaloneLangId(otcLangs), code:nextStandaloneLangCode(otcLangs), subtitle:'', title:'' });
+  saveOtcDraft(); renderOtcEditor(); renderOtcPreview();
+}
+
 function removeOtcLang(id) {
+  const removed = otcLangs.find(lang=>lang.id===id);
+  if (removed) removedLanguageCache.otc.push({...removed});
   otcLangs = otcLangs.filter(lang=>lang.id!==id);
   saveOtcDraft();
   renderOtcEditor();
@@ -5008,7 +5089,17 @@ function updateShareText(id,field,value) {
   schedulePreview();
 }
 
+function addShareLang() {
+  const restored = removedLanguageCache.share.pop();
+  shareLangs.push(restored || { id:nextStandaloneLangId(shareLangs), code:nextStandaloneLangCode(shareLangs), subtitle:'', title:'', description:'' });
+  saveShareDraft();
+  renderShareLangList();
+  schedulePreview();
+}
+
 function removeShareLang(id) {
+  const removed = shareLangs.find(lang=>lang.id===id);
+  if (removed) removedLanguageCache.share.push({...removed});
   shareLangs = shareLangs.filter(lang=>lang.id!==id);
   saveShareDraft();
   renderShareLangList();
