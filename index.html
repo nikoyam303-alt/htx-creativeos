@@ -1019,6 +1019,16 @@ body {
 #adSiteNavSection .ad-site-safezone { grid-template-columns: minmax(0,1fr) minmax(0,1fr) 18px; gap: 5px; }
 #adSiteNavSection .add-lang-btn { height: 40px; font-size: 12px; font-weight: 500; }
 @media (max-width: 1180px) { .ad-module.active { flex-wrap: wrap; } .ad-editor { width: 100%; flex-basis: 100%; position: relative; top: auto; } .ad-preview-shell { width: 100%; } }
+.library-entry-btn{width:100%;height:40px;margin-bottom:8px;border:1px solid #1677ff;border-radius:8px;background:#edf5ff;color:#1677ff;font:inherit;font-size:12px;font-weight:600;cursor:pointer}.library-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(16,24,40,.48)}.library-modal.show{display:flex}.library-dialog{width:min(920px,100%);max-height:88vh;overflow:auto;padding:22px;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(16,24,40,.24)}.library-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.library-head h2{margin:0 0 4px;color:#101828;font-size:20px}.library-close{border:0;background:none;color:#667085;font-size:22px;cursor:pointer}.library-tools{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.library-tools input,.library-tools select{height:38px;padding:0 11px;border:1px solid #d9e0ea;border-radius:7px;background:#fff;color:#344054;font:inherit;font-size:12px}.library-tools input{flex:1;min-width:220px}.library-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}.library-card{padding:12px;border:1px solid #e2e7ef;border-radius:10px;cursor:pointer}.library-card.selected{border:2px solid #1677ff;padding:11px}.library-card-top{display:flex;justify-content:space-between;margin-bottom:9px;color:#101828}.library-tag{padding:1px 7px;border-radius:12px;background:#edf5ff;color:#1677ff;font-size:10px}.library-pair{display:grid;grid-template-columns:1fr 1fr;gap:7px}.library-thumb{aspect-ratio:1;position:relative;overflow:hidden;border-radius:7px}.library-thumb.light{border:1px solid #edf0f4;background:#fff}.library-thumb.dark{background:#07090d}.library-thumb:before{content:"";position:absolute;width:54%;height:54%;right:8%;top:17%;border-radius:50%;background:linear-gradient(135deg,#dfe9f7,#3c8cff)}.library-thumb:after{content:"";position:absolute;left:10%;bottom:25%;width:76%;height:2px;background:#111;transform:rotate(-12deg)}.library-thumb.dark:after{background:#fff}.library-theme{position:absolute;left:6px;bottom:4px;padding:1px 5px;border-radius:4px;background:rgba(120,130,145,.2);color:#344054;font-size:9px}.library-thumb.dark .library-theme{color:#fff}.library-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid #eaecf0}.library-selection{color:#667085;font-size:12px}.library-apply{height:38px;padding:0 16px;border:0;border-radius:7px;background:#1677ff;color:#fff;font:inherit;font-size:12px;font-weight:600;cursor:pointer}.library-apply:disabled{opacity:.45;cursor:default}
+.library-github{display:flex;justify-content:flex-end;margin-top:16px}.library-github .clear-draft-btn{flex:none}.library-search{position:relative;display:flex;flex:1}.library-search:before{content:"";position:absolute;left:13px;top:50%;width:11px;height:11px;border:1.5px solid #98A2B3;border-radius:50%;transform:translateY(-58%);pointer-events:none}.library-search:after{content:"";position:absolute;left:24px;top:23px;width:6px;height:1.5px;border-radius:2px;background:#98A2B3;transform:rotate(45deg);transform-origin:left center;pointer-events:none}.library-search input{width:100%;padding-left:38px}.library-foot{justify-content:center}.library-thumb.has-image:before,.library-thumb.has-image:after{display:none}.library-thumb img{width:100%;height:100%;display:block;object-fit:contain}
+.library-head{align-items:center}.library-head h2{margin:0}.library-head-actions{display:flex;align-items:center;gap:12px}.library-foot .library-apply{width:100%}
+.library-card.selected{padding:12px;border-color:transparent;background:#EDF5FF;box-shadow:0 4px 14px rgba(22,119,255,.10)}
+.library-category-filter{margin-top:16px}.library-major-tabs,.library-sub-tabs{display:flex;flex-wrap:wrap;gap:8px}.library-sub-tabs{min-height:30px;margin-top:10px;padding-top:10px;border-top:1px solid #EAECF0}.library-filter-tag{height:30px;padding:0 12px;border:0;border-radius:6px;background:#F2F4F7;color:#667085;font:inherit;font-size:11px;cursor:pointer}.library-filter-tag:hover{background:#EAF2FF;color:#1677FF}.library-filter-tag.active{background:#1677FF;color:#fff}.library-filter-tag.sub-active{background:#EAF2FF;color:#1677FF;font-weight:600}
+.library-search input:focus{outline:none;border-color:transparent;background:#EDF5FF;box-shadow:none;color:#1677FF}.library-search:focus-within:before{border-color:#1677FF}.library-search:focus-within:after{background:#1677FF}
+.library-entry-btn{border:0;background:#EDF5FF;transition:background .18s ease,color .18s ease}.library-entry-btn:hover{background:#DCEAFF;color:#095FCC}
+.library-loading{grid-column:1/-1;padding:44px 16px;border-radius:10px;background:#F8FAFC;color:#98A2B3;text-align:center;font-size:12px}
+.library-card{border:0;background:#F8FAFC;padding:14px}.library-card.selected{border:0;padding:14px;background:#EDF5FF;box-shadow:none}.library-thumb.light{border:0}.library-pair{gap:12px}
+.library-foot{border-top:0;padding-top:0}
 
 /* 0元购页 banner */
 .zero-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
@@ -1089,7 +1099,6 @@ body {
       <button class="v2-group-btn" data-v2-group="follow" onclick="setV2Group('follow')"><span>跟单页banner</span></button>
       <button class="v2-group-btn" data-v2-group="gridbanner" onclick="setV2Group('gridbanner')"><span>网格banner</span></button>
       <button class="v2-group-btn" data-v2-group="otc" onclick="setV2Group('otc')"><span>OTC</span></button>
-      <button class="v2-group-btn" data-v2-group="community" onclick="setV2Group('community')"><span>社区资源位</span></button>
     </div>
     <div id="adSiteNavSection" class="v2-hidden">
       <div id="adSiteList"></div>
@@ -1280,6 +1289,7 @@ body {
     <hr class="divider">
 
     <div class="panel-title">配图（可选）</div>
+    <button class="library-entry-btn" onclick="openAssetLibrary()">从 GitHub 图库选择</button>
     <div class="upload-area">
       <button class="upload-btn" id="lightBtn" onclick="document.getElementById('lightFile').click()">点击或拖拽上传</button>
       <input type="file" id="lightFile" accept="image/*" onchange="handleUpload(event,'light')">
@@ -1408,6 +1418,14 @@ const SPECS = {
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
   pcrebate: { W:1152, H:336, PAD:48, subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:48, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:18, imgW:258, imgPos:'rc', bg:'#F3F3F3', subClr:'#8C8C8C', titClr:'#000000' },
   apprebate: { W:1074, H:156, PAD:18, PADX:48, subSz:1, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:42, titWeight:'400', titFont:"HarmonyOS Sans SC", gap:0, imgW:120, imgPos:'rc', bg:'#F6F6F6', subClr:'#000000', titClr:'#000000' },
+};
+// SPECS 使用设计稿逻辑尺寸；仅在最终 Canvas 输出阶段应用规范倍率。
+// 单张下载与 ZIP 打包均通过 renderToDataUrl，因此共用同一倍率规则。
+const EXPORT_SCALE = {
+  landing: 3,
+  landingweb: 1.5,
+  baping: 3,
+  tradeapp: 3
 };
 
 const SLOT_TEXT_SPECS = {
@@ -1786,8 +1804,7 @@ function clearDraft() {
     return;
   }
   const groupTypes = {
-    common: ['new','old','email','appcal','pccal','feed','landing'],
-    community: ['community'],
+    common: ['new','old','email','appcal','pccal','community','feed','landing'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
     share: ['share'],
@@ -3386,6 +3403,7 @@ function updateAllResourceOverflowWarnings() {
 }
 
 function applyBapingClip(langId, autoScale) {
+  autoScale = false;
   const spec = SLOT_TEXT_SPECS.baping;
   const s = SPECS.baping;
   if (!spec || !s) return;
@@ -3416,6 +3434,7 @@ function applyBapingClip(langId, autoScale) {
 }
 
 function applySlotClip(slotType, langId, autoScale) {
+  autoScale = false;
   if (slotType === 'baping') { applyBapingClip(langId, autoScale); return; }
   const spec = SLOT_TEXT_SPECS[slotType];
   const s = SPECS[slotType];
@@ -3709,6 +3728,7 @@ function fillCanvasBg(ctx, s, c, W, H) {
 }
 
 async function renderToDataUrl(type, theme, langId, autoScale) {
+  autoScale = false;
   await ensureExportFontsReady();
   const s = SPECS[type];
   const spec = SLOT_TEXT_SPECS[type] || {};
@@ -3716,12 +3736,10 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   let H = s.H;
   const padY = s.PAD;
   const padX = s.PADX || s.PAD;
-  // SPECS 已经记录最终导出像素（需要 3 倍导出的资源位也已换算），
-  // 不再额外叠加 DPR，避免实际文件被重复放大成 6 倍。
-  const DPR = 1;
+  const DPR = EXPORT_SCALE[type] || 1;
   const canvas = document.createElement('canvas');
-  canvas.width = W * DPR;
-  canvas.height = H * DPR;
+  canvas.width = Math.round(W * DPR);
+  canvas.height = Math.round(H * DPR);
   const ctx = canvas.getContext('2d');
   ctx.scale(DPR, DPR);
 
@@ -3790,8 +3808,8 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     const dynamicH = getLandingHeight({ subtitle: subTxt, title: titTxt });
     if (dynamicH !== H) {
       H = dynamicH;
-      canvas.width = W * DPR;
-      canvas.height = H * DPR;
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
       ctx.scale(DPR, DPR);
       fillCanvasBg(ctx, s, c, W, H);
     }
@@ -4043,8 +4061,7 @@ function downloadFileName(type, code, theme = '') {
 function currentGroupAllowsResource(type) {
   const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const resources = {
-    common: ['new','old','email','appcal','pccal','feed','landing','landingweb'],
-    community: ['community'],
+    common: ['new','old','email','appcal','pccal','community','feed','landing','landingweb'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
     share: ['share'],
@@ -4143,7 +4160,7 @@ async function downloadAll() {
     const a = document.createElement('a');
     const url = URL.createObjectURL(blob);
     a.href = url;
-    const groupName = { common:'通用内容', baping:'霸屏', trade:'交易赛', share:'分享页', rebate:'返佣', community:'社区资源位' }[v2ActiveGroup] || '通用内容';
+    const groupName = { common:'通用内容', baping:'霸屏', trade:'交易赛', rebate:'返佣' }[v2ActiveGroup] || '通用内容';
     a.download = `HTX运营视觉工作台_${groupName}.zip`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
@@ -5138,13 +5155,13 @@ renderShareLangList();
 const V2_ACTIVE_GROUP_KEY = 'htx-visual-workbench-active-group';
 const V2_SCROLL_KEY = 'htx-visual-workbench-scroll-y';
 const hashV2Group = location.hash.replace(/^#/, '');
-const savedV2Group = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community'].includes(hashV2Group)
+const savedV2Group = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc'].includes(hashV2Group)
   ? hashV2Group
   : localStorage.getItem(V2_ACTIVE_GROUP_KEY);
-let v2ActiveGroup = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community'].includes(savedV2Group) ? savedV2Group : 'common';
+let v2ActiveGroup = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc'].includes(savedV2Group) ? savedV2Group : 'common';
 let v2CommonNodes = [];
 const v2SlotGroups = {
-  common: ['new','old','email','appcal','pccal','feed','landing'],
+  common: ['new','old','email','appcal','pccal','community','feed','landing'],
   baping: ['baping'],
   trade: ['tradeapp-light','tradeapp-dark','tradeweb'],
   share: ['share'],
@@ -5153,8 +5170,7 @@ const v2SlotGroups = {
   zero: [],
   follow: [],
   gridbanner: [],
-  otc: [],
-  community: ['community']
+  otc: []
 };
 
 function setV2Group(group, updateButtons = true) {
@@ -5168,7 +5184,7 @@ function setV2Group(group, updateButtons = true) {
     if (item) item.style.display = v2SlotGroups[group].includes(key) ? '' : 'none';
   });
   const previewGroups = {
-    common: ['new','old','email','appcal','pccal','feed','landing','landingweb'],
+    common: ['new','old','email','appcal','pccal','community','feed','landing','landingweb'],
     baping: ['baping'],
     trade: ['trade'],
     share: ['share'],
@@ -5177,8 +5193,7 @@ function setV2Group(group, updateButtons = true) {
     zero: [],
     follow: [],
     gridbanner: [],
-    otc: [],
-    community: ['community']
+    otc: []
   };
   Object.values(previewGroups).flat().forEach(key => {
     const section = document.getElementById('section-' + key);
@@ -5187,7 +5202,7 @@ function setV2Group(group, updateButtons = true) {
     const isSelected = key === 'trade' ? activeTradeVariants.size > 0 : key === 'landingweb' ? activeSlots.has('landing') : activeSlots.has(key);
     section.style.display = belongsToCurrentGroup && isSelected ? '' : 'none';
   });
-  v2CommonNodes.forEach(node => node.classList.toggle('v2-hidden', group !== 'common' && group !== 'community'));
+  v2CommonNodes.forEach(node => node.classList.toggle('v2-hidden', group !== 'common'));
   const adModule = document.getElementById('adModule');
   const zeroModule = document.getElementById('zeroModule');
   const followModule = document.getElementById('followModule');
@@ -5230,8 +5245,7 @@ function setV2Group(group, updateButtons = true) {
     zero: ['0元购页banner', '独立管理多语种文案与白天/黑天配图。'],
     follow: ['跟单页banner', '独立管理 App 与 Web 版式的多语种标题和配图。'],
     gridbanner: ['网格banner', '独立管理多语种标题与白天/黑天配图。'],
-    otc: ['OTC', '独立管理 App 与 Web 的经典、甄选版式和多语种文案。'],
-    community: ['社区资源位', '独立管理社区资源位，按专属配图规范生成素材。']
+    otc: ['OTC', '独立管理 App 与 Web 的经典、甄选版式和多语种文案。']
   }[group];
   const title = document.querySelector('.v2-editor-title');
   const desc = document.querySelector('.v2-editor-desc');
@@ -5335,6 +5349,114 @@ if (Number.isFinite(savedV2ScrollY) && savedV2ScrollY > 0) {
   requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, savedV2ScrollY)));
 }
 
+const demoAssetLibrary = [
+  { id:'leverage-ui', name:'杠杆 UI', type:'UI', tags:'杠杆 质押 USDT' },
+  { id:'leverage', name:'杠杆', type:'插画', tags:'杠杆 质押 美元' },
+  { id:'leverage-ui-b', name:'杠杆 UI · 方案 B', type:'UI', tags:'杠杆 质押 蓝色' },
+  { id:'leverage-b', name:'杠杆 · 方案 B', type:'插画', tags:'杠杆 质押 金融' }
+];
+let activeAssetLibrary = [];
+let selectedLibraryAssetId = '';
+const assetLibraryTaxonomy={
+  '金融运营':['现货','资产','合约','赚币','杠杆','质押','OTC'],
+  '用户运营':['平台运营','业务线聚合'],
+  '增长运营':['KOL','渠道','福利中心','KA','拉新'],
+  '用户教育':['学院研报','指南','Square'],
+  '火宝':[]
+};
+let selectedLibraryMajor='全部';
+let selectedLibrarySub='全部';
+let assetLibrarySearchValue='';
+const ASSET_LIBRARY_PREF_KEY='htx-asset-library-preferences';
+const ASSET_LIBRARY_CACHE_KEY='htx-asset-library-cache';
+try{
+  const savedLibraryPrefs=JSON.parse(localStorage.getItem(ASSET_LIBRARY_PREF_KEY)||'null');
+  if(savedLibraryPrefs){selectedLibraryMajor=savedLibraryPrefs.major||'全部';selectedLibrarySub=savedLibraryPrefs.sub||'全部';selectedLibraryAssetId=savedLibraryPrefs.assetId||'';assetLibrarySearchValue=savedLibraryPrefs.search||'';}
+  const savedLibraryCache=JSON.parse(localStorage.getItem(ASSET_LIBRARY_CACHE_KEY)||'[]');
+  if(Array.isArray(savedLibraryCache))activeAssetLibrary=savedLibraryCache;
+}catch(_){}
+function saveAssetLibraryPreferences(){
+  localStorage.setItem(ASSET_LIBRARY_PREF_KEY,JSON.stringify({major:selectedLibraryMajor,sub:selectedLibrarySub,assetId:selectedLibraryAssetId,search:assetLibrarySearchValue}));
+}
+const ASSET_LIBRARY_MANIFEST_URL='https://nikoyam303-alt.github.io/htx-asset-library/assets.json';
+function openAssetLibrary(){
+  const searchInput=document.getElementById('assetLibrarySearch');if(searchInput)searchInput.value=assetLibrarySearchValue;
+  renderAssetLibraryCategories();
+  if(activeAssetLibrary.length)renderAssetLibrary();
+  else{const grid=document.getElementById('assetLibraryGrid');if(grid)grid.innerHTML='<div class="library-loading">正在加载图库…</div>';}
+  document.getElementById('assetLibraryApply').disabled=!activeAssetLibrary.some(item=>item.id===selectedLibraryAssetId);
+  document.getElementById('assetLibraryModal')?.classList.add('show');
+  connectGithubLibrary();
+}
+function closeAssetLibrary(){document.getElementById('assetLibraryModal')?.classList.remove('show');}
+function resolveGithubAssetUrl(value,manifestUrl){if(!value)return'';try{return new URL(value,manifestUrl).href}catch(_){return value}}
+async function connectGithubLibrary(){
+  const url=ASSET_LIBRARY_MANIFEST_URL;
+  if(!activeAssetLibrary.length){const loadingGrid=document.getElementById('assetLibraryGrid');if(loadingGrid)loadingGrid.innerHTML='<div class="library-loading">正在加载图库…</div>';}
+  try{
+    const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const data=await response.json();const raw=Array.isArray(data)?data:Array.isArray(data.assets)?data.assets:[];
+    activeAssetLibrary=raw.map((item,index)=>({id:String(item.id||`github-${index+1}`),name:String(item.name||item.title||`素材 ${index+1}`),type:String(item.type||'插画'),category:String(item.category||''),tags:Array.isArray(item.tags)?item.tags.join(' '):String(item.tags||''),light:resolveGithubAssetUrl(item.light||item.assets?.light||'',url),dark:resolveGithubAssetUrl(item.dark||item.assets?.dark||'',url)})).filter(item=>item.light||item.dark);
+    if(!activeAssetLibrary.length)throw new Error('assets.json 中没有可用的 light/dark 图片');
+    localStorage.setItem(ASSET_LIBRARY_CACHE_KEY,JSON.stringify(activeAssetLibrary));
+    if(!activeAssetLibrary.some(item=>item.id===selectedLibraryAssetId))selectedLibraryAssetId='';
+    document.getElementById('assetLibraryApply').disabled=!selectedLibraryAssetId;renderAssetLibrary();
+  }catch(error){if(!activeAssetLibrary.length){const grid=document.getElementById('assetLibraryGrid');if(grid)grid.innerHTML='<div class="library-loading">图库加载失败，请稍后重新打开</div>';}}
+}
+function renderAssetLibrary(){
+  const query=(document.getElementById('assetLibrarySearch')?.value||'').trim().toLowerCase();
+  const list=activeAssetLibrary.filter(item=>{
+    const haystack=(item.name+' '+item.category+' '+item.type+' '+item.tags).toLowerCase();
+    const queryMatch=!query||haystack.includes(query);
+    const subMatch=selectedLibrarySub==='全部'||haystack.includes(selectedLibrarySub.toLowerCase());
+    const majorTerms=assetLibraryTaxonomy[selectedLibraryMajor]||[];
+    const majorMatch=selectedLibraryMajor==='全部'||(majorTerms.length?majorTerms.some(term=>haystack.includes(term.toLowerCase())):haystack.includes(selectedLibraryMajor.toLowerCase()));
+    return queryMatch&&subMatch&&majorMatch;
+  });
+  const grid=document.getElementById('assetLibraryGrid');if(!grid)return;
+  grid.innerHTML=list.map(item=>`<div class="library-card ${selectedLibraryAssetId===item.id?'selected':''}" onclick="selectLibraryAsset('${item.id}')"><div class="library-card-top"><b>${item.name}</b></div><div class="library-pair"><div class="library-thumb light ${item.light?'has-image':''}">${item.light?`<img src="${item.light}" alt="${item.name} 白天">`:''}<span class="library-theme">白天</span></div><div class="library-thumb dark ${item.dark?'has-image':''}">${item.dark?`<img src="${item.dark}" alt="${item.name} 黑天">`:''}<span class="library-theme">黑天</span></div></div></div>`).join('')||'<div style="color:#98A2B3">没有匹配素材</div>';
+}
+function renderAssetLibraryCategories(){
+  const majorBox=document.getElementById('assetLibraryMajorTabs');const subBox=document.getElementById('assetLibrarySubTabs');if(!majorBox||!subBox)return;
+  majorBox.innerHTML=['全部',...Object.keys(assetLibraryTaxonomy)].map(name=>`<button class="library-filter-tag ${selectedLibraryMajor===name?'active':''}" onclick="selectAssetLibraryMajor('${name}')">${name}</button>`).join('');
+  const subs=selectedLibraryMajor==='全部'?[]:assetLibraryTaxonomy[selectedLibraryMajor];
+  subBox.style.display=subs.length?'flex':'none';
+  subBox.innerHTML=subs.length?subs.map(name=>`<button class="library-filter-tag ${selectedLibrarySub===name?'sub-active':''}" onclick="selectAssetLibrarySub('${name}')">${name}</button>`).join(''):'';
+}
+function selectAssetLibraryMajor(name){selectedLibraryMajor=name;selectedLibrarySub='全部';selectedLibraryAssetId='';document.getElementById('assetLibraryApply').disabled=true;saveAssetLibraryPreferences();renderAssetLibraryCategories();renderAssetLibrary();}
+function selectAssetLibrarySub(name){selectedLibrarySub=name;selectedLibraryAssetId='';document.getElementById('assetLibraryApply').disabled=true;saveAssetLibraryPreferences();renderAssetLibraryCategories();renderAssetLibrary();}
+function updateAssetLibrarySearch(value){assetLibrarySearchValue=value;saveAssetLibraryPreferences();renderAssetLibrary();}
+function selectLibraryAsset(id){selectedLibraryAssetId=id;const item=activeAssetLibrary.find(asset=>asset.id===id);document.getElementById('assetLibraryApply').disabled=!item;saveAssetLibraryPreferences();renderAssetLibrary();}
+function createDemoLibraryAsset(theme,variant){
+  const canvas=document.createElement('canvas');canvas.width=600;canvas.height=600;const ctx=canvas.getContext('2d');
+  const dark=theme==='dark';const offset=variant.includes('-b')?42:0;
+  const gradient=ctx.createLinearGradient(220,120,500,440);gradient.addColorStop(0,dark?'#BFC9D8':'#E4ECF7');gradient.addColorStop(1,'#3B8CFF');
+  ctx.fillStyle=gradient;ctx.beginPath();ctx.arc(390-offset,225+offset*.3,126,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=dark?'rgba(255,255,255,.28)':'rgba(15,23,42,.13)';ctx.beginPath();ctx.arc(145+offset,350-offset*.2,76,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle=dark?'#FFFFFF':'#101828';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(78,465);ctx.lineTo(510,342);ctx.stroke();
+  ctx.fillStyle=dark?'#FFFFFF':'#101828';ctx.beginPath();ctx.arc(78,465,12,0,Math.PI*2);ctx.arc(510,342,12,0,Math.PI*2);ctx.fill();
+  return canvas.toDataURL('image/png');
+}
+async function githubImageToDataUrl(url){const response=await fetch(url);if(!response.ok)throw new Error(`图片读取失败 ${response.status}`);const blob=await response.blob();return await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=reject;reader.readAsDataURL(blob)})}
+async function applyAssetLibrarySelection(){
+  const item=activeAssetLibrary.find(asset=>asset.id===selectedLibraryAssetId);if(!item)return;
+  const button=document.getElementById('assetLibraryApply');button.disabled=true;button.textContent='正在写入…';
+  try{
+    images.light=item.light?await githubImageToDataUrl(item.light):createDemoLibraryAsset('light',item.id);images.dark=item.dark?await githubImageToDataUrl(item.dark):createDemoLibraryAsset('dark',item.id);
+  }catch(error){alert(`GitHub 素材读取失败：${error.message}`);button.disabled=false;button.textContent='应用';return;}
+  setUploadButtonState('light');setUploadButtonState('dark');scheduleDraftSave();schedulePreview();if(activeSlots.size)generate();
+  button.disabled=false;button.textContent='应用';closeAssetLibrary();
+}
+
 </script>
+<div class="library-modal" id="assetLibraryModal" onclick="if(event.target===this)closeAssetLibrary()">
+  <div class="library-dialog">
+    <div class="library-head"><h2>从 GitHub 图库选择配图</h2><div class="library-head-actions"><button class="library-close" onclick="closeAssetLibrary()">×</button></div></div>
+    <div class="library-category-filter"><div class="library-major-tabs" id="assetLibraryMajorTabs"></div><div class="library-sub-tabs" id="assetLibrarySubTabs"></div></div>
+    <div class="library-tools"><div class="library-search"><input id="assetLibrarySearch" placeholder="搜索素材名称、分类或关键词" oninput="updateAssetLibrarySearch(this.value)"></div></div>
+    <div class="library-grid" id="assetLibraryGrid"></div>
+    <div class="library-foot"><button class="library-apply" id="assetLibraryApply" disabled onclick="applyAssetLibrarySelection()">应用</button></div>
+  </div>
+</div>
 </body>
 </html>
