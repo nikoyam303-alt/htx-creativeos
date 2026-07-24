@@ -212,12 +212,12 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
 
   .sw-landing { width: 125px; height: 78px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 4px; }
   .si-landing { width: 375px; height: 234px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
-  .b-landing { width: 375px; min-height: 234px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; align-items: center; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
+  .b-landing { width: 375px; min-height: 234px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
   .b-landing.light { background: #FFFFFF; }
   .b-landing.dark { background: #000000; }
-  .b-landing .imgw { width: 90px; height: 90px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-  .b-landing .imgw img { width: 90px; height: 90px; display: block; object-fit: contain; }
-  .b-landing .txt { width: 100%; text-align: center; }
+  .b-landing .imgw { width: 98px; height: 98px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .b-landing .imgw img { width: 98px; height: 98px; display: block; object-fit: contain; }
+  .b-landing .txt { width: 100%; margin-top: 20px; text-align: center; }
   .b-landing .sub { margin: 0; font-size: 14px; font-weight: 400; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; line-height: 20px; }
   .b-landing.light .sub { color: #595959; }
   .b-landing.dark .sub { color: #999999; }
@@ -1028,6 +1028,7 @@ body {
 .library-entry-btn{border:0;background:#EDF5FF;transition:background .18s ease,color .18s ease}.library-entry-btn:hover{background:#DCEAFF;color:#095FCC}
 .library-loading{grid-column:1/-1;padding:44px 16px;border-radius:10px;background:#F8FAFC;color:#98A2B3;text-align:center;font-size:12px}
 .library-card{border:0;background:#F8FAFC;padding:14px}.library-card.selected{border:0;padding:14px;background:#EDF5FF;box-shadow:none}.library-thumb.light{border:0}.library-pair{gap:12px}
+.library-card.single .library-pair{grid-template-columns:1fr}.library-card.single .library-thumb{aspect-ratio:auto;min-height:260px;background:#fff}.library-card.single .library-thumb img{max-height:420px}
 .library-foot{border-top:0;padding-top:0}
 
 /* 0元购页 banner */
@@ -1411,7 +1412,7 @@ const SPECS = {
   share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:24, boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF', titLH:1.2 },
   community:{ W:750, H:220, PAD:0, PADX:32, subSz:1, subWeight:'400', titSz:36, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:0, imgW:220, imgPos:'rc', radius:0, bg:'#F3F3F3', subClr:'#000000', titClr:'#000000', titLH:1.2 },
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0, transparent:false },
-  landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:90, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:42 },
+  landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:98, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:20 },
   landingweb:{ W:1200, H:299, PAD:30, subSz:22, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:40, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:126, imgPos:'vt', radius:0, boldTit:true, subLH:1.2, titLH:1.2, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000' },
   baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:2, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
   tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:110, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
@@ -3941,9 +3942,17 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     ctx.font = `${subW} ${subSz}px ${subFont}`;
     let subH = 0;
     for (const seg of subTxt.split('\n')) subH += countLinesForText(ctx, seg, textFullW) * subSz * subLH;
-    const blockBottom = H - padY;
-    const titStartY = blockBottom - titH + titSz;
-    const subStartY = blockBottom - titH - s.gap - subH + subSz;
+    let titStartY;
+    let subStartY;
+    if (type === 'landing') {
+      const textTop = padY + imgW + (s.minImageTextGap || 0);
+      subStartY = textTop + subSz;
+      titStartY = textTop + subH + (subH && titH ? s.gap : 0) + titSz;
+    } else {
+      const blockBottom = H - padY;
+      titStartY = blockBottom - titH + titSz;
+      subStartY = blockBottom - titH - s.gap - subH + subSz;
+    }
     ctx.fillStyle = c.sub;
     ctx.font = `${subW} ${subSz}px ${subFont}`;
     drawCenteredMultilineText(ctx, subTxt, W / 2, subStartY, textFullW, subSz, subLH, Infinity);
@@ -5414,7 +5423,14 @@ function renderAssetLibrary(){
     return queryMatch&&subMatch&&majorMatch;
   });
   const grid=document.getElementById('assetLibraryGrid');if(!grid)return;
-  grid.innerHTML=list.map(item=>`<div class="library-card ${selectedLibraryAssetId===item.id?'selected':''}" onclick="selectLibraryAsset('${item.id}')"><div class="library-card-top"><b>${item.name}</b></div><div class="library-pair"><div class="library-thumb light ${item.light?'has-image':''}">${item.light?`<img src="${item.light}" alt="${item.name} 白天">`:''}<span class="library-theme">白天</span></div><div class="library-thumb dark ${item.dark?'has-image':''}">${item.dark?`<img src="${item.dark}" alt="${item.name} 黑天">`:''}<span class="library-theme">黑天</span></div></div></div>`).join('')||'<div style="color:#98A2B3">没有匹配素材</div>';
+  grid.innerHTML=list.map(item=>{
+    const isSingle=item.category==='火宝';
+    const singleImage=item.light||item.dark;
+    const preview=isSingle
+      ? `<div class="library-pair"><div class="library-thumb light ${singleImage?'has-image':''}">${singleImage?`<img src="${singleImage}" alt="${item.name}">`:''}</div></div>`
+      : `<div class="library-pair"><div class="library-thumb light ${item.light?'has-image':''}">${item.light?`<img src="${item.light}" alt="${item.name} 白天">`:''}<span class="library-theme">白天</span></div><div class="library-thumb dark ${item.dark?'has-image':''}">${item.dark?`<img src="${item.dark}" alt="${item.name} 黑天">`:''}<span class="library-theme">黑天</span></div></div>`;
+    return `<div class="library-card ${isSingle?'single ':''}${selectedLibraryAssetId===item.id?'selected':''}" onclick="selectLibraryAsset('${item.id}')"><div class="library-card-top"><b>${item.name}</b></div>${preview}</div>`;
+  }).join('')||'<div style="color:#98A2B3">没有匹配素材</div>';
 }
 function renderAssetLibraryCategories(){
   const majorBox=document.getElementById('assetLibraryMajorTabs');const subBox=document.getElementById('assetLibrarySubTabs');if(!majorBox||!subBox)return;
