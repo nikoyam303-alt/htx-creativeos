@@ -3386,7 +3386,6 @@ function updateAllResourceOverflowWarnings() {
 }
 
 function applyBapingClip(langId, autoScale) {
-  autoScale = false;
   const spec = SLOT_TEXT_SPECS.baping;
   const s = SPECS.baping;
   if (!spec || !s) return;
@@ -3417,7 +3416,6 @@ function applyBapingClip(langId, autoScale) {
 }
 
 function applySlotClip(slotType, langId, autoScale) {
-  autoScale = false;
   if (slotType === 'baping') { applyBapingClip(langId, autoScale); return; }
   const spec = SLOT_TEXT_SPECS[slotType];
   const s = SPECS[slotType];
@@ -3711,7 +3709,6 @@ function fillCanvasBg(ctx, s, c, W, H) {
 }
 
 async function renderToDataUrl(type, theme, langId, autoScale) {
-  autoScale = false;
   await ensureExportFontsReady();
   const s = SPECS[type];
   const spec = SLOT_TEXT_SPECS[type] || {};
