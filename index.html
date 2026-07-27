@@ -3028,6 +3028,87 @@ function getPlainText(domEl) {
 
 function getTextWithBreaks(el) { return getPlainText(el); }
 
+// Canvas and the browser's DOM text engine do not always produce identical
+// glyph advances (most visibly with Cyrillic and long hyphenated words).
+// Export must therefore consume the line breaks already laid out in preview
+// instead of measuring and wrapping the same copy a second time.
+const PREVIEW_LINE_MARKER = '\uE000';
+
+function previewTextRuns(el) {
+  if (!el) return [];
+  const runs = [];
+  const visit = node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const value = node.nodeValue || '';
+      for (let i = 0; i < value.length; i++) {
+        const range = document.createRange();
+        range.setStart(node, i);
+        range.setEnd(node, i + 1);
+        const rect = range.getClientRects()[0];
+        runs.push({
+          text: value[i],
+          top: rect ? rect.top : null,
+          color: getComputedStyle(node.parentElement || el).color,
+          hardBreak: false
+        });
+      }
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+    if (node.tagName === 'BR') {
+      runs.push({ text: '', top: null, color: '', hardBreak: true });
+      return;
+    }
+    Array.from(node.childNodes).forEach(visit);
+  };
+  Array.from(el.childNodes).forEach(visit);
+  return runs;
+}
+
+function previewVisualLines(el) {
+  const runs = previewTextRuns(el);
+  if (!runs.length) return [];
+  const lines = [];
+  let line = [];
+  let lineTop = null;
+  const flush = () => {
+    while (line.length && /^\s$/.test(line[line.length - 1].text)) line.pop();
+    while (line.length && /^\s$/.test(line[0].text)) line.shift();
+    lines.push(line);
+    line = [];
+    lineTop = null;
+  };
+  runs.forEach(run => {
+    if (run.hardBreak) {
+      flush();
+      return;
+    }
+    if (run.top != null && lineTop != null && Math.abs(run.top - lineTop) > 1) flush();
+    if (run.top != null && lineTop == null) lineTop = run.top;
+    line.push(run);
+  });
+  if (line.length || !lines.length) flush();
+  return lines;
+}
+
+function getPreviewWrappedText(el) {
+  return previewVisualLines(el)
+    .map(line => PREVIEW_LINE_MARKER + line.map(run => run.text).join(''))
+    .join('\n');
+}
+
+function getPreviewRichLines(el) {
+  return previewVisualLines(el).map(line => {
+    const parts = [];
+    line.forEach(run => {
+      const last = parts[parts.length - 1];
+      if (last && last.color === run.color) last.text += run.text;
+      else parts.push({ text: run.text, color: run.color });
+    });
+    return parts;
+  });
+}
+
 function bapingTextW(s) {
   const padX = s.PADX || s.PAD;
   return s.W - padX * 2;
@@ -3058,6 +3139,9 @@ function countLinesForText(ctx, text, maxW) {
 
 function wrapTextLines(ctx, text, maxW) {
   if (!text) return [];
+  if (String(text).startsWith(PREVIEW_LINE_MARKER)) {
+    return [String(text).slice(PREVIEW_LINE_MARKER.length)];
+  }
   const tokens = String(text).match(/\s+|[^\s]+/g) || [];
   const lines = [];
   let line = '';
@@ -3116,6 +3200,20 @@ function drawRichMultilineText(ctx, runs, x, startY, maxW, sz, lineH_ratio, maxH
   const lh = sz * lineH_ratio;
   const bottomLimit = maxH === Infinity ? Infinity : startY + maxH - sz;
   let curY = startY;
+  if (Array.isArray(runs?.[0])) {
+    runs.forEach(parts => {
+      if (curY <= bottomLimit) {
+        let curX = x;
+        parts.forEach(part => {
+          ctx.fillStyle = part.color;
+          ctx.fillText(part.text, curX, curY);
+          curX += ctx.measureText(part.text).width;
+        });
+      }
+      curY += lh;
+    });
+    return curY - startY;
+  }
   let line = [];
   let lineW = 0;
   const flush = () => {
@@ -3754,9 +3852,10 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   const sub = inner.querySelector('.sub');
   const tit = inner.querySelector('.tit');
   const desc = inner.querySelector('.desc');
-  const subTxt = getPlainText(sub);
-  const titTxt = getPlainText(tit);
-  const descTxt = getPlainText(desc);
+  const subTxt = getPreviewWrappedText(sub);
+  const titTxt = getPreviewWrappedText(tit);
+  const descTxt = getPreviewWrappedText(desc);
+  const titRichLines = getPreviewRichLines(tit);
   const font = "'HarmonyOS Sans SC','PingFang SC',sans-serif";
   const titFont = titFontFamily(s, s.boldTit ? "'HarmonyOS Bold','PingFang SC',sans-serif" : font);
   const imgW = s.imgW;
@@ -3834,10 +3933,10 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     const textFullW = 235;
     const lang = langs.find(l => l.id === langId);
     const tradeText = lang ? getTradeText(lang) : { subtitle: subTxt, title: titTxt };
-    const richTitle = parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
+    const richTitle = titRichLines.length ? titRichLines : parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
     ctx.fillStyle = c.sub;
     ctx.font = `${subW} ${subSz}px ${subFont}`;
-    const subDrawn = drawMultilineText(ctx, tradeText.subtitle || '', padX, (s.textTop || 32) + subSz, textFullW, subSz, subLH, subSz, 60);
+    const subDrawn = drawMultilineText(ctx, subTxt, padX, (s.textTop || 32) + subSz, textFullW, subSz, subLH, subSz, 60);
     ctx.filter = 'blur(0.25px)';
     ctx.font = `${titW} ${titSz}px ${titFont}`;
     drawRichMultilineText(ctx, richTitle, padX, (s.textTop || 32) + subDrawn + s.gap + titSz, textFullW, titSz, titLH, 60);
@@ -3875,7 +3974,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     ctx.textBaseline = 'alphabetic';
     ctx.filter = 'blur(0.35px)';
     ctx.font = `700 ${titSz}px ${titFont}`;
-    const richTitle = parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : '#FFFFFF' }));
+    const richTitle = titRichLines.length ? titRichLines : parseBracketHighlights(tradeText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : '#FFFFFF' }));
     const titleY = y + badgeH + s.gap + titSz;
     const titleMaxH = Math.max(titSz, H - (s.safeBottom || 120) - (titleY - titSz));
     drawRichMultilineText(ctx, richTitle, x, titleY, 720, titSz, 1.1, titleMaxH);
@@ -3974,14 +4073,14 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
         ctx.fillStyle = c.sub;
         ctx.filter = 'blur(0.4px)';
         ctx.font = `500 ${subSz}px ${subFont}`;
-        const subDrawn = drawMultilineText(ctx, bapingText.subtitle, padX, curY + subSz, textFullW, subSz, subLH, subSz, mainH);
+        const subDrawn = drawMultilineText(ctx, subTxt, padX, curY + subSz, textFullW, subSz, subLH, subSz, mainH);
         ctx.filter = 'none';
         curY += subDrawn + s.gap;
       }
       if (bapingText.title) {
         ctx.filter = 'blur(0.4px)';
         ctx.font = `700 ${titSz}px ${titFont}`;
-        const richTitle = parseBracketHighlights(bapingText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
+        const richTitle = titRichLines.length ? titRichLines : parseBracketHighlights(bapingText.title).map(part => ({ text: part.text, color: part.highlight ? '#007FFF' : c.tit }));
         const titleDrawn = drawRichMultilineText(ctx, richTitle, padX, curY + titSz, textFullW, titSz, titLH, mainH);
         ctx.filter = 'none';
         curY += titleDrawn + 24;
@@ -3991,7 +4090,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
         const descLH = s.descLH || 1.4;
         ctx.fillStyle = s.descClr || '#595959';
         ctx.font = `${s.descWeight || '400'} ${descSz}px ${font}`;
-        drawMultilineText(ctx, bapingText.descText, padX, curY + descSz, textFullW, descSz, descLH, descSz, mainH);
+        drawMultilineText(ctx, descTxt, padX, curY + descSz, textFullW, descSz, descLH, descSz, mainH);
       }
     } else {
       ctx.fillStyle = c.sub;
