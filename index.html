@@ -3655,6 +3655,32 @@ function previewCardTextOverflows(card) {
       return outsideSafeArea || overlapsImage;
     });
   }
+  if (card.classList.contains('b-baping')) {
+    const main = card.querySelector('.main');
+    const image = card.querySelector('.imgw img');
+    if (!main) return false;
+    const mainRect = main.getBoundingClientRect();
+    const imageRect = image ? image.getBoundingClientRect() : null;
+    const scaleX = cardRect.width / 550;
+    const scaleY = cardRect.height / 660;
+    const safeRect = {
+      left: mainRect.left + 50 * scaleX,
+      right: mainRect.right - 50 * scaleX,
+      top: mainRect.top + 50 * scaleY,
+      bottom: mainRect.bottom - 50 * scaleY
+    };
+    const imageGapX = 12 * scaleX;
+    const imageGapY = 12 * scaleY;
+    return Array.from(card.querySelectorAll('.sub, .tit, .desc')).flatMap(visibleTextRects).some(rect => {
+      const outsideSafeArea =
+        rect.left < safeRect.left - 2 || rect.right > safeRect.right + 2 ||
+        rect.top < safeRect.top - 2 || rect.bottom > safeRect.bottom + 2;
+      const overlapsImage = imageRect &&
+        rect.right > imageRect.left - imageGapX && rect.left < imageRect.right + imageGapX &&
+        rect.bottom > imageRect.top - imageGapY && rect.top < imageRect.bottom + imageGapY;
+      return outsideSafeArea || overlapsImage;
+    });
+  }
   const textNodes = card.querySelectorAll('.txt, .sub, .tit, .desc, .bar-txt, .badge-row');
   return Array.from(textNodes).some(node => {
     const rect = node.getBoundingClientRect();
@@ -3956,7 +3982,7 @@ function generate() {
     if (!validBaping.length) document.getElementById('gridBaping').innerHTML = '<div class="empty-state">请填写霸屏文案后将自动预览</div>';
     else {
       document.getElementById('gridBaping').innerHTML = validBaping.map(l => langGroupHtml('baping', l,
-        wrap('baping','sw-baping','si-baping', cardBaping(l, bapingImage), '霸屏', l, 'baping', '')
+        wrap('baping','sw-baping','si-baping', cardBaping(l, bapingImage || images.light), '霸屏', l, 'baping', '')
       )).join('');
       validBaping.forEach(l => applySlotClip('baping', l.id, !!scaleState[slotLangKey('baping', l.id)]));
     }
@@ -4141,7 +4167,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   if (type === 'community') imgSrc = communityImage;
   else if (type === 'apprebate') imgSrc = apprebateImage;
   else if (type === 'pcrebate') imgSrc = pcrebateImage;
-  else if (type === 'baping') imgSrc = bapingImage;
+  else if (type === 'baping') imgSrc = bapingImage || images.light;
   else if (type === 'tradeapp') imgSrc = theme === 'light' ? tradeImages.light : tradeImages.dark;
   else if (type === 'tradeweb') imgSrc = tradeImages.dark;
   else if (type === 'email' || type === 'appcal' || type === 'landingweb') imgSrc = images.light;
