@@ -4028,7 +4028,11 @@ function generate() {
 
   restoreDownloadButton();
   if (typeof setV2Group === 'function') setV2Group(v2ActiveGroup, false);
-  valid.forEach(applyEmailFontMode);
+  const renderedLangs = new Map();
+  [valid, validBaping, validTrade, validPcRebate, validAppRebate].forEach(groupLangs => {
+    groupLangs.forEach(lang => renderedLangs.set(String(lang.id), lang));
+  });
+  renderedLangs.forEach(applyEmailFontMode);
   requestAnimationFrame(updateAllResourceOverflowWarnings);
 }
 
