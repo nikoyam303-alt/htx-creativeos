@@ -1372,14 +1372,10 @@ html { scroll-behavior: smooth; }
       <div class="ad-field"><div id="otcLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addOtcLang()">+ 添加语种</button></div>
       <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
       <div class="upload-area">
-        <button class="upload-btn" id="otcClassicAppLightBtn" onclick="document.getElementById('otcClassicAppLightFile').click()">经典 APP 白天配图</button><input id="otcClassicAppLightFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'classicAppLight')">
-        <button class="upload-btn" id="otcClassicAppDarkBtn" onclick="document.getElementById('otcClassicAppDarkFile').click()">经典 APP 黑天配图</button><input id="otcClassicAppDarkFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'classicAppDark')">
+        <button class="upload-btn" id="otcClassicLightBtn" onclick="document.getElementById('otcClassicLightFile').click()">经典站 Web/App 白天配图</button><input id="otcClassicLightFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'classicLight')">
+        <button class="upload-btn" id="otcClassicAppDarkBtn" onclick="document.getElementById('otcClassicAppDarkFile').click()">经典站 App 黑天配图</button><input id="otcClassicAppDarkFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'classicAppDark')">
       </div>
-      <div class="upload-area"><button class="upload-btn" id="otcClassicWebBtn" onclick="document.getElementById('otcClassicWebFile').click()">经典 Web 配图</button><input id="otcClassicWebFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'classicWeb')"></div>
-      <div class="upload-area">
-        <button class="upload-btn" id="otcSelectedAppBtn" onclick="document.getElementById('otcSelectedAppFile').click()">甄选 APP 配图</button><input id="otcSelectedAppFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'selectedApp')">
-        <button class="upload-btn" id="otcSelectedWebBtn" onclick="document.getElementById('otcSelectedWebFile').click()">甄选 Web 配图</button><input id="otcSelectedWebFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'selectedWeb')">
-      </div>
+      <div class="upload-area"><button class="upload-btn" id="otcSelectedBtn" onclick="document.getElementById('otcSelectedFile').click()">甄选站 Web/App 配图</button><input id="otcSelectedFile" type="file" accept="image/*,.svg" onchange="handleOtcImage(event,'selected')"></div>
       <button class="download-all-btn" id="otcDownloadBtn" onclick="downloadOtcBanner()">下载</button>
     </div>
     <div class="ad-preview-shell">
@@ -5292,7 +5288,7 @@ const OTC_DRAFT_KEY = 'htxOtcBannerV1';
 const OTC_WEB = { W:2299, H:364, image:364, padTop:77, padBottom:126, title:68, subtitle:46, gap:15.32 };
 const OTC_APP = { W:986, H:155, image:155, padX:3, padTop:23, padBottom:12, title:46, subtitle:34, gap:5.76 };
 let otcLangs = DEFAULT_LANG_CODES.map((code,index)=>({ id:index+1, code, subtitle:'', title:'' }));
-let otcImages = { classicAppLight:null, classicAppDark:null, classicWeb:null, selectedApp:null, selectedWeb:null };
+let otcImages = { classicLight:null, classicAppDark:null, selected:null };
 
 function saveOtcDraft() {
   try { localStorage.setItem(OTC_DRAFT_KEY,JSON.stringify({ langs:otcLangs, images:otcImages })); } catch (_) {}
@@ -5305,11 +5301,9 @@ function loadOtcDraft() {
     if (saved?.images) {
       const source = saved.images;
       otcImages = {
-        classicAppLight:source.classicAppLight || source.classicLight || null,
+        classicLight:source.classicLight || source.classicAppLight || source.classicWeb || null,
         classicAppDark:source.classicAppDark || source.classicDark || null,
-        classicWeb:source.classicWeb || source.classicLight || null,
-        selectedApp:source.selectedApp || source.selected || null,
-        selectedWeb:source.selectedWeb || source.selected || null
+        selected:source.selected || source.selectedApp || source.selectedWeb || null
       };
     }
   } catch (_) {}
@@ -5319,7 +5313,7 @@ function renderOtcEditor() {
   const list = document.getElementById('otcLangList');
   if (!list) return;
   list.innerHTML = otcLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateOtcText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeOtcLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题" oninput="updateOtcText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="主标题" oninput="updateOtcText(${item.id},'title',this.value)"></div>`).join('');
-  ['classicAppLight','classicAppDark','classicWeb','selectedApp','selectedWeb'].forEach(setOtcUploadButtonState);
+  ['classicLight','classicAppDark','selected'].forEach(setOtcUploadButtonState);
 }
 
 function addOtcLang() {
@@ -5346,11 +5340,11 @@ function updateOtcText(id,field,value) {
 }
 
 function otcImageLabel(kind) {
-  return ({ classicAppLight:'经典 APP 白天配图', classicAppDark:'经典 APP 黑天配图', classicWeb:'经典 Web 配图', selectedApp:'甄选 APP 配图', selectedWeb:'甄选 Web 配图' })[kind] || '配图';
+  return ({ classicLight:'经典站 Web/App 白天配图', classicAppDark:'经典站 App 黑天配图', selected:'甄选站 Web/App 配图' })[kind] || '配图';
 }
 
 function setOtcUploadButtonState(kind) {
-  const ids = { classicAppLight:'otcClassicAppLightBtn', classicAppDark:'otcClassicAppDarkBtn', classicWeb:'otcClassicWebBtn', selectedApp:'otcSelectedAppBtn', selectedWeb:'otcSelectedWebBtn' };
+  const ids = { classicLight:'otcClassicLightBtn', classicAppDark:'otcClassicAppDarkBtn', selected:'otcSelectedBtn' };
   const button = document.getElementById(ids[kind]);
   if (!button) return;
   button.textContent = otcImages[kind] ? `${otcImageLabel(kind)}已上传` : otcImageLabel(kind);
@@ -5401,10 +5395,8 @@ async function drawOtcBanner(canvas,lang,platform,variant,theme='light') {
   ctx.fillStyle = isDark ? '#000000' : '#FFFFFF';
   ctx.fillRect(0,0,spec.W,spec.H);
   const image = isSelected
-    ? (platform === 'web' ? otcImages.selectedWeb : otcImages.selectedApp)
-    : platform === 'web'
-      ? otcImages.classicWeb
-      : isDark ? otcImages.classicAppDark : otcImages.classicAppLight;
+    ? otcImages.selected
+    : isDark && platform === 'app' ? otcImages.classicAppDark : otcImages.classicLight;
   const imageX = spec.W - spec.image;
   if (image) await drawImgContain(ctx,image,imageX,0,spec.image,spec.image);
   const textW = imageX - (spec.padX || 0);
