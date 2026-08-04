@@ -3183,6 +3183,9 @@ function cardFeed(l, theme, img) {
 function getLandingHeight(l) {
   const s = SPECS.landing;
   const spec = SLOT_TEXT_SPECS.landing;
+  const scaleFactor = shouldScaleResource(l.code || '', 'landing') ? emailTitleSizeFor(l.code || '') / 60 : 1;
+  const subSize = Math.max(8, Math.round(s.subSz * scaleFactor));
+  const titleSize = Math.max(8, Math.round(s.titSz * scaleFactor));
   const textFullW = s.W - (s.PADX || s.PAD) * 2;
   const cvs = document.createElement('canvas');
   const ctx = cvs.getContext('2d');
@@ -3193,14 +3196,14 @@ function getLandingHeight(l) {
   const subW = s.subWeight || '400';
   const subFont = subFontFamily(s);
   const titFont = "'HarmonyOS Bold','PingFang SC',sans-serif";
-  ctx.font = `${subW} ${s.subSz}px ${subFont}`;
+  ctx.font = `${subW} ${subSize}px ${subFont}`;
   let subLines = 0;
   for (const seg of subTxt.split('\n')) subLines += countLinesForText(ctx, seg, textFullW);
-  ctx.font = `700 ${s.titSz}px ${titFont}`;
+  ctx.font = `700 ${titleSize}px ${titFont}`;
   let titLines = 0;
   for (const seg of titTxt.split('\n')) titLines += countLinesForText(ctx, seg, textFullW);
-  const subH = subLines * s.subSz * subLH;
-  const titH = titLines * s.titSz * titLH;
+  const subH = subLines * subSize * subLH;
+  const titH = titLines * titleSize * titLH;
   const gap = subH && titH ? s.gap : 0;
   const neededH = s.PAD * 2 + s.imgW + (s.minImageTextGap || 0) + subH + gap + titH;
   return Math.ceil(Math.max(s.H, neededH));
@@ -3546,7 +3549,12 @@ function previewResourceType(card) {
 }
 
 function shouldScaleResource(code, type) {
-  return emailTitleSizeFor(code) < 60 && Array.isArray(fontScaleTargets[code]) && fontScaleTargets[code].includes(type);
+  if (emailTitleSizeFor(code) >= 60 || !Array.isArray(fontScaleTargets[code])) return false;
+  const targets = fontScaleTargets[code];
+  if (type === 'landing' || type === 'landingweb') {
+    return targets.includes('landing') || targets.includes('landingweb');
+  }
+  return targets.includes(type);
 }
 
 function previewCardTextOverflows(card) {
@@ -3558,6 +3566,10 @@ function previewCardTextOverflows(card) {
     range.selectNodeContents(node);
     return Array.from(range.getClientRects()).filter(rect => rect.width > 0 && rect.height > 0);
   };
+  if (card.classList.contains('b-landing')) {
+    const lang = langs.find(item => String(item.id) === String(card.dataset.langid));
+    return !!lang && getLandingHeight(lang) > SPECS.landing.H + 1;
+  }
   if (card.classList.contains('b-tradeapp')) {
     const sub = card.querySelector('.sub');
     const title = card.querySelector('.tit');
@@ -3729,13 +3741,21 @@ function updateAllResourceOverflowWarnings() {
   });
   warnings.forEach((labels, key) => {
     const [editorGroup, code] = key.split('::');
+    const types = warningTypes.get(key) || new Set();
+    if (types.has('landing') || types.has('landingweb')) {
+      types.add('landing');
+      types.add('landingweb');
+      labels.delete('聚合落地页');
+      labels.delete('聚合落地页 web');
+      labels.add('聚合落地页 App/Web');
+    }
     const item = Array.from(document.querySelectorAll('.lang-item')).find(node => node.dataset.editorGroup === editorGroup && node.dataset.langCode === code);
     if (!item) return;
     const warning = document.createElement('div');
     warning.className = 'resource-overflow-warning';
     const labelText = `${Array.from(labels).join('、')} 文案超出安全区域`;
     const hasAdjustment = labels.size > 0;
-    const affectedTypes = Array.from(warningTypes.get(key) || []);
+    const affectedTypes = Array.from(types);
     warning.innerHTML = `<div class="resource-overflow-head"><span class="warning-icon">⚠️</span><span class="resource-overflow-text">${labelText}</span></div>${hasAdjustment ? '<div class="resource-overflow-adjust"></div>' : ''}`;
     if (hasAdjustment) {
       const adjust = warning.querySelector('.resource-overflow-adjust');
@@ -4176,7 +4196,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   else imgSrc = theme === 'light' ? images.light : images.dark;
 
   if (type === 'landing') {
-    const dynamicH = getLandingHeight({ subtitle: subTxt, title: titTxt });
+    const dynamicH = getLandingHeight({ code: renderLangCode, subtitle: subTxt, title: titTxt });
     if (dynamicH !== H) {
       H = dynamicH;
       canvas.width = Math.round(W * DPR);
