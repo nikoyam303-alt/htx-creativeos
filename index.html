@@ -5609,7 +5609,7 @@ function switchSocialTool(tool, updateLocation = true) {
   if (frame && frame.dataset.activeTool !== nextTool) {
     if (nextTool === 'contract-listing' || nextTool === 'listing') {
       frame.removeAttribute('srcdoc');
-      frame.src = nextTool === 'listing' ? 'social/listing.html' : 'social/contract-listing.html';
+      frame.src = nextTool === 'listing' ? 'social/listing.html?v=202608101550' : 'social/contract-listing.html';
     } else if (nextTool === 'coin-intro' || nextTool === 'weekly-recap') {
       frame.removeAttribute('src');
       frame.srcdoc = nextTool === 'coin-intro' ? COIN_INTRO_DOCUMENT : WEEKLY_RECAP_DOCUMENT;
