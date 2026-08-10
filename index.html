@@ -1565,6 +1565,7 @@ html { scroll-behavior: smooth; }
       <button class="social-template-btn" data-social-tool="listing" type="button" onclick="switchSocialTool('listing')">上币模板</button>
       <button class="social-template-btn" data-social-tool="coin-intro" type="button" onclick="switchSocialTool('coin-intro')">币种介绍</button>
       <button class="social-template-btn" data-social-tool="weekly-recap" type="button" onclick="switchSocialTool('weekly-recap')">上新周报</button>
+      <button class="social-template-btn" data-social-tool="contract-listing" type="button" onclick="switchSocialTool('contract-listing')">合约上币</button>
       <button class="social-template-btn active" data-social-tool="poster" type="button" onclick="switchSocialTool('poster')">社媒海报</button>
     </div>
   </nav>
@@ -5602,11 +5603,14 @@ function decodeSocialToolDocument(encoded) {
   return new TextDecoder().decode(bytes);
 }
 
-function switchSocialTool(tool) {
+function switchSocialTool(tool, updateLocation = true) {
   const frame = document.getElementById('socialToolFrame');
-  const nextTool = ['listing', 'coin-intro', 'weekly-recap', 'poster'].includes(tool) ? tool : 'poster';
+  const nextTool = ['listing', 'coin-intro', 'weekly-recap', 'contract-listing', 'poster'].includes(tool) ? tool : 'poster';
   if (frame && frame.dataset.activeTool !== nextTool) {
-    if (nextTool === 'coin-intro' || nextTool === 'weekly-recap') {
+    if (nextTool === 'contract-listing' || nextTool === 'listing') {
+      frame.removeAttribute('srcdoc');
+      frame.src = nextTool === 'listing' ? 'social/listing.html' : 'social/contract-listing.html';
+    } else if (nextTool === 'coin-intro' || nextTool === 'weekly-recap') {
       frame.removeAttribute('src');
       frame.srcdoc = nextTool === 'coin-intro' ? COIN_INTRO_DOCUMENT : WEEKLY_RECAP_DOCUMENT;
     } else {
@@ -5615,18 +5619,21 @@ function switchSocialTool(tool) {
     }
     frame.dataset.activeTool = nextTool;
   }
-  if (frame) frame.title = ({ listing: '上币模板编辑器', 'coin-intro': '币种介绍编辑器', 'weekly-recap': '上新周报编辑器', poster: '社媒海报编辑器' })[nextTool];
+  if (frame) frame.title = ({ listing: '上币模板编辑器', 'coin-intro': '币种介绍编辑器', 'weekly-recap': '上新周报编辑器', 'contract-listing': '合约上币编辑器', poster: '社媒海报编辑器' })[nextTool];
   document.querySelectorAll('.social-template-btn').forEach(button => {
     button.classList.toggle('active', button.dataset.socialTool === nextTool);
   });
   localStorage.setItem('htx-social-active-tool', nextTool);
+  if (updateLocation && location.hash !== '#social') {
+    history.replaceState(null, '', '#social');
+  }
 }
 
-function setV2Group(group, updateButtons = true) {
+function setV2Group(group, updateButtons = true, updateLocation = true) {
   if (!v2SlotGroups[group]) group = 'common';
   v2ActiveGroup = group;
   localStorage.setItem(V2_ACTIVE_GROUP_KEY, group);
-  if (location.hash !== `#${group}`) history.replaceState(null, '', `#${group}`);
+  if (updateLocation && location.hash !== `#${group}`) history.replaceState(null, '', `#${group}`);
   if (updateButtons) document.querySelectorAll('.v2-group-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.v2Group === group));
   Object.values(v2SlotGroups).flat().forEach(key => {
     const item = document.getElementById('slot-' + key);
@@ -5737,7 +5744,7 @@ function initV2Workspace() {
     const section = document.getElementById(id);
     if (section) section.classList.add('v2-hidden');
   });
-  setV2Group(v2ActiveGroup);
+  setV2Group(v2ActiveGroup, true, false);
 }
 
 function initImageDropUploads() {
@@ -5778,7 +5785,7 @@ restoreDraft();
 migrateShareImageFromCommon();
 initV2Workspace();
 initImageDropUploads();
-switchSocialTool(localStorage.getItem('htx-social-active-tool') || 'poster');
+switchSocialTool(localStorage.getItem('htx-social-active-tool') || 'poster', false);
 requestAnimationFrame(() => autoResizeAllTextAreas());
 
 let v2ScrollSaveTimer = null;
