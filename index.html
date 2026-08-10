@@ -2,6 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
+<meta name="ga-measurement-id" content="G-LDRM9CDWLV">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HTX 运营视觉工作台</title>
 <script>if(location.hash==='#social'){document.documentElement.classList.add('initial-social');history.scrollRestoration='manual'}</script>
@@ -5926,6 +5927,35 @@ async function applyAssetLibrarySelection(){
   setUploadButtonState('light');setUploadButtonState('dark');scheduleDraftSave();schedulePreview();if(activeSlots.size)generate();
   button.disabled=false;button.textContent='应用';closeAssetLibrary();
 }
+
+// Analytics: never include user-entered copy or uploaded image contents in events.
+(function initializeAnalytics(){
+  const measurementId=document.querySelector('meta[name="ga-measurement-id"]')?.content.trim()||'';
+  const release='2026.08.10';
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=window.gtag||function(){dataLayer.push(arguments)};
+  if(/^G-[A-Z0-9]+$/i.test(measurementId)){
+    const script=document.createElement('script');script.async=true;script.src=`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;document.head.appendChild(script);
+    gtag('js',new Date());gtag('config',measurementId,{send_page_view:true});
+  }
+  function activeTemplate(){return document.querySelector('[data-social-tool].active')?.dataset.socialTool||document.querySelector('[data-v2-group].active')?.dataset.v2Group||'workspace'}
+  window.htxTrack=function(eventName,parameters={}){
+    if(!/^[a-z][a-z0-9_]{1,39}$/.test(eventName))return;
+    const safe={release_version:release,template:parameters.template||activeTemplate()};
+    for(const [key,value] of Object.entries(parameters))if(value!==undefined&&value!==null&&['string','number','boolean'].includes(typeof value))safe[key]=typeof value==='string'?value.slice(0,120):value;
+    if(/^G-[A-Z0-9]+$/i.test(measurementId))gtag('event',eventName,safe);
+  };
+  document.addEventListener('click',event=>{
+    const social=event.target.closest('[data-social-tool]');if(social)htxTrack('template_open',{template:social.dataset.socialTool});
+    const group=event.target.closest('[data-v2-group]');if(group)htxTrack('template_open',{template:group.dataset.v2Group});
+    const entry=event.target.closest('.workspace-entry-card');if(entry)htxTrack('workspace_open',{workspace:entry.classList.contains('social')?'social':'content'});
+    const button=event.target.closest('button');if(button&&(/下载|导出/.test(button.textContent)||/download/i.test(button.id||'')))htxTrack('download_click');
+  },true);
+  window.addEventListener('message',event=>{if(event.origin!==location.origin||event.data?.source!=='htx-analytics')return;htxTrack(event.data.event,event.data.params||{})});
+  window.addEventListener('error',event=>htxTrack('operation_error',{result:'failed',error_stage:'runtime',error_code:'UNHANDLED_ERROR',error_detail:String(event.message||'unknown')}));
+  window.addEventListener('unhandledrejection',event=>htxTrack('operation_error',{result:'failed',error_stage:'promise',error_code:'UNHANDLED_REJECTION',error_detail:String(event.reason?.message||event.reason||'unknown')}));
+  htxTrack('workspace_view',{template:'workspace'});
+})();
 
 </script>
 <div class="library-modal" id="assetLibraryModal" onclick="if(event.target===this)closeAssetLibrary()">
