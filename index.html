@@ -5608,10 +5608,66 @@ const WEEKLY_RECAP_DOCUMENT = "<!doctype html>\n<html lang=\"zh-CN\">\n<head>\n<
 function decodeSocialToolDocument(encoded) {
   const bytes = Uint8Array.from(atob(encoded), character => character.charCodeAt(0));
   const documentSource = new TextDecoder().decode(bytes);
-  const posterOverrides = '@font-face{font-family:Urbanist;src:url("social/assets/Urbanist-Variable.ttf") format("truetype");font-style:normal;font-weight:100 900;font-display:swap}.poster{font-family:Urbanist,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif}.poster .headline{letter-spacing:0}.art-placeholder{width:58%!important}.poster.center .art-placeholder{left:21%!important;width:58%!important}#gradientPanel .color-field{display:block;margin-top:6px;padding:0;background:transparent}#gradientPanel .color-field input[type="text"]{display:block;width:100%;height:36px;margin:0;padding:10px 12px;border:0;border-radius:8px;background:#f5f7fa;color:#101828;font:inherit;font-size:12px;text-transform:uppercase}#gradientPanel .color-field span{display:none}';
+  const posterOverrides = '@font-face{font-family:Urbanist;src:url("social/assets/Urbanist-Variable.ttf") format("truetype");font-style:normal;font-weight:100 900;font-display:swap}.poster{font-family:Urbanist,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif}.poster .headline{letter-spacing:0}.copy-divider{display:none!important}.art-placeholder{width:58%!important}.poster.center .art-placeholder{left:21%!important;width:58%!important}#gradientPanel .color-field{display:block;margin-top:6px;padding:0;background:transparent}#gradientPanel .color-field input[type="text"]{display:block;width:100%;height:36px;margin:0;padding:10px 12px;border:0;border-radius:8px;background:#f5f7fa;color:#101828;font:inherit;font-size:12px;text-transform:uppercase}#gradientPanel .color-field span{display:none}.accent-color-section-hidden{display:none!important}.background-mode-segmented{grid-template-columns:repeat(3,minmax(0,1fr))!important}#imagePanel{padding-top:12px}#backgroundImageUpload{display:none!important}.background-image-drop{display:flex;min-height:88px;align-items:center;justify-content:center;padding:14px;border:1px dashed #b9c4d3;border-radius:10px;background:#f7f9fc;color:#475467;text-align:center;cursor:pointer;transition:.16s ease}.background-image-drop:hover,.background-image-drop.drag{border-color:#1677ff;background:#edf5ff;color:#1677ff}.background-image-drop strong{display:block;font-size:13px}.background-image-drop span{display:block;margin-top:5px;font-size:11px;color:#98a2b3}.background-image-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px}.background-image-name{min-width:0;overflow:hidden;color:#667085;font-size:11px;text-overflow:ellipsis;white-space:nowrap}.background-image-clear{flex:0 0 auto;height:30px;padding:0 10px;border:1px solid #d9e0ea;border-radius:7px;background:#fff;color:#475467;font:inherit;font-size:11px;cursor:pointer}.background-image-clear:disabled{opacity:.45;cursor:default}';
   const enhancedSource = documentSource.replace('<style>', `<style>\n${posterOverrides}`);
   if (!enhancedSource.includes('id="gradientPanel"')) return enhancedSource;
   const gradientHexSetup = String.raw`
+let posterBackgroundImageData=typeof savedDraft?.backgroundImage==='string'?savedDraft.backgroundImage:'';
+let posterBackgroundImageName=typeof savedDraft?.backgroundImageName==='string'?savedDraft.backgroundImageName:'';
+function hideAccentColorControl(){
+  document.getElementById('accentColor')?.closest('.section')?.classList.add('accent-color-section-hidden');
+}
+function setupPosterBackgroundImageControls(){
+  const segmented=document.querySelector('[data-bg-mode]')?.parentElement;
+  const solidPanel=document.getElementById('solidPanel');
+  if(!segmented||!solidPanel||document.getElementById('imagePanel'))return;
+  segmented.classList.add('background-mode-segmented');
+  const modeButton=document.createElement('button');
+  modeButton.type='button';
+  modeButton.dataset.bgMode='image';
+  modeButton.textContent='背景图';
+  segmented.append(modeButton);
+  const panel=document.createElement('div');
+  panel.className='background-panel';
+  panel.id='imagePanel';
+  panel.innerHTML='<input id="backgroundImageUpload" type="file" hidden accept="image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.webp,.svg"><label class="background-image-drop" id="backgroundImageDrop" for="backgroundImageUpload"><div><strong>点击或拖拽添加背景</strong><span>PNG、JPG、WebP 或 SVG · 最大 15MB</span></div></label><div class="background-image-meta"><span class="background-image-name" id="backgroundImageName">尚未添加背景</span><button class="background-image-clear" id="backgroundImageClear" type="button" disabled>清除</button></div>';
+  solidPanel.insertAdjacentElement('afterend',panel);
+  modeButton.addEventListener('click',()=>setBackgroundMode('image'));
+  const input=document.getElementById('backgroundImageUpload');
+  const drop=document.getElementById('backgroundImageDrop');
+  input.addEventListener('change',event=>{applyPosterBackgroundFile(event.target.files?.[0]);event.target.value=''});
+  ['dragenter','dragover'].forEach(type=>drop.addEventListener(type,event=>{event.preventDefault();drop.classList.add('drag')}));
+  ['dragleave','drop'].forEach(type=>drop.addEventListener(type,event=>{event.preventDefault();drop.classList.remove('drag')}));
+  drop.addEventListener('drop',event=>applyPosterBackgroundFile(event.dataTransfer?.files?.[0]));
+  document.getElementById('backgroundImageClear').addEventListener('click',()=>{
+    posterBackgroundImageData='';
+    posterBackgroundImageName='';
+    updatePosterBackgroundImageMeta();
+    setBackgroundMode('gradient');
+  });
+  updatePosterBackgroundImageMeta();
+}
+function updatePosterBackgroundImageMeta(message=''){
+  const name=document.getElementById('backgroundImageName');
+  const clear=document.getElementById('backgroundImageClear');
+  if(name)name.textContent=message||posterBackgroundImageName||'尚未添加背景';
+  if(clear)clear.disabled=!posterBackgroundImageData;
+}
+function applyPosterBackgroundFile(file){
+  if(!file)return;
+  const valid=['image/png','image/jpeg','image/webp','image/svg+xml'].includes(file.type)||/\.(png|jpe?g|webp|svg)$/i.test(file.name);
+  if(!valid){updatePosterBackgroundImageMeta('仅支持 PNG、JPG、WebP 或 SVG');return}
+  if(file.size>15*1024*1024){updatePosterBackgroundImageMeta('背景图片不能超过 15MB');return}
+  const reader=new FileReader();
+  reader.onload=()=>{
+    posterBackgroundImageData=String(reader.result||'');
+    posterBackgroundImageName=file.name;
+    updatePosterBackgroundImageMeta();
+    setBackgroundMode('image');
+  };
+  reader.onerror=()=>updatePosterBackgroundImageMeta('背景图片读取失败');
+  reader.readAsDataURL(file);
+}
 function normalizeGradientHexValue(value){
   const raw=String(value||'').trim().replace(/^#/,'');
   return /^[0-9a-f]{6}$/i.test(raw)?'#'+raw.toUpperCase():null;
@@ -5654,6 +5710,10 @@ function parseAdaptiveLogoHex(value){
 }
 function backgroundColorAtPosition(x,y){
   const mode=document.querySelector('[data-bg-mode].active')?.dataset.bgMode||'gradient';
+  if(mode==='image'){
+    const copy=parseAdaptiveLogoHex(document.getElementById('copyColor')?.value)||[255,255,255];
+    return copy.map(channel=>255-channel);
+  }
   if(mode==='solid')return parseAdaptiveLogoHex(document.getElementById('solidColor').value)||[0,102,255];
   const start=parseAdaptiveLogoHex(document.getElementById('startColor').value)||[0,102,255];
   const end=parseAdaptiveLogoHex(document.getElementById('endColor').value)||[8,159,252];
@@ -5706,17 +5766,55 @@ function updateAdaptiveBrandLogo(){
 function updateAdaptiveTagBorder(){
   const tag=document.getElementById('tagText');
   if(!tag)return;
-  const useBlueBorder=adaptiveLogoLuminance(backgroundColorAtElement(tag))>.42;
-  tag.style.borderColor=useBlueBorder?'#0066FF':'#FFFFFF';
-  tag.dataset.contrastVariant=useBlueBorder?'blue-border':'white-border';
+  const copyColor=normalizeGradientHexValue(document.getElementById('copyColor')?.value)||'#FFFFFF';
+  tag.style.borderColor=copyColor;
+  tag.dataset.contrastVariant='copy-color-border';
 }
+const updateCopyColorWithoutTagBorder=updateCopyColor;
+updateCopyColor=function(save=true){
+  updateCopyColorWithoutTagBorder(save);
+  updateAdaptiveTagBorder();
+};
+const saveDraftWithoutBackgroundImage=saveDraft;
+saveDraft=function(){
+  saveDraftWithoutBackgroundImage();
+  try{
+    const draft=JSON.parse(localStorage.getItem(draftStorageKey)||'{}');
+    draft.backgroundImage=posterBackgroundImageData;
+    draft.backgroundImageName=posterBackgroundImageName;
+    draft.bgMode=document.querySelector('[data-bg-mode].active')?.dataset.bgMode||'gradient';
+    localStorage.setItem(draftStorageKey,JSON.stringify(draft));
+  }catch(_){updatePosterBackgroundImageMeta(posterBackgroundImageName+' · 本次会话有效')}
+};
 const updateBackgroundWithoutAdaptiveLogo=updateBackground;
 updateBackground=function(save=true){
-  updateBackgroundWithoutAdaptiveLogo(save);
+  const mode=document.querySelector('[data-bg-mode].active')?.dataset.bgMode||'gradient';
+  if(mode==='image'){
+    poster.style.backgroundColor='#F3F6FA';
+    poster.style.backgroundImage=posterBackgroundImageData?'url("'+posterBackgroundImageData+'")':'none';
+    poster.style.backgroundPosition='center';
+    poster.style.backgroundSize='cover';
+    poster.style.backgroundRepeat='no-repeat';
+    if(save)saveDraft();
+  }else{
+    updateBackgroundWithoutAdaptiveLogo(save);
+  }
   updateAdaptiveBrandLogo();
   updateAdaptiveTagBorder();
 };
+setBackgroundMode=function(mode,save=true){
+  const nextMode=['gradient','solid','image'].includes(mode)?mode:'gradient';
+  document.querySelectorAll('[data-bg-mode]').forEach(button=>button.classList.toggle('active',button.dataset.bgMode===nextMode));
+  document.getElementById('gradientPanel').classList.toggle('active',nextMode==='gradient');
+  document.getElementById('solidPanel').classList.toggle('active',nextMode==='solid');
+  document.getElementById('imagePanel')?.classList.toggle('active',nextMode==='image');
+  updateBackground(save);
+};
 setupGradientHexInputs();
+setupPosterBackgroundImageControls();
+hideAccentColorControl();
+if(savedDraft?.bgMode==='image'&&posterBackgroundImageData)setBackgroundMode('image',false);
+else updateBackground(false);
 updateAdaptiveBrandLogo();
 updateAdaptiveTagBorder();
 document.querySelectorAll('[data-layout]').forEach(button=>button.addEventListener('click',()=>requestAnimationFrame(updateAdaptiveTagBorder)));
