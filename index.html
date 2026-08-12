@@ -5608,14 +5608,33 @@ const WEEKLY_RECAP_DOCUMENT = "<!doctype html>\n<html lang=\"zh-CN\">\n<head>\n<
 function decodeSocialToolDocument(encoded) {
   const bytes = Uint8Array.from(atob(encoded), character => character.charCodeAt(0));
   const documentSource = new TextDecoder().decode(bytes);
-  const posterOverrides = '@font-face{font-family:Urbanist;src:url("social/assets/Urbanist-Variable.ttf") format("truetype");font-style:normal;font-weight:100 900;font-display:swap}.poster{font-family:Urbanist,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif}.poster .headline{letter-spacing:0}.copy-divider{display:none!important}.art-placeholder{width:58%!important}.poster.center .art-placeholder{left:21%!important;width:58%!important}#gradientPanel .color-field{display:block;margin-top:6px;padding:0;background:transparent}#gradientPanel .color-field input[type="text"]{display:block;width:100%;height:36px;margin:0;padding:10px 12px;border:0;border-radius:8px;background:#f5f7fa;color:#101828;font:inherit;font-size:12px;text-transform:uppercase}#gradientPanel .color-field span{display:none}.accent-color-section-hidden{display:none!important}.background-mode-segmented{grid-template-columns:repeat(3,minmax(0,1fr))!important}#imagePanel{padding-top:12px}#backgroundImageUpload{display:none!important}.background-image-drop{display:flex;min-height:88px;align-items:center;justify-content:center;padding:14px;border:1px dashed #b9c4d3;border-radius:10px;background:#f7f9fc;color:#475467;text-align:center;cursor:pointer;transition:.16s ease}.background-image-drop:hover,.background-image-drop.drag{border-color:#1677ff;background:#edf5ff;color:#1677ff}.background-image-drop strong{display:block;font-size:13px}.background-image-drop span{display:block;margin-top:5px;font-size:11px;color:#98a2b3}.background-image-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px}.background-image-name{min-width:0;overflow:hidden;color:#667085;font-size:11px;text-overflow:ellipsis;white-space:nowrap}.background-image-clear{flex:0 0 auto;height:30px;padding:0 10px;border:1px solid #d9e0ea;border-radius:7px;background:#fff;color:#475467;font:inherit;font-size:11px;cursor:pointer}.background-image-clear:disabled{opacity:.45;cursor:default}';
+  const posterOverrides = '@font-face{font-family:Urbanist;src:url("social/assets/Urbanist-Variable.ttf") format("truetype");font-style:normal;font-weight:100 900;font-display:swap}.poster{font-family:Urbanist,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif}.poster .headline{letter-spacing:0}.copy-divider{display:none!important}.art-placeholder{width:58%!important}.poster.center .art-placeholder{left:21%!important;width:58%!important}#gradientPanel .color-field{display:block;margin-top:6px;padding:0;background:transparent}#gradientPanel .color-field input[type="text"]{display:block;width:100%;height:36px;margin:0;padding:10px 12px;border:0;border-radius:8px;background:#f5f7fa;color:#101828;font:inherit;font-size:12px;text-transform:uppercase}#gradientPanel .color-field span{display:none}.gradient-direction-enhanced{grid-template-columns:repeat(4,minmax(0,1fr))!important}.accent-color-section-hidden{display:none!important}.background-mode-segmented{grid-template-columns:repeat(3,minmax(0,1fr))!important}#imagePanel{padding-top:12px}#backgroundImageUpload{display:none!important}.background-image-drop{display:flex;min-height:88px;align-items:center;justify-content:center;padding:14px;border:1px dashed #b9c4d3;border-radius:10px;background:#f7f9fc;color:#475467;text-align:center;cursor:pointer;transition:.16s ease}.background-image-drop:hover,.background-image-drop.drag{border-color:#1677ff;background:#edf5ff;color:#1677ff}.background-image-drop strong{display:block;font-size:13px}.background-image-drop span{display:block;margin-top:5px;font-size:11px;color:#98a2b3}.background-image-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px}.background-image-name{min-width:0;overflow:hidden;color:#667085;font-size:11px;text-overflow:ellipsis;white-space:nowrap}.background-image-clear{flex:0 0 auto;height:30px;padding:0 10px;border:1px solid #d9e0ea;border-radius:7px;background:#fff;color:#475467;font:inherit;font-size:11px;cursor:pointer}.background-image-clear:disabled{opacity:.45;cursor:default}';
   const enhancedSource = documentSource.replace('<style>', `<style>\n${posterOverrides}`);
   if (!enhancedSource.includes('id="gradientPanel"')) return enhancedSource;
   const gradientHexSetup = String.raw`
 let posterBackgroundImageData=typeof savedDraft?.backgroundImage==='string'?savedDraft.backgroundImage:'';
 let posterBackgroundImageName=typeof savedDraft?.backgroundImageName==='string'?savedDraft.backgroundImageName:'';
+let posterGradientReversed=savedDraft?.gradientReversed===true;
 function hideAccentColorControl(){
   document.getElementById('accentColor')?.closest('.section')?.classList.add('accent-color-section-hidden');
+}
+function setupGradientReverseControl(){
+  const directionGroup=document.querySelector('.gradient-direction');
+  if(!directionGroup||document.getElementById('gradientReverse'))return;
+  directionGroup.classList.add('gradient-direction-enhanced');
+  const button=document.createElement('button');
+  button.id='gradientReverse';
+  button.type='button';
+  button.textContent='镜像';
+  button.classList.toggle('active',posterGradientReversed);
+  button.setAttribute('aria-pressed',String(posterGradientReversed));
+  button.addEventListener('click',()=>{
+    posterGradientReversed=!posterGradientReversed;
+    button.classList.toggle('active',posterGradientReversed);
+    button.setAttribute('aria-pressed',String(posterGradientReversed));
+    updateBackground();
+  });
+  directionGroup.append(button);
 }
 function setupPosterBackgroundImageControls(){
   const segmented=document.querySelector('[data-bg-mode]')?.parentElement;
@@ -5718,7 +5737,7 @@ function backgroundColorAtPosition(x,y){
   const start=parseAdaptiveLogoHex(document.getElementById('startColor').value)||[0,102,255];
   const end=parseAdaptiveLogoHex(document.getElementById('endColor').value)||[8,159,252];
   const direction=Number.parseFloat(document.querySelector('[data-gradient-direction].active')?.dataset.gradientDirection||'90');
-  const radians=direction*Math.PI/180;
+  const radians=(direction+(posterGradientReversed?180:0))*Math.PI/180;
   const vectorX=Math.sin(radians);
   const vectorY=-Math.cos(radians);
   const projections=[0,vectorX,vectorY,vectorX+vectorY];
@@ -5782,6 +5801,7 @@ saveDraft=function(){
     const draft=JSON.parse(localStorage.getItem(draftStorageKey)||'{}');
     draft.backgroundImage=posterBackgroundImageData;
     draft.backgroundImageName=posterBackgroundImageName;
+    draft.gradientReversed=posterGradientReversed;
     draft.bgMode=document.querySelector('[data-bg-mode].active')?.dataset.bgMode||'gradient';
     localStorage.setItem(draftStorageKey,JSON.stringify(draft));
   }catch(_){updatePosterBackgroundImageMeta(posterBackgroundImageName+' · 本次会话有效')}
@@ -5795,6 +5815,12 @@ updateBackground=function(save=true){
     poster.style.backgroundPosition='center';
     poster.style.backgroundSize='cover';
     poster.style.backgroundRepeat='no-repeat';
+    if(save)saveDraft();
+  }else if(mode==='gradient'&&posterGradientReversed){
+    const direction=Number.parseFloat(document.querySelector('[data-gradient-direction].active')?.dataset.gradientDirection||'90');
+    const start=document.getElementById('startColor').value;
+    const end=document.getElementById('endColor').value;
+    poster.style.background='linear-gradient('+(direction+180)+'deg,'+start+' 0%,'+end+' 100%)';
     if(save)saveDraft();
   }else{
     updateBackgroundWithoutAdaptiveLogo(save);
@@ -5811,6 +5837,7 @@ setBackgroundMode=function(mode,save=true){
   updateBackground(save);
 };
 setupGradientHexInputs();
+setupGradientReverseControl();
 setupPosterBackgroundImageControls();
 hideAccentColorControl();
 if(savedDraft?.bgMode==='image'&&posterBackgroundImageData)setBackgroundMode('image',false);
