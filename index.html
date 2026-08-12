@@ -242,8 +242,7 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .si-topicapp { width: 375px; height: 210px; transform: scale(.8); transform-origin: top left; position: absolute; }
   .sw-topicweb { width: 408px; height: 119px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 4px; }
   .si-topicweb { width: 1200px; height: 350px; transform: scale(.34); transform-origin: top left; position: absolute; }
-  .b-topicapp, .b-topicweb { position: relative; overflow: hidden; box-sizing: border-box; color: #FFFFFF; background: linear-gradient(135deg,#075FF2 0%,#559CFF 100%); font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; }
-  .b-topicapp::after, .b-topicweb::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 76% 42%,rgba(255,255,255,.17),transparent 42%); }
+  .b-topicapp, .b-topicweb { position: relative; overflow: hidden; box-sizing: border-box; color: #FFFFFF; background: linear-gradient(180deg,#075FF2 0%,#559CFF 100%); font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; }
   .b-topicapp { width: 375px; height: 210px; }
   .b-topicweb { width: 1200px; height: 350px; }
   .topic-brand { position: absolute; z-index: 2; }
@@ -4214,15 +4213,10 @@ function fillCanvasBg(ctx, s, c, W, H) {
 }
 
 function fillTopicCanvasBg(ctx, W, H) {
-  const gradient = ctx.createLinearGradient(0, 0, W, H);
+  const gradient = ctx.createLinearGradient(0, 0, 0, H);
   gradient.addColorStop(0, '#075FF2');
   gradient.addColorStop(1, '#559CFF');
   ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, W, H);
-  const glow = ctx.createRadialGradient(W * .76, H * .42, 0, W * .76, H * .42, W * .42);
-  glow.addColorStop(0, 'rgba(255,255,255,.17)');
-  glow.addColorStop(1, 'rgba(255,255,255,0)');
-  ctx.fillStyle = glow;
   ctx.fillRect(0, 0, W, H);
 }
 
