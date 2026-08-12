@@ -1320,6 +1320,7 @@ html { scroll-behavior: smooth; }
       <button class="v2-group-btn" data-v2-group="gridbanner" onclick="setV2Group('gridbanner')"><span>网格banner</span></button>
       <button class="v2-group-btn" data-v2-group="otc" onclick="setV2Group('otc')"><span>OTC</span></button>
       <button class="v2-group-btn" data-v2-group="community" onclick="setV2Group('community')"><span>社区</span></button>
+      <button class="v2-group-btn" data-v2-group="topic" onclick="setV2Group('topic')"><span>专题页banner</span></button>
     </div>
     <div id="adSiteNavSection" class="v2-hidden">
       <div id="adSiteList"></div>
@@ -2061,7 +2062,8 @@ function clearDraft() {
     return;
   }
   const groupTypes = {
-    common: ['new','old','email','appcal','pccal','feed','landing','topicapp','topicweb'],
+    common: ['new','old','email','appcal','pccal','feed','landing'],
+    topic: ['topicapp','topicweb'],
     community: ['community'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
@@ -2082,6 +2084,9 @@ function clearDraft() {
     langs.forEach(lang => { lang.subtitle = ''; lang.title = ''; });
     images = { light: null, dark: null };
     Object.keys(emailFontModes).forEach(key => delete emailFontModes[key]);
+  } else if (group === 'topic') {
+    langs.forEach(lang => { lang.subtitle = ''; lang.title = ''; });
+    images = { light: null, dark: null };
   } else if (group === 'community') {
     langs.forEach(lang => { lang.title = ''; });
     communityImage = null;
@@ -2138,7 +2143,7 @@ function clearDraft() {
   generate();
   if (group === 'ads') saveAdDraft();
   saveDraft();
-  const groupName = { common:'通用内容', community:'社区', baping:'霸屏', trade:'交易赛', share:'分享页', rebate:'返佣', ads:'投放素材' }[group] || '当前';
+  const groupName = { common:'通用内容', community:'社区', topic:'专题页banner', baping:'霸屏', trade:'交易赛', share:'分享页', rebate:'返佣', ads:'投放素材' }[group] || '当前';
   setDraftStatus(`${groupName}草稿已清空`);
 }
 
@@ -3000,7 +3005,9 @@ function restoreDownloadButton() {
   if (!btn) return;
   const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const hasDownloadable = group === 'common'
-    ? validLangsCache.length > 0 && ['new','old','email','appcal','pccal','feed','landing','topic'].some(type => activeSlots.has(type))
+    ? validLangsCache.length > 0 && ['new','old','email','appcal','pccal','feed','landing'].some(type => activeSlots.has(type))
+    : group === 'topic'
+      ? activeSlots.has('topic') && validLangsCache.length > 0
     : group === 'community'
       ? activeSlots.has('community') && validLangsCache.length > 0
     : group === 'baping'
@@ -4622,7 +4629,8 @@ function downloadFileName(type, code, theme = '') {
 function currentGroupAllowsResource(type) {
   const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const resources = {
-    common: ['new','old','email','appcal','pccal','feed','landing','landingweb','topicapp','topicweb'],
+    common: ['new','old','email','appcal','pccal','feed','landing','landingweb'],
+    topic: ['topicapp','topicweb'],
     community: ['community'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
@@ -4666,7 +4674,10 @@ async function downloadAll() {
       tasks.push({ id:`landing-${l.id}-dark`,  fn:downloadFileName('landing', l.code, 'dark'),  folder:'聚合落地页', type:'landing', theme:'dark',  langId:l.id });
       tasks.push({ id:`landingweb-${l.id}-light`, fn:downloadFileName('landingweb', l.code, 'light'), folder:'聚合落地页', type:'landingweb', theme:'light', langId:l.id });
     }
-    if (activeSlots.has('topic')) {
+  }
+
+  if (currentGroupAllowsResource('topicapp') && activeSlots.has('topic')) {
+    for (const l of validLangsCache) {
       tasks.push({ id:`topicapp-${l.id}`, fn:downloadFileName('topicapp', l.code), folder:'专题页banner', type:'topicapp', theme:'', langId:l.id });
       tasks.push({ id:`topicweb-${l.id}`, fn:downloadFileName('topicweb', l.code), folder:'专题页banner', type:'topicweb', theme:'', langId:l.id });
     }
@@ -4726,7 +4737,7 @@ async function downloadAll() {
     const a = document.createElement('a');
     const url = URL.createObjectURL(blob);
     a.href = url;
-    const groupName = { common:'通用内容', baping:'霸屏', trade:'交易赛', rebate:'返佣' }[v2ActiveGroup] || '通用内容';
+    const groupName = { common:'通用内容', topic:'专题页banner', baping:'霸屏', trade:'交易赛', rebate:'返佣' }[v2ActiveGroup] || '通用内容';
     a.download = `HTX运营视觉工作台_${groupName}.zip`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
@@ -5717,13 +5728,13 @@ renderShareLangList();
 const V2_ACTIVE_GROUP_KEY = 'htx-visual-workbench-active-group';
 const V2_SCROLL_KEY = 'htx-visual-workbench-scroll-y';
 const hashV2Group = location.hash.replace(/^#/, '');
-const savedV2Group = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community'].includes(hashV2Group)
+const savedV2Group = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic'].includes(hashV2Group)
   ? hashV2Group
   : localStorage.getItem(V2_ACTIVE_GROUP_KEY);
-let v2ActiveGroup = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community'].includes(savedV2Group) ? savedV2Group : 'common';
+let v2ActiveGroup = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic'].includes(savedV2Group) ? savedV2Group : 'common';
 let v2CommonNodes = [];
 const v2SlotGroups = {
-  common: ['new','old','email','appcal','pccal','feed','landing','topic'],
+  common: ['new','old','email','appcal','pccal','feed','landing'],
   baping: ['baping'],
   trade: ['tradeapp-light','tradeapp-dark','tradeweb'],
   share: ['share'],
@@ -5733,7 +5744,8 @@ const v2SlotGroups = {
   follow: [],
   gridbanner: [],
   otc: [],
-  community: ['community']
+  community: ['community'],
+  topic: ['topic']
 };
 
 function openWorkspaceSection(section) {
@@ -6046,7 +6058,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     if (item) item.style.display = v2SlotGroups[group].includes(key) ? '' : 'none';
   });
   const previewGroups = {
-    common: ['new','old','email','appcal','pccal','feed','landing','landingweb','topic'],
+    common: ['new','old','email','appcal','pccal','feed','landing','landingweb'],
     baping: ['baping'],
     trade: ['trade'],
     share: ['share'],
@@ -6056,7 +6068,8 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     follow: [],
     gridbanner: [],
     otc: [],
-    community: ['community']
+    community: ['community'],
+    topic: ['topic']
   };
   Object.values(previewGroups).flat().forEach(key => {
     const section = document.getElementById('section-' + key);
@@ -6066,7 +6079,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     section.style.display = belongsToCurrentGroup && isSelected ? '' : 'none';
   });
   v2CommonNodes.forEach((node, index) => {
-    const show = group === 'common' || (group === 'community' && index < 2);
+    const show = group === 'common' || group === 'topic' || (group === 'community' && index < 2);
     node.classList.toggle('v2-hidden', !show);
   });
   const adModule = document.getElementById('adModule');
@@ -6113,7 +6126,8 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     follow: ['跟单页banner', '独立管理 App 与 Web 版式的多语种标题和配图。'],
     gridbanner: ['网格banner', '独立管理多语种标题与白天/黑天配图。'],
     otc: ['OTC', '独立管理 App 与 Web 的经典、甄选版式和多语种文案。'],
-    community: ['社区', '使用通用文案结构，并独立管理社区资源位配图。']
+    community: ['社区', '使用通用文案结构，并独立管理社区资源位配图。'],
+    topic: ['专题页banner', '独立生成 App 与 Web 两套专题页banner。']
   }[group];
   const title = document.querySelector('.v2-editor-title');
   const desc = document.querySelector('.v2-editor-desc');
