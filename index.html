@@ -246,20 +246,20 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .b-topicapp::after, .b-topicweb::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 76% 42%,rgba(255,255,255,.17),transparent 42%); }
   .b-topicapp { width: 375px; height: 210px; }
   .b-topicweb { width: 1200px; height: 350px; }
-  .topic-brand { position: absolute; z-index: 2; display: flex; align-items: center; color: #FFFFFF; font-weight: 500; }
-  .topic-brand img { display: block; object-fit: contain; }
-  .b-topicapp .topic-brand { left: 16px; top: 14px; gap: 3px; font-size: 8px; }
-  .b-topicapp .topic-brand img { width: 12px; height: 12px; }
-  .b-topicweb .topic-brand { left: 48px; top: 30px; gap: 7px; font-size: 20px; }
-  .b-topicweb .topic-brand img { width: 28px; height: 28px; }
+  .topic-brand { position: absolute; z-index: 2; }
+  .topic-brand img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: left center; }
+  .b-topicapp .topic-brand { left: 24px; top: 18px; width: 47px; height: 22.3px; }
+  .b-topicweb .topic-brand { left: 68.39px; top: 47.39px; width: 80.61px; height: 38.24px; }
   .b-topicapp .txt, .b-topicweb .txt { position: absolute; z-index: 2; }
-  .b-topicapp .txt { left: 18px; bottom: 25px; width: 210px; }
-  .b-topicweb .txt { left: 60px; bottom: 66px; width: 660px; }
+  .b-topicapp .txt { left: 24px; top: 100.34px; width: 192px; }
+  .b-topicweb .txt { left: 68px; top: 200px; width: 722px; }
   .b-topicapp .tit, .b-topicweb .tit, .b-topicapp .sub, .b-topicweb .sub { margin: 0; color: #FFFFFF; }
-  .b-topicapp .tit { max-width: 205px; font: 700 20px/1.18 'HarmonyOS Bold','PingFang SC',sans-serif; }
-  .b-topicapp .sub { margin-top: 8px; max-width: 210px; font-size: 9px; font-weight: 400; line-height: 1.25; opacity: .82; }
-  .b-topicweb .tit { max-width: 650px; font: 700 42px/1.16 'HarmonyOS Bold','PingFang SC',sans-serif; }
-  .b-topicweb .sub { margin-top: 12px; max-width: 650px; font-size: 20px; font-weight: 400; line-height: 1.25; opacity: .82; }
+  .b-topicapp .tit { max-width: 192px; font: 700 26.1px/1.37 'HarmonyOS Bold','PingFang SC',sans-serif; }
+  .b-topicapp .sub { max-width: 192px; color: #FAFAFA; font-size: 12px; font-weight: 400; line-height: 1.37; }
+  .b-topicapp .sub:not(:empty) + .tit { margin-top: 7px; }
+  .b-topicweb .tit { max-width: 722px; font: 700 45px/1.37 'HarmonyOS Bold','PingFang SC',sans-serif; }
+  .b-topicweb .sub { margin-top: 9.35px; max-width: 722px; color: #FAFAFA; font-size: 28px; font-weight: 400; line-height: 1.37; }
+  .b-topicapp .tit:empty, .b-topicapp .sub:empty, .b-topicweb .tit:empty, .b-topicweb .sub:empty { display: none; }
   .b-topicapp .imgw, .b-topicweb .imgw { position: absolute; z-index: 1; display: flex; align-items: flex-end; justify-content: center; }
   .b-topicapp .imgw { right: 8px; bottom: 0; width: 158px; height: 196px; }
   .b-topicweb .imgw { right: 60px; bottom: 0; width: 390px; height: 330px; }
@@ -1661,8 +1661,9 @@ const SPECS = {
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0, transparent:false },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:98, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:20 },
   landingweb:{ W:1200, H:299, PAD:30, subSz:22, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:40, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:126, imgPos:'vt', radius:0, boldTit:true, subLH:1.2, titLH:1.2, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000' },
-  topicapp:{ W:375, H:210, PAD:18, subSz:9, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:20, titWeight:'700', titFont:"HarmonyOS Bold", gap:8, imgW:158, imgPos:'topic', radius:0, boldTit:true, subLH:1.25, titLH:1.18, bg:'#075FF2', subClr:'rgba(255,255,255,.82)', titClr:'#FFFFFF' },
-  topicweb:{ W:1200, H:350, PAD:60, subSz:20, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:390, imgPos:'topic', radius:0, boldTit:true, subLH:1.25, titLH:1.16, bg:'#075FF2', subClr:'rgba(255,255,255,.82)', titClr:'#FFFFFF' },
+  /* Figma 字号基准：App 主标题 26.1px / 副标题 12px；Web 主标题 45px / 副标题 28px；行高均为 137%。 */
+  topicapp:{ W:375, H:210, PAD:24, subSz:12, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:26.1, titWeight:'700', titFont:"HarmonyOS Bold", gap:7, imgW:158, imgPos:'topic', radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
+  topicweb:{ W:1200, H:350, PAD:68, subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:45, titWeight:'700', titFont:"HarmonyOS Bold", gap:9.35, imgW:390, imgPos:'topic', radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
   baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:2, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
   tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:110, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
@@ -1689,8 +1690,8 @@ const SLOT_TEXT_SPECS = {
   feed:   { maxH: 160, subMax: 28, subMin: 24, titMax: 32, titMin: 28, gap: 16 },
   landing:{ maxH: 104, subMax: 14, subMin: 12, titMax: 28, titMin: 18, gap: 4, subLH: 20/14, titLH: 38/28 },
   landingweb:{ maxH: 101, subMax: 22, subMin: 18, titMax: 40, titMin: 30, gap: 12, subLH: 1.2, titLH: 1.2 },
-  topicapp:{ maxH: 92, subMax: 9, subMin: 8, titMax: 20, titMin: 15, gap: 8, subLH: 1.25, titLH: 1.18 },
-  topicweb:{ maxH: 170, subMax: 20, subMin: 16, titMax: 42, titMin: 30, gap: 12, subLH: 1.25, titLH: 1.16 },
+  topicapp:{ maxH: 95, subMax: 12, subMin: 10, titMax: 26.1, titMin: 20, gap: 7, subLH: 1.37, titLH: 1.37 },
+  topicweb:{ maxH: 170, subMax: 28, subMin: 22, titMax: 45, titMin: 34, gap: 9.35, subLH: 1.37, titLH: 1.37 },
   baping: { maxH: 436, subMax: 36, subMin: 28, titMax: 48, titMin: 38, gap: 16, subLH: 1.4, titLH: 1.4 },
   tradeapp: { maxH: 72, subMax: 14, subMin: 11, titMax: 24, titMin: 18, gap: 3, subLH: 20/14, titLH: 28/24 },
   tradeweb: { maxH: 94, subMax: 24, subMin: 18, titMax: 42, titMin: 30, gap: 16, subLH: 1.1, titLH: 1.1 },
@@ -3274,7 +3275,10 @@ function cardTopic(l, mode, img) {
   const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
   const titHtml = eh(l.title).replace(/\n/g,'<br>');
   const cardClass = mode === 'web' ? 'b-topicweb' : 'b-topicapp';
-  return `<div class="${cardClass}" data-langid="${l.id}"><div class="topic-brand"><img src="assets/brand/htx-logo-mark-white.svg" alt=""><span>火币</span></div><div class="txt"><p class="tit">${titHtml}</p><p class="sub">${subHtml}</p></div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
+  const copy = mode === 'app'
+    ? `<p class="sub">${subHtml}</p><p class="tit">${titHtml}</p>`
+    : `<p class="tit">${titHtml}</p><p class="sub">${subHtml}</p>`;
+  return `<div class="${cardClass}" data-langid="${l.id}"><div class="topic-brand"><img src="assets/brand/htx-logo-cn-white.svg" alt="火币"></div><div class="txt">${copy}</div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
 }
 
 function cardBaping(l, img) {
@@ -3630,19 +3634,20 @@ function previewCardTextOverflows(card) {
     const type = card.classList.contains('b-topicapp') ? 'topicapp' : 'topicweb';
     const s = SPECS[type];
     const spec = SLOT_TEXT_SPECS[type];
-    const textW = type === 'topicapp' ? 205 : 650;
+    const titleW = type === 'topicapp' ? 192 : 722;
+    const subtitleW = type === 'topicapp' ? 192 : 722;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const title = getPlainText(card.querySelector('.tit'));
     const subtitle = getPlainText(card.querySelector('.sub'));
     ctx.font = `${s.titWeight} ${s.titSz}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
     let titleLines = 0;
-    for (const seg of title.split('\n')) titleLines += countLinesForText(ctx, seg, textW);
+    for (const seg of title.split('\n')) titleLines += countLinesForText(ctx, seg, titleW);
     ctx.font = `${s.subWeight} ${s.subSz}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
     let subtitleLines = 0;
-    for (const seg of subtitle.split('\n')) subtitleLines += countLinesForText(ctx, seg, textW);
+    for (const seg of subtitle.split('\n')) subtitleLines += countLinesForText(ctx, seg, subtitleW);
     const totalH = titleLines * s.titSz * s.titLH + (titleLines && subtitleLines ? s.gap : 0) + subtitleLines * s.subSz * s.subLH;
-    return titleLines > 2 || subtitleLines > 2 || totalH > spec.maxH;
+    return titleLines > 2 || subtitleLines > 1 || totalH > spec.maxH;
   }
   if (card.classList.contains('b-tradeapp')) {
     const sub = card.querySelector('.sub');
@@ -3932,7 +3937,7 @@ function applySlotClip(slotType, langId, autoScale) {
 
 function getColors(type, theme) {
   const s = SPECS[type];
-  if (type === 'topicapp' || type === 'topicweb') return { bg: '#075FF2', sub: 'rgba(255,255,255,.82)', tit: '#FFFFFF' };
+  if (type === 'topicapp' || type === 'topicweb') return { bg: '#075FF2', sub: '#FAFAFA', tit: '#FFFFFF' };
   if (type === 'baping') return { bg: s.bg, sub: s.subClr, tit: s.titClr, bar: '#FFFFFF' };
   if (type === 'tradeapp') return { bg: theme === 'dark' ? '#000000' : '#FFFFFF', sub: '#007FFF', tit: theme === 'dark' ? '#FFFFFF' : '#000000' };
   if (type === 'tradeweb') return { bg: '#000000', sub: '#FFFFFF', tit: '#FFFFFF' };
@@ -4216,15 +4221,11 @@ function fillTopicCanvasBg(ctx, W, H) {
 
 async function drawTopicBrand(ctx, mode) {
   const isApp = mode === 'app';
-  const x = isApp ? 16 : 48;
-  const y = isApp ? 14 : 30;
-  const markSize = isApp ? 12 : 28;
-  await drawImg(ctx, 'assets/brand/htx-logo-mark-white.svg', x, y, markSize, markSize);
-  ctx.fillStyle = '#FFFFFF';
-  ctx.font = `500 ${isApp ? 8 : 20}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
-  ctx.textBaseline = 'middle';
-  ctx.fillText('火币', x + markSize + (isApp ? 3 : 7), y + markSize / 2);
-  ctx.textBaseline = 'alphabetic';
+  const x = isApp ? 24 : 68.39;
+  const y = isApp ? 18 : 47.39;
+  const width = isApp ? 47 : 80.61;
+  const height = isApp ? 22.3 : 38.24;
+  await drawImgContain(ctx, 'assets/brand/htx-logo-cn-white.svg', x, y, width, height);
 }
 
 async function renderToDataUrl(type, theme, langId, autoScale) {
@@ -4272,7 +4273,10 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   const renderLang = langs.find(l => l.id === langId);
   const renderLangCode = renderLang?.code || '';
   const unifiedFontFactor = shouldScaleResource(renderLangCode, type) ? emailTitleSizeFor(renderLangCode) / 60 : 1;
-  if (type === 'email') {
+  if (isTopic) {
+    subSz = s.subSz;
+    titSz = s.titSz;
+  } else if (type === 'email') {
     subSz = Math.max(8, Math.round(subSz * unifiedFontFactor));
     titSz = Math.max(8, Math.round(titSz * unifiedFontFactor));
   } else {
@@ -4323,31 +4327,41 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   if (isTopic) {
     const isApp = type === 'topicapp';
     await drawTopicBrand(ctx, isApp ? 'app' : 'web');
-    const textX = isApp ? 18 : 60;
-    const textW = isApp ? 205 : 650;
+    const textX = isApp ? 24 : 68;
+    const titleW = isApp ? 192 : 722;
+    const subtitleW = isApp ? 192 : 722;
     const imageX = isApp ? 209 : 750;
     const imageY = isApp ? 14 : 20;
     const imageW = isApp ? 158 : 390;
     const imageH = isApp ? 196 : 330;
-    const blockBottom = isApp ? 185 : 284;
     ctx.font = `${titW} ${titSz}px ${titFont}`;
     let titleLines = 0;
-    for (const seg of titTxt.split('\n')) titleLines += countLinesForText(ctx, seg, textW);
+    for (const seg of titTxt.split('\n')) titleLines += countLinesForText(ctx, seg, titleW);
     const titleH = Math.max(1, titleLines) * titSz * titLH;
     ctx.font = `${subW} ${subSz}px ${subFont}`;
     let subLines = 0;
-    for (const seg of subTxt.split('\n')) subLines += countLinesForText(ctx, seg, textW);
+    for (const seg of subTxt.split('\n')) subLines += countLinesForText(ctx, seg, subtitleW);
     const subH = subLines * subSz * subLH;
     const gap = titleLines && subLines ? s.gap : 0;
-    const totalH = titleH + gap + subH;
-    const blockTop = blockBottom - totalH;
-    ctx.fillStyle = c.tit;
-    ctx.font = `${titW} ${titSz}px ${titFont}`;
-    drawMultilineText(ctx, titTxt, textX, blockTop + titSz, textW, titSz, titLH, titSz, titleH);
-    if (subLines) {
-      ctx.fillStyle = c.sub;
-      ctx.font = `${subW} ${subSz}px ${subFont}`;
-      drawMultilineText(ctx, subTxt, textX, blockTop + titleH + gap + subSz, textW, subSz, subLH, subSz, subH);
+    const blockTop = isApp ? 100.34 : 200;
+    if (isApp) {
+      if (subLines) {
+        ctx.fillStyle = c.sub;
+        ctx.font = `${subW} ${subSz}px ${subFont}`;
+        drawMultilineText(ctx, subTxt, textX, blockTop + subSz, subtitleW, subSz, subLH, subSz, subH);
+      }
+      ctx.fillStyle = c.tit;
+      ctx.font = `${titW} ${titSz}px ${titFont}`;
+      drawMultilineText(ctx, titTxt, textX, blockTop + subH + gap + titSz, titleW, titSz, titLH, titSz, titleH);
+    } else {
+      ctx.fillStyle = c.tit;
+      ctx.font = `${titW} ${titSz}px ${titFont}`;
+      drawMultilineText(ctx, titTxt, textX, blockTop + titSz, titleW, titSz, titLH, titSz, titleH);
+      if (subLines) {
+        ctx.fillStyle = c.sub;
+        ctx.font = `${subW} ${subSz}px ${subFont}`;
+        drawMultilineText(ctx, subTxt, textX, blockTop + titleH + gap + subSz, subtitleW, subSz, subLH, subSz, subH);
+      }
     }
     if (imgSrc) await drawImgContain(ctx, imgSrc, imageX, imageY, imageW, imageH);
     return canvas.toDataURL('image/png');
