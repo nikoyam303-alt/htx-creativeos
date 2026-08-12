@@ -238,6 +238,33 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .b-landingweb .sub { margin: 0; color: #595959; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; font-size: 22px; font-weight: 400; line-height: 1.2; }
   .b-landingweb .tit { margin: 12px 0 0; color: #000000; font-family: 'HarmonyOS Bold','PingFang SC',sans-serif; font-size: 40px; font-weight: 700; line-height: 1.2; }
 
+  .sw-topicapp { width: 300px; height: 168px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 4px; }
+  .si-topicapp { width: 375px; height: 210px; transform: scale(.8); transform-origin: top left; position: absolute; }
+  .sw-topicweb { width: 408px; height: 119px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 4px; }
+  .si-topicweb { width: 1200px; height: 350px; transform: scale(.34); transform-origin: top left; position: absolute; }
+  .b-topicapp, .b-topicweb { position: relative; overflow: hidden; box-sizing: border-box; color: #FFFFFF; background: linear-gradient(135deg,#075FF2 0%,#559CFF 100%); font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; }
+  .b-topicapp::after, .b-topicweb::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 76% 42%,rgba(255,255,255,.17),transparent 42%); }
+  .b-topicapp { width: 375px; height: 210px; }
+  .b-topicweb { width: 1200px; height: 350px; }
+  .topic-brand { position: absolute; z-index: 2; display: flex; align-items: center; color: #FFFFFF; font-weight: 500; }
+  .topic-brand img { display: block; object-fit: contain; }
+  .b-topicapp .topic-brand { left: 16px; top: 14px; gap: 3px; font-size: 8px; }
+  .b-topicapp .topic-brand img { width: 12px; height: 12px; }
+  .b-topicweb .topic-brand { left: 48px; top: 30px; gap: 7px; font-size: 20px; }
+  .b-topicweb .topic-brand img { width: 28px; height: 28px; }
+  .b-topicapp .txt, .b-topicweb .txt { position: absolute; z-index: 2; }
+  .b-topicapp .txt { left: 18px; bottom: 25px; width: 210px; }
+  .b-topicweb .txt { left: 60px; bottom: 66px; width: 660px; }
+  .b-topicapp .tit, .b-topicweb .tit, .b-topicapp .sub, .b-topicweb .sub { margin: 0; color: #FFFFFF; }
+  .b-topicapp .tit { max-width: 205px; font: 700 20px/1.18 'HarmonyOS Bold','PingFang SC',sans-serif; }
+  .b-topicapp .sub { margin-top: 8px; max-width: 210px; font-size: 9px; font-weight: 400; line-height: 1.25; opacity: .82; }
+  .b-topicweb .tit { max-width: 650px; font: 700 42px/1.16 'HarmonyOS Bold','PingFang SC',sans-serif; }
+  .b-topicweb .sub { margin-top: 12px; max-width: 650px; font-size: 20px; font-weight: 400; line-height: 1.25; opacity: .82; }
+  .b-topicapp .imgw, .b-topicweb .imgw { position: absolute; z-index: 1; display: flex; align-items: flex-end; justify-content: center; }
+  .b-topicapp .imgw { right: 8px; bottom: 0; width: 158px; height: 196px; }
+  .b-topicweb .imgw { right: 60px; bottom: 0; width: 390px; height: 330px; }
+  .b-topicapp .imgw img, .b-topicweb .imgw img { width: 100%; height: 100%; display: block; object-fit: contain; object-position: center bottom; }
+
   .sw-baping { width: 183px; height: 220px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 12px; }
   .si-baping { width: 550px; height: 660px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
   .b-baping { width: 550px; height: 660px; border-radius: 36px; overflow: hidden; background: #FFFFFF; display: flex; flex-direction: column; font-family: 'PingFang SC','Noto Sans SC',sans-serif; box-sizing: border-box; }
@@ -724,6 +751,8 @@ body {
 @media (max-width: 980px) { #gridCommunity { grid-template-columns: 1fr; } }
 #gridLanding { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 #gridLandingWeb { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+#gridTopic { grid-template-columns: 1fr; }
+#gridTopic .cards-row { flex-wrap: wrap; justify-content: flex-start; }
 #gridBaping { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
 .preview-section .lang-group {
   width: 100%;
@@ -1396,6 +1425,7 @@ html { scroll-behavior: smooth; }
       <div class="slot-item" id="slot-community" onclick="toggleSlot('community')"><div class="slot-check"></div><span>社区</span></div>
       <div class="slot-item" id="slot-feed" onclick="toggleSlot('feed')"><div class="slot-check"></div><span>Feed流</span></div>
       <div class="slot-item" id="slot-landing" onclick="toggleSlot('landing')"><div class="slot-check"></div><span>聚合落地页</span></div>
+      <div class="slot-item" id="slot-topic" onclick="toggleSlot('topic')"><div class="slot-check"></div><span>专题页banner</span></div>
       <div class="slot-item" id="slot-baping" onclick="toggleSlot('baping')"><div class="slot-check"></div><span>霸屏</span></div>
       <div class="slot-item" id="slot-tradeapp-light" onclick="toggleTradeVariant('tradeapp-light')"><div class="slot-check"></div><span>App 白天</span></div>
       <div class="slot-item" id="slot-tradeapp-dark" onclick="toggleTradeVariant('tradeapp-dark')"><div class="slot-check"></div><span>App 黑天</span></div>
@@ -1540,6 +1570,10 @@ html { scroll-behavior: smooth; }
       <div class="preview-section-title">WEB 聚合落地页</div>
       <div class="cards-grid" id="gridLandingWeb"><div class="empty-state">填写文案后将自动预览</div></div>
     </div>
+    <div class="preview-section" id="section-topic" style="display:none;">
+      <div class="preview-section-title">专题页banner · App / Web</div>
+      <div class="cards-grid" id="gridTopic"><div class="empty-state">填写文案后将自动预览</div></div>
+    </div>
     <div class="preview-section" id="section-baping" style="display:none;">
       <div class="preview-section-title">霸屏</div>
       <div class="cards-grid" id="gridBaping"><div class="empty-state">填写文案后将自动预览</div></div>
@@ -1627,6 +1661,8 @@ const SPECS = {
   feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0, transparent:false },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:98, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:20 },
   landingweb:{ W:1200, H:299, PAD:30, subSz:22, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:40, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:126, imgPos:'vt', radius:0, boldTit:true, subLH:1.2, titLH:1.2, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000' },
+  topicapp:{ W:375, H:210, PAD:18, subSz:9, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:20, titWeight:'700', titFont:"HarmonyOS Bold", gap:8, imgW:158, imgPos:'topic', radius:0, boldTit:true, subLH:1.25, titLH:1.18, bg:'#075FF2', subClr:'rgba(255,255,255,.82)', titClr:'#FFFFFF' },
+  topicweb:{ W:1200, H:350, PAD:60, subSz:20, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:390, imgPos:'topic', radius:0, boldTit:true, subLH:1.25, titLH:1.16, bg:'#075FF2', subClr:'rgba(255,255,255,.82)', titClr:'#FFFFFF' },
   baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:2, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
   tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:110, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
@@ -1653,6 +1689,8 @@ const SLOT_TEXT_SPECS = {
   feed:   { maxH: 160, subMax: 28, subMin: 24, titMax: 32, titMin: 28, gap: 16 },
   landing:{ maxH: 104, subMax: 14, subMin: 12, titMax: 28, titMin: 18, gap: 4, subLH: 20/14, titLH: 38/28 },
   landingweb:{ maxH: 101, subMax: 22, subMin: 18, titMax: 40, titMin: 30, gap: 12, subLH: 1.2, titLH: 1.2 },
+  topicapp:{ maxH: 92, subMax: 9, subMin: 8, titMax: 20, titMin: 15, gap: 8, subLH: 1.25, titLH: 1.18 },
+  topicweb:{ maxH: 170, subMax: 20, subMin: 16, titMax: 42, titMin: 30, gap: 12, subLH: 1.25, titLH: 1.16 },
   baping: { maxH: 436, subMax: 36, subMin: 28, titMax: 48, titMin: 38, gap: 16, subLH: 1.4, titLH: 1.4 },
   tradeapp: { maxH: 72, subMax: 14, subMin: 11, titMax: 24, titMin: 18, gap: 3, subLH: 20/14, titLH: 28/24 },
   tradeweb: { maxH: 94, subMax: 24, subMin: 18, titMax: 42, titMin: 30, gap: 16, subLH: 1.1, titLH: 1.1 },
@@ -1662,7 +1700,7 @@ const SLOT_TEXT_SPECS = {
 
 const SLOT_LABELS = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
-  pccal: 'PC 日历', share: '分享页', community:'社区', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web', baping: '霸屏', trade: '交易赛', pcrebate: 'PC返佣', apprebate: 'APP返佣',
+  pccal: 'PC 日历', share: '分享页', community:'社区', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web', topic:'专题页banner', topicapp:'专题页banner App', topicweb:'专题页banner Web', baping: '霸屏', trade: '交易赛', pcrebate: 'PC返佣', apprebate: 'APP返佣',
 };
 const AUTO_SCALE_BASE_RATIO = 0.9;
 
@@ -1845,7 +1883,7 @@ document.addEventListener('keydown', event => {
 });
 
 function updateSlotControls() {
-  ['new','old','email','appcal','pccal','share','community','feed','landing','baping','pcrebate','apprebate'].forEach(key => {
+  ['new','old','email','appcal','pccal','share','community','feed','landing','topic','baping','pcrebate','apprebate'].forEach(key => {
     const el = document.getElementById('slot-' + key);
     const sec = document.getElementById('section-' + key);
     if (el) el.classList.toggle('checked', activeSlots.has(key));
@@ -2022,7 +2060,7 @@ function clearDraft() {
     return;
   }
   const groupTypes = {
-    common: ['new','old','email','appcal','pccal','feed','landing'],
+    common: ['new','old','email','appcal','pccal','feed','landing','topicapp','topicweb'],
     community: ['community'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
@@ -2961,7 +2999,7 @@ function restoreDownloadButton() {
   if (!btn) return;
   const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const hasDownloadable = group === 'common'
-    ? validLangsCache.length > 0 && ['new','old','email','appcal','pccal','feed','landing'].some(type => activeSlots.has(type))
+    ? validLangsCache.length > 0 && ['new','old','email','appcal','pccal','feed','landing','topic'].some(type => activeSlots.has(type))
     : group === 'community'
       ? activeSlots.has('community') && validLangsCache.length > 0
     : group === 'baping'
@@ -3230,6 +3268,13 @@ function cardLandingWeb(l, img) {
   const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
   const titHtml = eh(l.title).replace(/\n/g,'<br>');
   return `<div class="b-landingweb light" data-langid="${l.id}"><div class="imgw">${img ? `<img src="${img}">` : ''}</div><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div></div>`;
+}
+
+function cardTopic(l, mode, img) {
+  const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
+  const titHtml = eh(l.title).replace(/\n/g,'<br>');
+  const cardClass = mode === 'web' ? 'b-topicweb' : 'b-topicapp';
+  return `<div class="${cardClass}" data-langid="${l.id}"><div class="topic-brand"><img src="assets/brand/htx-logo-mark-white.svg" alt=""><span>火币</span></div><div class="txt"><p class="tit">${titHtml}</p><p class="sub">${subHtml}</p></div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
 }
 
 function cardBaping(l, img) {
@@ -3547,7 +3592,8 @@ const OVERFLOW_RESOURCE_META = [
   ['b-new','瓷片区banner','common','new'], ['b-old','旧版banner','common','old'],
   ['b-appcal','App 日历','common','appcal'], ['b-pccal','PC 日历','common','pccal'],
   ['b-share','分享页','common','share'], ['b-feed','Feed流','common','feed'],
-  ['b-landing','聚合落地页','common','landing'], ['b-landingweb','聚合落地页 web','common','landingweb'], ['b-baping','霸屏','baping','baping'],
+  ['b-landing','聚合落地页','common','landing'], ['b-landingweb','聚合落地页 web','common','landingweb'],
+  ['b-topicapp','专题页banner App','common','topicapp'], ['b-topicweb','专题页banner Web','common','topicweb'], ['b-baping','霸屏','baping','baping'],
   ['b-tradeapp','交易赛 App','trade','tradeapp'], ['b-tradeweb','交易赛 Web','trade','tradeweb'],
   ['b-pcrebate','PC返佣','pcrebate','pcrebate'], ['b-apprebate','APP返佣','apprebate','apprebate']
 ];
@@ -3579,6 +3625,24 @@ function previewCardTextOverflows(card) {
   if (card.classList.contains('b-landing')) {
     const lang = langs.find(item => String(item.id) === String(card.dataset.langid));
     return !!lang && getLandingHeight(lang) > SPECS.landing.H + 1;
+  }
+  if (card.classList.contains('b-topicapp') || card.classList.contains('b-topicweb')) {
+    const type = card.classList.contains('b-topicapp') ? 'topicapp' : 'topicweb';
+    const s = SPECS[type];
+    const spec = SLOT_TEXT_SPECS[type];
+    const textW = type === 'topicapp' ? 205 : 650;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const title = getPlainText(card.querySelector('.tit'));
+    const subtitle = getPlainText(card.querySelector('.sub'));
+    ctx.font = `${s.titWeight} ${s.titSz}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    let titleLines = 0;
+    for (const seg of title.split('\n')) titleLines += countLinesForText(ctx, seg, textW);
+    ctx.font = `${s.subWeight} ${s.subSz}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+    let subtitleLines = 0;
+    for (const seg of subtitle.split('\n')) subtitleLines += countLinesForText(ctx, seg, textW);
+    const totalH = titleLines * s.titSz * s.titLH + (titleLines && subtitleLines ? s.gap : 0) + subtitleLines * s.subSz * s.subLH;
+    return titleLines > 2 || subtitleLines > 2 || totalH > spec.maxH;
   }
   if (card.classList.contains('b-tradeapp')) {
     const sub = card.querySelector('.sub');
@@ -3868,6 +3932,7 @@ function applySlotClip(slotType, langId, autoScale) {
 
 function getColors(type, theme) {
   const s = SPECS[type];
+  if (type === 'topicapp' || type === 'topicweb') return { bg: '#075FF2', sub: 'rgba(255,255,255,.82)', tit: '#FFFFFF' };
   if (type === 'baping') return { bg: s.bg, sub: s.subClr, tit: s.titClr, bar: '#FFFFFF' };
   if (type === 'tradeapp') return { bg: theme === 'dark' ? '#000000' : '#FFFFFF', sub: '#007FFF', tit: theme === 'dark' ? '#FFFFFF' : '#000000' };
   if (type === 'tradeweb') return { bg: '#000000', sub: '#FFFFFF', tit: '#FFFFFF' };
@@ -3893,7 +3958,7 @@ function generate() {
   validAppRebateLangsCache = validAppRebate;
   const li = images.light, di = images.dark;
 
-  ['new','old','email','appcal','pccal','share','community','feed','landing','landingweb','baping','trade','pcrebate','apprebate'].forEach(key => {
+  ['new','old','email','appcal','pccal','share','community','feed','landing','landingweb','topic','baping','trade','pcrebate','apprebate'].forEach(key => {
     const sec = document.getElementById('section-' + key);
     if (sec) sec.style.display = (key === 'landingweb' ? activeSlots.has('landing') : activeSlots.has(key)) ? '' : 'none';
   });
@@ -4000,6 +4065,16 @@ function generate() {
       }).join('');
       valid.forEach(l => applySlotClip('landing', l.id, !!scaleState[slotLangKey('landing', l.id)]));
       valid.forEach(l => applySlotClip('landingweb', l.id, !!scaleState[slotLangKey('landingweb', l.id)]));
+    }
+  }
+
+  if (activeSlots.has('topic')) {
+    if (!valid.length) document.getElementById('gridTopic').innerHTML = empty;
+    else {
+      document.getElementById('gridTopic').innerHTML = valid.map(l => langGroupHtml('topic', l,
+        wrap('topicapp','sw-topicapp','si-topicapp', cardTopic(l,'app',li), 'App', l, 'topicapp', '') +
+        wrap('topicweb','sw-topicweb','si-topicweb', cardTopic(l,'web',li), 'Web', l, 'topicweb', '')
+      )).join('');
     }
   }
 
@@ -4126,6 +4201,32 @@ function fillCanvasBg(ctx, s, c, W, H) {
   }
 }
 
+function fillTopicCanvasBg(ctx, W, H) {
+  const gradient = ctx.createLinearGradient(0, 0, W, H);
+  gradient.addColorStop(0, '#075FF2');
+  gradient.addColorStop(1, '#559CFF');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, W, H);
+  const glow = ctx.createRadialGradient(W * .76, H * .42, 0, W * .76, H * .42, W * .42);
+  glow.addColorStop(0, 'rgba(255,255,255,.17)');
+  glow.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+}
+
+async function drawTopicBrand(ctx, mode) {
+  const isApp = mode === 'app';
+  const x = isApp ? 16 : 48;
+  const y = isApp ? 14 : 30;
+  const markSize = isApp ? 12 : 28;
+  await drawImg(ctx, 'assets/brand/htx-logo-mark-white.svg', x, y, markSize, markSize);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = `500 ${isApp ? 8 : 20}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+  ctx.textBaseline = 'middle';
+  ctx.fillText('火币', x + markSize + (isApp ? 3 : 7), y + markSize / 2);
+  ctx.textBaseline = 'alphabetic';
+}
+
 async function renderToDataUrl(type, theme, langId, autoScale) {
   autoScale = false;
   await ensureExportFontsReady();
@@ -4143,7 +4244,9 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   ctx.scale(DPR, DPR);
 
   const c = getColors(type, theme);
-  fillCanvasBg(ctx, s, c, W, H);
+  const isTopic = type === 'topicapp' || type === 'topicweb';
+  if (isTopic) fillTopicCanvasBg(ctx, W, H);
+  else fillCanvasBg(ctx, s, c, W, H);
 
   const selector = type === 'email' ? '.b-email' : type === 'appcal' ? '.b-appcal' : type === 'pccal' ? '.b-pccal' : type === 'share' ? '.b-share' : type === 'baping' ? '.b-baping' : type === 'tradeweb' ? '.b-tradeweb' : `.b-${type}${theme ? '.' + theme : ''}`;
   const inner = document.querySelector(`${selector}[data-langid="${langId}"]`);
@@ -4200,6 +4303,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   else if (type === 'baping') imgSrc = bapingImage || images.light;
   else if (type === 'tradeapp') imgSrc = theme === 'light' ? tradeImages.light : tradeImages.dark;
   else if (type === 'tradeweb') imgSrc = tradeImages.dark;
+  else if (isTopic) imgSrc = images.light;
   else if (type === 'email' || type === 'appcal' || type === 'landingweb') imgSrc = images.light;
   else if (s.subClr && type !== 'pccal' && type !== 'share') imgSrc = images.dark;
   else if (type === 'pccal' || type === 'share') imgSrc = images.light;
@@ -4214,6 +4318,39 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
       ctx.scale(DPR, DPR);
       fillCanvasBg(ctx, s, c, W, H);
     }
+  }
+
+  if (isTopic) {
+    const isApp = type === 'topicapp';
+    await drawTopicBrand(ctx, isApp ? 'app' : 'web');
+    const textX = isApp ? 18 : 60;
+    const textW = isApp ? 205 : 650;
+    const imageX = isApp ? 209 : 750;
+    const imageY = isApp ? 14 : 20;
+    const imageW = isApp ? 158 : 390;
+    const imageH = isApp ? 196 : 330;
+    const blockBottom = isApp ? 185 : 284;
+    ctx.font = `${titW} ${titSz}px ${titFont}`;
+    let titleLines = 0;
+    for (const seg of titTxt.split('\n')) titleLines += countLinesForText(ctx, seg, textW);
+    const titleH = Math.max(1, titleLines) * titSz * titLH;
+    ctx.font = `${subW} ${subSz}px ${subFont}`;
+    let subLines = 0;
+    for (const seg of subTxt.split('\n')) subLines += countLinesForText(ctx, seg, textW);
+    const subH = subLines * subSz * subLH;
+    const gap = titleLines && subLines ? s.gap : 0;
+    const totalH = titleH + gap + subH;
+    const blockTop = blockBottom - totalH;
+    ctx.fillStyle = c.tit;
+    ctx.font = `${titW} ${titSz}px ${titFont}`;
+    drawMultilineText(ctx, titTxt, textX, blockTop + titSz, textW, titSz, titLH, titSz, titleH);
+    if (subLines) {
+      ctx.fillStyle = c.sub;
+      ctx.font = `${subW} ${subSz}px ${subFont}`;
+      drawMultilineText(ctx, subTxt, textX, blockTop + titleH + gap + subSz, textW, subSz, subLH, subSz, subH);
+    }
+    if (imgSrc) await drawImgContain(ctx, imgSrc, imageX, imageY, imageW, imageH);
+    return canvas.toDataURL('image/png');
   }
 
   if (type === 'apprebate') {
@@ -4457,6 +4594,7 @@ async function downloadCard(type, theme, langId) {
 const DOWNLOAD_RESOURCE_NAMES = {
   new: '瓷片区banner', old: '旧版banner', email: 'Email Banner', appcal: 'App 日历',
   pccal: 'PC 日历', share: '分享页', community:'社区', feed: 'Feed流', landing: '聚合落地页', landingweb: 'web',
+  topicapp: '专题页banner_App', topicweb: '专题页banner_Web',
   baping: '霸屏', tradeapp: '交易赛APP', tradeweb: '交易赛Web',
   pcrebate: 'PC返佣', apprebate: 'APP返佣'
 };
@@ -4470,7 +4608,7 @@ function downloadFileName(type, code, theme = '') {
 function currentGroupAllowsResource(type) {
   const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
   const resources = {
-    common: ['new','old','email','appcal','pccal','feed','landing','landingweb'],
+    common: ['new','old','email','appcal','pccal','feed','landing','landingweb','topicapp','topicweb'],
     community: ['community'],
     baping: ['baping'],
     trade: ['tradeapp','tradeweb'],
@@ -4513,6 +4651,10 @@ async function downloadAll() {
       tasks.push({ id:`landing-${l.id}-light`, fn:downloadFileName('landing', l.code, 'light'), folder:'聚合落地页', type:'landing', theme:'light', langId:l.id });
       tasks.push({ id:`landing-${l.id}-dark`,  fn:downloadFileName('landing', l.code, 'dark'),  folder:'聚合落地页', type:'landing', theme:'dark',  langId:l.id });
       tasks.push({ id:`landingweb-${l.id}-light`, fn:downloadFileName('landingweb', l.code, 'light'), folder:'聚合落地页', type:'landingweb', theme:'light', langId:l.id });
+    }
+    if (activeSlots.has('topic')) {
+      tasks.push({ id:`topicapp-${l.id}`, fn:downloadFileName('topicapp', l.code), folder:'专题页banner', type:'topicapp', theme:'', langId:l.id });
+      tasks.push({ id:`topicweb-${l.id}`, fn:downloadFileName('topicweb', l.code), folder:'专题页banner', type:'topicweb', theme:'', langId:l.id });
     }
   }
 
@@ -5567,7 +5709,7 @@ const savedV2Group = ['common','baping','trade','share','rebate','ads','zero','f
 let v2ActiveGroup = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community'].includes(savedV2Group) ? savedV2Group : 'common';
 let v2CommonNodes = [];
 const v2SlotGroups = {
-  common: ['new','old','email','appcal','pccal','feed','landing'],
+  common: ['new','old','email','appcal','pccal','feed','landing','topic'],
   baping: ['baping'],
   trade: ['tradeapp-light','tradeapp-dark','tradeweb'],
   share: ['share'],
@@ -5890,7 +6032,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     if (item) item.style.display = v2SlotGroups[group].includes(key) ? '' : 'none';
   });
   const previewGroups = {
-    common: ['new','old','email','appcal','pccal','feed','landing','landingweb'],
+    common: ['new','old','email','appcal','pccal','feed','landing','landingweb','topic'],
     baping: ['baping'],
     trade: ['trade'],
     share: ['share'],
