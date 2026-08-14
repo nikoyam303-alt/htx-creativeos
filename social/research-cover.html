@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HTX 研报封面</title>
+<style>
+@font-face{font-family:Urbanist;src:url("./assets/Urbanist-Variable.ttf") format("truetype");font-weight:100 900;font-display:swap}
+@font-face{font-family:HTX-Harmony;src:url("./assets/HarmonyOS-Sans-SC-Light.ttf") format("truetype");font-weight:300;font-display:swap}
+@font-face{font-family:HTX-Harmony;src:url("./assets/HarmonyOS-Sans-SC-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+*{box-sizing:border-box}html{background:#f4f6fa;color:#101828;font-family:HTX-Harmony,"PingFang SC",Arial,sans-serif}body{margin:0;min-height:100vh;background:#f4f6fa;opacity:0;transition:opacity .16s ease}body.ready{opacity:1}button,input,textarea{font:inherit}
+.workbench{display:grid;grid-template-columns:390px minmax(0,1fr);gap:20px;width:100%;height:100vh;min-height:820px;align-items:stretch}
+.panel{height:100%;min-height:0;overflow:auto;padding:20px;border:1px solid #e4e7ec;border-radius:14px;background:#fff}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}.eyebrow{color:#98a2b3;font-size:11px;letter-spacing:.04em}.panel-subtitle{margin-top:5px;color:#b0b7c1;font-size:10px}.clear{border:0;border-radius:6px;padding:7px 10px;background:#f4f6f8;color:#7c899b;font-size:11px;cursor:pointer}
+.field{margin-bottom:18px}.field-label{display:block;margin-bottom:8px;color:#667085;font-size:11px}.choices{display:flex;flex-wrap:wrap;gap:7px}.choice{height:30px;padding:0 12px;border:0;border-radius:6px;color:#667085;background:#f2f4f7;font-size:11px;font-weight:600;cursor:pointer}.choice.active{color:#1677ff;background:#edf5ff}
+.input-field{display:block;margin-bottom:14px}.input-field span{display:block;margin-bottom:6px;color:#667085;font-size:10px}.input-field textarea{display:block;width:100%;min-height:76px;padding:10px;border:1px solid #dde3ea;border-radius:8px;color:#111827;background:#fff;line-height:1.45;outline:none;resize:vertical}.input-field textarea:focus{border-color:#0066ff;box-shadow:0 0 0 3px rgba(0,102,255,.08)}.input-field.eyebrow-field textarea{min-height:62px}
+.hint{margin:-6px 0 16px;color:#98a2b3;font-size:9px;line-height:1.5}.status{min-height:16px;margin:12px 0 8px;color:#98a2b3;font-size:9px}.download{width:100%;height:40px;border:0;border-radius:7px;color:#fff;background:#0066ff;font-size:12px;font-weight:700;cursor:pointer}.download:disabled{opacity:.55;cursor:wait}
+.preview{min-width:0;height:100%;min-height:0;display:grid;grid-template-rows:62px minmax(0,1fr);border:1px solid #dde3ea;border-radius:12px;background:#f7f9fc;overflow:hidden}.preview-head{display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 26px;color:#98a2b3;font-size:11px}.stage{display:grid;place-items:center;min-height:0;padding:18px 30px 24px;overflow:hidden}.cover-mount{position:relative;box-shadow:0 24px 60px rgba(16,24,40,.16)}.cover{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:top left}.cover canvas{display:block;width:1280px;height:720px}
+@media(max-width:720px){.workbench{grid-template-columns:1fr;height:auto}.panel{height:auto}.preview{height:700px}}@media(max-width:520px){.preview{height:520px}.stage{padding:12px}.preview-head{padding:0 14px}}
+</style>
+</head>
+<body>
+<main class="workbench">
+  <aside class="panel" aria-label="研报封面配置">
+    <div class="panel-head"><div><div class="eyebrow">文案配置</div><div class="panel-subtitle">HTX 研报封面 · 1280 × 720</div></div><button class="clear" id="clearDraft" type="button">清空草稿</button></div>
+    <div class="field"><span class="field-label">品牌版本</span><div class="choices" id="brandChoices"></div></div>
+    <div class="field"><span class="field-label">语言版本</span><div class="choices" id="languageChoices"></div></div>
+    <label class="input-field eyebrow-field"><span>眉题</span><textarea id="eyebrowInput" maxlength="180"></textarea></label>
+    <label class="input-field"><span>主标题</span><textarea id="titleInput" maxlength="260"></textarea></label>
+    <p class="hint">支持手动换行；中文建议 2 行，英文建议 2–3 行。品牌切换只替换左下角 Logo。</p>
+    <div class="status" id="status">文案仅保存在当前浏览器。</div>
+    <button class="download" id="download" type="button">下载 PNG</button>
+  </aside>
+  <section class="preview" aria-label="研报封面预览">
+    <div class="preview-head"><span>研报封面预览</span><span id="previewMeta">Research · 中文 · 1280 × 720</span></div>
+    <div class="stage" id="stage"><div class="cover-mount" id="coverMount"><article class="cover" id="cover"><canvas id="coverCanvas" width="1280" height="720" aria-label="研报封面"></canvas></article></div></div>
+  </section>
+</main>
+<script>
+const DRAFT_KEY='htx-research-cover-v1';
+const defaults={brand:'research',language:'zh',copy:{zh:{eyebrow:'2026年中期宏观与风险资产相关性研究',title:'AI 泡沫、流动性黑洞与\n加密市场再定价'},en:{eyebrow:'2026 Midyear Macro Risk Asset Correlation Study',title:'AI Bubble Liquidity\nBlack Hole and Crypto\nRepricing'}}};
+let state=loadDraft(),scale=.5,flameImage=null,renderVersion=0;
+const canvas=document.getElementById('coverCanvas'),ctx=canvas.getContext('2d');
+const measure=document.createElement('canvas').getContext('2d');
+function clone(value){return JSON.parse(JSON.stringify(value))}
+function loadDraft(){try{const saved=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(!saved)return clone(defaults);return {brand:saved.brand==='ventures'?'ventures':'research',language:saved.language==='en'?'en':'zh',copy:{zh:{eyebrow:String(saved.copy?.zh?.eyebrow??defaults.copy.zh.eyebrow),title:String(saved.copy?.zh?.title??defaults.copy.zh.title)},en:{eyebrow:String(saved.copy?.en?.eyebrow??defaults.copy.en.eyebrow),title:String(saved.copy?.en?.title??defaults.copy.en.title)}}}}catch(_){return clone(defaults)}}
+function saveDraft(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(state))}catch(_){setStatus('浏览器未能保存草稿。',true)}}
+function track(event,params={}){try{parent.postMessage({source:'htx-analytics',event,params:{template:'research-cover',...params}},location.origin)}catch(_){}}
+function setStatus(message,error=false){const node=document.getElementById('status');node.textContent=message;node.style.color=error?'#d92d20':'#98a2b3'}
+function currentCopy(){return state.copy[state.language]}
+function renderChoices(){document.getElementById('brandChoices').innerHTML=[['research','HTX Research'],['ventures','HTX Ventures']].map(([value,label])=>`<button class="choice${state.brand===value?' active':''}" data-brand="${value}" type="button">${label}</button>`).join('');document.getElementById('languageChoices').innerHTML=[['zh','ZH 简中'],['en','EN 英文']].map(([value,label])=>`<button class="choice${state.language===value?' active':''}" data-language="${value}" type="button">${label}</button>`).join('');document.querySelectorAll('[data-brand]').forEach(button=>button.addEventListener('click',()=>{state.brand=button.dataset.brand;saveDraft();track('brand_select',{brand:state.brand});render()}));document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>{state.language=button.dataset.language;saveDraft();track('language_select',{language:state.language});syncInputs();render()}))}
+function syncInputs(){const copy=currentCopy();document.getElementById('eyebrowInput').value=copy.eyebrow;document.getElementById('titleInput').value=copy.title}
+function hexRgb(hex){const value=parseInt(hex.slice(1),16);return {r:value>>16,g:value>>8&255,b:value&255}}
+function mixColor(a,b,t){const aa=hexRgb(a),bb=hexRgb(b);return `rgb(${Math.round(aa.r+(bb.r-aa.r)*t)},${Math.round(aa.g+(bb.g-aa.g)*t)},${Math.round(aa.b+(bb.b-aa.b)*t)})`}
+function background(){const gradient=ctx.createRadialGradient(0,0,0,0,0,1650);gradient.addColorStop(0,'#0036F7');gradient.addColorStop(.49,'#0066FF');gradient.addColorStop(1,'#55B5FF');ctx.fillStyle=gradient;ctx.fillRect(0,0,1280,720)}
+function font(size,weight=300,family='HTX-Harmony'){return `${weight} ${size}px ${family},"PingFang SC",Arial,sans-serif`}
+function wrapParagraph(value,maxWidth,size,weight){measure.font=font(size,weight);const chars=Array.from(value);const lines=[];let line='';for(const char of chars){const next=line+char;if(line&&measure.measureText(next).width>maxWidth){lines.push(line.trimEnd());line=char.trimStart()}else line=next}if(line||!lines.length)lines.push(line);return lines}
+function wrapText(value,maxWidth,size,weight){return String(value||'').split('\n').flatMap(part=>wrapParagraph(part,maxWidth,size,weight))}
+function fitText(value,maxWidth,maxHeight,startSize,minSize,weight,lineHeightRatio){for(let size=startSize;size>=minSize;size-=2){const lines=wrapText(value,maxWidth,size,weight),height=lines.length*size*lineHeightRatio;if(height<=maxHeight)return {size,lines,lineHeight:size*lineHeightRatio}}const lines=wrapText(value,maxWidth,minSize,weight);return {size:minSize,lines,lineHeight:minSize*lineHeightRatio}}
+function drawTextBlock(value,x,y,maxWidth,maxHeight,startSize,minSize,weight,lineHeightRatio){const fitted=fitText(value,maxWidth,maxHeight,startSize,minSize,weight,lineHeightRatio);ctx.fillStyle='#fff';ctx.font=font(fitted.size,weight);ctx.textAlign='left';ctx.textBaseline='top';fitted.lines.forEach((line,index)=>ctx.fillText(line,x,y+index*fitted.lineHeight));return fitted}
+function roundRect(x,y,width,height,radius){ctx.beginPath();ctx.roundRect(x,y,width,height,radius)}
+function drawReportLabel(){const x=929,y=70,width=281,height=57,label=state.language==='zh'?'最新研报':'Latest Report';ctx.save();roundRect(x,y,width,height,height/2);ctx.strokeStyle='rgba(255,255,255,.58)';ctx.lineWidth=1;ctx.stroke();const iconX=x+width-12-34,iconY=y+11.5;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(iconX+17,iconY+17,17,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#0066FF';ctx.lineWidth=2;roundRect(iconX+10,iconY+8,13,17,2);ctx.stroke();ctx.beginPath();ctx.moveTo(iconX+13,iconY+13);ctx.lineTo(iconX+21,iconY+13);ctx.moveTo(iconX+13,iconY+18);ctx.lineTo(iconX+21,iconY+18);ctx.stroke();ctx.font=font(28.18,300);ctx.fillStyle='#fff';ctx.textBaseline='middle';ctx.textAlign='right';ctx.fillText(label,iconX-12,y+height/2+1);ctx.restore()}
+function drawBrand(){const research=state.brand==='research',x=70,y=research?610:594,width=research?265:308,height=research?40:50,markWidth=research?30:37,gap=research?9:10,size=research?33:40,label=research?'HTX Research':'HTX Ventures';if(flameImage)ctx.drawImage(flameImage,x,y,markWidth,height);ctx.fillStyle='#fff';ctx.font=font(size,500,'Urbanist');ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(label,x+markWidth+gap,y+height/2+1);return {x,y,width,height}}
+function renderPoster(){const version=++renderVersion,isZh=state.language==='zh',copy=currentCopy();background();drawReportLabel();const eyebrow=drawTextBlock(copy.eyebrow,70,100,830,isZh?56:42,isZh?46.26:35,28,300,1.2);const title=drawTextBlock(copy.title,70,isZh?172:150,isZh?970:1140,isZh?250:312,isZh?90:80,60,500,isZh?1.388:1.3);drawBrand();if(version!==renderVersion)return;document.getElementById('previewMeta').textContent=`${state.brand==='research'?'Research':'Ventures'} · ${isZh?'中文':'英文'} · 1280 × 720`;if(eyebrow.size<(isZh?46.26:35)||title.size<(isZh?90:80))setStatus(`文案较长，已自动缩小为 ${title.size}px。`);else setStatus('草稿已自动保存。')}
+function render(){renderChoices();renderPoster();requestAnimationFrame(updateScale)}
+function updateScale(){const stage=document.getElementById('stage');scale=Math.max(.12,Math.min((stage.clientWidth-60)/1280,(stage.clientHeight-30)/720,1));const mount=document.getElementById('coverMount');mount.style.width=`${1280*scale}px`;mount.style.height=`${720*scale}px`;document.getElementById('cover').style.transform=`scale(${scale})`}
+function bindInputs(){document.getElementById('eyebrowInput').addEventListener('input',event=>{currentCopy().eyebrow=event.target.value;saveDraft();renderPoster()});document.getElementById('titleInput').addEventListener('input',event=>{currentCopy().title=event.target.value;saveDraft();renderPoster()})}
+function loadImage(src){return new Promise(resolve=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>resolve(null);image.src=src})}
+async function download(){const button=document.getElementById('download');button.disabled=true;button.textContent='正在生成…';track('download_start',{brand:state.brand,language:state.language});try{await document.fonts.ready;renderPoster();const link=document.createElement('a');link.download=`htx-${state.brand}-research-cover-${state.language}.png`;link.href=canvas.toDataURL('image/png');link.click();track('download_complete',{result:'success',brand:state.brand,language:state.language});setStatus('PNG 已生成。')}catch(error){setStatus(error.message||'下载失败，请重试。',true)}finally{button.disabled=false;button.textContent='下载 PNG'}}
+document.getElementById('clearDraft').addEventListener('click',()=>{state.copy[state.language]={eyebrow:'',title:''};saveDraft();syncInputs();renderPoster();setStatus('当前语种草稿已清空。')});document.getElementById('download').addEventListener('click',download);window.addEventListener('resize',updateScale);window.addEventListener('pagehide',saveDraft);bindInputs();syncInputs();renderChoices();Promise.all([document.fonts.ready,loadImage('./assets/htx-flame-white.svg')]).then(([,image])=>{flameImage=image;renderPoster();updateScale();track('template_view',{brand:state.brand,language:state.language});document.body.classList.add('ready')});
+</script>
+</body>
+</html>
