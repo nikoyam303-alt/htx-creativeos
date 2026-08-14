@@ -1091,7 +1091,6 @@ body {
 .finance-preview-card canvas { display: block; max-width: 100%; height: auto; }
 .finance-preview-card.app canvas { width: 316px; }
 .finance-preview-card.web canvas { width: 420px; }
-.finance-upload-note { margin: -3px 0 12px; color: #98A2B3; font-size: 10px; line-height: 1.5; }
 @media (max-width: 1180px) { .finance-module.active { flex-wrap: wrap; } }
 
 /* 跟单页 banner */
@@ -1382,16 +1381,6 @@ html { scroll-behavior: smooth; }
     <div class="ad-editor">
       <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
       <div class="ad-field"><div id="financeLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addFinanceBannerLang()">+ 添加语种</button></div>
-      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
-      <div class="finance-upload-note">App 158×186，Web 420×160；未上传时使用内置理财币种示意图。</div>
-      <div class="upload-area">
-        <button class="upload-btn" id="financeAppLightBtn" onclick="document.getElementById('financeAppLightFile').click()">App 白天配图</button><input id="financeAppLightFile" type="file" accept="image/*,.svg" onchange="handleFinanceImage(event,'appLight')">
-        <button class="upload-btn" id="financeAppDarkBtn" onclick="document.getElementById('financeAppDarkFile').click()">App 黑天配图</button><input id="financeAppDarkFile" type="file" accept="image/*,.svg" onchange="handleFinanceImage(event,'appDark')">
-      </div>
-      <div class="upload-area">
-        <button class="upload-btn" id="financeWebLightBtn" onclick="document.getElementById('financeWebLightFile').click()">Web 白天配图</button><input id="financeWebLightFile" type="file" accept="image/*,.svg" onchange="handleFinanceImage(event,'webLight')">
-        <button class="upload-btn" id="financeWebDarkBtn" onclick="document.getElementById('financeWebDarkFile').click()">Web 黑天配图</button><input id="financeWebDarkFile" type="file" accept="image/*,.svg" onchange="handleFinanceImage(event,'webDark')">
-      </div>
       <button class="download-all-btn" id="financeDownloadBtn" onclick="downloadFinanceBanner()">下载</button>
     </div>
     <div class="ad-preview-shell">
@@ -5202,21 +5191,19 @@ renderZeroBannerEditor();
 
 const FINANCE_BANNER_DRAFT_KEY = 'htxFinanceBannerV1';
 const FINANCE_SPECS = {
-  app: { W:158, H:186, radius:12, padX:16, padY:14, title:20, subtitle:11, image:82 },
-  web: { W:420, H:160, radius:16, padX:32, padY:26, title:20, subtitle:14, image:132 }
+  app: { W:158, H:186, radius:12, padX:16, padY:14, title:20, subtitle:11 },
+  web: { W:420, H:160, radius:16, padX:32, padY:26, title:20, subtitle:14 }
 };
 let financeBannerLangs = [{ id:1, code:'zh-CN', title:'最高 15% 年化', subtitle:'USDC 活期赚币｜随存随取 · 低风险' }];
-let financeBannerImages = { appLight:null, appDark:null, webLight:null, webDark:null };
 
 function saveFinanceBannerDraft() {
-  try { localStorage.setItem(FINANCE_BANNER_DRAFT_KEY, JSON.stringify({ langs:financeBannerLangs, images:financeBannerImages })); } catch (_) {}
+  try { localStorage.setItem(FINANCE_BANNER_DRAFT_KEY, JSON.stringify({ langs:financeBannerLangs })); } catch (_) {}
 }
 
 function loadFinanceBannerDraft() {
   try {
     const saved = JSON.parse(localStorage.getItem(FINANCE_BANNER_DRAFT_KEY) || 'null');
     if (Array.isArray(saved?.langs) && saved.langs.length) financeBannerLangs = saved.langs;
-    if (saved?.images) financeBannerImages = { ...financeBannerImages, ...saved.images };
   } catch (_) {}
 }
 
@@ -5224,7 +5211,6 @@ function renderFinanceBannerEditor() {
   const list = document.getElementById('financeLangList');
   if (!list) return;
   list.innerHTML = financeBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="主标题（App 最多 3 行）" oninput="updateFinanceBannerText(${item.id},'title',this.value)"><input value="${eh(item.subtitle)}" placeholder="副标题" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"></div>`).join('');
-  Object.keys(financeBannerImages).forEach(setFinanceUploadButtonState);
 }
 
 function addFinanceBannerLang() {
@@ -5248,50 +5234,6 @@ function updateFinanceBannerText(id, field, value) {
   renderFinanceBannerPreview();
 }
 
-function financeImageLabel(key) {
-  return ({ appLight:'App 白天', appDark:'App 黑天', webLight:'Web 白天', webDark:'Web 黑天' })[key];
-}
-
-function setFinanceUploadButtonState(key) {
-  const button = document.getElementById(`finance${key[0].toUpperCase()}${key.slice(1)}Btn`);
-  if (!button) return;
-  button.textContent = financeBannerImages[key] ? `${financeImageLabel(key)}配图已上传` : `${financeImageLabel(key)}配图`;
-  button.className = financeBannerImages[key] ? 'upload-btn loaded' : 'upload-btn';
-}
-
-function handleFinanceImage(event, key) {
-  const file = event.target.files?.[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    financeBannerImages[key] = reader.result;
-    setFinanceUploadButtonState(key);
-    saveFinanceBannerDraft();
-    renderFinanceBannerPreview();
-  };
-  reader.readAsDataURL(file);
-}
-
-function drawFinanceFallback(ctx, x, y, size, dark) {
-  ctx.save();
-  ctx.shadowColor = dark ? 'rgba(0,102,255,.4)' : 'rgba(0,102,255,.22)';
-  ctx.shadowBlur = Math.max(5,size*.12);
-  const gradient = ctx.createLinearGradient(x,y,x+size,y+size);
-  gradient.addColorStop(0,'#56B7FF');
-  gradient.addColorStop(.55,'#0878FF');
-  gradient.addColorStop(1,'#0048C8');
-  ctx.fillStyle = gradient;
-  ctx.beginPath(); ctx.arc(x+size*.5,y+size*.5,size*.39,0,Math.PI*2); ctx.fill();
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = Math.max(1,size*.025);
-  ctx.beginPath(); ctx.arc(x+size*.5,y+size*.5,size*.3,0,Math.PI*2); ctx.stroke();
-  ctx.fillStyle = '#FFFFFF';
-  ctx.font = `700 ${Math.round(size*.28)}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('$',x+size*.5,y+size*.5);
-  ctx.restore();
-}
-
 async function drawFinanceBanner(canvas, lang, layout, theme) {
   const spec = FINANCE_SPECS[layout];
   canvas.width = spec.W; canvas.height = spec.H;
@@ -5304,15 +5246,7 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
   background.addColorStop(0,dark ? '#151B28' : '#F5F9FF');
   background.addColorStop(1,dark ? '#090C13' : '#E8F2FF');
   ctx.fillStyle = background; ctx.fillRect(0,0,spec.W,spec.H);
-  ctx.fillStyle = dark ? 'rgba(0,102,255,.14)' : 'rgba(0,102,255,.08)';
-  ctx.beginPath(); ctx.arc(spec.W*.92,spec.H*.18,spec.W*.26,0,Math.PI*2); ctx.fill();
-  const imageKey = `${layout}${theme[0].toUpperCase()}${theme.slice(1)}`;
-  const image = financeBannerImages[imageKey];
   if (layout === 'app') {
-    const imageX = spec.W - spec.image - 2;
-    const imageY = spec.H - spec.image + 5;
-    if (image) await drawImgContain(ctx,image,imageX,imageY,spec.image,spec.image);
-    else drawFinanceFallback(ctx,imageX,imageY,spec.image,dark);
     const textW = spec.W - spec.padX*2;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
@@ -5322,11 +5256,7 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
     drawMultilineText(ctx,lang.subtitle,spec.padX,86,textW,spec.subtitle,1.35,spec.subtitle,spec.subtitle*4.05);
   } else {
-    const imageX = spec.W - spec.image - 6;
-    const imageY = (spec.H - spec.image)/2 + 4;
-    if (image) await drawImgContain(ctx,image,imageX,imageY,spec.image,spec.image);
-    else drawFinanceFallback(ctx,imageX,imageY,spec.image,dark);
-    const textW = 250;
+    const textW = spec.W - spec.padX*2;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
     ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
