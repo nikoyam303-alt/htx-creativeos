@@ -1080,6 +1080,20 @@ body {
 .zero-preview-card canvas { display: block; width: 328.52px; max-width: 100%; height: auto; }
 @media (max-width: 1180px) { .zero-module.active { flex-wrap: wrap; } }
 
+/* 理财 banner */
+.finance-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
+.finance-module.active { display: flex; }
+.finance-preview-grid { display: flex; flex-direction: column; gap: 30px; width: 100%; }
+.finance-preview-item { min-width: 0; }
+.finance-preview-label { margin-bottom: 10px; color: #98A2B3; font-size: 11px; line-height: 26px; }
+.finance-preview-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+.finance-preview-card { display: flex; flex-direction: column; gap: 7px; color: #98A2B3; font-size: 10px; }
+.finance-preview-card canvas { display: block; max-width: 100%; height: auto; }
+.finance-preview-card.app canvas { width: 316px; }
+.finance-preview-card.web canvas { width: 420px; }
+.finance-upload-note { margin: -3px 0 12px; color: #98A2B3; font-size: 10px; line-height: 1.5; }
+@media (max-width: 1180px) { .finance-module.active { flex-wrap: wrap; } }
+
 /* 跟单页 banner */
 .follow-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
 .follow-module.active { display: flex; }
@@ -1320,6 +1334,7 @@ html { scroll-behavior: smooth; }
       <button class="v2-group-btn" data-v2-group="otc" onclick="setV2Group('otc')"><span>OTC</span></button>
       <button class="v2-group-btn" data-v2-group="community" onclick="setV2Group('community')"><span>社区</span></button>
       <button class="v2-group-btn" data-v2-group="topic" onclick="setV2Group('topic')"><span>专题页banner</span></button>
+      <button class="v2-group-btn" data-v2-group="finance" onclick="setV2Group('finance')"><span>理财banner</span></button>
     </div>
     <div id="adSiteNavSection" class="v2-hidden">
       <div id="adSiteList"></div>
@@ -1361,6 +1376,27 @@ html { scroll-behavior: smooth; }
     <div class="ad-preview-shell">
       <div class="ad-preview-head"><div class="ad-preview-title">0元购页banner</div></div>
       <div class="zero-preview-grid" id="zeroPreviewGrid"></div>
+    </div>
+  </section>
+  <section class="finance-module" id="financeModule">
+    <div class="ad-editor">
+      <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
+      <div class="ad-field"><div id="financeLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addFinanceBannerLang()">+ 添加语种</button></div>
+      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
+      <div class="finance-upload-note">App 158×186，Web 420×160；未上传时使用内置理财币种示意图。</div>
+      <div class="upload-area">
+        <button class="upload-btn" id="financeAppLightBtn" onclick="document.getElementById('financeAppLightFile').click()">App 白天配图</button><input id="financeAppLightFile" type="file" accept="image/*,.svg" onchange="handleFinanceImage(event,'appLight')">
+        <button class="upload-btn" id="financeAppDarkBtn" onclick="document.getElementById('financeAppDarkFile').click()">App 黑天配图</button><input id="financeAppDarkFile" type="file" accept="image/*,.svg" onchange="handleFinanceImage(event,'appDark')">
+      </div>
+      <div class="upload-area">
+        <button class="upload-btn" id="financeWebLightBtn" onclick="document.getElementById('financeWebLightFile').click()">Web 白天配图</button><input id="financeWebLightFile" type="file" accept="image/*,.svg" onchange="handleFinanceImage(event,'webLight')">
+        <button class="upload-btn" id="financeWebDarkBtn" onclick="document.getElementById('financeWebDarkFile').click()">Web 黑天配图</button><input id="financeWebDarkFile" type="file" accept="image/*,.svg" onchange="handleFinanceImage(event,'webDark')">
+      </div>
+      <button class="download-all-btn" id="financeDownloadBtn" onclick="downloadFinanceBanner()">下载</button>
+    </div>
+    <div class="ad-preview-shell">
+      <div class="ad-preview-head"><div class="ad-preview-title">理财banner</div></div>
+      <div class="finance-preview-grid" id="financePreviewGrid"></div>
     </div>
   </section>
   <section class="follow-module" id="followModule">
@@ -4760,7 +4796,7 @@ function createDefaultAdLanguages() { return [
 ]; }
 let adLanguages = createDefaultAdLanguages();
 let adSiteId = 2, adSizeId = 3, adLangId = 5;
-const removedLanguageCache = { ad:[], zero:[], follow:[], gridbanner:[], otc:[], share:[] };
+const removedLanguageCache = { ad:[], zero:[], finance:[], follow:[], gridbanner:[], otc:[], share:[] };
 const adLogoCache = {};
 function setAdLayout(layout) {
   adLayout = layout;
@@ -5163,6 +5199,176 @@ async function downloadZeroBanner() {
 
 loadZeroBannerDraft();
 renderZeroBannerEditor();
+
+const FINANCE_BANNER_DRAFT_KEY = 'htxFinanceBannerV1';
+const FINANCE_SPECS = {
+  app: { W:158, H:186, radius:12, padX:16, padY:14, title:20, subtitle:11, image:82 },
+  web: { W:420, H:160, radius:16, padX:32, padY:26, title:20, subtitle:14, image:132 }
+};
+let financeBannerLangs = [{ id:1, code:'zh-CN', title:'最高 15% 年化', subtitle:'USDC 活期赚币｜随存随取 · 低风险' }];
+let financeBannerImages = { appLight:null, appDark:null, webLight:null, webDark:null };
+
+function saveFinanceBannerDraft() {
+  try { localStorage.setItem(FINANCE_BANNER_DRAFT_KEY, JSON.stringify({ langs:financeBannerLangs, images:financeBannerImages })); } catch (_) {}
+}
+
+function loadFinanceBannerDraft() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(FINANCE_BANNER_DRAFT_KEY) || 'null');
+    if (Array.isArray(saved?.langs) && saved.langs.length) financeBannerLangs = saved.langs;
+    if (saved?.images) financeBannerImages = { ...financeBannerImages, ...saved.images };
+  } catch (_) {}
+}
+
+function renderFinanceBannerEditor() {
+  const list = document.getElementById('financeLangList');
+  if (!list) return;
+  list.innerHTML = financeBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="主标题（App 最多 3 行）" oninput="updateFinanceBannerText(${item.id},'title',this.value)"><input value="${eh(item.subtitle)}" placeholder="副标题" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"></div>`).join('');
+  Object.keys(financeBannerImages).forEach(setFinanceUploadButtonState);
+}
+
+function addFinanceBannerLang() {
+  const restored = removedLanguageCache.finance.pop();
+  financeBannerLangs.push(restored || { id:nextStandaloneLangId(financeBannerLangs), code:nextStandaloneLangCode(financeBannerLangs), title:'', subtitle:'' });
+  saveFinanceBannerDraft(); renderFinanceBannerEditor(); renderFinanceBannerPreview();
+}
+
+function removeFinanceBannerLang(id) {
+  const removed = financeBannerLangs.find(lang=>lang.id===id);
+  if (removed) removedLanguageCache.finance.push({...removed});
+  financeBannerLangs = financeBannerLangs.filter(lang=>lang.id!==id);
+  saveFinanceBannerDraft(); renderFinanceBannerEditor(); renderFinanceBannerPreview();
+}
+
+function updateFinanceBannerText(id, field, value) {
+  const item = financeBannerLangs.find(lang=>lang.id===id);
+  if (!item) return;
+  item[field] = value;
+  saveFinanceBannerDraft();
+  renderFinanceBannerPreview();
+}
+
+function financeImageLabel(key) {
+  return ({ appLight:'App 白天', appDark:'App 黑天', webLight:'Web 白天', webDark:'Web 黑天' })[key];
+}
+
+function setFinanceUploadButtonState(key) {
+  const button = document.getElementById(`finance${key[0].toUpperCase()}${key.slice(1)}Btn`);
+  if (!button) return;
+  button.textContent = financeBannerImages[key] ? `${financeImageLabel(key)}配图已上传` : `${financeImageLabel(key)}配图`;
+  button.className = financeBannerImages[key] ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handleFinanceImage(event, key) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    financeBannerImages[key] = reader.result;
+    setFinanceUploadButtonState(key);
+    saveFinanceBannerDraft();
+    renderFinanceBannerPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function drawFinanceFallback(ctx, x, y, size, dark) {
+  ctx.save();
+  ctx.shadowColor = dark ? 'rgba(0,102,255,.4)' : 'rgba(0,102,255,.22)';
+  ctx.shadowBlur = Math.max(5,size*.12);
+  const gradient = ctx.createLinearGradient(x,y,x+size,y+size);
+  gradient.addColorStop(0,'#56B7FF');
+  gradient.addColorStop(.55,'#0878FF');
+  gradient.addColorStop(1,'#0048C8');
+  ctx.fillStyle = gradient;
+  ctx.beginPath(); ctx.arc(x+size*.5,y+size*.5,size*.39,0,Math.PI*2); ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = Math.max(1,size*.025);
+  ctx.beginPath(); ctx.arc(x+size*.5,y+size*.5,size*.3,0,Math.PI*2); ctx.stroke();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = `700 ${Math.round(size*.28)}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('$',x+size*.5,y+size*.5);
+  ctx.restore();
+}
+
+async function drawFinanceBanner(canvas, lang, layout, theme) {
+  const spec = FINANCE_SPECS[layout];
+  canvas.width = spec.W; canvas.height = spec.H;
+  const ctx = canvas.getContext('2d');
+  const dark = theme === 'dark';
+  ctx.clearRect(0,0,spec.W,spec.H);
+  ctx.save();
+  ctx.beginPath(); ctx.roundRect(0,0,spec.W,spec.H,spec.radius); ctx.clip();
+  const background = ctx.createLinearGradient(0,0,spec.W,spec.H);
+  background.addColorStop(0,dark ? '#151B28' : '#F5F9FF');
+  background.addColorStop(1,dark ? '#090C13' : '#E8F2FF');
+  ctx.fillStyle = background; ctx.fillRect(0,0,spec.W,spec.H);
+  ctx.fillStyle = dark ? 'rgba(0,102,255,.14)' : 'rgba(0,102,255,.08)';
+  ctx.beginPath(); ctx.arc(spec.W*.92,spec.H*.18,spec.W*.26,0,Math.PI*2); ctx.fill();
+  const imageKey = `${layout}${theme[0].toUpperCase()}${theme.slice(1)}`;
+  const image = financeBannerImages[imageKey];
+  if (layout === 'app') {
+    const imageX = spec.W - spec.image - 2;
+    const imageY = spec.H - spec.image + 5;
+    if (image) await drawImgContain(ctx,image,imageX,imageY,spec.image,spec.image);
+    else drawFinanceFallback(ctx,imageX,imageY,spec.image,dark);
+    const textW = spec.W - spec.padX*2;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
+    ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.title,spec.padX,spec.padY+spec.title,textW,spec.title,1.18,spec.title,spec.title*3.55);
+    ctx.fillStyle = dark ? '#AEB8C8' : '#667085';
+    ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.subtitle,spec.padX,86,textW,spec.subtitle,1.35,spec.subtitle,spec.subtitle*4.05);
+  } else {
+    const imageX = spec.W - spec.image - 6;
+    const imageY = (spec.H - spec.image)/2 + 4;
+    if (image) await drawImgContain(ctx,image,imageX,imageY,spec.image,spec.image);
+    else drawFinanceFallback(ctx,imageX,imageY,spec.image,dark);
+    const textW = 250;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
+    ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.title,spec.padX,60,textW,spec.title,1.22,spec.title,spec.title*3.66);
+    ctx.fillStyle = dark ? '#AEB8C8' : '#667085';
+    ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.subtitle,spec.padX,106,textW,spec.subtitle,1.4,spec.subtitle,spec.subtitle*2.8);
+  }
+  ctx.restore();
+}
+
+async function renderFinanceBannerPreview() {
+  const grid = document.getElementById('financePreviewGrid');
+  if (!grid) return;
+  grid.innerHTML = financeBannerLangs.map(lang=>`<div class="finance-preview-item"><div class="finance-preview-label">${eh(lang.code)}</div><div class="finance-preview-row"><div class="finance-preview-card app"><span>App · 白天 · 158×186</span><canvas id="finance-${lang.id}-app-light"></canvas></div><div class="finance-preview-card app"><span>App · 黑天 · 158×186</span><canvas id="finance-${lang.id}-app-dark"></canvas></div><div class="finance-preview-card web"><span>Web · 白天 · 420×160</span><canvas id="finance-${lang.id}-web-light"></canvas></div><div class="finance-preview-card web"><span>Web · 黑天 · 420×160</span><canvas id="finance-${lang.id}-web-dark"></canvas></div></div></div>`).join('');
+  await Promise.all(financeBannerLangs.flatMap(lang=>['app','web'].flatMap(layout=>['light','dark'].map(theme=>drawFinanceBanner(document.getElementById(`finance-${lang.id}-${layout}-${theme}`),lang,layout,theme)))));
+}
+
+async function downloadFinanceBanner() {
+  const button = document.getElementById('financeDownloadBtn');
+  if (button) { button.disabled = true; button.textContent = '生成中…'; }
+  try {
+    await ensureExportFontsReady();
+    const files = [];
+    for (const lang of financeBannerLangs) for (const layout of ['app','web']) for (const theme of ['light','dark']) {
+      const canvas = document.createElement('canvas');
+      await drawFinanceBanner(canvas,lang,layout,theme);
+      const blob = await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
+      files.push({ name:`理财banner/${lang.code}/理财banner_${lang.code}_${layout}_${theme}.png`, data:new Uint8Array(await blob.arrayBuffer()) });
+    }
+    if (!files.length) throw new Error('请先添加至少一个语种');
+    const blob = createAdZip(files);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = '理财banner.zip'; link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+  } catch (error) { console.error(error); alert(error.message || '下载失败'); }
+  finally { if (button) { button.disabled = false; button.textContent = '下载'; } }
+}
+
+loadFinanceBannerDraft();
+renderFinanceBannerEditor();
 
 const FOLLOW_BANNER_DRAFT_KEY = 'htxFollowBannerV1';
 const FOLLOW_APP = { W:986, H:184, radius:46, padX:46, padY:33, image:184, title:42 };
@@ -5723,10 +5929,10 @@ renderShareLangList();
 const V2_ACTIVE_GROUP_KEY = 'htx-visual-workbench-active-group';
 const V2_SCROLL_KEY = 'htx-visual-workbench-scroll-y';
 const hashV2Group = location.hash.replace(/^#/, '');
-const savedV2Group = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic'].includes(hashV2Group)
+const savedV2Group = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic','finance'].includes(hashV2Group)
   ? hashV2Group
   : localStorage.getItem(V2_ACTIVE_GROUP_KEY);
-let v2ActiveGroup = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic'].includes(savedV2Group) ? savedV2Group : 'common';
+let v2ActiveGroup = ['common','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic','finance'].includes(savedV2Group) ? savedV2Group : 'common';
 let v2CommonNodes = [];
 const v2SlotGroups = {
   common: ['new','old','email','appcal','pccal','feed','landing'],
@@ -5740,7 +5946,8 @@ const v2SlotGroups = {
   gridbanner: [],
   otc: [],
   community: ['community'],
-  topic: ['topic']
+  topic: ['topic'],
+  finance: []
 };
 
 function openWorkspaceSection(section) {
@@ -6064,7 +6271,8 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     gridbanner: [],
     otc: [],
     community: ['community'],
-    topic: ['topic']
+    topic: ['topic'],
+    finance: []
   };
   Object.values(previewGroups).flat().forEach(key => {
     const section = document.getElementById('section-' + key);
@@ -6079,6 +6287,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
   });
   const adModule = document.getElementById('adModule');
   const zeroModule = document.getElementById('zeroModule');
+  const financeModule = document.getElementById('financeModule');
   const followModule = document.getElementById('followModule');
   const gridBannerModule = document.getElementById('gridBannerModule');
   const otcModule = document.getElementById('otcModule');
@@ -6089,10 +6298,11 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
   const adSiteNavSection = document.getElementById('adSiteNavSection');
   if (adModule) adModule.classList.toggle('active', group === 'ads');
   if (zeroModule) zeroModule.classList.toggle('active', group === 'zero');
+  if (financeModule) financeModule.classList.toggle('active', group === 'finance');
   if (followModule) followModule.classList.toggle('active', group === 'follow');
   if (gridBannerModule) gridBannerModule.classList.toggle('active', group === 'gridbanner');
   if (otcModule) otcModule.classList.toggle('active', group === 'otc');
-  const standaloneGroup = group === 'ads' || group === 'zero' || group === 'follow' || group === 'gridbanner' || group === 'otc';
+  const standaloneGroup = group === 'ads' || group === 'zero' || group === 'finance' || group === 'follow' || group === 'gridbanner' || group === 'otc';
   if (editorPanel) editorPanel.classList.toggle('v2-hidden', standaloneGroup);
   if (previewArea) previewArea.classList.toggle('v2-hidden', standaloneGroup);
   if (slotTitle) slotTitle.classList.toggle('v2-hidden', standaloneGroup);
@@ -6122,7 +6332,8 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     gridbanner: ['网格banner', '独立管理多语种标题与白天/黑天配图。'],
     otc: ['OTC', '独立管理 App 与 Web 的经典、甄选版式和多语种文案。'],
     community: ['社区', '使用通用文案结构，并独立管理社区资源位配图。'],
-    topic: ['专题页banner', '独立生成 App 与 Web 两套专题页banner。']
+    topic: ['专题页banner', '独立生成 App 与 Web 两套专题页banner。'],
+    finance: ['理财banner', '独立生成 App 与 Web、白天与黑天四套理财banner。']
   }[group];
   const title = document.querySelector('.v2-editor-title');
   const desc = document.querySelector('.v2-editor-desc');
@@ -6132,6 +6343,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
   restoreDownloadButton();
   if (group === 'ads') renderAdCreative();
   if (group === 'zero') renderZeroBannerPreview();
+  if (group === 'finance') renderFinanceBannerPreview();
   if (group === 'follow') renderFollowBannerPreview();
   if (group === 'gridbanner') renderGridBannerPreview();
   if (group === 'otc') renderOtcPreview();
