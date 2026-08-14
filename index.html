@@ -1625,6 +1625,7 @@ html { scroll-behavior: smooth; }
       <button class="social-template-btn" data-social-tool="listing" type="button" onclick="switchSocialTool('listing')">上币模板</button>
       <button class="social-template-btn" data-social-tool="coin-intro" type="button" onclick="switchSocialTool('coin-intro')">币种介绍</button>
       <button class="social-template-btn" data-social-tool="weekly-recap" type="button" onclick="switchSocialTool('weekly-recap')">上新周报</button>
+      <button class="social-template-btn" data-social-tool="research-cover" type="button" onclick="switchSocialTool('research-cover')">研报封面</button>
       <button class="social-template-btn" data-social-tool="contract-listing" type="button" onclick="switchSocialTool('contract-listing')">合约上币</button>
       <button class="social-template-btn active" data-social-tool="poster" type="button" onclick="switchSocialTool('poster')">社媒海报</button>
     </div>
@@ -6155,13 +6156,19 @@ document.querySelectorAll('[data-layout]').forEach(button=>button.addEventListen
 
 function switchSocialTool(tool, updateLocation = true) {
   const frame = document.getElementById('socialToolFrame');
-  const nextTool = ['listing', 'coin-intro', 'weekly-recap', 'contract-listing', 'poster'].includes(tool) ? tool : 'poster';
+  const nextTool = ['listing', 'coin-intro', 'weekly-recap', 'research-cover', 'contract-listing', 'poster'].includes(tool) ? tool : 'poster';
   const contractListingVersion = 'v=202608111620';
+  const researchCoverVersion = 'v=202608141930';
   const requiresContractReload = nextTool === 'contract-listing' && !String(frame?.src || '').includes(contractListingVersion);
-  if (frame && (frame.dataset.activeTool !== nextTool || requiresContractReload)) {
-    if (nextTool === 'contract-listing' || nextTool === 'listing') {
+  const requiresResearchCoverReload = nextTool === 'research-cover' && !String(frame?.src || '').includes(researchCoverVersion);
+  if (frame && (frame.dataset.activeTool !== nextTool || requiresContractReload || requiresResearchCoverReload)) {
+    if (nextTool === 'contract-listing' || nextTool === 'listing' || nextTool === 'research-cover') {
       frame.removeAttribute('srcdoc');
-      frame.src = nextTool === 'listing' ? 'social/listing.html?v=202608101610' : `social/contract-listing.html?${contractListingVersion}`;
+      frame.src = nextTool === 'listing'
+        ? 'social/listing.html?v=202608101610'
+        : nextTool === 'research-cover'
+          ? `social/research-cover.html?${researchCoverVersion}`
+          : `social/contract-listing.html?${contractListingVersion}`;
     } else if (nextTool === 'coin-intro' || nextTool === 'weekly-recap') {
       frame.removeAttribute('src');
       frame.srcdoc = nextTool === 'coin-intro' ? COIN_INTRO_DOCUMENT : WEEKLY_RECAP_DOCUMENT;
@@ -6171,7 +6178,7 @@ function switchSocialTool(tool, updateLocation = true) {
     }
     frame.dataset.activeTool = nextTool;
   }
-  if (frame) frame.title = ({ listing: '上币模板编辑器', 'coin-intro': '币种介绍编辑器', 'weekly-recap': '上新周报编辑器', 'contract-listing': '合约上币编辑器', poster: '社媒海报编辑器' })[nextTool];
+  if (frame) frame.title = ({ listing: '上币模板编辑器', 'coin-intro': '币种介绍编辑器', 'weekly-recap': '上新周报编辑器', 'research-cover': '研报封面编辑器', 'contract-listing': '合约上币编辑器', poster: '社媒海报编辑器' })[nextTool];
   document.querySelectorAll('.social-template-btn').forEach(button => {
     button.classList.toggle('active', button.dataset.socialTool === nextTool);
   });
