@@ -3021,6 +3021,119 @@ function safeFilePart(value, fallback='asset') {
   return cleaned || fallback;
 }
 
+function safeImageSourceLabel(src) {
+  const value = String(src || '').trim();
+  if (!value) return 'empty';
+  if (/^data:/i.test(value)) return `data:${value.slice(5).split(/[;,]/)[0] || 'image'}`;
+  if (/^blob:/i.test(value)) return 'blob-url';
+  try {
+    const url = new URL(value, location.href);
+    const fileName = decodeURIComponent(url.pathname.split('/').filter(Boolean).pop() || 'image');
+    return safeFilePart(fileName, 'image').slice(0, 60);
+  } catch (_) {
+    return safeFilePart(value.split(/[?#]/)[0].split('/').pop(), 'image').slice(0, 60);
+  }
+}
+
+function sanitizeErrorDetail(value) {
+  return String(value || 'unknown')
+    .replace(/data:[^\s)]+/gi, '<data-image>')
+    .replace(/blob:[^\s,)]+/gi, '<blob-url>')
+    .replace(/https?:\/\/[^\s,)]+/gi, '<url>')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 100) || 'unknown';
+}
+
+function normalizeOperationError(reason) {
+  if (reason instanceof Error || (typeof DOMException !== 'undefined' && reason instanceof DOMException)) {
+    return {
+      name: sanitizeErrorDetail(reason.name || 'Error'),
+      message: sanitizeErrorDetail(reason.message || String(reason)),
+      code: typeof reason.code === 'string' ? sanitizeErrorDetail(reason.code) : ''
+    };
+  }
+  if (typeof Event !== 'undefined' && reason instanceof Event) {
+    const targetSrc = reason.target && 'src' in reason.target ? safeImageSourceLabel(reason.target.src) : '';
+    return {
+      name: 'Event',
+      message: sanitizeErrorDetail(`${reason.type || 'unknown'}${targetSrc ? ` (${targetSrc})` : ''}`),
+      code: ''
+    };
+  }
+  if (typeof reason === 'string') return { name:'Error', message:sanitizeErrorDetail(reason), code:'' };
+  if (reason && typeof reason === 'object') {
+    const type = reason.constructor?.name || 'Object';
+    return {
+      name: sanitizeErrorDetail(reason.name || type),
+      message: sanitizeErrorDetail(reason.message || `[${type}]`),
+      code: typeof reason.code === 'string' ? sanitizeErrorDetail(reason.code) : ''
+    };
+  }
+  return { name:'Error', message:sanitizeErrorDetail(reason), code:'' };
+}
+
+function classifyOperationError(error, fallbackCode='OPERATION_FAILED') {
+  const normalized = normalizeOperationError(error);
+  if (normalized.code) return normalized.code;
+  const text = `${normalized.name} ${normalized.message}`.toLowerCase();
+  if (/securityerror|tainted|cross-origin|insecure/.test(text)) return 'CANVAS_SECURITY_ERROR';
+  if (/image|图片|decode|load/.test(text)) return 'IMAGE_LOAD_FAILED';
+  if (/canvas|todataurl|export|memory/.test(text)) return 'CANVAS_EXPORT_FAILED';
+  return fallbackCode;
+}
+
+function errorFingerprint(stage, code, detail) {
+  const value = `${stage}|${code}|${detail}`;
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
+}
+
+function reportOperationError(error, context={}) {
+  const normalized = normalizeOperationError(error);
+  const stage = sanitizeErrorDetail(context.stage || 'unknown');
+  const code = classifyOperationError(error, context.fallbackCode || 'OPERATION_FAILED');
+  const detail = normalized.message;
+  const payload = {
+    result: 'failed',
+    error_stage: stage,
+    error_code: code,
+    error_detail: detail,
+    error_name: normalized.name,
+    error_action: sanitizeErrorDetail(context.action || 'unknown'),
+    error_fingerprint: errorFingerprint(stage, code, detail),
+    resource_type: context.resourceType ? sanitizeErrorDetail(context.resourceType) : undefined,
+    resource_theme: context.resourceTheme ? sanitizeErrorDetail(context.resourceTheme) : undefined,
+    language: context.language ? sanitizeErrorDetail(context.language) : undefined
+  };
+  console.error('[CreativeOS operation_error]', payload, error);
+  try { window.htxTrack?.('operation_error', payload); } catch (_) {}
+  return payload;
+}
+
+function canvasToPngDataUrl(canvas) {
+  try {
+    const dataUrl = canvas.toDataURL('image/png');
+    if (!dataUrl || dataUrl === 'data:,') {
+      const error = new Error('画布导出结果为空');
+      error.code = 'CANVAS_EXPORT_FAILED';
+      throw error;
+    }
+    return dataUrl;
+  } catch (cause) {
+    if (cause && typeof cause.code === 'string') throw cause;
+    const normalized = normalizeOperationError(cause);
+    const error = new Error(normalized.message || '画布导出失败');
+    error.name = normalized.name;
+    error.code = classifyOperationError(cause, 'CANVAS_EXPORT_FAILED');
+    throw error;
+  }
+}
+
 function setDownloadStatus(text) {
   const btn = document.getElementById('downloadAllBtn');
   if (btn) btn.textContent = text;
@@ -4180,7 +4293,11 @@ function loadImage(src) {
     if (!src) return resolve(null);
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = reject;
+    img.onerror = () => {
+      const error = new Error(`图片加载失败 (${safeImageSourceLabel(src)})`);
+      error.code = 'IMAGE_LOAD_FAILED';
+      reject(error);
+    };
     img.src = src;
   });
 }
@@ -4392,7 +4509,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
       }
     }
     if (imgSrc) await drawImgContain(ctx, imgSrc, imageX, imageY, imageW, imageH);
-    return canvas.toDataURL('image/png');
+    return canvasToPngDataUrl(canvas);
   }
 
   if (type === 'apprebate') {
@@ -4405,7 +4522,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     const titleStartY = (H - titleBlockH) / 2 + titSz;
     drawMultilineText(ctx, titTxt, padX, titleStartY, textFullW, titSz, titLH, titSz, titleBlockH);
     if (imgSrc) await drawImgContain(ctx, imgSrc, W - padX - imgW, (H - imgW) / 2, imgW, imgW);
-    return canvas.toDataURL('image/png');
+    return canvasToPngDataUrl(canvas);
   }
 
   if (type === 'tradeapp') {
@@ -4422,7 +4539,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     drawRichMultilineText(ctx, richTitle, padX, (s.textTop || 32) + subDrawn + s.gap + titSz, textFullW, titSz, titLH, 60);
     ctx.filter = 'none';
     if (imgSrc) await drawImgContain(ctx, imgSrc, W - padX - s.imgW, 0, s.imgW, s.imgW);
-    return canvas.toDataURL('image/png');
+    return canvasToPngDataUrl(canvas);
   }
 
   if (type === 'tradeweb') {
@@ -4460,7 +4577,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     drawRichMultilineText(ctx, richTitle, x, titleY, 720, titSz, 1.1, titleMaxH);
     ctx.filter = 'none';
     if (imgSrc) await drawImgContain(ctx, imgSrc, 1160, 0, 320, 200);
-    return canvas.toDataURL('image/png');
+    return canvasToPngDataUrl(canvas);
   }
 
   if (s.imgPos === 'rc') {
@@ -4615,22 +4732,32 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
     await drawImg(ctx, BAPING_ARROW_SVG, W - padX - arrowSz, mainH + (s.barH - arrowSz) / 2, arrowSz, arrowSz);
   }
 
-  return canvas.toDataURL('image/png');
+  return canvasToPngDataUrl(canvas);
 }
 
 async function downloadCard(type, theme, langId) {
-  const autoScale = !!scaleState[slotLangKey(type, langId)];
-  const dataUrl = await renderToDataUrl(type, theme, langId, autoScale);
-  if (!dataUrl) return;
   const lang = type === 'share' ? shareLangs.find(l => l.id === langId) : langs.find(l => l.id === langId);
   const code = lang ? lang.code : langId;
-  const resourceName = DOWNLOAD_RESOURCE_NAMES[type] || SLOT_LABELS[type] || type;
-  const themeName = theme === 'light' ? '白天' : theme === 'dark' ? '黑天' : '';
-  const suffix = themeName ? `_${themeName}` : '';
-  const a = document.createElement('a');
-  a.href = dataUrl;
-  a.download = `${resourceName}_${safeFilePart(code, 'lang')}${suffix}.png`;
-  a.click();
+  window.htxTrack?.('download_start', { export_scope:'single', resource_type:type, resource_theme:theme || 'default', language:code });
+  try {
+    const autoScale = !!scaleState[slotLangKey(type, langId)];
+    const dataUrl = await renderToDataUrl(type, theme, langId, autoScale);
+    if (!dataUrl) return;
+    const resourceName = DOWNLOAD_RESOURCE_NAMES[type] || SLOT_LABELS[type] || type;
+    const themeName = theme === 'light' ? '白天' : theme === 'dark' ? '黑天' : '';
+    const suffix = themeName ? `_${themeName}` : '';
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `${resourceName}_${safeFilePart(code, 'lang')}${suffix}.png`;
+    a.click();
+    window.htxTrack?.('download_complete', { result:'success', export_scope:'single', resource_type:type, resource_theme:theme || 'default', language:code });
+  } catch (error) {
+    const reported = reportOperationError(error, {
+      stage:'poster_single_export', fallbackCode:'SINGLE_EXPORT_FAILED', action:'download_single',
+      resourceType:type, resourceTheme:theme || 'default', language:code
+    });
+    setDraftStatus(`下载失败：${reported.error_detail}`);
+  }
 }
 
 const DOWNLOAD_RESOURCE_NAMES = {
@@ -4665,13 +4792,17 @@ async function downloadAll() {
   const btn = document.getElementById('downloadAllBtn');
   btn.disabled = true;
   setDownloadStatus('准备打包…');
-  if (typeof JSZip === 'undefined') {
-    alert('打包组件加载失败。请确认网络可访问 cdnjs 后刷新页面，或逐张下载。');
-    restoreDownloadButton();
-    return;
-  }
-  const zip = new JSZip();
-  const tasks = [];
+  const group = typeof v2ActiveGroup === 'string' ? v2ActiveGroup : 'common';
+  let taskCount = 0;
+  window.htxTrack?.('download_start', { export_scope:'batch', resource_type:group });
+  try {
+    if (typeof JSZip === 'undefined') {
+      const error = new Error('打包组件未加载，请检查网络后刷新页面');
+      error.code = 'ZIP_LIBRARY_MISSING';
+      throw error;
+    }
+    const zip = new JSZip();
+    const tasks = [];
 
   if (currentGroupAllowsResource('new') || currentGroupAllowsResource('community')) for (const l of validLangsCache) {
     if (activeSlots.has('new')) {
@@ -4738,9 +4869,9 @@ async function downloadAll() {
 
   if (!tasks.length) {
     setDraftStatus('当前内容组暂无可下载内容');
-    restoreDownloadButton();
     return;
   }
+  taskCount = tasks.length;
 
   for (let i = 0; i < tasks.length; i++) {
     const t = tasks[i];
@@ -4752,7 +4883,6 @@ async function downloadAll() {
     zip.file(`${t.folder}/${t.fn}.png`, base64, { base64: true });
   }
 
-  try {
     setDownloadStatus('生成压缩包…');
     const blob = await zip.generateAsync({ type: 'blob' });
     const a = document.createElement('a');
@@ -4762,9 +4892,12 @@ async function downloadAll() {
     a.download = `HTX运营视觉工作台_${groupName}.zip`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-  } catch (err) {
-    console.error(err);
-    alert('打包失败，请减少一次性导出的资源数量后重试。');
+    window.htxTrack?.('download_complete', { result:'success', export_scope:'batch', resource_type:group, export_items:taskCount });
+  } catch (error) {
+    const reported = reportOperationError(error, {
+      stage:'poster_batch_export', fallbackCode:'BATCH_EXPORT_FAILED', action:'download_batch', resourceType:group
+    });
+    alert(`打包失败：${reported.error_detail}`);
   } finally {
     restoreDownloadButton();
   }
@@ -6498,7 +6631,7 @@ async function applyAssetLibrarySelection(){
 // Analytics: never include user-entered copy or uploaded image contents in events.
 (function initializeAnalytics(){
   const measurementId=document.querySelector('meta[name="ga-measurement-id"]')?.content.trim()||'';
-  const release='2026.08.10';
+  const release='2026.08.14';
   window.dataLayer=window.dataLayer||[];
   window.gtag=window.gtag||function(){dataLayer.push(arguments)};
   if(/^G-[A-Z0-9]+$/i.test(measurementId)){
@@ -6509,7 +6642,11 @@ async function applyAssetLibrarySelection(){
   window.htxTrack=function(eventName,parameters={}){
     if(!/^[a-z][a-z0-9_]{1,39}$/.test(eventName))return;
     const safe={release_version:release,template:parameters.template||activeTemplate()};
-    for(const [key,value] of Object.entries(parameters))if(value!==undefined&&value!==null&&['string','number','boolean'].includes(typeof value))safe[key]=typeof value==='string'?value.slice(0,120):value;
+    for(const [key,value] of Object.entries(parameters)){
+      if(Object.keys(safe).length>=25)break;
+      if(!/^[a-z][a-z0-9_]{0,39}$/.test(key)||value===undefined||value===null||!['string','number','boolean'].includes(typeof value))continue;
+      safe[key]=typeof value==='string'?value.slice(0,100):value;
+    }
     if(/^G-[A-Z0-9]+$/i.test(measurementId))gtag('event',eventName,safe);
   };
   document.addEventListener('click',event=>{
@@ -6519,8 +6656,8 @@ async function applyAssetLibrarySelection(){
     const button=event.target.closest('button');if(button&&(/下载|导出/.test(button.textContent)||/download/i.test(button.id||'')))htxTrack('download_click');
   },true);
   window.addEventListener('message',event=>{if(event.origin!==location.origin||event.data?.source!=='htx-analytics')return;htxTrack(event.data.event,event.data.params||{})});
-  window.addEventListener('error',event=>htxTrack('operation_error',{result:'failed',error_stage:'runtime',error_code:'UNHANDLED_ERROR',error_detail:String(event.message||'unknown')}));
-  window.addEventListener('unhandledrejection',event=>htxTrack('operation_error',{result:'failed',error_stage:'promise',error_code:'UNHANDLED_REJECTION',error_detail:String(event.reason?.message||event.reason||'unknown')}));
+  window.addEventListener('error',event=>reportOperationError(event.error||event,{stage:'runtime',fallbackCode:'UNHANDLED_ERROR',action:'global'}));
+  window.addEventListener('unhandledrejection',event=>reportOperationError(event.reason,{stage:'promise',fallbackCode:'UNHANDLED_REJECTION',action:'global'}));
   htxTrack('workspace_view',{template:'workspace'});
 })();
 
