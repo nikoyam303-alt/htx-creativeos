@@ -5190,6 +5190,10 @@ loadZeroBannerDraft();
 renderZeroBannerEditor();
 
 const FINANCE_BANNER_DRAFT_KEY = 'htxFinanceBannerV1';
+const FINANCE_BACKGROUND_COLORS = {
+  app: { light:'#F6F6F6', dark:'#161616' },
+  web: { light:'#F3F3F3', dark:'#161616' }
+};
 const FINANCE_SPECS = {
   app: { W:158, H:186, radius:12, padX:16, padY:14, title:20, subtitle:11 },
   web: { W:420, H:160, radius:16, padX:32, padY:26, title:20, subtitle:14 }
@@ -5242,10 +5246,8 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
   ctx.clearRect(0,0,spec.W,spec.H);
   ctx.save();
   ctx.beginPath(); ctx.roundRect(0,0,spec.W,spec.H,spec.radius); ctx.clip();
-  const background = ctx.createLinearGradient(0,0,spec.W,spec.H);
-  background.addColorStop(0,dark ? '#151B28' : '#F5F9FF');
-  background.addColorStop(1,dark ? '#090C13' : '#E8F2FF');
-  ctx.fillStyle = background; ctx.fillRect(0,0,spec.W,spec.H);
+  ctx.fillStyle = FINANCE_BACKGROUND_COLORS[layout][theme];
+  ctx.fillRect(0,0,spec.W,spec.H);
   if (layout === 'app') {
     const textW = spec.W - spec.padX*2;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
