@@ -6482,7 +6482,7 @@ function switchSocialTool(tool, updateLocation = true) {
     if (nextTool === 'contract-listing' || nextTool === 'listing' || nextTool === 'research-cover') {
       frame.removeAttribute('srcdoc');
       frame.src = nextTool === 'listing'
-        ? 'social/listing.html?v=202608101610'
+        ? 'social/listing.html?v=202608181640'
         : nextTool === 'research-cover'
           ? `social/research-cover.html?${researchCoverVersion}`
           : `social/contract-listing.html?${contractListingVersion}`;
