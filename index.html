@@ -6115,10 +6115,14 @@ function spotListingNameLines(ctx, value) {
   return lines.slice(0,2);
 }
 
-async function drawSpotListing(canvas, language, theme) {
+async function drawSpotListing(canvas, language, theme, renderScale = 1) {
   const { W, H } = SPOT_LISTING_SPEC;
-  canvas.width = W; canvas.height = H;
+  const scale = Math.max(1, Number(renderScale) || 1);
+  canvas.width = W * scale; canvas.height = H * scale;
   const ctx = canvas.getContext('2d');
+  ctx.scale(scale,scale);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
   const isDark = theme === 'dark';
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle = isDark ? '#0F0F0F' : '#FAFAFA';
@@ -6140,7 +6144,7 @@ async function renderSpotListingPreview() {
   const grid = document.getElementById('spotListingPreviewGrid');
   if (!grid) return;
   grid.innerHTML = SPOT_LISTING_LANGUAGES.map(language=>`<div class="spot-listing-preview-item"><div class="spot-listing-preview-label">${language.code} · ${language.label}</div><div class="spot-listing-preview-row"><div class="spot-listing-preview-card"><span>白天</span><canvas id="spot-listing-${language.code}-light"></canvas></div><div class="spot-listing-preview-card"><span>黑天</span><canvas id="spot-listing-${language.code}-dark"></canvas></div></div></div>`).join('');
-  await Promise.all(SPOT_LISTING_LANGUAGES.flatMap(language=>['light','dark'].map(theme=>drawSpotListing(document.getElementById(`spot-listing-${language.code}-${theme}`),language,theme))));
+  await Promise.all(SPOT_LISTING_LANGUAGES.flatMap(language=>['light','dark'].map(theme=>drawSpotListing(document.getElementById(`spot-listing-${language.code}-${theme}`),language,theme,3))));
 }
 
 async function downloadSpotListing() {
