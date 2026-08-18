@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HTX 现货交易派对</title>
+<style>
+@font-face{font-family:Urbanist;src:url("assets/Urbanist-Variable.ttf") format("truetype");font-weight:100 900;font-display:swap}
+@font-face{font-family:Harmony;src:url("assets/HarmonyOS-Sans-SC-Medium.ttf") format("truetype");font-weight:500 900;font-display:swap}
+@font-face{font-family:Harmony;src:url("assets/HarmonyOS-Sans-SC-Light.ttf") format("truetype");font-weight:200 400;font-display:swap}
+:root{font-family:Urbanist,Harmony,"PingFang SC",sans-serif;color:#344054;background:#f5f7fb;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;min-width:1080px;background:#f5f7fb;opacity:0;transition:opacity .15s ease}
+body.ready{opacity:1}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{display:grid;grid-template-columns:398px minmax(720px,1fr);gap:24px;padding:20px;align-items:start}
+.panel{background:#fff;border:1px solid #e8edf5;border-radius:18px;box-shadow:0 8px 30px rgba(25,45,80,.05)}
+.editor{padding:22px;max-height:calc(100vh - 40px);overflow:auto}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.panel-title{font-size:16px;font-weight:700;color:#667085}
+.reset{border:0;border-radius:9px;background:#f2f4f7;color:#667085;padding:8px 12px;font-size:13px}
+.section{padding-top:18px;margin-top:18px;border-top:1px solid #eef1f6}
+.section:first-of-type{padding-top:0;margin-top:0;border-top:0}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;color:#475467;font-size:14px;font-weight:700}
+.hint{font-size:12px;font-weight:400;color:#98a2b3}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tab{border:0;border-radius:10px;padding:10px;background:#f2f4f7;color:#667085;font-weight:700}
+.tab.active{background:#eaf2ff;color:#0f6bff}
+.field{margin-top:12px}
+.field label{display:block;margin-bottom:6px;color:#667085;font-size:12px;font-weight:600}
+.field input{width:100%;height:42px;border:1px solid #d8e0ec;border-radius:9px;padding:0 12px;color:#101828;background:#fff;outline:none}
+.field input:focus{border-color:#438cff;box-shadow:0 0 0 3px rgba(15,107,255,.1)}
+.segment-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.segment-grid .field{margin-top:8px}
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.upload-item{position:relative;min-width:0}
+.upload-button{width:100%;min-height:58px;display:flex;align-items:center;gap:9px;border:1px dashed #b9c8dd;border-radius:10px;background:#f8fbff;padding:9px 30px 9px 9px;text-align:left;color:#667085}
+.upload-button:hover,.upload-button.drag{border-color:#0f6bff;background:#edf5ff}
+.upload-thumb{width:38px;height:38px;flex:0 0 38px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#eaf2ff;color:#0f6bff;font-size:20px;font-weight:700}
+.upload-thumb img{width:100%;height:100%;object-fit:cover}
+.upload-copy{min-width:0}
+.upload-copy strong{display:block;color:#344054;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.upload-copy span{display:block;font-size:11px;margin-top:2px}
+.clear{position:absolute;right:6px;top:6px;width:22px;height:22px;border:0;border-radius:50%;background:#fff;color:#98a2b3;box-shadow:0 1px 5px rgba(16,24,40,.12);display:grid;place-items:center}
+.clear:disabled{display:none}
+.message{min-height:18px;margin-top:12px;color:#d92d20;font-size:12px}
+.actions{display:grid;gap:9px;margin-top:16px}
+.primary,.secondary{height:46px;border-radius:10px;font-weight:700}
+.primary{border:0;background:#0f6bff;color:#fff}
+.secondary{border:1px solid #b9c8dd;background:#fff;color:#0f6bff}
+.primary:disabled,.secondary:disabled{opacity:.55;cursor:wait}
+.preview-panel{padding:22px;min-height:calc(100vh - 40px)}
+.preview-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;color:#98a2b3;font-size:13px}
+.preview-stage{display:flex;justify-content:center;align-items:flex-start;overflow:auto;padding:0 8px 18px}
+.canvas-shell{width:min(100%,760px);aspect-ratio:1;box-shadow:0 22px 60px rgba(31,55,92,.18);background:#fff}
+canvas{display:block;width:100%;height:100%;image-rendering:auto}
+@media(max-width:1240px){body{min-width:980px}.app{grid-template-columns:360px minmax(600px,1fr)}}
+</style>
+</head>
+<body>
+<main class="app">
+  <aside class="panel editor">
+    <div class="panel-head"><div class="panel-title">文案配置</div><button class="reset" id="resetButton" type="button">恢复默认</button></div>
+    <section class="section">
+      <div class="section-title">语言版本 <span class="hint">英文 · 简中</span></div>
+      <div class="tabs"><button class="tab" data-lang="en" type="button">EN 英文</button><button class="tab" data-lang="zh" type="button">ZH 简中</button></div>
+    </section>
+    <section class="section">
+      <div class="section-title">主标题 <span class="hint">每一段均可编辑</span></div>
+      <div class="hint">第一行</div>
+      <div class="segment-grid" id="titleLine1"></div>
+      <div class="hint" style="margin-top:12px">第二行</div>
+      <div class="segment-grid" id="titleLine2"></div>
+      <div class="field"><label for="subtitle1">副标题第一行</label><input id="subtitle1" data-copy="subtitle1" maxlength="42"></div>
+      <div class="field"><label for="subtitle2">副标题第二行</label><input id="subtitle2" data-copy="subtitle2" maxlength="42"></div>
+      <div class="field"><label for="benefit1">权益 1</label><input id="benefit1" data-copy="benefit1" maxlength="30"></div>
+      <div class="field"><label for="benefit2">权益 2</label><input id="benefit2" data-copy="benefit2" maxlength="30"></div>
+      <div class="field"><label for="benefit3">权益 3</label><input id="benefit3" data-copy="benefit3" maxlength="30"></div>
+      <div class="field"><label for="dateText">活动日期</label><input id="dateText" data-copy="date" maxlength="30"></div>
+    </section>
+    <section class="section">
+      <div class="section-title">币种图片 <span class="hint">3 个主币 + 6 个辅助币</span></div>
+      <div class="upload-grid" id="uploadGrid"></div>
+      <div class="hint" style="margin-top:10px">支持 PNG / JPG / WebP / SVG，单张不超过 10MB。建议上传透明底高清图。</div>
+    </section>
+    <div class="message" id="message"></div>
+    <div class="actions">
+      <button class="primary" id="downloadAll" type="button">一键导出英文与简中 3×</button>
+      <button class="secondary" id="downloadCurrent" type="button">导出当前语种 3× PNG</button>
+    </div>
+  </aside>
+  <section class="panel preview-panel">
+    <div class="preview-head"><span>现货交易派对预览</span><span>1080 × 1080 px · 3× 导出 3240 × 3240</span></div>
+    <div class="preview-stage"><div class="canvas-shell"><canvas id="poster" width="1080" height="1080"></canvas></div></div>
+  </section>
+</main>
+<script>
+const ASSET_ROOT="assets/coin-intro/";
+const BASE_BACKGROUND=ASSET_ROOT+"base-3x.png";
+const RIBBON_BACKGROUND=ASSET_ROOT+"ribbon-3x.png";
+const LOGOS={en:ASSET_ROOT+"htx-en.svg",zh:ASSET_ROOT+"htx-zh.svg"};
+const DRAFT_KEY="htx-spot-carnival-v1";
+const DB_NAME="htx-spot-carnival-assets";
+const STORE_NAME="coins";
+const defaults={
+  en:{
+    line1:{before:"",accent:"$30,000",after:"Is Up"},
+    line2:{before:"For Grabs",accent:"",after:""},
+    subtitle1:"Spot Trading Carnival",subtitle2:"Trade Now to Claim Your Share",
+    benefit1:"New User Bonus",benefit2:"Grid Trading Rewards",benefit3:"SVIP Incentive",date:"July 2 - July 9"
+  },
+  zh:{
+    line1:{before:"现货交易派对",accent:"",after:""},
+    line2:{before:"",accent:"$30,000",after:"奖励派送中"},
+    subtitle1:"马上加入赢取奖励",subtitle2:"",
+    benefit1:"新人专属空投",benefit2:"网格加码",benefit3:"SVIP激励升级",date:"7月2日 - 7月9日"
+  }
+};
+let state={language:"en",copy:structuredClone(defaults),coins:Array.from({length:9},()=>({src:"",name:""}))};
+const imageCache=new Map();
+let renderSequence=0;
+
+function loadDraft(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(DRAFT_KEY)||"null");
+    if(!saved)return;
+    state.language=saved.language==="zh"?"zh":"en";
+    for(const lang of ["en","zh"]){
+      const copy=saved.copy?.[lang];
+      if(!copy)continue;
+      for(const key of ["subtitle1","subtitle2","benefit1","benefit2","benefit3","date"]){if(typeof copy[key]==="string")state.copy[lang][key]=copy[key]}
+      for(const line of ["line1","line2"])for(const part of ["before","accent","after"]){if(typeof copy[line]?.[part]==="string")state.copy[lang][line][part]=copy[line][part]}
+    }
+  }catch(_){}
+}
+function saveDraft(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify({language:state.language,copy:state.copy}))}catch(_){}}
+function openDb(){return new Promise((resolve,reject)=>{const request=indexedDB.open(DB_NAME,1);request.onupgradeneeded=()=>request.result.createObjectStore(STORE_NAME,{keyPath:"index"});request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)})}
+async function restoreCoins(){try{const db=await openDb();const records=await new Promise((resolve,reject)=>{const request=db.transaction(STORE_NAME).objectStore(STORE_NAME).getAll();request.onsuccess=()=>resolve(request.result||[]);request.onerror=()=>reject(request.error)});db.close();records.forEach(item=>{if(state.coins[item.index])state.coins[item.index]={src:item.src||"",name:item.name||""}})}catch(_){}}
+async function persistCoin(index){try{const db=await openDb();await new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put({index,...state.coins[index]});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});db.close()}catch(_){setMessage("图片可正常使用，但浏览器未能保存这张图片草稿。")}}
+async function deleteCoin(index){try{const db=await openDb();await new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).delete(index);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});db.close()}catch(_){}}
+async function clearCoins(){try{const db=await openDb();await new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).clear();tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});db.close()}catch(_){}}
+function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
+function setMessage(message=""){document.getElementById("message").textContent=message}
+function segmentFields(line){const values=state.copy[state.language][line];return [
+  ["before","前文"],["accent","蓝色强调"],["after","后文"]
+].map(([part,label])=>`<div class="field"><label>${label}</label><input data-line="${line}" data-part="${part}" maxlength="28" value="${escapeHtml(values[part])}"></div>`).join("")}
+function renderCopyEditor(){
+  document.querySelectorAll("[data-lang]").forEach(button=>button.classList.toggle("active",button.dataset.lang===state.language));
+  document.getElementById("titleLine1").innerHTML=segmentFields("line1");
+  document.getElementById("titleLine2").innerHTML=segmentFields("line2");
+  const copy=state.copy[state.language];
+  document.querySelectorAll("[data-copy]").forEach(input=>input.value=copy[input.dataset.copy]);
+  document.querySelectorAll("[data-line]").forEach(input=>input.addEventListener("input",()=>{state.copy[state.language][input.dataset.line][input.dataset.part]=input.value;saveDraft();renderPoster()}));
+}
+function renderUploads(){
+  document.getElementById("uploadGrid").innerHTML=state.coins.map((coin,index)=>`<div class="upload-item">
+    <button class="upload-button" data-upload="${index}" type="button"><span class="upload-thumb">${coin.src?`<img src="${escapeHtml(coin.src)}" alt="">`:"+"}</span><span class="upload-copy"><strong>${escapeHtml(coin.name||((index<3?"主币 ":"辅助币 ")+(index<3?index+1:index-2)))}</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="${index}" type="button" ${coin.src?"":"disabled"} aria-label="清除">×</button>
+    <input type="file" hidden data-file="${index}" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div>`).join("");
+  document.querySelectorAll("[data-upload]").forEach(button=>{
+    const index=Number(button.dataset.upload),input=document.querySelector(`[data-file="${index}"]`);
+    button.addEventListener("click",()=>input.click());
+    for(const type of ["dragenter","dragover"])button.addEventListener(type,event=>{event.preventDefault();button.classList.add("drag")});
+    for(const type of ["dragleave","drop"])button.addEventListener(type,event=>{event.preventDefault();button.classList.remove("drag")});
+    button.addEventListener("drop",event=>applyCoin(index,event.dataTransfer?.files?.[0]));
+    input.addEventListener("change",event=>{applyCoin(index,event.target.files?.[0]);event.target.value=""});
+  });
+  document.querySelectorAll("[data-clear]").forEach(button=>button.addEventListener("click",async()=>{const index=Number(button.dataset.clear);state.coins[index]={src:"",name:""};await deleteCoin(index);renderUploads();renderPoster()}));
+}
+function applyCoin(index,file){
+  if(!file)return;
+  const valid=/\.(png|jpe?g|webp|svg)$/i.test(file.name)||["image/png","image/jpeg","image/webp","image/svg+xml"].includes(file.type);
+  if(!valid){setMessage("仅支持 PNG、JPG、WebP 或 SVG 文件。");return}
+  if(file.size>10*1024*1024){setMessage("单张图片不能超过 10MB。");return}
+  const reader=new FileReader();reader.onload=async()=>{state.coins[index]={src:String(reader.result),name:file.name};imageCache.delete(state.coins[index].src);setMessage();renderUploads();renderPoster();await persistCoin(index)};reader.onerror=()=>setMessage("图片读取失败，请重新选择。");reader.readAsDataURL(file);
+}
+function loadImage(src){if(imageCache.has(src))return imageCache.get(src);const promise=new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=src});imageCache.set(src,promise);return promise}
+function fontFor(language,size,weight=500){return `${weight} ${size}px ${language==="zh"?'Harmony,"PingFang SC",sans-serif':'Urbanist,Arial,sans-serif'}`}
+function fitSegments(ctx,segments,maxWidth,maxSize,minSize,language,weight){for(let size=maxSize;size>=minSize;size-=1){ctx.font=fontFor(language,size,weight);if(segments.reduce((sum,item)=>sum+ctx.measureText(item.text).width,0)<=maxWidth)return size}return minSize}
+function drawSegments(ctx,segments,x,y,maxWidth,maxSize,minSize,language,weight){const size=fitSegments(ctx,segments,maxWidth,maxSize,minSize,language,weight);ctx.font=fontFor(language,size,weight);ctx.textBaseline="top";for(const item of segments){ctx.fillStyle=item.accent?"#0f6bff":"#000";ctx.fillText(item.text,x,y);x+=ctx.measureText(item.text).width}return size}
+function normalizedSegments(line){const items=[];for(const part of ["before","accent","after"]){const text=line[part]||"";if(!text)continue;if(items.length&&!/^\s/.test(text))items.push({text:" ",accent:false});items.push({text,accent:part==="accent"})}return items}
+function drawBenefit(ctx,language,index,text,y){const x=language==="zh"?75:87;ctx.save();ctx.strokeStyle=language==="zh"?"#000":"#666";ctx.lineWidth=2;ctx.beginPath();ctx.arc(x+23,y+23,23,0,Math.PI*2);ctx.stroke();ctx.fillStyle=language==="zh"?"#000":"#565b63";ctx.font=fontFor(language,31,400);ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(index),x+23,y+24);ctx.textAlign="left";ctx.textBaseline="top";ctx.font=fontFor(language,language==="zh"?29:27,400);ctx.fillText(text,x+62,y+7);ctx.restore()}
+function drawPlaceholder(ctx,x,y,size,label){ctx.save();ctx.strokeStyle="rgba(15,107,255,.42)";ctx.fillStyle="rgba(255,255,255,.58)";ctx.lineWidth=Math.max(1,size/90);ctx.setLineDash([size/18,size/22]);ctx.beginPath();ctx.arc(x+size/2,y+size/2,size/2-2,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.setLineDash([]);ctx.fillStyle="rgba(15,107,255,.7)";ctx.font=`600 ${Math.max(13,size/8)}px Urbanist,Arial`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(label,x+size/2,y+size/2);ctx.restore()}
+function drawCircularImage(ctx,image,x,y,size){const width=image.naturalWidth||image.width,height=image.naturalHeight||image.height,side=Math.min(width,height),sx=(width-side)/2,sy=(height-side)/2;ctx.save();ctx.beginPath();ctx.arc(x+size/2,y+size/2,size/2,0,Math.PI*2);ctx.clip();ctx.drawImage(image,sx,sy,side,side,x,y,size,size);ctx.restore()}
+async function drawCoins(ctx,showPlaceholders){
+  const slots=[
+    {x:794.5,y:478,size:228.5,label:"主币 1"},{x:566,y:706.5,size:228.5,label:"主币 2"},{x:794.5,y:706.5,size:228.5,label:"主币 3"},
+    ...Array.from({length:6},(_,i)=>({x:566+i*78.48,y:947,size:64.48,label:String(i+1)}))
+  ];
+  const images=await Promise.all(state.coins.map(coin=>coin.src?loadImage(coin.src).catch(()=>null):null));
+  slots.forEach((slot,index)=>{if(images[index])drawCircularImage(ctx,images[index],slot.x,slot.y,slot.size);else if(showPlaceholders)drawPlaceholder(ctx,slot.x,slot.y,slot.size,slot.label)});
+}
+async function drawPoster(language,target,showPlaceholders=true,scale=1){
+  const sequence=++renderSequence;
+  const ctx=target.getContext("2d");
+  target.width=1080*scale;target.height=1080*scale;ctx.setTransform(scale,0,0,scale,0,0);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
+  const [baseBackground,ribbonBackground,logo]=await Promise.all([loadImage(BASE_BACKGROUND),loadImage(RIBBON_BACKGROUND),loadImage(LOGOS[language])]);
+  if(sequence!==renderSequence&&target.id==="poster")return;
+  ctx.drawImage(baseBackground,0,0,1080,1080);ctx.drawImage(ribbonBackground,0,88.795,1080,991.205);
+  const copy=state.copy[language],isZh=language==="zh";
+  const line1=normalizedSegments(copy.line1),line2=normalizedSegments(copy.line2);
+  drawSegments(ctx,line1,isZh?73:87,isZh?78:77,isZh?930:760,isZh?91:102,44,language,750);
+  drawSegments(ctx,line2,isZh?73:87,isZh?191:180,isZh?940:760,isZh?91:102,44,language,750);
+  ctx.fillStyle="#000";ctx.font=fontFor(language,isZh?38:41,400);ctx.textBaseline="top";ctx.fillText(copy.subtitle1,isZh?79:87,isZh?341:310);if(copy.subtitle2)ctx.fillText(copy.subtitle2,isZh?79:87,isZh?388:359);
+  const benefitTop=isZh?433:480,benefitGap=isZh?65:69;
+  [copy.benefit1,copy.benefit2,copy.benefit3].forEach((text,index)=>drawBenefit(ctx,language,index+1,text,benefitTop+index*benefitGap));
+  const dateX=isZh?75:87,dateY=isZh?691:703,dateH=isZh?58:66;ctx.font=fontFor(language,isZh?27:29,500);const dateWidth=Math.min(470,Math.max(isZh?253:270,ctx.measureText(copy.date).width+78));ctx.fillStyle="#0f6bff";ctx.beginPath();ctx.roundRect(dateX,dateY,dateWidth,dateH,16);ctx.fill();ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(copy.date,dateX+dateWidth/2,dateY+dateH/2+1);ctx.textAlign="left";
+  await drawCoins(ctx,showPlaceholders);
+  ctx.drawImage(logo,isZh?73:87,940,isZh?149:183,70);
+}
+function renderPoster(){return drawPoster(state.language,document.getElementById("poster"),true,1).catch(()=>setMessage("模板素材加载失败，请刷新后重试。"))}
+function canvasBlob(canvas){return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error("生成失败")),"image/png"))}
+function triggerBlob(blob,name){const url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download=name;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+async function buildLanguage(language){const canvas=document.createElement("canvas");await drawPoster(language,canvas,false,3);return canvasBlob(canvas)}
+async function downloadCurrent(){const button=document.getElementById("downloadCurrent"),label=button.textContent;button.disabled=true;button.textContent="正在生成 3× PNG…";setMessage();try{triggerBlob(await buildLanguage(state.language),`现货交易派对-${state.language}-3x.png`)}catch(error){setMessage(error.message||"导出失败，请重试。")}finally{button.disabled=false;button.textContent=label;renderPoster()}}
+async function downloadAll(){const button=document.getElementById("downloadAll"),label=button.textContent;button.disabled=true;button.textContent="正在生成双语 3×…";setMessage();try{const zipCtor=window.parent!==window?window.parent.JSZip:null;if(!zipCtor)throw new Error("打包组件尚未加载，请使用当前语种导出。");const zip=new zipCtor();for(const language of ["en","zh"])zip.file(`现货交易派对-${language}-3x.png`,await buildLanguage(language));triggerBlob(await zip.generateAsync({type:"blob"}),"现货交易派对-双语-3x.zip")}catch(error){setMessage(error.message||"导出失败，请重试。")}finally{button.disabled=false;button.textContent=label;renderPoster()}}
+document.querySelectorAll("[data-lang]").forEach(button=>button.addEventListener("click",()=>{state.language=button.dataset.lang;saveDraft();renderCopyEditor();renderPoster()}));
+document.querySelectorAll("[data-copy]").forEach(input=>input.addEventListener("input",()=>{state.copy[state.language][input.dataset.copy]=input.value;saveDraft();renderPoster()}));
+document.getElementById("downloadCurrent").addEventListener("click",downloadCurrent);
+document.getElementById("downloadAll").addEventListener("click",downloadAll);
+document.getElementById("resetButton").addEventListener("click",async()=>{if(!confirm("确认恢复默认文案并清除全部币种图片？"))return;state={language:"en",copy:structuredClone(defaults),coins:Array.from({length:9},()=>({src:"",name:""}))};localStorage.removeItem(DRAFT_KEY);await clearCoins();renderCopyEditor();renderUploads();renderPoster()});
+async function initialize(){loadDraft();await Promise.allSettled([restoreCoins(),document.fonts.ready,loadImage(BASE_BACKGROUND),loadImage(RIBBON_BACKGROUND),loadImage(LOGOS.en),loadImage(LOGOS.zh)]);renderCopyEditor();renderUploads();await renderPoster();document.body.classList.add("ready")}
+initialize();
+</script>
+</body>
+</html>
