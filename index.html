@@ -1385,10 +1385,10 @@ html { scroll-behavior: smooth; }
       <div class="spot-listing-help">英文、简中、繁中共用名称；可手动换行，最多显示两行。</div>
       <div class="panel-title v2-panel-label" style="margin-top:20px;">Logo</div>
       <div class="upload-area"><button class="upload-btn" id="spotListingLogoBtn" onclick="document.getElementById('spotListingLogoFile').click()">上传 Logo</button><input id="spotListingLogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.webp,.svg" onchange="handleSpotListingLogo(event)"></div>
-      <button class="download-all-btn" id="spotListingDownloadBtn" onclick="downloadSpotListing()">下载 6 张</button>
+      <button class="download-all-btn" id="spotListingDownloadBtn" onclick="downloadSpotListing()">下载 6 张（3×）</button>
     </div>
     <div class="ad-preview-shell">
-      <div class="ad-preview-head"><div class="ad-preview-title">现货上币 · 158 × 200</div></div>
+      <div class="ad-preview-head"><div class="ad-preview-title">现货上币 · 3× 导出 474 × 600</div></div>
       <div class="spot-listing-preview-grid" id="spotListingPreviewGrid"></div>
     </div>
   </section>
@@ -6157,7 +6157,7 @@ async function downloadSpotListing() {
     const files = [];
     for (const language of SPOT_LISTING_LANGUAGES) for (const theme of ['light','dark']) {
       const canvas = document.createElement('canvas');
-      await drawSpotListing(canvas,language,theme);
+      await drawSpotListing(canvas,language,theme,3);
       const blob = await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
       const themeLabel = theme === 'light' ? '白天' : '黑天';
       files.push({ name:`现货上币/${language.code}/现货上币_${language.code}_${themeLabel}.png`, data:new Uint8Array(await blob.arrayBuffer()) });
@@ -6169,7 +6169,7 @@ async function downloadSpotListing() {
     document.body.appendChild(link); link.click(); link.remove();
     setTimeout(()=>URL.revokeObjectURL(url),10000);
   } catch (error) { console.error(error); alert(error.message || '下载失败'); }
-  finally { if (button) { button.disabled = false; button.textContent = '下载 6 张'; } }
+  finally { if (button) { button.disabled = false; button.textContent = '下载 6 张（3×）'; } }
 }
 
 loadSpotListingDraft();
