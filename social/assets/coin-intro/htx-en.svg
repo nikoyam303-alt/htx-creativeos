@@ -1,7 +1,5 @@
 <svg width="184" height="70" viewBox="0 0 184 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="184" height="70" fill="#505050"/>
 <g id="&#230;&#150;&#176;/en-us&#239;&#188;&#136;&#232;&#139;&#177;&#230;&#150;&#135;&#239;&#188;&#137;">
-<rect width="1080" height="1080" transform="translate(-87 -940.52)" fill="url(#paint0_radial_0_1)"/>
 <g id="Group 2147214605">
 <g id="Group 1312322188">
 <path id="Vector" d="M30.3696 21.4739C30.5796 11.1717 24.6926 2.19454 21.6265 0.0369706C21.6125 0.0230956 21.3395 -0.122591 21.3605 0.279785C21.3605 0.286723 21.3535 0.286721 21.3535 0.293658C21.0385 19.7534 10.9445 24.9982 5.46343 32.13C-6.71665 47.9891 3.44741 66.0822 16.6145 69.5093C16.8385 69.5648 17.4475 69.7452 18.6025 69.9811C19.2045 70.106 19.3795 69.5995 18.9385 68.8433C17.3635 66.1308 14.5635 61.552 14.0105 55.669C12.7505 42.009 30.1246 33.462 30.3696 21.4739Z" fill="#00003E"/>
@@ -19,11 +17,4 @@
 </g>
 </g>
 </g>
-<defs>
-<radialGradient id="paint0_radial_0_1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(920 17) rotate(132.936) scale(1374.09)">
-<stop stop-color="#D6D6D6"/>
-<stop offset="0.5" stop-color="#F5F5F5"/>
-<stop offset="1" stop-color="#C6C6C6"/>
-</radialGradient>
-</defs>
 </svg>

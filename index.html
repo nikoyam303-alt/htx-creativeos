@@ -1178,6 +1178,14 @@ body {
 }
 .social-template-btn:hover { color: var(--brand-blue); background: #F7FAFF; }
 .social-template-btn.active { color: var(--brand-blue); background: #F8FAFC; }
+.social-template-group { padding: 4px 0; }
+.social-template-parent { min-height: 34px; padding: 0 12px; display: flex; align-items: center; color: #344054; font-size: 13px; font-weight: 600; }
+.social-template-children { display: flex; flex-direction: column; gap: 4px; padding-left: 12px; }
+.social-template-sub { min-height: 42px; padding: 0 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.social-template-sub:focus, .social-template-sub:focus-visible { outline: none; box-shadow: none; }
+.social-template-check { width: 16px; height: 16px; flex: 0 0 16px; position: relative; border: 1px solid #D0D5DD; border-radius: 4px; background: #FFF; }
+.social-template-sub.active .social-template-check { border-color: var(--brand-blue); background: var(--brand-blue); }
+.social-template-sub.active .social-template-check::after { content: ''; position: absolute; inset: 0; background: center / 11px 11px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.2 6.1 4.7 8.3 9.8 3.4' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
 .social-module { display: block; width: 100%; min-height: 820px; }
 .social-module iframe { display: block; width: 100%; height: calc(100vh - 64px); min-height: 820px; border: 0; border-radius: 12px; background: #F4F6FA; }
 @media (max-width: 1180px) { .otc-module.active { flex-wrap: wrap; } }
@@ -1186,6 +1194,9 @@ body {
   .social-template-nav { position: relative; top: auto; }
   .social-template-list { flex-direction: row; }
   .social-template-btn { width: auto; flex: 1; text-align: center; }
+  .social-template-group { flex: 1 1 100%; }
+  .social-template-parent { justify-content: center; }
+  .social-template-children { flex-direction: row; padding-left: 0; }
   .social-module iframe { height: 1100px; }
 }
 
@@ -1655,7 +1666,13 @@ html { scroll-behavior: smooth; }
     <div class="social-template-list">
       <button class="social-template-btn" data-social-tool="listing" type="button" onclick="switchSocialTool('listing')">上币模板</button>
       <button class="social-template-btn" data-social-tool="coin-intro" type="button" onclick="switchSocialTool('coin-intro')">币种介绍</button>
-      <button class="social-template-btn" data-social-tool="spot-carnival" type="button" onclick="switchSocialTool('spot-carnival')">现货交易派对</button>
+      <div class="social-template-group">
+        <div class="social-template-parent">现货交易派对</div>
+        <div class="social-template-children">
+          <button class="social-template-btn social-template-sub" data-social-tool="spot-carnival" type="button" onclick="switchSocialTool('spot-carnival')"><span class="social-template-check" aria-hidden="true"></span><span>现货交易</span></button>
+          <button class="social-template-btn social-template-sub" data-social-tool="spot-carnival-vip" type="button" onclick="switchSocialTool('spot-carnival-vip')"><span class="social-template-check" aria-hidden="true"></span><span>VIP</span></button>
+        </div>
+      </div>
       <button class="social-template-btn" data-social-tool="weekly-recap" type="button" onclick="switchSocialTool('weekly-recap')">上新周报</button>
       <button class="social-template-btn" data-social-tool="research-cover" type="button" onclick="switchSocialTool('research-cover')">研报封面</button>
       <button class="social-template-btn" data-social-tool="contract-listing" type="button" onclick="switchSocialTool('contract-listing')">合约上币</button>
@@ -6486,18 +6503,20 @@ document.querySelectorAll('[data-layout]').forEach(button=>button.addEventListen
 
 function switchSocialTool(tool, updateLocation = true) {
   const frame = document.getElementById('socialToolFrame');
-  const nextTool = ['listing', 'coin-intro', 'spot-carnival', 'weekly-recap', 'research-cover', 'contract-listing', 'poster'].includes(tool) ? tool : 'poster';
-  const spotCarnivalVersion = 'v=202608181825';
+  const nextTool = ['listing', 'coin-intro', 'spot-carnival', 'spot-carnival-vip', 'weekly-recap', 'research-cover', 'contract-listing', 'poster'].includes(tool) ? tool : 'poster';
+  const spotCarnivalVersion = 'v=202608191130';
   const contractListingVersion = 'v=202608111620';
   const researchCoverVersion = 'v=202608141930';
-  const requiresSpotCarnivalReload = nextTool === 'spot-carnival' && !String(frame?.src || '').includes(spotCarnivalVersion);
+  const isSpotCarnival = nextTool === 'spot-carnival' || nextTool === 'spot-carnival-vip';
+  const spotCarnivalSrc = String(frame?.src || '');
+  const requiresSpotCarnivalReload = isSpotCarnival && (!spotCarnivalSrc.includes(spotCarnivalVersion) || (nextTool === 'spot-carnival-vip') !== spotCarnivalSrc.includes('theme=vip'));
   const requiresContractReload = nextTool === 'contract-listing' && !String(frame?.src || '').includes(contractListingVersion);
   const requiresResearchCoverReload = nextTool === 'research-cover' && !String(frame?.src || '').includes(researchCoverVersion);
   if (frame && (frame.dataset.activeTool !== nextTool || requiresSpotCarnivalReload || requiresContractReload || requiresResearchCoverReload)) {
-    if (nextTool === 'contract-listing' || nextTool === 'listing' || nextTool === 'research-cover' || nextTool === 'spot-carnival') {
+    if (nextTool === 'contract-listing' || nextTool === 'listing' || nextTool === 'research-cover' || isSpotCarnival) {
       frame.removeAttribute('srcdoc');
-      frame.src = nextTool === 'spot-carnival'
-        ? `social/coin-intro.html?${spotCarnivalVersion}`
+      frame.src = isSpotCarnival
+        ? `social/coin-intro.html?${spotCarnivalVersion}${nextTool === 'spot-carnival-vip' ? '&theme=vip' : ''}`
         : nextTool === 'listing'
         ? 'social/listing.html?v=202608181640'
         : nextTool === 'research-cover'
@@ -6512,7 +6531,7 @@ function switchSocialTool(tool, updateLocation = true) {
     }
     frame.dataset.activeTool = nextTool;
   }
-  if (frame) frame.title = ({ listing: '上币模板编辑器', 'coin-intro': '币种介绍编辑器', 'spot-carnival': '现货交易派对编辑器', 'weekly-recap': '上新周报编辑器', 'research-cover': '研报封面编辑器', 'contract-listing': '合约上币编辑器', poster: '社媒海报编辑器' })[nextTool];
+  if (frame) frame.title = ({ listing: '上币模板编辑器', 'coin-intro': '币种介绍编辑器', 'spot-carnival': '现货交易派对编辑器', 'spot-carnival-vip': '现货交易派对 VIP 编辑器', 'weekly-recap': '上新周报编辑器', 'research-cover': '研报封面编辑器', 'contract-listing': '合约上币编辑器', poster: '社媒海报编辑器' })[nextTool];
   document.querySelectorAll('.social-template-btn').forEach(button => {
     button.classList.toggle('active', button.dataset.socialTool === nextTool);
   });
