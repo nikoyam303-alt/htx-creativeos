@@ -6229,6 +6229,30 @@ const v2SlotGroups = {
   topic: ['topic'],
   finance: []
 };
+const v2ImplicitSlotGroups = {
+  baping: { slots: ['baping'] },
+  trade: { slots: ['trade'], variants: ['tradeapp-light','tradeapp-dark','tradeweb'] },
+  share: { slots: ['share'] },
+  community: { slots: ['community'] },
+  topic: { slots: ['topic'] }
+};
+
+function enableV2ImplicitSlots(group) {
+  const config = v2ImplicitSlotGroups[group];
+  if (!config) return false;
+  let changed = false;
+  (config.slots || []).forEach(key => {
+    if (activeSlots.has(key)) return;
+    activeSlots.add(key);
+    changed = true;
+  });
+  (config.variants || []).forEach(key => {
+    if (activeTradeVariants.has(key)) return;
+    activeTradeVariants.add(key);
+    changed = true;
+  });
+  return changed;
+}
 
 function openWorkspaceSection(section) {
   if (section === 'social') {
@@ -6545,6 +6569,7 @@ function switchSocialTool(tool, updateLocation = true) {
 function setV2Group(group, updateButtons = true, updateLocation = true) {
   if (!v2SlotGroups[group]) group = 'common';
   v2ActiveGroup = group;
+  const implicitSlotsChanged = enableV2ImplicitSlots(group);
   localStorage.setItem(V2_ACTIVE_GROUP_KEY, group);
   if (updateLocation && location.hash !== `#${group}`) history.replaceState(null, '', `#${group}`);
   if (updateButtons) document.querySelectorAll('.v2-group-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.v2Group === group));
@@ -6601,8 +6626,9 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
   const standaloneGroup = group === 'ads' || group === 'spotlisting' || group === 'zero' || group === 'finance' || group === 'follow' || group === 'gridbanner' || group === 'otc';
   if (editorPanel) editorPanel.classList.toggle('v2-hidden', standaloneGroup);
   if (previewArea) previewArea.classList.toggle('v2-hidden', standaloneGroup);
-  if (slotTitle) slotTitle.classList.toggle('v2-hidden', standaloneGroup);
-  if (slotMount) slotMount.classList.toggle('v2-hidden', standaloneGroup);
+  const hideSlotControls = standaloneGroup || !!v2ImplicitSlotGroups[group];
+  if (slotTitle) slotTitle.classList.toggle('v2-hidden', hideSlotControls);
+  if (slotMount) slotMount.classList.toggle('v2-hidden', hideSlotControls);
   if (adSiteNavSection) adSiteNavSection.classList.toggle('v2-hidden', group !== 'ads');
   const sections = {
     baping: [document.getElementById('bapingLangSection')],
@@ -6645,6 +6671,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
   if (group === 'follow') renderFollowBannerPreview();
   if (group === 'gridbanner') renderGridBannerPreview();
   if (group === 'otc') renderOtcPreview();
+  if (implicitSlotsChanged) scheduleDraftSave();
   requestAnimationFrame(() => autoResizeAllTextAreas());
 }
 
