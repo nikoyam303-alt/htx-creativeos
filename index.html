@@ -1580,6 +1580,16 @@ html { scroll-behavior: smooth; }
       </div>
     </div>
 
+    <div id="topicImageSection" class="baping-lang-section" style="display:none">
+      <hr class="divider">
+      <div class="panel-title v2-panel-label">专题页专属配图（可选）</div>
+      <button class="library-entry-btn" onclick="openAssetLibrary('topic')">从 GitHub 图库选择</button>
+      <div class="upload-area">
+        <button class="upload-btn" id="topicImageBtn" onclick="document.getElementById('topicImageFile').click()">点击或拖拽上传</button>
+        <input type="file" id="topicImageFile" accept="image/*,.svg" onchange="handleTopicImage(event)">
+      </div>
+    </div>
+
     <hr class="divider">
 
     <div class="panel-title">配图（可选）</div>
@@ -1689,6 +1699,7 @@ let activeSlots = new Set();
 let activeTradeVariants = new Set();
 let langs = [];
 let images = { light: null, dark: null };
+let topicImage = null;
 let communityImage = null;
 let langCounter = 0;
 let validLangsCache = [];
@@ -1913,6 +1924,7 @@ function saveDraft(statusText = '已自动保存') {
     adGradientEnabled,
     hiddenLangCodes: Object.fromEntries(Object.entries(hiddenLangCodes).map(([key, value]) => [key, Array.from(value)])),
     images,
+    topicImage,
     communityImage
   };
   try {
@@ -2008,6 +2020,7 @@ function resetToDefaultState() {
   activeSlots = new Set();
   activeTradeVariants = new Set();
   images = { light: null, dark: null };
+  topicImage = null;
   communityImage = null;
   bapingLangs = {};
   bapingCustomEnabled = true;
@@ -2052,6 +2065,7 @@ function restoreDraft() {
       activeTradeVariants = new Set(Array.isArray(draft.tradeVariants) ? draft.tradeVariants : []);
       if (activeSlots.has('trade') && !activeTradeVariants.size) activeTradeVariants = new Set(['tradeapp-light','tradeapp-dark','tradeweb']);
       images = draft.images || { light: null, dark: null };
+      topicImage = draft.topicImage || null;
       communityImage = draft.communityImage || null;
       bapingLangs = draft.bapingLangs || {};
       if ((draft.version || 1) < 2) {
@@ -2100,6 +2114,7 @@ function restoreDraft() {
   updateSlotControls();
   setUploadButtonState('light');
   setUploadButtonState('dark');
+  setTopicImageButtonState();
   setBapingUploadButtonState();
   const row = document.getElementById('bapingDescToggleRow');
   if (row) row.classList.toggle('on', bapingCustomEnabled);
@@ -2161,7 +2176,8 @@ function clearDraft() {
     Object.keys(emailFontModes).forEach(key => delete emailFontModes[key]);
   } else if (group === 'topic') {
     langs.forEach(lang => { lang.subtitle = ''; lang.title = ''; });
-    images = { light: null, dark: null };
+    topicImage = null;
+    setTopicImageButtonState();
   } else if (group === 'community') {
     langs.forEach(lang => { lang.title = ''; });
     communityImage = null;
@@ -2202,6 +2218,7 @@ function clearDraft() {
   setTradeUploadButtonState('dark');
   setUploadButtonState('light');
   setUploadButtonState('dark');
+  setTopicImageButtonState();
   setBapingUploadButtonState();
   setPcRebateUploadButtonState();
   setAppRebateUploadButtonState();
@@ -3296,6 +3313,27 @@ function handleUpload(event, theme) {
   reader.readAsDataURL(file);
 }
 
+function setTopicImageButtonState() {
+  const btn = document.getElementById('topicImageBtn');
+  if (!btn) return;
+  btn.textContent = topicImage ? '配图已上传' : '点击或拖拽上传';
+  btn.className = topicImage ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handleTopicImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    topicImage = e.target.result;
+    setTopicImageButtonState();
+    scheduleDraftSave();
+    schedulePreview();
+    if (activeSlots.size) generate();
+  };
+  reader.readAsDataURL(file);
+}
+
 function setCommunityImageButtonState() {
   const btn = document.getElementById('communityImageBtn');
   if (!btn) return;
@@ -4219,7 +4257,7 @@ function generate() {
     if (!validShare.length) document.getElementById('gridShare').innerHTML = empty;
     else {
       document.getElementById('gridShare').innerHTML = validShare.map(l => langGroupHtml('share', l,
-        wrap('share','sw-share','si-share', cardShare(l, shareImage || images.light), '分享页', l, 'share', '')
+        wrap('share','sw-share','si-share', cardShare(l, shareImage), '分享页', l, 'share', '')
       )).join('');
       validShare.forEach(l => applySlotClip('share', l.id, !!scaleState[slotLangKey('share', l.id)]));
     }
@@ -4272,8 +4310,8 @@ function generate() {
     if (!valid.length) document.getElementById('gridTopic').innerHTML = empty;
     else {
       document.getElementById('gridTopic').innerHTML = valid.map(l => langGroupHtml('topic', l,
-        wrap('topicapp','sw-topicapp','si-topicapp', cardTopic(l,'app',li), 'App', l, 'topicapp', '') +
-        wrap('topicweb','sw-topicweb','si-topicweb', cardTopic(l,'web',li), 'Web', l, 'topicweb', '')
+        wrap('topicapp','sw-topicapp','si-topicapp', cardTopic(l,'app',topicImage), 'App', l, 'topicapp', '') +
+        wrap('topicweb','sw-topicweb','si-topicweb', cardTopic(l,'web',topicImage), 'Web', l, 'topicweb', '')
       )).join('');
     }
   }
@@ -4283,7 +4321,7 @@ function generate() {
     if (!validBaping.length) document.getElementById('gridBaping').innerHTML = '<div class="empty-state">请填写霸屏文案后将自动预览</div>';
     else {
       document.getElementById('gridBaping').innerHTML = validBaping.map(l => langGroupHtml('baping', l,
-        wrap('baping','sw-baping','si-baping', cardBaping(l, bapingImage || images.light), '霸屏', l, 'baping', '')
+        wrap('baping','sw-baping','si-baping', cardBaping(l, bapingImage), '霸屏', l, 'baping', '')
       )).join('');
       validBaping.forEach(l => applySlotClip('baping', l.id, !!scaleState[slotLangKey('baping', l.id)]));
     }
@@ -4506,12 +4544,13 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
 
   let imgSrc = null;
   if (type === 'community') imgSrc = communityImage;
+  else if (type === 'share') imgSrc = shareImage;
   else if (type === 'apprebate') imgSrc = apprebateImage;
   else if (type === 'pcrebate') imgSrc = pcrebateImage;
-  else if (type === 'baping') imgSrc = bapingImage || images.light;
+  else if (type === 'baping') imgSrc = bapingImage;
   else if (type === 'tradeapp') imgSrc = theme === 'light' ? tradeImages.light : tradeImages.dark;
   else if (type === 'tradeweb') imgSrc = tradeImages.dark;
-  else if (isTopic) imgSrc = images.light;
+  else if (isTopic) imgSrc = topicImage;
   else if (type === 'email' || type === 'appcal' || type === 'landingweb') imgSrc = images.light;
   else if (s.subClr && type !== 'pccal' && type !== 'share') imgSrc = images.dark;
   else if (type === 'pccal' || type === 'share') imgSrc = images.light;
@@ -5994,7 +6033,6 @@ function saveShareDraft() {
 
 function migrateShareImageFromCommon() {
   if (shareImageInitialized) return;
-  if (!shareImage && images.light) shareImage = images.light;
   shareImageInitialized = true;
   saveShareDraft();
   renderShareLangList();
@@ -6601,7 +6639,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     section.style.display = belongsToCurrentGroup && isSelected ? '' : 'none';
   });
   v2CommonNodes.forEach((node, index) => {
-    const show = group === 'common' || group === 'topic' || (group === 'community' && index < 2);
+    const show = group === 'common' || ((group === 'topic' || group === 'community') && index < 2);
     node.classList.toggle('v2-hidden', !show);
   });
   const adModule = document.getElementById('adModule');
@@ -6635,7 +6673,8 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     trade: [document.getElementById('tradeLangSection')],
     share: [document.getElementById('shareLangSection')],
     rebate: [document.getElementById('pcrebateLangSection'), document.getElementById('apprebateLangSection'), document.getElementById('rebatePcAddLangButton'), document.getElementById('rebateAddLangButton')],
-    community: [document.getElementById('communityImageSection')]
+    community: [document.getElementById('communityImageSection')],
+    topic: [document.getElementById('topicImageSection')]
   };
   Object.entries(sections).forEach(([key, nodes]) => nodes.forEach(node => {
     if (!node) return;
@@ -6647,7 +6686,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     spotlisting: ['现货上币', '填写名称并上传 Logo，自动生成英文、简中、繁中的白天与黑天版本。'],
     baping: ['霸屏', '独立管理霸屏文案和配图。'],
     trade: ['交易赛', '独立管理 App 与 Web 交易赛文案和素材。'],
-    share: ['分享页', '独立管理分享页的多语种副标题、主标题和说明文字。'],
+    share: ['分享页', '独立管理分享页的多语种文案和专属配图。'],
     rebate: ['返佣', '集中管理 PC返佣与 APP返佣，两套版式可分别配置。'],
     ads: ['投放素材', '按三种固定版式生成多语言、多尺寸投放素材。'],
     zero: ['0元购页banner', '独立管理多语种文案与白天/黑天配图。'],
@@ -6655,7 +6694,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
     gridbanner: ['网格banner', '独立管理多语种标题与白天/黑天配图。'],
     otc: ['OTC', '独立管理 App 与 Web 的经典、甄选版式和多语种文案。'],
     community: ['社区', '使用通用文案结构，并独立管理社区资源位配图。'],
-    topic: ['专题页banner', '独立生成 App 与 Web 两套专题页banner。'],
+    topic: ['专题页banner', '独立管理专题页文案和专属配图，生成 App 与 Web 两套版式。'],
     finance: ['理财banner', '独立生成 App 与 Web、白天与黑天四套理财banner。']
   }[group];
   const title = document.querySelector('.v2-editor-title');
@@ -6694,7 +6733,7 @@ function initV2Workspace() {
   v2CommonNodes = [langList, commonAdd, sharedImageTitle, sharedLibrary, sharedUpload].filter(Boolean);
 
   panel.querySelectorAll(':scope > .divider').forEach(el => el.classList.add('v2-hidden'));
-  ['bapingLangSection','tradeLangSection','shareLangSection','pcrebateLangSection','apprebateLangSection','communityImageSection','rebatePcAddLangButton','rebateAddLangButton'].forEach(id => {
+  ['bapingLangSection','tradeLangSection','shareLangSection','pcrebateLangSection','apprebateLangSection','communityImageSection','topicImageSection','rebatePcAddLangButton','rebateAddLangButton'].forEach(id => {
     const section = document.getElementById(id);
     if (section) section.classList.add('v2-hidden');
   });
@@ -6783,6 +6822,7 @@ const demoAssetLibrary = [
 ];
 let activeAssetLibrary = [];
 let selectedLibraryAssetId = '';
+let assetLibraryTargetGroup = 'common';
 const assetLibraryTaxonomy={
   '金融运营':['现货','资产','合约','赚币','杠杆','质押','OTC'],
   '用户运营':['平台运营','业务线聚合'],
@@ -6805,7 +6845,8 @@ function saveAssetLibraryPreferences(){
   localStorage.setItem(ASSET_LIBRARY_PREF_KEY,JSON.stringify({major:selectedLibraryMajor,sub:selectedLibrarySub,assetId:selectedLibraryAssetId,search:assetLibrarySearchValue}));
 }
 const ASSET_LIBRARY_MANIFEST_URL='https://nikoyam303-alt.github.io/htx-asset-library/assets.json';
-function openAssetLibrary(){
+function openAssetLibrary(targetGroup='common'){
+  assetLibraryTargetGroup=targetGroup==='topic'?'topic':'common';
   const searchInput=document.getElementById('assetLibrarySearch');if(searchInput)searchInput.value=assetLibrarySearchValue;
   renderAssetLibraryCategories();
   if(activeAssetLibrary.length)renderAssetLibrary();
@@ -6875,9 +6916,15 @@ async function applyAssetLibrarySelection(){
   const item=activeAssetLibrary.find(asset=>asset.id===selectedLibraryAssetId);if(!item)return;
   const button=document.getElementById('assetLibraryApply');button.disabled=true;button.textContent='正在写入…';
   try{
-    images.light=item.light?await githubImageToDataUrl(item.light):createDemoLibraryAsset('light',item.id);images.dark=item.dark?await githubImageToDataUrl(item.dark):createDemoLibraryAsset('dark',item.id);
+    if(assetLibraryTargetGroup==='topic'){
+      const source=item.light||item.dark;
+      topicImage=source?await githubImageToDataUrl(source):createDemoLibraryAsset('light',item.id);
+    }else{
+      images.light=item.light?await githubImageToDataUrl(item.light):createDemoLibraryAsset('light',item.id);
+      images.dark=item.dark?await githubImageToDataUrl(item.dark):createDemoLibraryAsset('dark',item.id);
+    }
   }catch(error){alert(`GitHub 素材读取失败：${error.message}`);button.disabled=false;button.textContent='应用';return;}
-  setUploadButtonState('light');setUploadButtonState('dark');scheduleDraftSave();schedulePreview();if(activeSlots.size)generate();
+  setUploadButtonState('light');setUploadButtonState('dark');setTopicImageButtonState();scheduleDraftSave();schedulePreview();if(activeSlots.size)generate();
   button.disabled=false;button.textContent='应用';closeAssetLibrary();
 }
 
