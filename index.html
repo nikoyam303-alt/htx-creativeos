@@ -7,6 +7,7 @@
 <title>HTX 运营视觉工作台</title>
 <script>if(location.hash==='#social'){document.documentElement.classList.add('initial-social');history.scrollRestoration='manual'}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+<script src="social/assets/html2canvas.min.js" defer></script>
 <style>
   html { background: #F4F6FA; }
   html.initial-social body { visibility: hidden; }
@@ -4491,21 +4492,60 @@ function fillCanvasBg(ctx, s, c, W, H) {
   }
 }
 
-function fillTopicCanvasBg(ctx, W, H) {
-  const gradient = ctx.createLinearGradient(0, 0, 0, H);
-  gradient.addColorStop(0, '#075FF2');
-  gradient.addColorStop(1, '#559CFF');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, W, H);
+async function waitForElementImages(root) {
+  const imageLoads = [...root.querySelectorAll('img')].map(async image => {
+    if (!image.complete) {
+      await new Promise(resolve => {
+        image.addEventListener('load', resolve, { once: true });
+        image.addEventListener('error', resolve, { once: true });
+      });
+    }
+    if (image.decode) {
+      try { await image.decode(); } catch (_) {}
+    }
+  });
+  await Promise.all(imageLoads);
 }
 
-async function drawTopicBrand(ctx, mode) {
-  const isApp = mode === 'app';
-  const x = isApp ? 24 : 68.39;
-  const y = isApp ? 18 : 47.39;
-  const width = isApp ? 47 : 80.61;
-  const height = isApp ? 22.3 : 38.24;
-  await drawImgContain(ctx, 'assets/brand/htx-logo-cn-white.svg', x, y, width, height);
+async function renderPreviewElementToDataUrl(inner, W, H, scale) {
+  if (typeof html2canvas !== 'function') throw new Error('导出组件尚未加载，请刷新页面后重试。');
+  const host = document.createElement('div');
+  Object.assign(host.style, {
+    position: 'fixed',
+    left: '0',
+    top: '0',
+    width: `${W}px`,
+    height: `${H}px`,
+    overflow: 'hidden',
+    pointerEvents: 'none',
+    zIndex: '-2147483648'
+  });
+  const clone = inner.cloneNode(true);
+  Object.assign(clone.style, {
+    position: 'relative',
+    width: `${W}px`,
+    height: `${H}px`,
+    margin: '0',
+    transform: 'none'
+  });
+  host.appendChild(clone);
+  document.body.appendChild(host);
+  try {
+    await waitForElementImages(clone);
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    const canvas = await html2canvas(clone, {
+      backgroundColor: null,
+      scale,
+      width: W,
+      height: H,
+      useCORS: true,
+      allowTaint: false,
+      logging: false
+    });
+    return canvasToPngDataUrl(canvas);
+  } finally {
+    host.remove();
+  }
 }
 
 async function renderToDataUrl(type, theme, langId, autoScale) {
@@ -4521,6 +4561,14 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   const padY = s.PAD;
   const padX = s.PADX || s.PAD;
   const DPR = EXPORT_SCALE[type] || 1;
+  const isTopic = type === 'topicapp' || type === 'topicweb';
+  const selector = type === 'email' ? '.b-email' : type === 'appcal' ? '.b-appcal' : type === 'pccal' ? '.b-pccal' : type === 'share' ? '.b-share' : type === 'baping' ? '.b-baping' : type === 'tradeweb' ? '.b-tradeweb' : `.b-${type}${theme ? '.' + theme : ''}`;
+  const inner = document.querySelector(`${selector}[data-langid="${langId}"]`);
+  if (!inner) return null;
+  // Topic downloads reuse the exact preview DOM, so typography, wrapping and
+  // image object-position cannot drift from what operators approved on screen.
+  if (isTopic) return renderPreviewElementToDataUrl(inner, W, H, DPR);
+
   const canvas = document.createElement('canvas');
   canvas.width = Math.round(W * DPR);
   canvas.height = Math.round(H * DPR);
@@ -4528,13 +4576,7 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   ctx.scale(DPR, DPR);
 
   const c = getColors(type, theme);
-  const isTopic = type === 'topicapp' || type === 'topicweb';
-  if (isTopic) fillTopicCanvasBg(ctx, W, H);
-  else fillCanvasBg(ctx, s, c, W, H);
-
-  const selector = type === 'email' ? '.b-email' : type === 'appcal' ? '.b-appcal' : type === 'pccal' ? '.b-pccal' : type === 'share' ? '.b-share' : type === 'baping' ? '.b-baping' : type === 'tradeweb' ? '.b-tradeweb' : `.b-${type}${theme ? '.' + theme : ''}`;
-  const inner = document.querySelector(`${selector}[data-langid="${langId}"]`);
-  if (!inner) return null;
+  fillCanvasBg(ctx, s, c, W, H);
 
   const sub = inner.querySelector('.sub');
   const tit = inner.querySelector('.tit');
@@ -4606,50 +4648,6 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
       ctx.scale(DPR, DPR);
       fillCanvasBg(ctx, s, c, W, H);
     }
-  }
-
-  if (isTopic) {
-    const isApp = type === 'topicapp';
-    await drawTopicBrand(ctx, isApp ? 'app' : 'web');
-    const textX = s.topicTextX;
-    const titleW = s.topicTextW;
-    const subtitleW = s.topicTextW;
-    const imageX = W - s.topicImgRight - s.imgW;
-    const imageY = s.topicImageY;
-    const imageW = s.imgW;
-    const imageH = s.topicImageH;
-    ctx.font = `${titW} ${titSz}px ${titFont}`;
-    let titleLines = 0;
-    for (const seg of titTxt.split('\n')) titleLines += countLinesForText(ctx, seg, titleW);
-    const titleH = Math.max(1, titleLines) * titSz * titLH;
-    ctx.font = `${subW} ${subSz}px ${subFont}`;
-    let subLines = 0;
-    for (const seg of subTxt.split('\n')) subLines += countLinesForText(ctx, seg, subtitleW);
-    const subH = subLines * subSz * subLH;
-    const gap = titleLines && subLines ? s.gap : 0;
-    const blockTop = isApp ? 100.34 : 200;
-    if (isApp) {
-      if (subLines) {
-        ctx.fillStyle = c.sub;
-        ctx.font = `${subW} ${subSz}px ${subFont}`;
-        drawMultilineText(ctx, subTxt, textX, blockTop + subSz, subtitleW, subSz, subLH, subSz, subH);
-      }
-      ctx.fillStyle = c.tit;
-      ctx.font = `${titW} ${titSz}px ${titFont}`;
-      drawMultilineText(ctx, titTxt, textX, blockTop + subH + gap + titSz, titleW, titSz, titLH, titSz, titleH);
-    } else {
-      ctx.fillStyle = c.tit;
-      ctx.font = `${titW} ${titSz}px ${titFont}`;
-      drawMultilineText(ctx, titTxt, textX, blockTop + titSz, titleW, titSz, titLH, titSz, titleH);
-      if (subLines) {
-        ctx.fillStyle = c.sub;
-        ctx.font = `${subW} ${subSz}px ${subFont}`;
-        drawMultilineText(ctx, subTxt, textX, blockTop + titleH + gap + subSz, subtitleW, subSz, subLH, subSz, subH);
-      }
-    }
-    // Preview uses object-position: center bottom; export must use the same alignment.
-    if (imgSrc) await drawImgContain(ctx, imgSrc, imageX, imageY, imageW, imageH, 'bottom');
-    return canvasToPngDataUrl(canvas);
   }
 
   if (type === 'apprebate') {
