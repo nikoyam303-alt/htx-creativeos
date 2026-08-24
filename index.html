@@ -281,8 +281,9 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .b-topicweb .sub { margin-top: 9.35px; max-width: 722px; color: #FAFAFA; font-size: 28px; font-weight: 400; line-height: 1.37; }
   .b-topicapp .tit:empty, .b-topicapp .sub:empty, .b-topicweb .tit:empty, .b-topicweb .sub:empty { display: none; }
   .b-topicapp .imgw, .b-topicweb .imgw { position: absolute; z-index: 1; display: flex; align-items: flex-end; justify-content: center; }
-  .b-topicapp .imgw { right: 8px; bottom: 0; width: 158px; height: 196px; }
-  .b-topicweb .imgw { right: 60px; bottom: 0; width: 390px; height: 330px; }
+  /* Keep the artwork safety frame clear of the copy frame: 8px on App, 24px on Web. */
+  .b-topicapp .imgw { right: 8px; bottom: 0; width: 143px; height: 196px; }
+  .b-topicweb .imgw { right: 60px; bottom: 0; width: 326px; height: 330px; }
   .b-topicapp .imgw img, .b-topicweb .imgw img { width: 100%; height: 100%; display: block; object-fit: contain; object-position: center bottom; }
 
   .sw-baping { width: 183px; height: 220px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 12px; }
@@ -1769,8 +1770,8 @@ const SPECS = {
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:98, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:20 },
   landingweb:{ W:1200, H:299, PAD:30, subSz:22, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:40, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:126, imgPos:'vt', radius:0, boldTit:true, subLH:1.2, titLH:1.2, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000' },
   /* Figma 字号基准：App 主标题 26.1px / 副标题 12px；Web 主标题 45px / 副标题 28px；行高均为 137%。 */
-  topicapp:{ W:375, H:210, PAD:24, subSz:12, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:26.1, titWeight:'700', titFont:"HarmonyOS Bold", gap:7, imgW:158, imgPos:'topic', radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
-  topicweb:{ W:1200, H:350, PAD:68, subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:45, titWeight:'700', titFont:"HarmonyOS Bold", gap:9.35, imgW:390, imgPos:'topic', radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
+  topicapp:{ W:375, H:210, PAD:24, subSz:12, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:26.1, titWeight:'700', titFont:"HarmonyOS Bold", gap:7, imgW:143, imgPos:'topic', topicTextX:24, topicTextW:192, topicImgRight:8, topicImageY:14, topicImageH:196, radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
+  topicweb:{ W:1200, H:350, PAD:68, subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:45, titWeight:'700', titFont:"HarmonyOS Bold", gap:9.35, imgW:326, imgPos:'topic', topicTextX:68, topicTextW:722, topicImgRight:60, topicImageY:20, topicImageH:330, radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
   baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:2, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
   tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:110, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
@@ -3903,8 +3904,8 @@ function previewCardTextOverflows(card) {
     const type = card.classList.contains('b-topicapp') ? 'topicapp' : 'topicweb';
     const s = SPECS[type];
     const spec = SLOT_TEXT_SPECS[type];
-    const titleW = type === 'topicapp' ? 192 : 722;
-    const subtitleW = type === 'topicapp' ? 192 : 722;
+    const titleW = s.topicTextW;
+    const subtitleW = s.topicTextW;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const title = getPlainText(card.querySelector('.tit'));
@@ -4609,13 +4610,13 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   if (isTopic) {
     const isApp = type === 'topicapp';
     await drawTopicBrand(ctx, isApp ? 'app' : 'web');
-    const textX = isApp ? 24 : 68;
-    const titleW = isApp ? 192 : 722;
-    const subtitleW = isApp ? 192 : 722;
-    const imageX = isApp ? 209 : 750;
-    const imageY = isApp ? 14 : 20;
-    const imageW = isApp ? 158 : 390;
-    const imageH = isApp ? 196 : 330;
+    const textX = s.topicTextX;
+    const titleW = s.topicTextW;
+    const subtitleW = s.topicTextW;
+    const imageX = W - s.topicImgRight - s.imgW;
+    const imageY = s.topicImageY;
+    const imageW = s.imgW;
+    const imageH = s.topicImageH;
     ctx.font = `${titW} ${titSz}px ${titFont}`;
     let titleLines = 0;
     for (const seg of titTxt.split('\n')) titleLines += countLinesForText(ctx, seg, titleW);
