@@ -275,17 +275,17 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .b-topicapp .txt { left: 24px; top: 100.34px; width: 192px; }
   .b-topicweb .txt { left: 68px; top: 200px; width: 722px; }
   .b-topicapp .tit, .b-topicweb .tit, .b-topicapp .sub, .b-topicweb .sub { margin: 0; color: #FFFFFF; }
-  .b-topicapp .tit { max-width: 192px; font: 700 26.1px/1.37 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif; }
+  .b-topicapp .tit { max-width: 192px; font: 500 26.1px/1.37 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif; }
   .b-topicapp .sub { max-width: 192px; color: #FAFAFA; font-size: 12px; font-weight: 400; line-height: 1.37; }
   .b-topicapp .sub:not(:empty) + .tit { margin-top: 7px; }
-  .b-topicweb .tit { max-width: 722px; font: 700 45px/1.37 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif; }
+  .b-topicweb .tit { max-width: 722px; font: 500 45px/1.37 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC',sans-serif; }
   .b-topicweb .sub { margin-top: 9.35px; max-width: 722px; color: #FAFAFA; font-size: 28px; font-weight: 400; line-height: 1.37; }
   .b-topicapp .tit:empty, .b-topicapp .sub:empty, .b-topicweb .tit:empty, .b-topicweb .sub:empty { display: none; }
   .b-topicapp .imgw, .b-topicweb .imgw { position: absolute; z-index: 1; display: flex; align-items: flex-end; justify-content: center; }
   /* Keep the artwork safety frame clear of the copy frame: 8px on App, 24px on Web. */
   .b-topicapp .imgw { right: 8px; bottom: 0; width: 143px; height: 196px; }
   .b-topicweb .imgw { right: 60px; bottom: 0; width: 326px; height: 330px; }
-  .b-topicapp .imgw img, .b-topicweb .imgw img { width: 100%; height: 100%; display: block; object-fit: contain; object-position: center bottom; }
+  .b-topicapp .imgw img, .b-topicweb .imgw img { width: auto; height: auto; max-width: 100%; max-height: 100%; display: block; }
 
   .sw-baping { width: 183px; height: 220px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 12px; }
   .si-baping { width: 550px; height: 660px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
@@ -1771,8 +1771,8 @@ const SPECS = {
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:98, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:20 },
   landingweb:{ W:1200, H:299, PAD:30, subSz:22, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:40, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:126, imgPos:'vt', radius:0, boldTit:true, subLH:1.2, titLH:1.2, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000' },
   /* Figma 字号基准：App 主标题 26.1px / 副标题 12px；Web 主标题 45px / 副标题 28px；行高均为 137%。 */
-  topicapp:{ W:375, H:210, PAD:24, subSz:12, subWeight:'400', subFont:"HTX-Harmony", titSz:26.1, titWeight:'700', titFont:"HTX-Harmony", gap:7, imgW:143, imgPos:'topic', topicTextX:24, topicTextW:192, topicImgRight:8, topicImageY:14, topicImageH:196, radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
-  topicweb:{ W:1200, H:350, PAD:68, subSz:28, subWeight:'400', subFont:"HTX-Harmony", titSz:45, titWeight:'700', titFont:"HTX-Harmony", gap:9.35, imgW:326, imgPos:'topic', topicTextX:68, topicTextW:722, topicImgRight:60, topicImageY:20, topicImageH:330, radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
+  topicapp:{ W:375, H:210, PAD:24, subSz:12, subWeight:'400', subFont:"HTX-Harmony", titSz:26.1, titWeight:'500', titFont:"HTX-Harmony", gap:7, imgW:143, imgPos:'topic', topicTextX:24, topicTextW:192, topicImgRight:8, topicImageY:14, topicImageH:196, radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
+  topicweb:{ W:1200, H:350, PAD:68, subSz:28, subWeight:'400', subFont:"HTX-Harmony", titSz:45, titWeight:'500', titFont:"HTX-Harmony", gap:9.35, imgW:326, imgPos:'topic', topicTextX:68, topicTextW:722, topicImgRight:60, topicImageY:20, topicImageH:330, radius:0, boldTit:true, subLH:1.37, titLH:1.37, bg:'#075FF2', subClr:'#FAFAFA', titClr:'#FFFFFF' },
   baping: { W:550, H:660, PAD:50, radius:36, barH:124, barBg:'#007FFF', subSz:36, subWeight:'500', subFont:"PingFang SC", titSz:48, titWeight:'700', titFont:"PingFang SC", barSz:32, barWeight:'500', barFont:"PingFang SC", barArrowSz:48, gap:16, imgW:210, imgBottom:2, imgPos:'baping', boldTit:true, subLH:1.4, titLH:1.4, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000', descSz:30, descWeight:'500', descClr:'#595959', descLH:1.4 },
   tradeapp: { W:375, H:168, PAD:16, textTop:32, subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:24, titWeight:'700', titFont:"HarmonyOS Bold", gap:3, imgW:110, imgGap:-16, imgPos:'tradeapp', subLH:20/14, titLH:28/24 },
   tradeweb: { W:1920, H:320, PAD:360, textTop:64, safeBottom:120, subSz:24, subWeight:'700', subFont:"HarmonyOS Bold", titSz:42, titWeight:'700', titFont:"HarmonyOS Bold", gap:16, imgW:320, imgPos:'tradeweb', bg:'#000000', subClr:'#FFFFFF', titClr:'#FFFFFF' },
@@ -4533,23 +4533,6 @@ async function renderPreviewElementToDataUrl(inner, W, H, scale) {
   try {
     await waitForElementImages(clone);
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    const artwork = clone.querySelector('.imgw img');
-    const artworkFrame = artwork?.closest('.imgw');
-    let artworkLayout = null;
-    if (artwork && artworkFrame) {
-      const cardRect = clone.getBoundingClientRect();
-      const frameRect = artworkFrame.getBoundingClientRect();
-      artworkLayout = {
-        src: artwork.currentSrc || artwork.src,
-        x: frameRect.left - cardRect.left,
-        y: frameRect.top - cardRect.top,
-        width: frameRect.width,
-        height: frameRect.height
-      };
-      // html2canvas stretches object-fit images in this layout. Render the
-      // surrounding preview DOM, then composite the artwork with true contain.
-      artwork.style.visibility = 'hidden';
-    }
     const canvas = await html2canvas(clone, {
       backgroundColor: null,
       scale,
@@ -4559,21 +4542,6 @@ async function renderPreviewElementToDataUrl(inner, W, H, scale) {
       allowTaint: false,
       logging: false
     });
-    if (artworkLayout?.src) {
-      const context = canvas.getContext('2d');
-      context.save();
-      context.setTransform(scale, 0, 0, scale, 0, 0);
-      await drawImgContain(
-        context,
-        artworkLayout.src,
-        artworkLayout.x,
-        artworkLayout.y,
-        artworkLayout.width,
-        artworkLayout.height,
-        'bottom'
-      );
-      context.restore();
-    }
     return canvasToPngDataUrl(canvas);
   } finally {
     host.remove();
