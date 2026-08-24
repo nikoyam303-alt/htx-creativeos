@@ -4442,13 +4442,14 @@ async function drawImgMirroredX(ctx, src, x, y, w, h) {
   ctx.restore();
 }
 
-async function drawImgContain(ctx, src, x, y, w, h) {
+async function drawImgContain(ctx, src, x, y, w, h, alignY = 'center') {
   const img = await loadImage(src);
   if (!img) return;
   const scale = Math.min(w / img.width, h / img.height);
   const dw = img.width * scale;
   const dh = img.height * scale;
-  ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+  const offsetY = alignY === 'bottom' ? h - dh : (h - dh) / 2;
+  ctx.drawImage(img, x + (w - dw) / 2, y + offsetY, dw, dh);
 }
 
 async function drawImgCoverRounded(ctx, src, x, y, w, h, radius = 0) {
@@ -4646,7 +4647,8 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
         drawMultilineText(ctx, subTxt, textX, blockTop + titleH + gap + subSz, subtitleW, subSz, subLH, subSz, subH);
       }
     }
-    if (imgSrc) await drawImgContain(ctx, imgSrc, imageX, imageY, imageW, imageH);
+    // Preview uses object-position: center bottom; export must use the same alignment.
+    if (imgSrc) await drawImgContain(ctx, imgSrc, imageX, imageY, imageW, imageH, 'bottom');
     return canvasToPngDataUrl(canvas);
   }
 
