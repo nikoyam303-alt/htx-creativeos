@@ -3897,6 +3897,29 @@ function previewCardTextOverflows(card) {
     range.selectNodeContents(node);
     return Array.from(range.getClientRects()).filter(rect => rect.width > 0 && rect.height > 0);
   };
+  if (card.classList.contains('b-new')) {
+    const scaleX = cardRect.width / SPECS.new.W;
+    const scaleY = cardRect.height / SPECS.new.H;
+    const safeRect = {
+      left: cardRect.left + SPECS.new.PAD * scaleX,
+      right: cardRect.right - SPECS.new.PAD * scaleX,
+      top: cardRect.top + SPECS.new.PAD * scaleY,
+      bottom: cardRect.bottom - SPECS.new.PAD * scaleY
+    };
+    const image = card.querySelector('.img');
+    const imageRect = image ? image.getBoundingClientRect() : null;
+    const imageGapX = 12 * scaleX;
+    const imageGapY = 12 * scaleY;
+    return Array.from(card.querySelectorAll('.sub, .tit')).flatMap(visibleTextRects).some(rect => {
+      const outsideSafeArea =
+        rect.left < safeRect.left - 2 || rect.right > safeRect.right + 2 ||
+        rect.top < safeRect.top - 2 || rect.bottom > safeRect.bottom + 2;
+      const overlapsImage = imageRect &&
+        rect.right > imageRect.left - imageGapX && rect.left < imageRect.right + imageGapX &&
+        rect.bottom > imageRect.top - imageGapY && rect.top < imageRect.bottom + imageGapY;
+      return outsideSafeArea || overlapsImage;
+    });
+  }
   if (card.classList.contains('b-landing')) {
     const lang = langs.find(item => String(item.id) === String(card.dataset.langid));
     return !!lang && getLandingHeight(lang) > SPECS.landing.H + 1;
