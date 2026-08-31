@@ -2029,6 +2029,27 @@ document.addEventListener('keydown', event => {
   undoWorkspaceChange();
 });
 
+// Space is text while an editor is focused. Some browsers can still apply the
+// page-down default when a delayed preview update lands during the same key
+// cycle. Preserve the viewport without cancelling native text/IME insertion.
+document.addEventListener('keydown', event => {
+  if ((event.key !== ' ' && event.code !== 'Space') || event.isComposing) return;
+  const target = event.target;
+  const isTextEditor = target instanceof HTMLTextAreaElement ||
+    (target instanceof HTMLInputElement && !['button','checkbox','color','file','radio','range','reset','submit'].includes(target.type)) ||
+    target?.isContentEditable;
+  if (!isTextEditor) return;
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
+  const restoreViewport = () => {
+    if (Math.abs(window.scrollX - scrollX) > 1 || Math.abs(window.scrollY - scrollY) > 1) {
+      window.scrollTo(scrollX, scrollY);
+    }
+  };
+  requestAnimationFrame(() => requestAnimationFrame(restoreViewport));
+  setTimeout(restoreViewport, 120);
+}, true);
+
 function updateSlotControls() {
   ['new','old','email','appcal','pccal','share','community','feed','landing','topic','baping','pcrebate','apprebate'].forEach(key => {
     const el = document.getElementById('slot-' + key);
