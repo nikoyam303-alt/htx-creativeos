@@ -1840,9 +1840,26 @@ function emptyWhitespaceToBlank(value) {
 function slotLangKey(slotType, langId) { return slotType + '-' + langId; }
 
 let _debounceTimer = null;
+let _previewIdleHandle = null;
 function generateDebounced() {
   clearTimeout(_debounceTimer);
-  _debounceTimer = setTimeout(generate, 300);
+  if (_previewIdleHandle !== null && 'cancelIdleCallback' in window) {
+    cancelIdleCallback(_previewIdleHandle);
+    _previewIdleHandle = null;
+  }
+  // Rebuilding every selected creative can be expensive. Wait until typing has
+  // settled, then render in an idle slice so keystrokes and IME composition win.
+  _debounceTimer = setTimeout(() => {
+    _debounceTimer = null;
+    if ('requestIdleCallback' in window) {
+      _previewIdleHandle = requestIdleCallback(() => {
+        _previewIdleHandle = null;
+        generate();
+      }, { timeout: 800 });
+    } else {
+      generate();
+    }
+  }, 500);
 }
 
 function schedulePreview() {
@@ -1861,13 +1878,27 @@ function setDraftStatus(text) {
   if (!isError) _draftToastTimer = setTimeout(() => el.classList.remove('show'), 3000);
 }
 
+let _draftIdleHandle = null;
 function scheduleDraftSave() {
   if (isRestoringDraft) return;
   clearTimeout(_draftTimer);
+  if (_draftIdleHandle !== null && 'cancelIdleCallback' in window) {
+    cancelIdleCallback(_draftIdleHandle);
+    _draftIdleHandle = null;
+  }
   _draftTimer = setTimeout(() => {
     _draftTimer = null;
-    saveDraft();
-  }, 200);
+    // JSON.stringify + localStorage are synchronous and the draft may contain
+    // several Base64 images. Keep that work off the active typing path.
+    if ('requestIdleCallback' in window) {
+      _draftIdleHandle = requestIdleCallback(() => {
+        _draftIdleHandle = null;
+        saveDraft();
+      }, { timeout: 1500 });
+    } else {
+      saveDraft();
+    }
+  }, 900);
 }
 
 function scheduleAdDraftSave() {
@@ -2875,10 +2906,22 @@ function autoResizeAllTextAreas(root = document) {
   root.querySelectorAll?.('.lang-inputs textarea, .ad-lang-card textarea').forEach(autoResizeTextArea);
 }
 
+const pendingTextareaResizes = new Set();
+let textareaResizeFrame = null;
+function scheduleTextareaResize(textarea) {
+  pendingTextareaResizes.add(textarea);
+  if (textareaResizeFrame !== null) return;
+  textareaResizeFrame = requestAnimationFrame(() => {
+    textareaResizeFrame = null;
+    pendingTextareaResizes.forEach(autoResizeTextArea);
+    pendingTextareaResizes.clear();
+  });
+}
+
 document.addEventListener('input', event => {
   if (event.target.matches?.('.lang-inputs textarea, .ad-lang-card textarea')) {
     if (!/\S/.test(event.target.value)) event.target.value = '';
-    autoResizeTextArea(event.target);
+    scheduleTextareaResize(event.target);
   }
 });
 
