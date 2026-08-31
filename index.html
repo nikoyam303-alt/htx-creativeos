@@ -4491,7 +4491,9 @@ function generate() {
   }
 
   restoreDownloadButton();
-  if (typeof setV2Group === 'function') setV2Group(v2ActiveGroup, false);
+  // Reapply preview visibility without rebuilding the editor. Recreating the
+  // language textareas here drops focus/selection after Delete or Backspace.
+  if (typeof setV2Group === 'function') setV2Group(v2ActiveGroup, false, false, false);
   const renderedLangs = new Map();
   [valid, validBaping, validTrade, validPcRebate, validAppRebate].forEach(groupLangs => {
     groupLangs.forEach(lang => renderedLangs.set(String(lang.id), lang));
@@ -6731,7 +6733,7 @@ function switchSocialTool(tool, updateLocation = true) {
   }
 }
 
-function setV2Group(group, updateButtons = true, updateLocation = true) {
+function setV2Group(group, updateButtons = true, updateLocation = true, refreshEditor = true) {
   if (!v2SlotGroups[group]) group = 'common';
   v2ActiveGroup = group;
   const implicitSlotsChanged = enableV2ImplicitSlots(group);
@@ -6828,7 +6830,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
   const desc = document.querySelector('.v2-editor-desc');
   if (title) title.textContent = copy[0];
   if (desc) desc.textContent = copy[1];
-  renderLangList();
+  if (refreshEditor) renderLangList();
   restoreDownloadButton();
   if (group === 'ads') renderAdCreative();
   if (group === 'spotlisting') renderSpotListingPreview();
@@ -6838,7 +6840,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true) {
   if (group === 'gridbanner') renderGridBannerPreview();
   if (group === 'otc') renderOtcPreview();
   if (implicitSlotsChanged) scheduleDraftSave();
-  requestAnimationFrame(() => autoResizeAllTextAreas());
+  if (refreshEditor) requestAnimationFrame(() => autoResizeAllTextAreas());
 }
 
 function initV2Workspace() {
