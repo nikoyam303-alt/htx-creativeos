@@ -265,12 +265,11 @@ async function drawCoins(ctx,showPlaceholders,vip=false){
     {x:794.5,y:478,size:228.5,label:"主币 1"},{x:566,y:706.5,size:228.5,label:"主币 2"},{x:794.5,y:706.5,size:228.5,label:"主币 3"}
   ];
   const auxiliaryCount=Math.max(0,state.coins.length-MAIN_COIN_COUNT);
-  const rowX=vip?534:566,rowWidth=vip?483.5:456.5,rowY=vip?943.333:947,preferredSize=vip?68.149:64.48;
-  const gap=auxiliaryCount?Math.min(14,rowWidth/(auxiliaryCount*4)):0;
-  const auxiliarySize=auxiliaryCount?Math.min(preferredSize,(rowWidth-gap*(auxiliaryCount-1))/auxiliaryCount):0;
-  const usedWidth=auxiliaryCount*auxiliarySize+Math.max(0,auxiliaryCount-1)*gap;
-  const auxiliaryX=rowX+(rowWidth-usedWidth)/2;
-  const slots=[...mainSlots,...Array.from({length:auxiliaryCount},(_,i)=>({x:auxiliaryX+i*(auxiliarySize+gap),y:rowY,size:auxiliarySize,label:String(i+1)}))];
+  const rowRight=vip?1017.5:1022.5,rowLeft=vip?64:300,rowY=vip?943.333:947,preferredSize=vip?68.149:64.48;
+  const availableWidth=rowRight-rowLeft;
+  const gap=auxiliaryCount?Math.min(14,availableWidth/(auxiliaryCount*4)):0;
+  const auxiliarySize=auxiliaryCount?Math.min(preferredSize,(availableWidth-gap*(auxiliaryCount-1))/auxiliaryCount):0;
+  const slots=[...mainSlots,...Array.from({length:auxiliaryCount},(_,i)=>({x:rowRight-auxiliarySize-i*(auxiliarySize+gap),y:rowY,size:auxiliarySize,label:String(i+1)}))];
   const images=await Promise.all(state.coins.map(coin=>coin.src?loadImage(coin.src).catch(()=>null):null));
   slots.forEach((slot,index)=>{if(images[index])drawCircularImage(ctx,images[index],slot.x,slot.y,slot.size);else if(showPlaceholders)drawPlaceholder(ctx,slot.x,slot.y,slot.size,slot.label)});
 }
