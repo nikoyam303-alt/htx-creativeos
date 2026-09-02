@@ -46,6 +46,8 @@ button{cursor:pointer}
 .upload-copy span{display:block;font-size:11px;margin-top:2px}
 .clear{position:absolute;right:6px;top:6px;width:22px;height:22px;border:0;border-radius:50%;background:#fff;color:#98a2b3;box-shadow:0 1px 5px rgba(16,24,40,.12);display:grid;place-items:center}
 .clear:disabled{display:none}
+.add-auxiliary{width:100%;min-height:40px;margin-top:9px;border:1px dashed #b9c8dd;border-radius:8px;background:#fff;color:#0f6bff;font-size:12px;font-weight:500}
+.add-auxiliary:hover{border-color:#0f6bff;background:#f5f9ff}
 .message{min-height:18px;margin-top:12px;color:#d92d20;font-size:12px}
 .actions{display:grid;gap:9px;margin-top:16px}
 .primary,.secondary{height:46px;border-radius:10px;font-weight:700}
@@ -79,44 +81,9 @@ For Grabs"></textarea></div>
       <div class="field"><label for="dateText">活动日期</label><input id="dateText" data-copy="date" maxlength="30"></div>
     </section>
     <section class="section">
-      <div class="section-title">币种图片 <span class="hint">3 个主币 + 6 个辅助币</span></div>
-      <div class="upload-grid" id="uploadGrid"><div class="upload-item">
-    <button class="upload-button" data-upload="0" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>主币 1</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="0" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="0" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div><div class="upload-item">
-    <button class="upload-button" data-upload="1" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>主币 2</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="1" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="1" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div><div class="upload-item">
-    <button class="upload-button" data-upload="2" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>主币 3</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="2" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="2" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div><div class="upload-item">
-    <button class="upload-button" data-upload="3" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 1</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="3" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="3" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div><div class="upload-item">
-    <button class="upload-button" data-upload="4" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 2</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="4" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="4" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div><div class="upload-item">
-    <button class="upload-button" data-upload="5" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 3</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="5" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="5" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div><div class="upload-item">
-    <button class="upload-button" data-upload="6" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 4</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="6" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="6" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div><div class="upload-item">
-    <button class="upload-button" data-upload="7" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 5</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="7" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="7" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div><div class="upload-item">
-    <button class="upload-button" data-upload="8" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 6</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="8" type="button" disabled="" aria-label="清除">×</button>
-    <input type="file" hidden="" data-file="8" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
-  </div></div>
+      <div class="section-title">币种图片 <span class="hint" id="coinCountHint">3 个主币 · 6 个辅助币</span></div>
+      <div class="upload-grid" id="uploadGrid"></div>
+      <button class="add-auxiliary" id="addAuxiliary" type="button">+ 添加辅助币</button>
       <div class="hint" style="margin-top:10px">支持 PNG / JPG / WebP / SVG，单张不超过 10MB。建议上传透明底高清图。</div>
     </section>
     <div class="message" id="message"></div>
@@ -141,6 +108,9 @@ const LOGOS={en:ASSET_ROOT+"htx-en.svg?v=202608182210",zh:ASSET_ROOT+"htx-zh.svg
 const DRAFT_KEY=IS_VIP?"htx-spot-carnival-vip-v1":"htx-spot-carnival-v1";
 const DB_NAME=IS_VIP?"htx-spot-carnival-vip-assets":"htx-spot-carnival-assets";
 const STORE_NAME="coins";
+const MAIN_COIN_COUNT=3;
+const DEFAULT_AUXILIARY_COUNT=6;
+const emptyCoin=()=>({src:"",name:""});
 const STANDARD_DEFAULTS={
   en:{
     title:"[$30,000] Is Up\nFor Grabs",
@@ -177,7 +147,7 @@ const VIP_DEFAULTS={
 };
 const defaults=IS_VIP?VIP_DEFAULTS:STANDARD_DEFAULTS;
 const EXPORT_PREFIX=IS_VIP?"现货交易派对-VIP":"现货交易派对";
-let state={language:"en",copy:structuredClone(defaults),coins:Array.from({length:9},()=>({src:"",name:""}))};
+let state={language:"en",copy:structuredClone(defaults),coins:Array.from({length:MAIN_COIN_COUNT+DEFAULT_AUXILIARY_COUNT},emptyCoin)};
 const imageCache=new Map();
 let renderSequence=0;
 const undoStack=[];
@@ -216,6 +186,7 @@ function loadDraft(){
     const saved=JSON.parse(localStorage.getItem(DRAFT_KEY)||"null");
     if(!saved)return;
     state.language=LANGUAGES.includes(saved.language)?saved.language:"en";
+    if(Number.isInteger(saved.auxiliaryCount)&&saved.auxiliaryCount>=0)state.coins=Array.from({length:MAIN_COIN_COUNT+saved.auxiliaryCount},emptyCoin);
     for(const lang of LANGUAGES){
       const copy=saved.copy?.[lang];
       if(!copy)continue;
@@ -225,7 +196,7 @@ function loadDraft(){
     }
   }catch(_){}
 }
-function saveDraft(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify({language:state.language,copy:state.copy}))}catch(_){}}
+function saveDraft(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify({language:state.language,copy:state.copy,auxiliaryCount:state.coins.length-MAIN_COIN_COUNT}))}catch(_){}}
 function openDb(){return new Promise((resolve,reject)=>{const request=indexedDB.open(DB_NAME,1);request.onupgradeneeded=()=>request.result.createObjectStore(STORE_NAME,{keyPath:"index"});request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)})}
 async function restoreCoins(){try{const db=await openDb();const records=await new Promise((resolve,reject)=>{const request=db.transaction(STORE_NAME).objectStore(STORE_NAME).getAll();request.onsuccess=()=>resolve(request.result||[]);request.onerror=()=>reject(request.error)});db.close();records.forEach(item=>{if(state.coins[item.index])state.coins[item.index]={src:item.src||"",name:item.name||""}})}catch(_){}}
 async function persistCoin(index){try{const db=await openDb();await new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).put({index,...state.coins[index]});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});db.close()}catch(_){setMessage("图片可正常使用，但浏览器未能保存这张图片草稿。")}}
@@ -249,9 +220,11 @@ function renderCopyEditor(){
   document.querySelectorAll("[data-copy]").forEach(input=>input.value=copy[input.dataset.copy]);
 }
 function renderUploads(){
+  const auxiliaryCount=state.coins.length-MAIN_COIN_COUNT;
+  document.getElementById("coinCountHint").textContent=`${MAIN_COIN_COUNT} 个主币 · ${auxiliaryCount} 个辅助币`;
   document.getElementById("uploadGrid").innerHTML=state.coins.map((coin,index)=>`<div class="upload-item">
-    <button class="upload-button" data-upload="${index}" type="button"><span class="upload-thumb">${coin.src?`<img src="${escapeHtml(coin.src)}" alt="">`:"+"}</span><span class="upload-copy"><strong>${escapeHtml(coin.name||((index<3?"主币 ":"辅助币 ")+(index<3?index+1:index-2)))}</strong><span>点击或拖拽上传</span></span></button>
-    <button class="clear" data-clear="${index}" type="button" ${coin.src?"":"disabled"} aria-label="清除">×</button>
+    <button class="upload-button" data-upload="${index}" type="button"><span class="upload-thumb">${coin.src?`<img src="${escapeHtml(coin.src)}" alt="">`:"+"}</span><span class="upload-copy"><strong>${escapeHtml(coin.name||((index<MAIN_COIN_COUNT?"主币 ":"辅助币 ")+(index<MAIN_COIN_COUNT?index+1:index-MAIN_COIN_COUNT+1)))}</strong><span>点击或拖拽上传</span></span></button>
+    ${index<MAIN_COIN_COUNT?`<button class="clear" data-clear="${index}" type="button" ${coin.src?"":"disabled"} aria-label="清除主币 ${index+1}">×</button>`:`<button class="clear" data-remove="${index}" type="button" aria-label="删除辅助币 ${index-MAIN_COIN_COUNT+1}">×</button>`}
     <input type="file" hidden data-file="${index}" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
   </div>`).join("");
   document.querySelectorAll("[data-upload]").forEach(button=>{
@@ -263,6 +236,7 @@ function renderUploads(){
     input.addEventListener("change",event=>{applyCoin(index,event.target.files?.[0]);event.target.value=""});
   });
   document.querySelectorAll("[data-clear]").forEach(button=>button.addEventListener("click",async()=>{const index=Number(button.dataset.clear);recordHistory();state.coins[index]={src:"",name:""};await deleteCoin(index);renderUploads();renderPoster()}));
+  document.querySelectorAll("[data-remove]").forEach(button=>button.addEventListener("click",async()=>{const index=Number(button.dataset.remove);recordHistory();state.coins.splice(index,1);saveDraft();await persistAllCoins();renderUploads();renderPoster()}));
 }
 function applyCoin(index,file){
   if(!file)return;
@@ -285,13 +259,18 @@ function drawBenefit(ctx,language,index,text,y){const x=language==="zh"?75:87;ct
 function drawPlaceholder(ctx,x,y,size,label){ctx.save();ctx.fillStyle="rgba(255,255,255,.58)";ctx.beginPath();ctx.arc(x+size/2,y+size/2,size/2-2,0,Math.PI*2);ctx.fill();ctx.fillStyle="rgba(15,107,255,.7)";ctx.font=`600 ${Math.max(13,size/8)}px Urbanist,Arial`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(label,x+size/2,y+size/2);ctx.restore()}
 function drawCircularImage(ctx,image,x,y,size){const width=image.naturalWidth||image.width,height=image.naturalHeight||image.height,side=Math.min(width,height),sx=(width-side)/2,sy=(height-side)/2;ctx.save();ctx.beginPath();ctx.arc(x+size/2,y+size/2,size/2,0,Math.PI*2);ctx.clip();ctx.drawImage(image,sx,sy,side,side,x,y,size,size);ctx.restore()}
 async function drawCoins(ctx,showPlaceholders,vip=false){
-  const slots=vip?[
-    {x:775.5,y:425.691,size:241.5,label:"主币 1"},{x:534,y:667.191,size:241.5,label:"主币 2"},{x:775.5,y:667.191,size:241.5,label:"主币 3"},
-    ...Array.from({length:6},(_,i)=>({x:534+i*82.943,y:943.333,size:68.149,label:String(i+1)}))
+  const mainSlots=vip?[
+    {x:775.5,y:425.691,size:241.5,label:"主币 1"},{x:534,y:667.191,size:241.5,label:"主币 2"},{x:775.5,y:667.191,size:241.5,label:"主币 3"}
   ]:[
-    {x:794.5,y:478,size:228.5,label:"主币 1"},{x:566,y:706.5,size:228.5,label:"主币 2"},{x:794.5,y:706.5,size:228.5,label:"主币 3"},
-    ...Array.from({length:6},(_,i)=>({x:566+i*78.48,y:947,size:64.48,label:String(i+1)}))
+    {x:794.5,y:478,size:228.5,label:"主币 1"},{x:566,y:706.5,size:228.5,label:"主币 2"},{x:794.5,y:706.5,size:228.5,label:"主币 3"}
   ];
+  const auxiliaryCount=Math.max(0,state.coins.length-MAIN_COIN_COUNT);
+  const rowX=vip?534:566,rowWidth=vip?483.5:456.5,rowY=vip?943.333:947,preferredSize=vip?68.149:64.48;
+  const gap=auxiliaryCount?Math.min(14,rowWidth/(auxiliaryCount*4)):0;
+  const auxiliarySize=auxiliaryCount?Math.min(preferredSize,(rowWidth-gap*(auxiliaryCount-1))/auxiliaryCount):0;
+  const usedWidth=auxiliaryCount*auxiliarySize+Math.max(0,auxiliaryCount-1)*gap;
+  const auxiliaryX=rowX+(rowWidth-usedWidth)/2;
+  const slots=[...mainSlots,...Array.from({length:auxiliaryCount},(_,i)=>({x:auxiliaryX+i*(auxiliarySize+gap),y:rowY,size:auxiliarySize,label:String(i+1)}))];
   const images=await Promise.all(state.coins.map(coin=>coin.src?loadImage(coin.src).catch(()=>null):null));
   slots.forEach((slot,index)=>{if(images[index])drawCircularImage(ctx,images[index],slot.x,slot.y,slot.size);else if(showPlaceholders)drawPlaceholder(ctx,slot.x,slot.y,slot.size,slot.label)});
 }
@@ -337,7 +316,8 @@ async function downloadAll(){const button=document.getElementById("downloadAll")
 document.querySelectorAll("[data-lang]").forEach(button=>button.addEventListener("click",()=>{state.language=button.dataset.lang;saveDraft();renderCopyEditor();renderPoster()}));
 document.querySelectorAll("[data-copy]").forEach(input=>input.addEventListener("input",()=>{recordHistory();state.copy[state.language][input.dataset.copy]=input.value;saveDraft();renderPoster()}));
 document.getElementById("downloadAll").addEventListener("click",downloadAll);
-document.getElementById("resetButton").addEventListener("click",async()=>{recordHistory();const emptyCopy=Object.fromEntries(LANGUAGES.map(language=>[language,Object.fromEntries(Object.keys(defaults[language]).map(key=>[key,""]))]));state={language:state.language,copy:emptyCopy,coins:Array.from({length:9},()=>({src:"",name:""}))};localStorage.removeItem(DRAFT_KEY);await clearCoins();renderCopyEditor();renderUploads();renderPoster();setMessage("草稿已清空，可按 Command + Z 撤销。");});
+document.getElementById("addAuxiliary").addEventListener("click",()=>{recordHistory();state.coins.push(emptyCoin());saveDraft();renderUploads();renderPoster()});
+document.getElementById("resetButton").addEventListener("click",async()=>{recordHistory();const emptyCopy=Object.fromEntries(LANGUAGES.map(language=>[language,Object.fromEntries(Object.keys(defaults[language]).map(key=>[key,""]))]));state={language:state.language,copy:emptyCopy,coins:Array.from({length:MAIN_COIN_COUNT+DEFAULT_AUXILIARY_COUNT},emptyCoin)};localStorage.removeItem(DRAFT_KEY);await clearCoins();renderCopyEditor();renderUploads();renderPoster();setMessage("草稿已清空，可按 Command + Z 撤销。");});
 document.addEventListener("keydown",event=>{if(event.metaKey&&!event.shiftKey&&event.key.toLowerCase()==="z"){event.preventDefault();undoLastAction()}});
 async function initialize(){configureThemeUI();loadDraft();const themeAssets=IS_VIP?[loadImage(VIP_UNION),loadImage(VIP_BADGE)]:[loadImage(RIBBON_BACKGROUND),...[...new Set(Object.values(LOGOS))].map(loadImage)];await Promise.allSettled([restoreCoins(),document.fonts.ready,loadImage(BASE_BACKGROUND),...themeAssets]);renderCopyEditor();renderUploads();await renderPoster();document.body.classList.add("ready")}
 initialize();
