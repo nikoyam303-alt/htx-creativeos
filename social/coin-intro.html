@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
+<html lang="zh-CN"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HTX 现货交易派对</title>
@@ -27,7 +26,7 @@ button{cursor:pointer}
 .section:first-of-type{padding-top:0;margin-top:0;border-top:0}
 .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;color:#667085;font-size:12px;font-weight:500}
 .hint{font-size:11px;font-weight:400;color:#98a2b3}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .tab{min-height:38px;border:0;border-radius:8px;padding:0 10px;background:#f2f4f7;color:#667085;font-size:12px;font-weight:500}
 .tab.active{background:#eaf2ff;color:#0f6bff}
 .field{margin-top:12px}
@@ -61,17 +60,18 @@ canvas{display:block;width:100%;height:100%;image-rendering:auto}
 @media(max-width:1240px){body{min-width:980px}.app{grid-template-columns:360px minmax(600px,1fr)}}
 </style>
 </head>
-<body>
+<body class="ready">
 <main class="app">
   <aside class="panel editor">
     <div class="panel-head"><div class="panel-title">文案配置</div><button class="reset" id="resetButton" type="button">清空草稿</button></div>
     <section class="section">
-      <div class="section-title">语言版本 <span class="hint">英文 · 简中</span></div>
-      <div class="tabs"><button class="tab" data-lang="en" type="button">EN 英文</button><button class="tab" data-lang="zh" type="button">ZH 简中</button></div>
+      <div class="section-title">语言版本 <span class="hint">英文 · 简中 · 俄语</span></div>
+      <div class="tabs"><button class="tab active" data-lang="en" type="button">EN 英文</button><button class="tab" data-lang="zh" type="button">ZH 简中</button><button class="tab" data-lang="ru" type="button">RU 俄语</button></div>
     </section>
     <section class="section">
       <div class="section-title">主标题 <span class="hint">[] 内文字显示为蓝色</span></div>
-      <div class="field"><label for="titleText">主标题（回车换行）</label><textarea id="titleText" data-copy="title" maxlength="160" rows="3" placeholder="例如：[$30,000] Is Up&#10;For Grabs"></textarea></div>
+      <div class="field"><label for="titleText">主标题（回车换行）</label><textarea id="titleText" data-copy="title" maxlength="160" rows="3" placeholder="例如：[$30,000] Is Up
+For Grabs"></textarea></div>
       <div class="field"><label for="subtitleText">副标题（回车换行）</label><textarea id="subtitleText" data-copy="subtitle" maxlength="120" rows="3"></textarea></div>
       <div class="field"><label for="benefit1">权益 1</label><input id="benefit1" data-copy="benefit1" maxlength="30"></div>
       <div class="field"><label for="benefit2">权益 2</label><input id="benefit2" data-copy="benefit2" maxlength="30"></div>
@@ -80,7 +80,43 @@ canvas{display:block;width:100%;height:100%;image-rendering:auto}
     </section>
     <section class="section">
       <div class="section-title">币种图片 <span class="hint">3 个主币 + 6 个辅助币</span></div>
-      <div class="upload-grid" id="uploadGrid"></div>
+      <div class="upload-grid" id="uploadGrid"><div class="upload-item">
+    <button class="upload-button" data-upload="0" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>主币 1</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="0" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="0" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div><div class="upload-item">
+    <button class="upload-button" data-upload="1" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>主币 2</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="1" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="1" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div><div class="upload-item">
+    <button class="upload-button" data-upload="2" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>主币 3</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="2" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="2" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div><div class="upload-item">
+    <button class="upload-button" data-upload="3" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 1</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="3" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="3" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div><div class="upload-item">
+    <button class="upload-button" data-upload="4" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 2</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="4" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="4" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div><div class="upload-item">
+    <button class="upload-button" data-upload="5" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 3</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="5" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="5" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div><div class="upload-item">
+    <button class="upload-button" data-upload="6" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 4</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="6" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="6" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div><div class="upload-item">
+    <button class="upload-button" data-upload="7" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 5</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="7" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="7" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div><div class="upload-item">
+    <button class="upload-button" data-upload="8" type="button"><span class="upload-thumb">+</span><span class="upload-copy"><strong>辅助币 6</strong><span>点击或拖拽上传</span></span></button>
+    <button class="clear" data-clear="8" type="button" disabled="" aria-label="清除">×</button>
+    <input type="file" hidden="" data-file="8" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml">
+  </div></div>
       <div class="hint" style="margin-top:10px">支持 PNG / JPG / WebP / SVG，单张不超过 10MB。建议上传透明底高清图。</div>
     </section>
     <div class="message" id="message"></div>
@@ -100,7 +136,8 @@ const BASE_BACKGROUND=ASSET_ROOT+"base-3x.png";
 const RIBBON_BACKGROUND=ASSET_ROOT+"ribbon-1x.png";
 const VIP_UNION=ASSET_ROOT+"vip-union.svg?v=202608191030";
 const VIP_BADGE=ASSET_ROOT+"vip-badge.svg?v=202608191030";
-const LOGOS={en:ASSET_ROOT+"htx-en.svg?v=202608182210",zh:ASSET_ROOT+"htx-zh.svg?v=202608182210"};
+const LANGUAGES=["en","zh","ru"];
+const LOGOS={en:ASSET_ROOT+"htx-en.svg?v=202608182210",zh:ASSET_ROOT+"htx-zh.svg?v=202608182210",ru:ASSET_ROOT+"htx-en.svg?v=202608182210"};
 const DRAFT_KEY=IS_VIP?"htx-spot-carnival-vip-v1":"htx-spot-carnival-v1";
 const DB_NAME=IS_VIP?"htx-spot-carnival-vip-assets":"htx-spot-carnival-assets";
 const STORE_NAME="coins";
@@ -114,6 +151,11 @@ const STANDARD_DEFAULTS={
     title:"现货交易派对\n[$30,000] 奖励派送中",
     subtitle:"马上加入赢取奖励",
     benefit1:"新人专属空投",benefit2:"网格加码",benefit3:"SVIP激励升级",date:"7月2日 - 7月9日"
+  },
+  ru:{
+    title:"Спотовая торговая вечеринка\n[$30 000] ждут победителей",
+    subtitle:"Торгуйте сейчас и получите свою долю",
+    benefit1:"Бонус для новичков",benefit2:"Награды за grid-торговлю",benefit3:"Бонус для SVIP",date:"2–9 июля"
   }
 };
 const VIP_DEFAULTS={
@@ -126,6 +168,11 @@ const VIP_DEFAULTS={
     title:"SVIP 独领\n$10,000 专项加码",
     subtitle:"现货交易派对 · 顶级交易尊享盛宴",
     benefit1:"冲击榜首独享$2,800奖励",benefit2:"报名开启您的 专属交易特权",benefit3:"",date:"7月2日 - 7月9日"
+  },
+  ru:{
+    title:"Торговые бонусы\n$10 000 эксклюзивно\nдля SVIP",
+    subtitle:"Спотовая торговая вечеринка · Премиальный трейдинг",
+    benefit1:"Лучший трейдер получит $2 800",benefit2:"Зарегистрируйтесь, чтобы получить\nэксклюзивные торговые преимущества",benefit3:"",date:"2–9 июля"
   }
 };
 const defaults=IS_VIP?VIP_DEFAULTS:STANDARD_DEFAULTS;
@@ -168,8 +215,8 @@ function loadDraft(){
   try{
     const saved=JSON.parse(localStorage.getItem(DRAFT_KEY)||"null");
     if(!saved)return;
-    state.language=saved.language==="zh"?"zh":"en";
-    for(const lang of ["en","zh"]){
+    state.language=LANGUAGES.includes(saved.language)?saved.language:"en";
+    for(const lang of LANGUAGES){
       const copy=saved.copy?.[lang];
       if(!copy)continue;
       state.copy[lang].title=typeof copy.title==="string"?copy.title:[legacyLineToMarkup(copy.line1),legacyLineToMarkup(copy.line2)].filter(Boolean).join("\n")||state.copy[lang].title;
@@ -286,14 +333,15 @@ function canvasBlob(canvas){return new Promise((resolve,reject)=>canvas.toBlob(b
 function triggerBlob(blob,name){const url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download=name;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
 async function buildLanguage(language){const canvas=document.createElement("canvas");await drawPoster(language,canvas,false,1);return canvasBlob(canvas)}
 async function downloadCurrent(){const button=document.getElementById("downloadCurrent"),label=button.textContent;button.disabled=true;button.textContent="正在生成 1× PNG…";setMessage();try{triggerBlob(await buildLanguage(state.language),`${EXPORT_PREFIX}-${state.language}-1x.png`)}catch(error){setMessage(error.message||"导出失败，请重试。")}finally{button.disabled=false;button.textContent=label;renderPoster()}}
-async function downloadAll(){const button=document.getElementById("downloadAll"),label=button.textContent;button.disabled=true;button.textContent="正在生成双语 1×…";setMessage();try{const zipCtor=window.parent!==window?window.parent.JSZip:null;if(!zipCtor)throw new Error("打包组件尚未加载，请使用当前语种导出。");const zip=new zipCtor();for(const language of ["en","zh"])zip.file(`${EXPORT_PREFIX}-${language}-1x.png`,await buildLanguage(language));triggerBlob(await zip.generateAsync({type:"blob"}),`${EXPORT_PREFIX}-双语-1x.zip`)}catch(error){setMessage(error.message||"导出失败，请重试。")}finally{button.disabled=false;button.textContent=label;renderPoster()}}
+async function downloadAll(){const button=document.getElementById("downloadAll"),label=button.textContent;button.disabled=true;button.textContent="正在生成三语 1×…";setMessage();try{const zipCtor=window.parent!==window?window.parent.JSZip:null;if(!zipCtor)throw new Error("打包组件尚未加载，请使用当前语种导出。");const zip=new zipCtor();for(const language of LANGUAGES)zip.file(`${EXPORT_PREFIX}-${language}-1x.png`,await buildLanguage(language));triggerBlob(await zip.generateAsync({type:"blob"}),`${EXPORT_PREFIX}-三语-1x.zip`)}catch(error){setMessage(error.message||"导出失败，请重试。")}finally{button.disabled=false;button.textContent=label;renderPoster()}}
 document.querySelectorAll("[data-lang]").forEach(button=>button.addEventListener("click",()=>{state.language=button.dataset.lang;saveDraft();renderCopyEditor();renderPoster()}));
 document.querySelectorAll("[data-copy]").forEach(input=>input.addEventListener("input",()=>{recordHistory();state.copy[state.language][input.dataset.copy]=input.value;saveDraft();renderPoster()}));
 document.getElementById("downloadAll").addEventListener("click",downloadAll);
-document.getElementById("resetButton").addEventListener("click",async()=>{recordHistory();const emptyCopy=Object.fromEntries(["en","zh"].map(language=>[language,Object.fromEntries(Object.keys(defaults[language]).map(key=>[key,""]))]));state={language:state.language,copy:emptyCopy,coins:Array.from({length:9},()=>({src:"",name:""}))};localStorage.removeItem(DRAFT_KEY);await clearCoins();renderCopyEditor();renderUploads();renderPoster();setMessage("草稿已清空，可按 Command + Z 撤销。");});
+document.getElementById("resetButton").addEventListener("click",async()=>{recordHistory();const emptyCopy=Object.fromEntries(LANGUAGES.map(language=>[language,Object.fromEntries(Object.keys(defaults[language]).map(key=>[key,""]))]));state={language:state.language,copy:emptyCopy,coins:Array.from({length:9},()=>({src:"",name:""}))};localStorage.removeItem(DRAFT_KEY);await clearCoins();renderCopyEditor();renderUploads();renderPoster();setMessage("草稿已清空，可按 Command + Z 撤销。");});
 document.addEventListener("keydown",event=>{if(event.metaKey&&!event.shiftKey&&event.key.toLowerCase()==="z"){event.preventDefault();undoLastAction()}});
-async function initialize(){configureThemeUI();loadDraft();const themeAssets=IS_VIP?[loadImage(VIP_UNION),loadImage(VIP_BADGE)]:[loadImage(RIBBON_BACKGROUND),loadImage(LOGOS.en),loadImage(LOGOS.zh)];await Promise.allSettled([restoreCoins(),document.fonts.ready,loadImage(BASE_BACKGROUND),...themeAssets]);renderCopyEditor();renderUploads();await renderPoster();document.body.classList.add("ready")}
+async function initialize(){configureThemeUI();loadDraft();const themeAssets=IS_VIP?[loadImage(VIP_UNION),loadImage(VIP_BADGE)]:[loadImage(RIBBON_BACKGROUND),...[...new Set(Object.values(LOGOS))].map(loadImage)];await Promise.allSettled([restoreCoins(),document.fonts.ready,loadImage(BASE_BACKGROUND),...themeAssets]);renderCopyEditor();renderUploads();await renderPoster();document.body.classList.add("ready")}
 initialize();
 </script>
-</body>
-</html>
+
+
+</body></html>
