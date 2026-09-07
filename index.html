@@ -1116,6 +1116,8 @@ body {
 .finance-preview-card.web canvas { width: 420px; }
 .finance-title-input { display: block; width: 100%; min-height: 64px; margin-top: 6px; box-sizing: border-box; resize: vertical; padding: 8px 10px; border: 1px solid #DDE3EA; border-radius: 6px; background: #FFF; color: #111827; font: inherit; font-size: 12px; line-height: 1.45; outline: none; }
 .finance-title-input:focus { border-color: var(--brand-blue); }
+.finance-fit-control { margin-top: 10px; }
+.finance-fit-control .email-fit-message { margin-bottom: 8px; }
 @media (max-width: 1180px) { .finance-module.active { flex-wrap: wrap; } }
 
 /* 跟单页 banner */
@@ -5569,9 +5571,10 @@ const FINANCE_SPECS = {
 };
 let financeBannerLangs = [{ id:1, code:'zh-CN', title:'最高 15% 年化', subtitle:'USDC 活期赚币｜随存随取 · 低风险' }];
 let financeBannerImages = { light:null, dark:null };
+let financeBannerTitleScales = {};
 
 function saveFinanceBannerDraft() {
-  try { localStorage.setItem(FINANCE_BANNER_DRAFT_KEY, JSON.stringify({ langs:financeBannerLangs, images:financeBannerImages })); } catch (_) {}
+  try { localStorage.setItem(FINANCE_BANNER_DRAFT_KEY, JSON.stringify({ langs:financeBannerLangs, images:financeBannerImages, titleScales:financeBannerTitleScales })); } catch (_) {}
 }
 
 function loadFinanceBannerDraft() {
@@ -5579,15 +5582,65 @@ function loadFinanceBannerDraft() {
     const saved = JSON.parse(localStorage.getItem(FINANCE_BANNER_DRAFT_KEY) || 'null');
     if (Array.isArray(saved?.langs) && saved.langs.length) financeBannerLangs = saved.langs;
     if (saved?.images) financeBannerImages = { light:saved.images.light || null, dark:saved.images.dark || null };
+    if (saved?.titleScales && typeof saved.titleScales === 'object') financeBannerTitleScales = saved.titleScales;
   } catch (_) {}
 }
 
 function renderFinanceBannerEditor() {
   const list = document.getElementById('financeLangList');
   if (!list) return;
-  list.innerHTML = financeBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题（上）" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"><textarea class="finance-title-input" rows="3" placeholder="主标题（下，回车换行）" oninput="updateFinanceBannerText(${item.id},'title',this.value)">${eh(item.title)}</textarea></div>`).join('');
+  list.innerHTML = financeBannerLangs.map(item=>{
+    const autoScale = financeBannerAutoTitleScale(item);
+    const currentScale = financeBannerTitleScales[item.id] || autoScale;
+    const overflow = autoScale < 0.999;
+    const control = overflow ? `<div class="finance-fit-control"><div class="email-fit-message"><span class="email-fit-icon">⚠️</span><span>理财banner App/Web 文案超出安全区域，已自动缩小字号</span></div><div class="email-fit-slider-row"><input class="email-fit-slider" type="range" min="60" max="100" step="1" value="${Math.round(currentScale*100)}" style="--fit-progress:${(1-currentScale)*250}%" oninput="setFinanceBannerTitleScale(${item.id},this)"><button type="button" class="email-fit-reset" onclick="resetFinanceBannerTitleScale(${item.id})">恢复标准字号</button></div></div>` : '';
+    return `<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题（上）" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"><textarea class="finance-title-input" rows="3" placeholder="主标题（下，回车换行）" oninput="updateFinanceBannerText(${item.id},'title',this.value)" onblur="renderFinanceBannerEditor()">${eh(item.title)}</textarea>${control}</div>`;
+  }).join('');
+  list.querySelectorAll('.email-fit-slider').forEach(enableRangeDragCapture);
   setFinanceBannerUploadButtonState('light');
   setFinanceBannerUploadButtonState('dark');
+}
+
+function financeBannerTitleLineCount(ctx, text, maxW) {
+  return String(text || '').split('\n').reduce((count, segment) => count + Math.max(1,wrapTextLines(ctx,segment,maxW).length),0);
+}
+
+function financeBannerLayoutTitleScale(lang, layout) {
+  const spec = FINANCE_SPECS[layout];
+  const imageX = spec.W - spec.imageRight - spec.image;
+  const textW = layout === 'app' ? spec.W - spec.padX*2 : imageX - spec.padX - 20;
+  const startY = layout === 'app' ? 58 : 100;
+  const safeBottom = layout === 'app' ? spec.imageTop - 6 : spec.H - 22;
+  const minSize = layout === 'app' ? 10 : 12;
+  const probe = document.createElement('canvas').getContext('2d');
+  for (let size=spec.title; size>=minSize; size-=0.5) {
+    probe.font = `700 ${size}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    const lines = financeBannerTitleLineCount(probe,lang.title,textW);
+    if (startY + Math.max(0,lines-1)*size*1.18 <= safeBottom) return size/spec.title;
+  }
+  return minSize/spec.title;
+}
+
+function financeBannerAutoTitleScale(lang) {
+  return Math.min(financeBannerLayoutTitleScale(lang,'app'),financeBannerLayoutTitleScale(lang,'web'));
+}
+
+function financeBannerEffectiveTitleScale(lang) {
+  return Math.max(0.6,Math.min(1,Number(financeBannerTitleScales[lang.id]) || financeBannerAutoTitleScale(lang)));
+}
+
+function setFinanceBannerTitleScale(id, slider) {
+  financeBannerTitleScales[id] = Number(slider.value)/100;
+  slider.style.setProperty('--fit-progress',`${((100-Number(slider.value))/40)*100}%`);
+  saveFinanceBannerDraft();
+  renderFinanceBannerPreview();
+}
+
+function resetFinanceBannerTitleScale(id) {
+  delete financeBannerTitleScales[id];
+  saveFinanceBannerDraft();
+  renderFinanceBannerEditor();
+  renderFinanceBannerPreview();
 }
 
 function setFinanceBannerUploadButtonState(theme) {
@@ -5620,6 +5673,7 @@ function removeFinanceBannerLang(id) {
   const removed = financeBannerLangs.find(lang=>lang.id===id);
   if (removed) removedLanguageCache.finance.push({...removed});
   financeBannerLangs = financeBannerLangs.filter(lang=>lang.id!==id);
+  delete financeBannerTitleScales[id];
   saveFinanceBannerDraft(); renderFinanceBannerEditor(); renderFinanceBannerPreview();
 }
 
@@ -5627,6 +5681,7 @@ function updateFinanceBannerText(id, field, value) {
   const item = financeBannerLangs.find(lang=>lang.id===id);
   if (!item) return;
   item[field] = value;
+  if (field === 'title') delete financeBannerTitleScales[id];
   saveFinanceBannerDraft();
   renderFinanceBannerPreview();
 }
@@ -5651,8 +5706,9 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
     drawMultilineText(ctx,lang.subtitle,spec.padX,spec.padY+spec.subtitle,textW,spec.subtitle,1.35,spec.subtitle,spec.subtitle*2.7);
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
-    ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.title,spec.padX,58,textW,spec.title,1.18,spec.title,spec.title*2.45);
+    const titleSize = spec.title * financeBannerEffectiveTitleScale(lang);
+    ctx.font = `700 ${titleSize}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.title,spec.padX,58,textW,titleSize,1.18,titleSize,(spec.imageTop-6)-58+titleSize);
   } else {
     const textW = imageX - spec.padX - 20;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
@@ -5660,8 +5716,9 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
     drawMultilineText(ctx,lang.subtitle,spec.padX,52,textW,spec.subtitle,1.4,spec.subtitle,spec.subtitle*2.8);
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
-    ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.title,spec.padX,100,textW,spec.title,1.22,spec.title,spec.title*2.44);
+    const titleSize = spec.title * financeBannerEffectiveTitleScale(lang);
+    ctx.font = `700 ${titleSize}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.title,spec.padX,100,textW,titleSize,1.18,titleSize,(spec.H-22)-100+titleSize);
   }
   ctx.restore();
 }
