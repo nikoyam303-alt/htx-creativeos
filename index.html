@@ -1114,6 +1114,8 @@ body {
 .finance-preview-card canvas { display: block; max-width: 100%; height: auto; }
 .finance-preview-card.app canvas { width: 316px; }
 .finance-preview-card.web canvas { width: 420px; }
+.finance-title-input { display: block; width: 100%; min-height: 64px; margin-top: 6px; box-sizing: border-box; resize: vertical; padding: 8px 10px; border: 1px solid #DDE3EA; border-radius: 6px; background: #FFF; color: #111827; font: inherit; font-size: 12px; line-height: 1.45; outline: none; }
+.finance-title-input:focus { border-color: var(--brand-blue); }
 @media (max-width: 1180px) { .finance-module.active { flex-wrap: wrap; } }
 
 /* 跟单页 banner */
@@ -5562,7 +5564,7 @@ const FINANCE_BACKGROUND_COLORS = {
 };
 const FINANCE_EXPORT_SCALE = 3;
 const FINANCE_SPECS = {
-  app: { W:158, H:186, radius:12, padX:16, padY:14, title:20, subtitle:11, image:64, imageRight:16, imageTop:106 },
+  app: { W:158, H:186, radius:12, padX:16, padY:14, title:16, subtitle:11, image:64, imageRight:16, imageTop:106 },
   web: { W:420, H:176, radius:16, padX:32, padY:28, title:20, subtitle:14, image:100, imageRight:32, imageTop:28 }
 };
 let financeBannerLangs = [{ id:1, code:'zh-CN', title:'最高 15% 年化', subtitle:'USDC 活期赚币｜随存随取 · 低风险' }];
@@ -5583,7 +5585,7 @@ function loadFinanceBannerDraft() {
 function renderFinanceBannerEditor() {
   const list = document.getElementById('financeLangList');
   if (!list) return;
-  list.innerHTML = financeBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题（上）" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="主标题（下）" oninput="updateFinanceBannerText(${item.id},'title',this.value)"></div>`).join('');
+  list.innerHTML = financeBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题（上）" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"><textarea class="finance-title-input" rows="3" placeholder="主标题（下，回车换行）" oninput="updateFinanceBannerText(${item.id},'title',this.value)">${eh(item.title)}</textarea></div>`).join('');
   setFinanceBannerUploadButtonState('light');
   setFinanceBannerUploadButtonState('dark');
 }
@@ -5645,7 +5647,7 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
   if (layout === 'app') {
     const textW = spec.W - spec.padX*2;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = dark ? '#AEB8C8' : '#667085';
+    ctx.fillStyle = '#828282';
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
     drawMultilineText(ctx,lang.subtitle,spec.padX,spec.padY+spec.subtitle,textW,spec.subtitle,1.35,spec.subtitle,spec.subtitle*2.7);
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
@@ -5654,7 +5656,7 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
   } else {
     const textW = imageX - spec.padX - 20;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = dark ? '#AEB8C8' : '#667085';
+    ctx.fillStyle = dark ? '#AEB8C8' : '#000000';
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
     drawMultilineText(ctx,lang.subtitle,spec.padX,52,textW,spec.subtitle,1.4,spec.subtitle,spec.subtitle*2.8);
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
