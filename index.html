@@ -1446,7 +1446,12 @@ html { scroll-behavior: smooth; }
     <div class="ad-editor">
       <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div></div>
       <div class="ad-field"><div id="financeLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addFinanceBannerLang()">+ 添加语种</button></div>
-      <button class="download-all-btn" id="financeDownloadBtn" onclick="downloadFinanceBanner()">下载</button>
+      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
+      <div class="upload-area">
+        <button class="upload-btn" id="financeLightBtn" onclick="document.getElementById('financeLightFile').click()">白天配图</button><input id="financeLightFile" type="file" accept="image/*,.svg" onchange="handleFinanceBannerImage(event,'light')">
+        <button class="upload-btn" id="financeDarkBtn" onclick="document.getElementById('financeDarkFile').click()">黑天配图</button><input id="financeDarkFile" type="file" accept="image/*,.svg" onchange="handleFinanceBannerImage(event,'dark')">
+      </div>
+      <button class="download-all-btn" id="financeDownloadBtn" onclick="downloadFinanceBanner()">下载 3×</button>
     </div>
     <div class="ad-preview-shell">
       <div class="ad-preview-head"><div class="ad-preview-title">理财banner</div></div>
@@ -5555,27 +5560,52 @@ const FINANCE_BACKGROUND_COLORS = {
   app: { light:'#F6F6F6', dark:'#161616' },
   web: { light:'#F3F3F3', dark:'#161616' }
 };
+const FINANCE_EXPORT_SCALE = 3;
 const FINANCE_SPECS = {
-  app: { W:158, H:186, radius:12, padX:16, padY:14, title:20, subtitle:11 },
-  web: { W:420, H:160, radius:16, padX:32, padY:26, title:20, subtitle:14 }
+  app: { W:158, H:186, radius:12, padX:16, padY:14, title:20, subtitle:11, image:64, imageRight:16, imageTop:106 },
+  web: { W:420, H:176, radius:16, padX:32, padY:28, title:20, subtitle:14, image:100, imageRight:32, imageTop:28 }
 };
 let financeBannerLangs = [{ id:1, code:'zh-CN', title:'最高 15% 年化', subtitle:'USDC 活期赚币｜随存随取 · 低风险' }];
+let financeBannerImages = { light:null, dark:null };
 
 function saveFinanceBannerDraft() {
-  try { localStorage.setItem(FINANCE_BANNER_DRAFT_KEY, JSON.stringify({ langs:financeBannerLangs })); } catch (_) {}
+  try { localStorage.setItem(FINANCE_BANNER_DRAFT_KEY, JSON.stringify({ langs:financeBannerLangs, images:financeBannerImages })); } catch (_) {}
 }
 
 function loadFinanceBannerDraft() {
   try {
     const saved = JSON.parse(localStorage.getItem(FINANCE_BANNER_DRAFT_KEY) || 'null');
     if (Array.isArray(saved?.langs) && saved.langs.length) financeBannerLangs = saved.langs;
+    if (saved?.images) financeBannerImages = { light:saved.images.light || null, dark:saved.images.dark || null };
   } catch (_) {}
 }
 
 function renderFinanceBannerEditor() {
   const list = document.getElementById('financeLangList');
   if (!list) return;
-  list.innerHTML = financeBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.title)}" placeholder="主标题（App 最多 3 行）" oninput="updateFinanceBannerText(${item.id},'title',this.value)"><input value="${eh(item.subtitle)}" placeholder="副标题" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"></div>`).join('');
+  list.innerHTML = financeBannerLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题（上）" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"><input value="${eh(item.title)}" placeholder="主标题（下）" oninput="updateFinanceBannerText(${item.id},'title',this.value)"></div>`).join('');
+  setFinanceBannerUploadButtonState('light');
+  setFinanceBannerUploadButtonState('dark');
+}
+
+function setFinanceBannerUploadButtonState(theme) {
+  const button = document.getElementById(theme === 'light' ? 'financeLightBtn' : 'financeDarkBtn');
+  if (!button) return;
+  button.textContent = financeBannerImages[theme] ? `${theme === 'light' ? '白天' : '黑天'}配图已上传` : `${theme === 'light' ? '白天' : '黑天'}配图`;
+  button.className = financeBannerImages[theme] ? 'upload-btn loaded' : 'upload-btn';
+}
+
+function handleFinanceBannerImage(event, theme) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    financeBannerImages[theme] = reader.result;
+    setFinanceBannerUploadButtonState(theme);
+    saveFinanceBannerDraft();
+    renderFinanceBannerPreview();
+  };
+  reader.readAsDataURL(file);
 }
 
 function addFinanceBannerLang() {
@@ -5601,32 +5631,35 @@ function updateFinanceBannerText(id, field, value) {
 
 async function drawFinanceBanner(canvas, lang, layout, theme) {
   const spec = FINANCE_SPECS[layout];
-  canvas.width = spec.W; canvas.height = spec.H;
+  canvas.width = spec.W * FINANCE_EXPORT_SCALE; canvas.height = spec.H * FINANCE_EXPORT_SCALE;
   const ctx = canvas.getContext('2d');
+  ctx.scale(FINANCE_EXPORT_SCALE,FINANCE_EXPORT_SCALE);
   const dark = theme === 'dark';
   ctx.clearRect(0,0,spec.W,spec.H);
   ctx.save();
   ctx.beginPath(); ctx.roundRect(0,0,spec.W,spec.H,spec.radius); ctx.clip();
   ctx.fillStyle = FINANCE_BACKGROUND_COLORS[layout][theme];
   ctx.fillRect(0,0,spec.W,spec.H);
+  const imageX = spec.W - spec.imageRight - spec.image;
+  if (financeBannerImages[theme]) await drawImgContain(ctx,financeBannerImages[theme],imageX,spec.imageTop,spec.image,spec.image);
   if (layout === 'app') {
     const textW = spec.W - spec.padX*2;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
-    ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.title,spec.padX,spec.padY+spec.title,textW,spec.title,1.18,spec.title,spec.title*3.55);
     ctx.fillStyle = dark ? '#AEB8C8' : '#667085';
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.subtitle,spec.padX,86,textW,spec.subtitle,1.35,spec.subtitle,spec.subtitle*4.05);
+    drawMultilineText(ctx,lang.subtitle,spec.padX,spec.padY+spec.subtitle,textW,spec.subtitle,1.35,spec.subtitle,spec.subtitle*2.7);
+    ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
+    ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.title,spec.padX,58,textW,spec.title,1.18,spec.title,spec.title*2.45);
   } else {
-    const textW = spec.W - spec.padX*2;
+    const textW = imageX - spec.padX - 20;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
-    ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.title,spec.padX,60,textW,spec.title,1.22,spec.title,spec.title*3.66);
     ctx.fillStyle = dark ? '#AEB8C8' : '#667085';
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.subtitle,spec.padX,106,textW,spec.subtitle,1.4,spec.subtitle,spec.subtitle*2.8);
+    drawMultilineText(ctx,lang.subtitle,spec.padX,52,textW,spec.subtitle,1.4,spec.subtitle,spec.subtitle*2.8);
+    ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
+    ctx.font = `700 ${spec.title}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.title,spec.padX,100,textW,spec.title,1.22,spec.title,spec.title*2.44);
   }
   ctx.restore();
 }
@@ -5634,7 +5667,7 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
 async function renderFinanceBannerPreview() {
   const grid = document.getElementById('financePreviewGrid');
   if (!grid) return;
-  grid.innerHTML = financeBannerLangs.map(lang=>`<div class="finance-preview-item"><div class="finance-preview-label">${eh(lang.code)}</div><div class="finance-preview-row"><div class="finance-preview-card app"><span>App · 白天 · 158×186</span><canvas id="finance-${lang.id}-app-light"></canvas></div><div class="finance-preview-card app"><span>App · 黑天 · 158×186</span><canvas id="finance-${lang.id}-app-dark"></canvas></div><div class="finance-preview-card web"><span>Web · 白天 · 420×160</span><canvas id="finance-${lang.id}-web-light"></canvas></div><div class="finance-preview-card web"><span>Web · 黑天 · 420×160</span><canvas id="finance-${lang.id}-web-dark"></canvas></div></div></div>`).join('');
+  grid.innerHTML = financeBannerLangs.map(lang=>`<div class="finance-preview-item"><div class="finance-preview-label">${eh(lang.code)} · 3× 高清导出</div><div class="finance-preview-row"><div class="finance-preview-card app"><span>App · 白天 · 474×558</span><canvas id="finance-${lang.id}-app-light"></canvas></div><div class="finance-preview-card app"><span>App · 黑天 · 474×558</span><canvas id="finance-${lang.id}-app-dark"></canvas></div><div class="finance-preview-card web"><span>Web · 白天 · 1260×528</span><canvas id="finance-${lang.id}-web-light"></canvas></div><div class="finance-preview-card web"><span>Web · 黑天 · 1260×528</span><canvas id="finance-${lang.id}-web-dark"></canvas></div></div></div>`).join('');
   await Promise.all(financeBannerLangs.flatMap(lang=>['app','web'].flatMap(layout=>['light','dark'].map(theme=>drawFinanceBanner(document.getElementById(`finance-${lang.id}-${layout}-${theme}`),lang,layout,theme)))));
 }
 
@@ -5648,7 +5681,7 @@ async function downloadFinanceBanner() {
       const canvas = document.createElement('canvas');
       await drawFinanceBanner(canvas,lang,layout,theme);
       const blob = await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
-      files.push({ name:`理财banner/${lang.code}/理财banner_${lang.code}_${layout}_${theme}.png`, data:new Uint8Array(await blob.arrayBuffer()) });
+      files.push({ name:`理财banner/${lang.code}/理财banner_${lang.code}_${layout}_${theme}@3x.png`, data:new Uint8Array(await blob.arrayBuffer()) });
     }
     if (!files.length) throw new Error('请先添加至少一个语种');
     const blob = createAdZip(files);
@@ -5657,7 +5690,7 @@ async function downloadFinanceBanner() {
     link.href = url; link.download = '理财banner.zip'; link.click();
     setTimeout(()=>URL.revokeObjectURL(url),10000);
   } catch (error) { console.error(error); alert(error.message || '下载失败'); }
-  finally { if (button) { button.disabled = false; button.textContent = '下载'; } }
+  finally { if (button) { button.disabled = false; button.textContent = '下载 3×'; } }
 }
 
 loadFinanceBannerDraft();
