@@ -5590,13 +5590,9 @@ function renderFinanceBannerEditor() {
   const list = document.getElementById('financeLangList');
   if (!list) return;
   list.innerHTML = financeBannerLangs.map(item=>{
-    const autoScale = financeBannerAutoTitleScale(item);
-    const currentScale = financeBannerTitleScales[item.id] || autoScale;
-    const overflow = autoScale < 0.999;
-    const control = overflow ? `<div class="finance-fit-control"><div class="email-fit-message"><span class="email-fit-icon">⚠️</span><span>理财banner App/Web 文案超出安全区域，已自动缩小字号</span></div><div class="email-fit-slider-row"><input class="email-fit-slider" type="range" min="60" max="100" step="1" value="${Math.round(currentScale*100)}" style="--fit-progress:${(1-currentScale)*250}%" oninput="setFinanceBannerTitleScale(${item.id},this)"><button type="button" class="email-fit-reset" onclick="resetFinanceBannerTitleScale(${item.id})">恢复标准字号</button></div></div>` : '';
-    return `<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题（上）" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"><textarea class="finance-title-input" rows="3" placeholder="主标题（下，回车换行）" oninput="updateFinanceBannerText(${item.id},'title',this.value)" onblur="renderFinanceBannerEditor()">${eh(item.title)}</textarea>${control}</div>`;
+    return `<div class="zero-lang-card" data-finance-lang-id="${item.id}"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code || '').length)}" placeholder="语种" oninput="updateFinanceBannerText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" title="删除语种" onclick="removeFinanceBannerLang(${item.id})">✕</button></div><input value="${eh(item.subtitle)}" placeholder="副标题（上）" oninput="updateFinanceBannerText(${item.id},'subtitle',this.value)"><textarea class="finance-title-input" rows="3" placeholder="主标题（下，回车换行）" oninput="updateFinanceBannerText(${item.id},'title',this.value)">${eh(item.title)}</textarea><div class="finance-fit-mount" data-finance-fit="${item.id}"></div></div>`;
   }).join('');
-  list.querySelectorAll('.email-fit-slider').forEach(enableRangeDragCapture);
+  financeBannerLangs.forEach(item=>refreshFinanceBannerFitControl(item.id));
   setFinanceBannerUploadButtonState('light');
   setFinanceBannerUploadButtonState('dark');
 }
@@ -5629,6 +5625,21 @@ function financeBannerEffectiveTitleScale(lang) {
   return Math.max(0.6,Math.min(1,Number(financeBannerTitleScales[lang.id]) || financeBannerAutoTitleScale(lang)));
 }
 
+function refreshFinanceBannerFitControl(id) {
+  const lang = financeBannerLangs.find(item=>item.id===id);
+  const mount = document.querySelector(`[data-finance-fit="${id}"]`);
+  if (!lang || !mount) return;
+  const autoScale = financeBannerAutoTitleScale(lang);
+  if (autoScale >= 0.999) {
+    mount.innerHTML = '';
+    return;
+  }
+  const currentScale = financeBannerTitleScales[id] || autoScale;
+  mount.innerHTML = `<div class="finance-fit-control"><div class="email-fit-message"><span class="email-fit-icon">⚠️</span><span>理财banner App/Web 文案超出安全区域，已自动缩小字号</span></div><div class="email-fit-slider-row"><input class="email-fit-slider" type="range" min="60" max="100" step="1" value="${Math.round(currentScale*100)}" style="--fit-progress:${(1-currentScale)*250}%" oninput="setFinanceBannerTitleScale(${id},this)"><button type="button" class="email-fit-reset" onclick="resetFinanceBannerTitleScale(${id})">恢复标准字号</button></div></div>`;
+  const slider = mount.querySelector('.email-fit-slider');
+  if (slider) enableRangeDragCapture(slider);
+}
+
 function setFinanceBannerTitleScale(id, slider) {
   financeBannerTitleScales[id] = Number(slider.value)/100;
   slider.style.setProperty('--fit-progress',`${((100-Number(slider.value))/40)*100}%`);
@@ -5639,7 +5650,7 @@ function setFinanceBannerTitleScale(id, slider) {
 function resetFinanceBannerTitleScale(id) {
   delete financeBannerTitleScales[id];
   saveFinanceBannerDraft();
-  renderFinanceBannerEditor();
+  refreshFinanceBannerFitControl(id);
   renderFinanceBannerPreview();
 }
 
@@ -5683,6 +5694,7 @@ function updateFinanceBannerText(id, field, value) {
   item[field] = value;
   if (field === 'title') delete financeBannerTitleScales[id];
   saveFinanceBannerDraft();
+  if (field === 'title') refreshFinanceBannerFitControl(id);
   renderFinanceBannerPreview();
 }
 
