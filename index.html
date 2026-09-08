@@ -1706,8 +1706,12 @@ html { scroll-behavior: smooth; }
   <nav class="social-template-nav" aria-label="社媒模板">
     <div class="social-template-title">社媒模板</div>
     <div class="social-template-list">
-      <button class="social-template-btn" data-social-tool="listing" type="button" onclick="switchSocialTool('listing')">上币模板</button>
-      <button class="social-template-btn" data-social-tool="coin-intro" type="button" onclick="switchSocialTool('coin-intro')">币种介绍</button>
+      <div class="social-template-group">
+        <div class="social-template-parent">现货</div>
+        <div class="social-template-children">
+          <button class="social-template-btn social-template-sub" data-social-tool="listing" type="button" onclick="switchSocialTool('listing')"><span class="social-template-check" aria-hidden="true"></span><span>现货上币</span></button>
+        </div>
+      </div>
       <div class="social-template-group">
         <div class="social-template-parent">现货交易派对</div>
         <div class="social-template-children">
@@ -1715,9 +1719,20 @@ html { scroll-behavior: smooth; }
           <button class="social-template-btn social-template-sub" data-social-tool="spot-carnival-vip" type="button" onclick="switchSocialTool('spot-carnival-vip')"><span class="social-template-check" aria-hidden="true"></span><span>VIP</span></button>
         </div>
       </div>
-      <button class="social-template-btn" data-social-tool="weekly-recap" type="button" onclick="switchSocialTool('weekly-recap')">上新周报</button>
-      <button class="social-template-btn" data-social-tool="research-cover" type="button" onclick="switchSocialTool('research-cover')">研报封面</button>
-      <button class="social-template-btn" data-social-tool="contract-listing" type="button" onclick="switchSocialTool('contract-listing')">合约上币</button>
+      <div class="social-template-group">
+        <div class="social-template-parent">合约</div>
+        <div class="social-template-children">
+          <button class="social-template-btn social-template-sub" data-social-tool="coin-intro" type="button" onclick="switchSocialTool('coin-intro')"><span class="social-template-check" aria-hidden="true"></span><span>合约币种介绍</span></button>
+          <button class="social-template-btn social-template-sub" data-social-tool="contract-listing" type="button" onclick="switchSocialTool('contract-listing')"><span class="social-template-check" aria-hidden="true"></span><span>合约上币</span></button>
+        </div>
+      </div>
+      <div class="social-template-group">
+        <div class="social-template-parent">PR</div>
+        <div class="social-template-children">
+          <button class="social-template-btn social-template-sub" data-social-tool="weekly-recap" type="button" onclick="switchSocialTool('weekly-recap')"><span class="social-template-check" aria-hidden="true"></span><span>上新周报</span></button>
+          <button class="social-template-btn social-template-sub" data-social-tool="research-cover" type="button" onclick="switchSocialTool('research-cover')"><span class="social-template-check" aria-hidden="true"></span><span>研报封面</span></button>
+        </div>
+      </div>
       <button class="social-template-btn active" data-social-tool="poster" type="button" onclick="switchSocialTool('poster')">社媒海报</button>
     </div>
   </nav>
@@ -6827,7 +6842,7 @@ function switchSocialTool(tool, updateLocation = true) {
     }
     frame.dataset.activeTool = nextTool;
   }
-  if (frame) frame.title = ({ listing: '上币模板编辑器', 'coin-intro': '币种介绍编辑器', 'spot-carnival': '现货交易派对编辑器', 'spot-carnival-vip': '现货交易派对 VIP 编辑器', 'weekly-recap': '上新周报编辑器', 'research-cover': '研报封面编辑器', 'contract-listing': '合约上币编辑器', poster: '社媒海报编辑器' })[nextTool];
+  if (frame) frame.title = ({ listing: '现货上币编辑器', 'coin-intro': '合约币种介绍编辑器', 'spot-carnival': '现货交易派对编辑器', 'spot-carnival-vip': '现货交易派对 VIP 编辑器', 'weekly-recap': '上新周报编辑器', 'research-cover': '研报封面编辑器', 'contract-listing': '合约上币编辑器', poster: '社媒海报编辑器' })[nextTool];
   document.querySelectorAll('.social-template-btn').forEach(button => {
     button.classList.toggle('active', button.dataset.socialTool === nextTool);
   });
