@@ -6817,7 +6817,7 @@ function switchSocialTool(tool, updateLocation = true) {
   const nextTool = ['listing', 'coin-intro', 'spot-carnival', 'spot-carnival-vip', 'weekly-recap', 'research-cover', 'contract-listing', 'poster'].includes(tool) ? tool : 'poster';
   const spotCarnivalVersion = 'v=202608191130';
   const contractListingVersion = 'v=202608111620';
-  const researchCoverVersion = 'v=202608141930';
+  const researchCoverVersion = 'v=202609081510';
   const isSpotCarnival = nextTool === 'spot-carnival' || nextTool === 'spot-carnival-vip';
   const spotCarnivalSrc = String(frame?.src || '');
   const requiresSpotCarnivalReload = isSpotCarnival && (!spotCarnivalSrc.includes(spotCarnivalVersion) || (nextTool === 'spot-carnival-vip') !== spotCarnivalSrc.includes('theme=vip'));
