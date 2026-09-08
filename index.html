@@ -167,26 +167,25 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .sw-pccal  { width: 480px; height: 80px; overflow: hidden; position: relative; flex-shrink: 0; }
   .si-pccal  { width: 2400px; height: 400px; transform: scale(0.2); transform-origin: top left; position: absolute; }
 
-  .sw-feed       { width: 250px; height: 80px; overflow: hidden; position: relative; flex-shrink: 0; border-radius: 4px; }
+  .sw-feed       { width: 375px; height: 120px; overflow: hidden; position: relative; flex-shrink: 0; }
   .sw-feed.light { background: #F5F5F5; }
   .sw-feed.dark  { background: #1a1a1a; }
-  .si-feed  { width: 750px; height: 240px; transform: scale(0.3333); transform-origin: top left; position: absolute; }
+  .si-feed  { width: 750px; height: 240px; transform: scale(0.5); transform-origin: top left; position: absolute; }
 .sw-community { width: 375px; height: 110px; overflow: hidden; position: relative; flex-shrink: 0; }
   .si-community { width: 750px; height: 220px; transform: scale(0.5); transform-origin: top left; position: absolute; }
   .sub, .tit { max-width: 100%; white-space: normal; word-break: normal; overflow-wrap: anywhere; }
   .txt { min-width: 0; }
 
-  .b-feed { width: 750px; height: 240px; padding: 40px; box-sizing: border-box; display: flex; align-items: center; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
-  .b-feed.light { background: #FAFAFA; }
-  .b-feed.dark { background: #0F0F0F; }
-  .b-feed .txt { flex: 1; min-width: 0; padding-right: 40px; }
-  .b-feed .sub { margin: 0; font-size: 28px; font-weight: 400; font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; }
-  .b-feed.light .sub { color: #8C8C8C; } .b-feed.dark .sub { color: rgba(250,250,250,0.6); }
-  .b-feed .tit { margin: 16px 0 0 0; font-size: 32px; font-weight: 500; font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; }
-  .b-feed.light .tit { color: #0F0F0F; } .b-feed.dark .tit { color: #FAFAFA; }
-  .b-feed .imgw { flex-shrink: 0; width: 160px; height: 160px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .b-feed.light .imgw { background: #F5F5F5; } .b-feed.dark .imgw { background: #313132; }
-  .b-feed .imgw img { width: 128px; height: 128px; display: block; object-fit: cover; border-radius: 8px; }
+  .b-feed { width: 750px; height: 240px; position: relative; overflow: hidden; font-family: 'HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; }
+  .b-feed.light { background: #F3F3F3; }
+  .b-feed.dark { background: #161616; }
+  .b-feed .txt { position: absolute; left: 32px; top: 50%; width: 500px; transform: translateY(-50%); }
+  .b-feed .sub { margin: 0; overflow: hidden; font-size: 30px; font-weight: 400; line-height: 44px; text-overflow: ellipsis; white-space: nowrap; }
+  .b-feed .tit { display: -webkit-box; max-height: 88px; margin: 0; overflow: hidden; font-size: 30px; font-weight: 700; line-height: 44px; word-break: break-word; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
+  .b-feed.light .sub, .b-feed.light .tit { color: #000000; }
+  .b-feed.dark .sub, .b-feed.dark .tit { color: #FAFAFA; }
+  .b-feed .imgw { position: absolute; left: 572px; top: 56px; width: 128px; height: 128px; overflow: hidden; }
+  .b-feed .imgw img { width: 128px; height: 128px; display: block; object-fit: contain; }
 
   .b-share { width: 825px; height: 1170px; padding: 90px 60px; box-sizing: border-box; position: relative; background: #fff; border-radius: 24px; overflow: hidden; font-family: 'PingFang SC','Noto Sans SC',sans-serif; }
   .b-share .sub { margin: 0; font-size: 42px; font-weight: 400; line-height: 1.3; color: #242424; word-break: break-word; overflow-wrap: anywhere; }
@@ -194,7 +193,11 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .b-share .desc { margin: 30px 0 0 0; max-width: calc(100% - 180px); font-size: 30px; font-weight: 400; line-height: 1.4; color: #595959; word-break: break-word; overflow-wrap: anywhere; }
   .b-share .img { position: absolute; right: 60px; bottom: 90px; width: 420px; height: 420px; display: block; object-fit: contain; }
   .b-community { width: 750px; height: 220px; position: relative; background: #F3F3F3; overflow: hidden; font-family: 'HarmonyOS Sans SC','PingFang SC',sans-serif; }
-  .b-community .tit { position: absolute; left: 44px; top: 50%; width: 490px; margin: 0; transform: translateY(-50%); font-size: 30px; font-weight: 500; line-height: 1.2; color: #000000; word-break: break-word; overflow-wrap: anywhere; }
+  .b-community .txt { position: absolute; left: 44px; top: 50%; width: 490px; transform: translateY(-50%); }
+  /* Figma uses 15px on the 375×110 layout. The source/export canvas is 2×,
+     so typography must also be doubled to remain 15px in the scaled preview. */
+  .b-community .sub { margin: 0 0 8px; overflow: hidden; color: #000000; font-size: 30px; font-weight: 400; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
+  .b-community .tit { display: -webkit-box; max-height: 72px; margin: 0; overflow: hidden; color: #000000; font-size: 30px; font-weight: 700; line-height: 1.2; word-break: break-word; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
   .b-community .img { position: absolute; right: 44px; top: 46px; width: 128px; height: 128px; object-fit: contain; }
   .sw-share { width: 149px; height: 211px; overflow: hidden; position: relative; flex-shrink: 0; }
   .si-share { width: 825px; height: 1170px; transform: scale(0.18); transform-origin: top left; position: absolute; }
@@ -1790,8 +1793,8 @@ const SPECS = {
   appcal: { W:1029, H:330,  PAD:48,  subSz:36, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:54, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:12, imgW:234, imgPos:'rc', radius:0,  bg:'#0066FF', subClr:'rgba(255,255,255,0.8)', titClr:'#FFFFFF' },
   pccal:  { W:2400, H:400,  PAD:44,  PADX:90, subSz:50, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:68, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:18, imgW:300, imgPos:'rc', radius:24, bg:'#FAFAFA', subClr:'#8C8C8C', titClr:'#0F0F0F' },
   share:  { W:825,  H:1170, PAD:90,  PADX:60, subSz:42, titSz:90, gap:24, imgW:420, imgPos:'rb', radius:24, boldTit:true, subClr:'#242424', titClr:'#0066FF', bg:'#FFFFFF', titLH:1.2 },
-  community:{ W:750, H:220, PAD:0, PADX:48, subSz:1, subWeight:'400', titSz:36, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:0, imgW:220, imgGap:24, imgPos:'rc', radius:0, bg:'#F3F3F3', subClr:'#000000', titClr:'#000000', titLH:1.2 },
-  feed:   { W:750,  H:240,  PAD:40,  subSz:28, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:32, titWeight:'500', titFont:"HarmonyOS Sans SC", gap:16, imgW:160, imgPos:'rc', radius:0, transparent:false },
+  community:{ W:750, H:220, PAD:0, PADX:44, subSz:30, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:30, titWeight:'700', titFont:"HarmonyOS Sans SC", gap:8, imgW:128, imgGap:44, imgPos:'rc', radius:0, bg:'#F3F3F3', subClr:'#000000', titClr:'#000000', subLH:1.2, titLH:1.2 },
+  feed:   { W:750, H:240, PAD:0, PADX:32, subSz:30, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:30, titWeight:'700', titFont:"HarmonyOS Sans SC", gap:0, imgW:128, imgGap:40, imgPos:'rc', radius:0, bg:'#F3F3F3', subClr:'#000000', titClr:'#000000', subLH:44/30, titLH:44/30 },
   landing:{ W:375,  H:234,  PAD:20,  subSz:14, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:28, gap:4, imgW:98, imgPos:'vt', radius:0, boldTit:true, subLH:20/14, titLH:38/28, minImageTextGap:20 },
   landingweb:{ W:1200, H:299, PAD:30, subSz:22, subWeight:'400', subFont:"HarmonyOS Sans SC", titSz:40, titWeight:'700', titFont:"HarmonyOS Bold", gap:12, imgW:126, imgPos:'vt', radius:0, boldTit:true, subLH:1.2, titLH:1.2, bg:'#FFFFFF', subClr:'#595959', titClr:'#000000' },
   /* Figma 字号基准：App 主标题 26.1px / 副标题 12px；Web 主标题 45px / 副标题 28px；行高均为 137%。 */
@@ -1820,8 +1823,8 @@ const SLOT_TEXT_SPECS = {
   appcal: { maxH: 234, subMax: 36, subMin: 28, titMax: 54, titMin: 40, gap: 12 },
   pccal:  { maxH: 312, subMax: 50, subMin: 36, titMax: 68, titMin: 48, gap: 18 },
   share:  { maxH: 900, subMax: 42, subMin: 32, titMax: 90, titMin: 60, gap: 24 },
-  community:{ maxH:220, subMax:1, subMin:1, titMax:36, titMin:30, gap:0, subLH:1, titLH:1.2 },
-  feed:   { maxH: 160, subMax: 28, subMin: 24, titMax: 32, titMin: 28, gap: 16 },
+  community:{ maxH:220, subMax:30, subMin:30, titMax:30, titMin:30, gap:8, subLH:1.2, titLH:1.2 },
+  feed:   { maxH: 240, subMax: 30, subMin: 30, titMax: 30, titMin: 30, gap: 0, subLH: 44/30, titLH: 44/30 },
   landing:{ maxH: 104, subMax: 14, subMin: 12, titMax: 28, titMin: 18, gap: 4, subLH: 20/14, titLH: 38/28 },
   landingweb:{ maxH: 101, subMax: 22, subMin: 18, titMax: 40, titMin: 30, gap: 12, subLH: 1.2, titLH: 1.2 },
   topicapp:{ maxH: 95, subMax: 12, subMin: 10, titMax: 26.1, titMin: 20, gap: 7, subLH: 1.37, titLH: 1.37 },
@@ -2282,7 +2285,10 @@ function clearDraft() {
     topicImage = null;
     setTopicImageButtonState();
   } else if (group === 'community') {
-    langs.forEach(lang => { lang.title = ''; });
+    langs.forEach(lang => {
+      lang.subtitle = '';
+      lang.title = '';
+    });
     communityImage = null;
     setCommunityImageButtonState();
   } else if (group === 'baping') {
@@ -2705,6 +2711,13 @@ function addLangToGroup(group='common') {
   if (restorableCode !== undefined) {
     hidden.delete(restorableCode);
     hiddenLangCodes[group] = hidden;
+    if (group === 'community') {
+      const restoredLang = langs.find(lang => lang.code === restorableCode);
+      if (restoredLang) {
+        restoredLang.subtitle = '';
+        restoredLang.title = '';
+      }
+    }
     if (group === 'baping') ensureBapingLang(restorableCode);
     if (group === 'trade') ensureTradeLang(restorableCode);
     if (group === 'pcrebate') ensurePcRebateLang(restorableCode);
@@ -2880,6 +2893,7 @@ function renderLangList() {
   const container = document.getElementById('langList');
   container.innerHTML = '';
   const editorGroup = v2ActiveGroup === 'community' ? 'community' : 'common';
+  const feedEditorMode = editorGroup === 'common' && activeSlots.has('feed');
   visibleLangsFor(editorGroup).forEach(l => {
     const item = document.createElement('div');
     item.className = 'lang-item';
@@ -2917,10 +2931,22 @@ function renderLangList() {
     const inputs = document.createElement('div');
     inputs.className = 'lang-inputs';
     const titTA = document.createElement('textarea');
-    titTA.placeholder = editorGroup === 'community' ? '文案（支持回车换行）' : '主标题';
+    titTA.placeholder = editorGroup === 'community' || feedEditorMode ? '主标题（最多两行）' : '主标题';
     titTA.value = l.title || '';
-    titTA.oninput = () => { updateLang(l.id, 'title', titTA.value); schedulePreview(); if (activeSlots.has('baping')) generateDebounced(); item.querySelector('.email-fit-control')?.remove(); appendEmailFitControl(item, l); };
-    if (editorGroup !== 'community') {
+    titTA.oninput = () => {
+      if (editorGroup === 'community' || feedEditorMode) {
+        const lines = titTA.value.replace(/\r\n?/g, '\n').split('\n');
+        if (lines.length > 2) titTA.value = `${lines[0]}\n${lines.slice(1).join(' ')}`;
+      }
+      updateLang(l.id, 'title', titTA.value); schedulePreview(); if (activeSlots.has('baping')) generateDebounced(); item.querySelector('.email-fit-control')?.remove(); appendEmailFitControl(item, l);
+    };
+    if (editorGroup === 'community' || feedEditorMode) {
+      const subInput = document.createElement('input');
+      subInput.placeholder = '副标题（单行）';
+      subInput.value = String(l.subtitle || '').replace(/\s*\n\s*/g, ' ');
+      subInput.oninput = () => { subInput.value = subInput.value.replace(/\s*\n\s*/g, ' '); updateLang(l.id, 'subtitle', subInput.value); schedulePreview(); };
+      inputs.appendChild(subInput);
+    } else {
       const subTA = document.createElement('textarea');
       subTA.placeholder = '副标题';
       subTA.value = l.subtitle || '';
@@ -2930,7 +2956,7 @@ function renderLangList() {
     inputs.appendChild(titTA);
     item.appendChild(header);
     item.appendChild(inputs);
-    if (editorGroup !== 'community') appendEmailFitControl(item, l);
+    if (editorGroup !== 'community' && !feedEditorMode) appendEmailFitControl(item, l);
     container.appendChild(item);
   });
   const addButton = container.nextElementSibling;
@@ -3536,6 +3562,7 @@ function applyEmailFontMode(lang) {
   const factor = preset.title / 60;
   document.querySelectorAll(`[class*="b-"][data-langid="${lang.id}"]`).forEach(el => {
     const resourceType = previewResourceType(el);
+    if (resourceType === 'community' || resourceType === 'feed') return;
     const shouldScale = shouldScaleResource(lang.code, resourceType);
     el.querySelectorAll('.sub, .tit, .desc, .bar-txt').forEach(textNode => {
       if (!textNode.dataset.baseFontSize) textNode.dataset.baseFontSize = String(Number.parseFloat(getComputedStyle(textNode).fontSize));
@@ -3567,12 +3594,13 @@ function cardShare(l, img) {
 }
 
 function cardCommunity(l, img) {
+  const subtitleHtml = eh(String(l.subtitle || '').replace(/\s*\n\s*/g,' '));
   const titleHtml = eh(l.title).replace(/\n/g,'<br>');
-  return `<div class="b-community" data-langid="${l.id}"><p class="tit">${titleHtml}</p>${img ? `<img class="img" src="${img}">` : ''}</div>`;
+  return `<div class="b-community" data-langid="${l.id}"><div class="txt">${subtitleHtml ? `<p class="sub">${subtitleHtml}</p>` : ''}<p class="tit">${titleHtml}</p></div>${img ? `<img class="img" src="${img}">` : ''}</div>`;
 }
 
 function cardFeed(l, theme, img) {
-  const subHtml = eh(l.subtitle).replace(/\n/g,'<br>');
+  const subHtml = eh(String(l.subtitle || '').replace(/\s*\n\s*/g,' '));
   const titHtml = eh(l.title).replace(/\n/g,'<br>');
   return `<div class="b-feed ${theme}" data-langid="${l.id}"><div class="txt"><p class="sub">${subHtml}</p><p class="tit">${titHtml}</p></div><div class="imgw">${img ? `<img src="${img}">` : ''}</div></div>`;
 }
@@ -3954,7 +3982,7 @@ function drawCenteredMultilineText(ctx, text, centerX, startY, maxW, sz, lineH_r
 const OVERFLOW_RESOURCE_META = [
   ['b-new','瓷片区banner','common','new'], ['b-old','旧版banner','common','old'],
   ['b-appcal','App 日历','common','appcal'], ['b-pccal','PC 日历','common','pccal'],
-  ['b-share','分享页','common','share'], ['b-feed','Feed流','common','feed'],
+  ['b-share','分享页','common','share'],
   ['b-landing','聚合落地页','common','landing'], ['b-landingweb','聚合落地页 web','common','landingweb'],
   ['b-topicapp','专题页banner App','common','topicapp'], ['b-topicweb','专题页banner Web','common','topicweb'], ['b-baping','霸屏','baping','baping'],
   ['b-tradeapp','交易赛 App','trade','tradeapp'], ['b-tradeweb','交易赛 Web','trade','tradeweb'],
@@ -4678,9 +4706,9 @@ async function renderToDataUrl(type, theme, langId, autoScale) {
   const selector = type === 'email' ? '.b-email' : type === 'appcal' ? '.b-appcal' : type === 'pccal' ? '.b-pccal' : type === 'share' ? '.b-share' : type === 'baping' ? '.b-baping' : type === 'tradeweb' ? '.b-tradeweb' : `.b-${type}${theme ? '.' + theme : ''}`;
   const inner = document.querySelector(`${selector}[data-langid="${langId}"]`);
   if (!inner) return null;
-  // Topic downloads reuse the exact preview DOM, so typography, wrapping and
-  // image object-position cannot drift from what operators approved on screen.
-  if (isTopic) return renderPreviewElementToDataUrl(inner, W, H, DPR);
+  // Topic and community downloads reuse the exact preview DOM, so typography,
+  // truncation, wrapping and image sizing cannot drift from the approved preview.
+  if (isTopic || type === 'community' || type === 'feed') return renderPreviewElementToDataUrl(inner, W, H, DPR);
 
   const canvas = document.createElement('canvas');
   canvas.width = Math.round(W * DPR);
