@@ -1109,6 +1109,11 @@ body {
 /* 理财 banner */
 .finance-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
 .finance-module.active { display: flex; }
+.email-art-module { display: none; flex: 1; min-width: 0; gap: 20px; align-items: flex-start; }
+.email-art-module.active { display: flex; }
+.email-art-preview-grid { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+.email-art-preview-card { display: flex; flex-direction: column; gap: 8px; color: #98A2B3; font-size: 10px; }
+.email-art-preview-card canvas { display: block; width: 375px; max-width: 100%; height: auto; }
 .finance-preview-grid { display: flex; flex-direction: column; gap: 30px; width: 100%; }
 .finance-preview-item { min-width: 0; }
 .finance-preview-label { margin-bottom: 10px; color: #98A2B3; font-size: 11px; line-height: 26px; }
@@ -1392,6 +1397,7 @@ html { scroll-behavior: smooth; }
       <button class="v2-group-btn" data-v2-group="community" onclick="setV2Group('community')"><span>社区</span></button>
       <button class="v2-group-btn" data-v2-group="topic" onclick="setV2Group('topic')"><span>专题页banner</span></button>
       <button class="v2-group-btn" data-v2-group="finance" onclick="setV2Group('finance')"><span>理财banner</span></button>
+      <button class="v2-group-btn" data-v2-group="emailart" onclick="setV2Group('emailart')"><span>邮件配图</span></button>
     </div>
     <div id="adSiteNavSection" class="v2-hidden">
       <div id="adSiteList"></div>
@@ -1458,11 +1464,25 @@ html { scroll-behavior: smooth; }
         <button class="upload-btn" id="financeLightBtn" onclick="document.getElementById('financeLightFile').click()">白天配图</button><input id="financeLightFile" type="file" accept="image/*,.svg" onchange="handleFinanceBannerImage(event,'light')">
         <button class="upload-btn" id="financeDarkBtn" onclick="document.getElementById('financeDarkFile').click()">黑天配图</button><input id="financeDarkFile" type="file" accept="image/*,.svg" onchange="handleFinanceBannerImage(event,'dark')">
       </div>
-      <button class="download-all-btn" id="financeDownloadBtn" onclick="downloadFinanceBanner()">下载 3×</button>
+      <button class="download-all-btn" id="financeDownloadBtn" onclick="downloadFinanceBanner()">下载高清图</button>
     </div>
     <div class="ad-preview-shell">
       <div class="ad-preview-head"><div class="ad-preview-title">理财banner</div></div>
       <div class="finance-preview-grid" id="financePreviewGrid"></div>
+    </div>
+  </section>
+  <section class="email-art-module" id="emailArtModule">
+    <div class="ad-editor">
+      <div class="v2-config-head"><div class="panel-title v2-panel-label">文案配置</div><div class="draft-row"><button class="clear-draft-btn" onclick="clearEmailArtDraft()">清空草稿</button></div></div>
+      <div class="ad-field"><div id="emailArtLangList"></div><button class="add-lang-btn" style="margin-top:10px" onclick="addEmailArtLang()">+ 添加语种</button></div>
+      <div class="panel-title v2-panel-label" style="margin-top:20px;">配图</div>
+      <div class="upload-area"><button class="upload-btn" id="emailArtImageBtn" onclick="document.getElementById('emailArtImageFile').click()">上传配图（256 × 256）</button><input id="emailArtImageFile" type="file" accept="image/*,.svg" onchange="handleEmailArtImage(event)"></div>
+      <div class="spot-listing-help">设计稿灰色框为配图位置；支持 PNG、JPG、WebP、SVG，建议透明背景。</div>
+      <button class="download-all-btn" id="emailArtDownloadBtn" onclick="downloadEmailArt()">下载 PNG</button>
+    </div>
+    <div class="ad-preview-shell">
+      <div class="ad-preview-head"><div class="ad-preview-title">邮件配图 · 750 × 878</div></div>
+      <div class="email-art-preview-grid" id="emailArtPreviewGrid"></div>
     </div>
   </section>
   <section class="follow-module" id="followModule">
@@ -5602,15 +5622,78 @@ async function downloadZeroBanner() {
 loadZeroBannerDraft();
 renderZeroBannerEditor();
 
+const EMAIL_ART_DRAFT_KEY = 'htxEmailArtV1';
+const EMAIL_ART_SPEC = { W:750, H:878, scale:1.5, pad:70, titleTop:104, titleSize:60, titleMin:42, titleLineHeight:1.12, titleLines:3, subtitleTop:330, subtitleSize:20, image:256, imageX:247, imageY:390, buttonX:180, buttonY:724, buttonW:390, buttonH:72, buttonSize:22, buttonMin:14 };
+let emailArtLangs = [{ id:1, code:'zh-CN', title:'分享你的盲盒福利\n与好友双向获益', subtitle:'除了理财赚币，您的社交圈还能带来30%返佣+盲盒收益', button:'立即分享好友' }];
+let emailArtImage = null;
+
+function saveEmailArtDraft() {
+  try { localStorage.setItem(EMAIL_ART_DRAFT_KEY,JSON.stringify({langs:emailArtLangs,image:emailArtImage})); } catch (_) {}
+}
+function loadEmailArtDraft() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(EMAIL_ART_DRAFT_KEY) || 'null');
+    if (Array.isArray(saved?.langs) && saved.langs.length) emailArtLangs = saved.langs;
+    if (typeof saved?.image === 'string') emailArtImage = saved.image;
+  } catch (_) {}
+}
+function renderEmailArtEditor() {
+  const list = document.getElementById('emailArtLangList');
+  if (!list) return;
+  list.innerHTML = emailArtLangs.map(item=>`<div class="zero-lang-card"><div class="zero-lang-head otc-lang-head"><input class="lang-tag-input" value="${eh(item.code)}" size="${Math.max(4,(item.code||'').length)}" placeholder="语种" oninput="updateEmailArtText(${item.id},'code',this.value);this.size=Math.max(4,this.value.length)"><button class="lang-remove" aria-label="删除 ${eh(item.code)}" onclick="removeEmailArtLang(${item.id})">✕</button></div><textarea class="finance-title-input" rows="3" placeholder="大标题（最多三行）" oninput="updateEmailArtText(${item.id},'title',this.value)">${eh(item.title)}</textarea><input value="${eh(item.subtitle)}" placeholder="副标题（单行）" oninput="updateEmailArtText(${item.id},'subtitle',this.value)"><input value="${eh(item.button)}" placeholder="按钮文案（单行）" oninput="updateEmailArtText(${item.id},'button',this.value)"></div>`).join('');
+  const button = document.getElementById('emailArtImageBtn');
+  if (button) { button.textContent = emailArtImage ? '配图已上传' : '上传配图（256 × 256）'; button.className = emailArtImage ? 'upload-btn loaded' : 'upload-btn'; }
+}
+function updateEmailArtText(id,field,value) { const item=emailArtLangs.find(x=>x.id===id); if(!item)return; item[field]=value; saveEmailArtDraft(); renderEmailArtPreview(); }
+function addEmailArtLang() { emailArtLangs.push({id:nextStandaloneLangId(emailArtLangs),code:nextStandaloneLangCode(emailArtLangs),title:'',subtitle:'',button:''}); saveEmailArtDraft(); renderEmailArtEditor(); renderEmailArtPreview(); }
+function removeEmailArtLang(id) { emailArtLangs=emailArtLangs.filter(x=>x.id!==id); saveEmailArtDraft(); renderEmailArtEditor(); renderEmailArtPreview(); }
+function clearEmailArtDraft() { emailArtLangs=[{id:1,code:'zh-CN',title:'',subtitle:'',button:''}]; emailArtImage=null; saveEmailArtDraft(); renderEmailArtEditor(); renderEmailArtPreview(); }
+function handleEmailArtImage(event) { const file=event.target.files?.[0]; if(!file)return; const reader=new FileReader(); reader.onload=()=>{emailArtImage=reader.result;saveEmailArtDraft();renderEmailArtEditor();renderEmailArtPreview()}; reader.readAsDataURL(file); event.target.value=''; }
+function emailArtFittedLines(ctx,text,maxW,startSize,minSize,maxLines,weight=700) {
+  for(let size=startSize;size>=minSize;size-=1){ ctx.font=`${weight} ${size}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`; const lines=String(text||'').split('\n').flatMap(s=>wrapTextLines(ctx,s,maxW)); if(lines.length<=maxLines)return {size,lines}; }
+  ctx.font=`${weight} ${minSize}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+  const lines=String(text||'').split('\n').flatMap(s=>wrapTextLines(ctx,s,maxW)).slice(0,maxLines);
+  if(lines.length===maxLines){ while(lines[maxLines-1]&&ctx.measureText(lines[maxLines-1]+'…').width>maxW)lines[maxLines-1]=lines[maxLines-1].slice(0,-1); lines[maxLines-1]+='…'; }
+  return {size:minSize,lines};
+}
+async function drawEmailArt(canvas,lang,preview=false) {
+  const s=EMAIL_ART_SPEC, scale=s.scale;
+  canvas.width=s.W*scale; canvas.height=s.H*scale;
+  const ctx=canvas.getContext('2d'); ctx.scale(scale,scale);
+  ctx.fillStyle='#FFFFFF'; ctx.fillRect(0,0,s.W,s.H);
+  const glow=ctx.createLinearGradient(0,0,0,360); glow.addColorStop(0,'#C8DDFF'); glow.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=glow; ctx.fillRect(0,0,s.W,390);
+  ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillStyle='#0B0B0B';
+  const title=emailArtFittedLines(ctx,lang.title,s.W-s.pad*2,s.titleSize,s.titleMin,s.titleLines,700);
+  ctx.font=`700 ${title.size}px 'HarmonyOS Bold','HarmonyOS Sans SC','PingFang SC',sans-serif`;
+  title.lines.forEach((line,index)=>ctx.fillText(line,s.W/2,s.titleTop+index*title.size*s.titleLineHeight));
+  ctx.font=`400 ${s.subtitleSize}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`; ctx.fillStyle='#8A8A8A';
+  let subtitle=String(lang.subtitle||'').replace(/\s*\n\s*/g,' '); while(subtitle&&ctx.measureText(subtitle+'…').width>s.W-s.pad*2)subtitle=subtitle.slice(0,-1); if(subtitle!==String(lang.subtitle||'').replace(/\s*\n\s*/g,' '))subtitle+='…'; ctx.fillText(subtitle,s.W/2,s.subtitleTop);
+  if(emailArtImage) await drawImgContain(ctx,emailArtImage,s.imageX,s.imageY,s.image,s.image); else if(preview){ctx.fillStyle='#E5E5E5';ctx.fillRect(s.imageX,s.imageY,s.image,s.image)}
+  ctx.strokeStyle='#0066FF';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(s.buttonX,s.buttonY,s.buttonW,s.buttonH,s.buttonH/2);ctx.stroke();
+  let buttonSize=s.buttonSize; const buttonText=String(lang.button||''); while(buttonSize>s.buttonMin){ctx.font=`500 ${buttonSize}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;if(ctx.measureText(buttonText).width<=s.buttonW-56)break;buttonSize-=1} ctx.fillStyle='#0066FF';ctx.textBaseline='middle';ctx.fillText(buttonText,s.W/2,s.buttonY+s.buttonH/2);
+}
+async function renderEmailArtPreview() {
+  const grid=document.getElementById('emailArtPreviewGrid'); if(!grid)return;
+  grid.innerHTML=emailArtLangs.map(lang=>`<div class="email-art-preview-card"><span>${eh(lang.code)} · PNG · 1125 × 1317（1.5×）</span><canvas id="email-art-${lang.id}"></canvas></div>`).join('');
+  await Promise.all(emailArtLangs.map(lang=>drawEmailArt(document.getElementById(`email-art-${lang.id}`),lang,true)));
+}
+async function downloadEmailArt() {
+  if(!emailArtImage){alert('请先上传配图');return}
+  const button=document.getElementById('emailArtDownloadBtn');if(button){button.disabled=true;button.textContent='生成中…'}
+  try{await ensureExportFontsReady();const files=[];for(const lang of emailArtLangs){const canvas=document.createElement('canvas');await drawEmailArt(canvas,lang,false);const blob=await new Promise((resolve,reject)=>canvas.toBlob(v=>v?resolve(v):reject(new Error('生成失败')),'image/png'));files.push({name:`邮件配图/邮件配图_${lang.code}.png`,data:new Uint8Array(await blob.arrayBuffer())})}if(files.length===1){const blob=new Blob([files[0].data],{type:'image/png'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=files[0].name.split('/').pop();link.click();setTimeout(()=>URL.revokeObjectURL(url),10000)}else{const zip=createAdZip(files),url=URL.createObjectURL(zip),link=document.createElement('a');link.href=url;link.download='邮件配图.zip';link.click();setTimeout(()=>URL.revokeObjectURL(url),10000)}}catch(error){console.error(error);alert(error.message||'下载失败')}finally{if(button){button.disabled=false;button.textContent='下载 PNG'}}
+}
+loadEmailArtDraft();
+renderEmailArtEditor();
+
 const FINANCE_BANNER_DRAFT_KEY = 'htxFinanceBannerV1';
 const FINANCE_BACKGROUND_COLORS = {
-  app: { light:'#F6F6F6', dark:'#161616' },
+  app: { light:'#F3F3F3', dark:'#161616' },
   web: { light:'#F3F3F3', dark:'#161616' }
 };
-const FINANCE_EXPORT_SCALE = 3;
+const FINANCE_EXPORT_SCALES = { app:3, web:4 };
 const FINANCE_SPECS = {
-  app: { W:158, H:186, radius:12, padX:16, padY:14, title:16, subtitle:11, image:64, imageRight:16, imageTop:106 },
-  web: { W:420, H:176, radius:16, padX:32, padY:28, title:20, subtitle:14, image:100, imageRight:32, imageTop:28 }
+  app: { W:158, H:186, radius:12, padX:16, padY:14, title:16, titleMin:12, titleLines:3, subtitle:11, subtitleMin:10, subtitleLines:3, image:64, imageRight:16, imageTop:106 },
+  web: { W:420, H:160, radius:16, padX:32, padY:34, title:20, titleMin:18, subtitle:14, image:100, imageRight:32, imageTop:20, textW:256, titleLines:3, subtitleLines:2 }
 };
 let financeBannerLangs = [{ id:1, code:'zh-CN', title:'最高 15% 年化', subtitle:'USDC 活期赚币｜随存随取 · 低风险' }];
 let financeBannerImages = { light:null, dark:null };
@@ -5647,15 +5730,22 @@ function financeBannerTitleLineCount(ctx, text, maxW) {
 function financeBannerLayoutTitleScale(lang, layout) {
   const spec = FINANCE_SPECS[layout];
   const imageX = spec.W - spec.imageRight - spec.image;
-  const textW = layout === 'app' ? spec.W - spec.padX*2 : imageX - spec.padX - 20;
-  const startY = layout === 'app' ? 58 : 100;
-  const safeBottom = layout === 'app' ? spec.imageTop - 6 : spec.H - 22;
-  const minSize = layout === 'app' ? 10 : 12;
+  const textW = layout === 'app' ? spec.W - spec.padX*2 : spec.textW;
   const probe = document.createElement('canvas').getContext('2d');
+  let startY = 76;
+  let appSubtitleLines = 1;
+  if (layout === 'app') {
+    probe.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+    appSubtitleLines = Math.min(spec.subtitleLines,financeBannerTitleLineCount(probe,lang.subtitle,textW));
+  }
+  const safeBottom = layout === 'app' ? spec.H - 16 : 140;
+  const minSize = spec.titleMin;
   for (let size=spec.title; size>=minSize; size-=0.5) {
+    if (layout === 'app') startY = spec.padY + appSubtitleLines*spec.subtitle*1.25 + 4 + size;
     probe.font = `700 ${size}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
     const lines = financeBannerTitleLineCount(probe,lang.title,textW);
-    if (startY + Math.max(0,lines-1)*size*1.18 <= safeBottom) return size/spec.title;
+    const allowedLines = spec.titleLines;
+    if (lines <= allowedLines && startY + Math.max(0,lines-1)*size*1.2 <= safeBottom) return size/spec.title;
   }
   return minSize/spec.title;
 }
@@ -5664,8 +5754,10 @@ function financeBannerAutoTitleScale(lang) {
   return Math.min(financeBannerLayoutTitleScale(lang,'app'),financeBannerLayoutTitleScale(lang,'web'));
 }
 
-function financeBannerEffectiveTitleScale(lang) {
-  return Math.max(0.6,Math.min(1,Number(financeBannerTitleScales[lang.id]) || financeBannerAutoTitleScale(lang)));
+function financeBannerEffectiveTitleScale(lang, layout) {
+  const spec = FINANCE_SPECS[layout];
+  const requested = Number(financeBannerTitleScales[lang.id]) || financeBannerLayoutTitleScale(lang,layout);
+  return Math.max(spec.titleMin/spec.title,Math.min(1,requested));
 }
 
 function refreshFinanceBannerFitControl(id) {
@@ -5743,9 +5835,10 @@ function updateFinanceBannerText(id, field, value) {
 
 async function drawFinanceBanner(canvas, lang, layout, theme) {
   const spec = FINANCE_SPECS[layout];
-  canvas.width = spec.W * FINANCE_EXPORT_SCALE; canvas.height = spec.H * FINANCE_EXPORT_SCALE;
+  const exportScale = FINANCE_EXPORT_SCALES[layout];
+  canvas.width = spec.W * exportScale; canvas.height = spec.H * exportScale;
   const ctx = canvas.getContext('2d');
-  ctx.scale(FINANCE_EXPORT_SCALE,FINANCE_EXPORT_SCALE);
+  ctx.scale(exportScale,exportScale);
   const dark = theme === 'dark';
   ctx.clearRect(0,0,spec.W,spec.H);
   ctx.save();
@@ -5759,21 +5852,25 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = '#828282';
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.subtitle,spec.padX,spec.padY+spec.subtitle,textW,spec.subtitle,1.35,spec.subtitle,spec.subtitle*2.7);
+    drawMultilineText(ctx,lang.subtitle,spec.padX,spec.padY+spec.subtitle,textW,spec.subtitle,1.25,spec.subtitle,spec.subtitle*1.25*spec.subtitleLines);
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
-    const titleSize = spec.title * financeBannerEffectiveTitleScale(lang);
+    const titleSize = spec.title * financeBannerEffectiveTitleScale(lang,'app');
     ctx.font = `700 ${titleSize}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.title,spec.padX,58,textW,titleSize,1.18,titleSize,(spec.imageTop-6)-58+titleSize);
+    ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
+    const subtitleLines = Math.min(spec.subtitleLines,financeBannerTitleLineCount(ctx,lang.subtitle,textW));
+    const titleStart = spec.padY + subtitleLines*spec.subtitle*1.25 + 4 + titleSize;
+    ctx.font = `700 ${titleSize}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    drawMultilineText(ctx,lang.title,spec.padX,titleStart,textW,titleSize,1.18,titleSize,titleSize*1.18*spec.titleLines);
   } else {
-    const textW = imageX - spec.padX - 20;
+    const textW = spec.textW;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = dark ? '#AEB8C8' : '#000000';
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.subtitle,spec.padX,52,textW,spec.subtitle,1.4,spec.subtitle,spec.subtitle*2.8);
+    drawMultilineText(ctx,lang.subtitle,spec.padX,48,textW,spec.subtitle,1.4,spec.subtitle,spec.subtitle*2.4);
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
-    const titleSize = spec.title * financeBannerEffectiveTitleScale(lang);
+    const titleSize = spec.title * financeBannerEffectiveTitleScale(lang,'web');
     ctx.font = `700 ${titleSize}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
-    drawMultilineText(ctx,lang.title,spec.padX,100,textW,titleSize,1.18,titleSize,(spec.H-22)-100+titleSize);
+    drawMultilineText(ctx,lang.title,spec.padX,76,textW,titleSize,1.2,titleSize,140-76+titleSize);
   }
   ctx.restore();
 }
@@ -5781,8 +5878,12 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
 async function renderFinanceBannerPreview() {
   const grid = document.getElementById('financePreviewGrid');
   if (!grid) return;
-  grid.innerHTML = financeBannerLangs.map(lang=>`<div class="finance-preview-item"><div class="finance-preview-label">${eh(lang.code)} · 3× 高清导出</div><div class="finance-preview-row"><div class="finance-preview-card app"><span>App · 白天 · 474×558</span><canvas id="finance-${lang.id}-app-light"></canvas></div><div class="finance-preview-card app"><span>App · 黑天 · 474×558</span><canvas id="finance-${lang.id}-app-dark"></canvas></div><div class="finance-preview-card web"><span>Web · 白天 · 1260×528</span><canvas id="finance-${lang.id}-web-light"></canvas></div><div class="finance-preview-card web"><span>Web · 黑天 · 1260×528</span><canvas id="finance-${lang.id}-web-dark"></canvas></div></div></div>`).join('');
-  await Promise.all(financeBannerLangs.flatMap(lang=>['app','web'].flatMap(layout=>['light','dark'].map(theme=>drawFinanceBanner(document.getElementById(`finance-${lang.id}-${layout}-${theme}`),lang,layout,theme)))));
+  grid.innerHTML = financeBannerLangs.map(lang=>`<div class="finance-preview-item"><div class="finance-preview-label">${eh(lang.code)} · 高清导出</div><div class="finance-preview-row"><div class="finance-preview-card app"><span>App · 白天 · 474×558（3×）</span><canvas id="finance-${lang.id}-app-light"></canvas></div><div class="finance-preview-card app"><span>App · 黑天 · 474×558（3×）</span><canvas id="finance-${lang.id}-app-dark"></canvas></div><div class="finance-preview-card web"><span>Web · 白天 · 1680×640（4×）</span><canvas id="finance-${lang.id}-web-light"></canvas></div></div></div>`).join('');
+  await Promise.all(financeBannerLangs.flatMap(lang=>[
+    drawFinanceBanner(document.getElementById(`finance-${lang.id}-app-light`),lang,'app','light'),
+    drawFinanceBanner(document.getElementById(`finance-${lang.id}-app-dark`),lang,'app','dark'),
+    drawFinanceBanner(document.getElementById(`finance-${lang.id}-web-light`),lang,'web','light')
+  ]));
 }
 
 async function downloadFinanceBanner() {
@@ -5791,11 +5892,16 @@ async function downloadFinanceBanner() {
   try {
     await ensureExportFontsReady();
     const files = [];
-    for (const lang of financeBannerLangs) for (const layout of ['app','web']) for (const theme of ['light','dark']) {
+    const outputs = [
+      { layout:'app', theme:'light' },
+      { layout:'app', theme:'dark' },
+      { layout:'web', theme:'light' }
+    ];
+    for (const lang of financeBannerLangs) for (const {layout,theme} of outputs) {
       const canvas = document.createElement('canvas');
       await drawFinanceBanner(canvas,lang,layout,theme);
       const blob = await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('画布导出失败')),'image/png'));
-      files.push({ name:`理财banner/${lang.code}/理财banner_${lang.code}_${layout}_${theme}@3x.png`, data:new Uint8Array(await blob.arrayBuffer()) });
+      files.push({ name:`理财banner/${lang.code}/理财banner_${lang.code}_${layout}_${theme}@${FINANCE_EXPORT_SCALES[layout]}x.png`, data:new Uint8Array(await blob.arrayBuffer()) });
     }
     if (!files.length) throw new Error('请先添加至少一个语种');
     const blob = createAdZip(files);
@@ -5804,7 +5910,7 @@ async function downloadFinanceBanner() {
     link.href = url; link.download = '理财banner.zip'; link.click();
     setTimeout(()=>URL.revokeObjectURL(url),10000);
   } catch (error) { console.error(error); alert(error.message || '下载失败'); }
-  finally { if (button) { button.disabled = false; button.textContent = '下载 3×'; } }
+  finally { if (button) { button.disabled = false; button.textContent = '下载高清图'; } }
 }
 
 loadFinanceBannerDraft();
@@ -6522,10 +6628,10 @@ renderSpotListingEditor();
 const V2_ACTIVE_GROUP_KEY = 'htx-visual-workbench-active-group';
 const V2_SCROLL_KEY = 'htx-visual-workbench-scroll-y';
 const hashV2Group = location.hash.replace(/^#/, '');
-const savedV2Group = ['common','spotlisting','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic','finance'].includes(hashV2Group)
+const savedV2Group = ['common','spotlisting','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic','finance','emailart'].includes(hashV2Group)
   ? hashV2Group
   : localStorage.getItem(V2_ACTIVE_GROUP_KEY);
-let v2ActiveGroup = ['common','spotlisting','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic','finance'].includes(savedV2Group) ? savedV2Group : 'common';
+let v2ActiveGroup = ['common','spotlisting','baping','trade','share','rebate','ads','zero','follow','gridbanner','otc','community','topic','finance','emailart'].includes(savedV2Group) ? savedV2Group : 'common';
 let v2CommonNodes = [];
 const v2SlotGroups = {
   common: ['new','old','email','appcal','pccal','feed','landing'],
@@ -6541,7 +6647,8 @@ const v2SlotGroups = {
   otc: [],
   community: ['community'],
   topic: ['topic'],
-  finance: []
+  finance: [],
+  emailart: []
 };
 const v2ImplicitSlotGroups = {
   baping: { slots: ['baping'] },
@@ -6905,7 +7012,8 @@ function setV2Group(group, updateButtons = true, updateLocation = true, refreshE
     otc: [],
     community: ['community'],
     topic: ['topic'],
-    finance: []
+    finance: [],
+    emailart: []
   };
   Object.values(previewGroups).flat().forEach(key => {
     const section = document.getElementById('section-' + key);
@@ -6922,6 +7030,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true, refreshE
   const spotListingModule = document.getElementById('spotListingModule');
   const zeroModule = document.getElementById('zeroModule');
   const financeModule = document.getElementById('financeModule');
+  const emailArtModule = document.getElementById('emailArtModule');
   const followModule = document.getElementById('followModule');
   const gridBannerModule = document.getElementById('gridBannerModule');
   const otcModule = document.getElementById('otcModule');
@@ -6934,10 +7043,11 @@ function setV2Group(group, updateButtons = true, updateLocation = true, refreshE
   if (spotListingModule) spotListingModule.classList.toggle('active', group === 'spotlisting');
   if (zeroModule) zeroModule.classList.toggle('active', group === 'zero');
   if (financeModule) financeModule.classList.toggle('active', group === 'finance');
+  if (emailArtModule) emailArtModule.classList.toggle('active', group === 'emailart');
   if (followModule) followModule.classList.toggle('active', group === 'follow');
   if (gridBannerModule) gridBannerModule.classList.toggle('active', group === 'gridbanner');
   if (otcModule) otcModule.classList.toggle('active', group === 'otc');
-  const standaloneGroup = group === 'ads' || group === 'spotlisting' || group === 'zero' || group === 'finance' || group === 'follow' || group === 'gridbanner' || group === 'otc';
+  const standaloneGroup = group === 'ads' || group === 'spotlisting' || group === 'zero' || group === 'finance' || group === 'emailart' || group === 'follow' || group === 'gridbanner' || group === 'otc';
   if (editorPanel) editorPanel.classList.toggle('v2-hidden', standaloneGroup);
   if (previewArea) previewArea.classList.toggle('v2-hidden', standaloneGroup);
   const hideSlotControls = standaloneGroup || !!v2ImplicitSlotGroups[group];
@@ -6971,7 +7081,8 @@ function setV2Group(group, updateButtons = true, updateLocation = true, refreshE
     otc: ['OTC', '独立管理 App 与 Web 的经典、甄选版式和多语种文案。'],
     community: ['社区', '使用通用文案结构，并独立管理社区资源位配图。'],
     topic: ['专题页banner', '独立管理专题页文案和专属配图，生成 App 与 Web 两套版式。'],
-    finance: ['理财banner', '独立生成 App 与 Web、白天与黑天四套理财banner。']
+    finance: ['理财banner', '生成 App 白天/黑天与 Web 白天版本。'],
+    emailart: ['邮件配图', '按邮件规范配置多语种文案、按钮文字和 256 × 256 配图。']
   }[group];
   const title = document.querySelector('.v2-editor-title');
   const desc = document.querySelector('.v2-editor-desc');
@@ -6983,6 +7094,7 @@ function setV2Group(group, updateButtons = true, updateLocation = true, refreshE
   if (group === 'spotlisting') renderSpotListingPreview();
   if (group === 'zero') renderZeroBannerPreview();
   if (group === 'finance') renderFinanceBannerPreview();
+  if (group === 'emailart') renderEmailArtPreview();
   if (group === 'follow') renderFollowBannerPreview();
   if (group === 'gridbanner') renderGridBannerPreview();
   if (group === 'otc') renderOtcPreview();
