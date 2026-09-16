@@ -5758,7 +5758,7 @@ function financeBannerLayoutTitleScale(lang, layout) {
   const minSize = spec.titleMin;
   for (let size=spec.title; size>=minSize; size-=0.5) {
     if (layout === 'app') startY = spec.padY + appSubtitleLines*spec.subtitle*1.25 + 4 + size;
-    probe.font = `700 ${size}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    probe.font = `${SPECS.new.titWeight} ${size}px ${titFontFamily(SPECS.new)}`;
     const lines = financeBannerTitleLineCount(probe,lang.title,textW);
     const allowedLines = spec.titleLines;
     if (lines <= allowedLines && startY + Math.max(0,lines-1)*size*1.2 <= safeBottom) return size/spec.title;
@@ -5871,11 +5871,11 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
     drawMultilineText(ctx,lang.subtitle,spec.padX,spec.padY+spec.subtitle,textW,spec.subtitle,1.25,spec.subtitle,spec.subtitle*1.25*spec.subtitleLines);
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
     const titleSize = spec.title * financeBannerEffectiveTitleScale(lang,'app');
-    ctx.font = `700 ${titleSize}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    ctx.font = `${SPECS.new.titWeight} ${titleSize}px ${titFontFamily(SPECS.new)}`;
     ctx.font = `400 ${spec.subtitle}px 'HarmonyOS Sans SC','PingFang SC',sans-serif`;
     const subtitleLines = Math.min(spec.subtitleLines,financeBannerTitleLineCount(ctx,lang.subtitle,textW));
     const titleStart = spec.padY + subtitleLines*spec.subtitle*1.25 + 4 + titleSize;
-    ctx.font = `700 ${titleSize}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    ctx.font = `${SPECS.new.titWeight} ${titleSize}px ${titFontFamily(SPECS.new)}`;
     drawMultilineText(ctx,lang.title,spec.padX,titleStart,textW,titleSize,1.18,titleSize,titleSize*1.18*spec.titleLines);
   } else {
     const textW = spec.textW;
@@ -5885,7 +5885,7 @@ async function drawFinanceBanner(canvas, lang, layout, theme) {
     drawMultilineText(ctx,lang.subtitle,spec.padX,48,textW,spec.subtitle,1.4,spec.subtitle,spec.subtitle*2.4);
     ctx.fillStyle = dark ? '#FFFFFF' : '#101828';
     const titleSize = spec.title * financeBannerEffectiveTitleScale(lang,'web');
-    ctx.font = `700 ${titleSize}px 'HarmonyOS Bold','PingFang SC',sans-serif`;
+    ctx.font = `${SPECS.new.titWeight} ${titleSize}px ${titFontFamily(SPECS.new)}`;
     drawMultilineText(ctx,lang.title,spec.padX,76,textW,titleSize,1.2,titleSize,140-76+titleSize);
   }
   ctx.restore();
