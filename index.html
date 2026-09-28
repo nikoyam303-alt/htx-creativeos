@@ -202,7 +202,7 @@ body.range-dragging * { cursor: ew-resize !important; user-select: none !importa
   .sw-share { width: 149px; height: 211px; overflow: hidden; position: relative; flex-shrink: 0; }
   .si-share { width: 825px; height: 1170px; transform: scale(0.18); transform-origin: top left; position: absolute; }
   .b-new { width: 474px; height: 600px; padding: 36px; box-sizing: border-box; position: relative; font-family: 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; }
-  .b-new.light { background: #FAFAFA; } .b-new.dark { background: #0F0F0F; }
+  .b-new.light { background: #F6F6F6; } .b-new.dark { background: #161616; }
   .b-new .sub { margin: 0; font-size: 36px; font-weight: 400; font-family: 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; }
   .b-new.light .sub { color: #8C8C8C; } .b-new.dark .sub { color: rgba(250,250,250,0.6); }
   .b-new .tit { margin: 24px 0 0 0; font-size: 42px; font-weight: 500; font-family: 'HTX-Harmony','HarmonyOS Sans SC','PingFang SC','Noto Sans SC',sans-serif; line-height: 1.3; }
@@ -4375,6 +4375,9 @@ function applySlotClip(slotType, langId, autoScale) {
 
 function getColors(type, theme) {
   const s = SPECS[type];
+  if (type === 'new') return theme === 'light'
+    ? { bg: '#F6F6F6', sub: '#8C8C8C', tit: '#0F0F0F' }
+    : { bg: '#161616', sub: 'rgba(250,250,250,0.6)', tit: '#FAFAFA' };
   if (type === 'topicapp' || type === 'topicweb') return { bg: '#075FF2', sub: '#FAFAFA', tit: '#FFFFFF' };
   if (type === 'baping') return { bg: s.bg, sub: s.subClr, tit: s.titClr, bar: '#FFFFFF' };
   if (type === 'tradeapp') return { bg: theme === 'dark' ? '#000000' : '#FFFFFF', sub: '#007FFF', tit: theme === 'dark' ? '#FFFFFF' : '#000000' };
