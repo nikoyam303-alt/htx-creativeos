@@ -1,0 +1,1226 @@
+{
+  "sourceFile": "wqcnMW66GZliX2G40KyuSH",
+  "sourcePage": "42:954",
+  "updated": "2026-10-15",
+  "assets": [
+    {
+      "id": "vip-42-2415",
+      "nodeId": "42:2415",
+      "sourceName": "jimeng-2026-06-15-2609-高清，将参考图2的logo刻在参考图1的石头上， 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2415",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2415-render.png",
+          "width": 390,
+          "height": 408,
+          "transparent": false,
+          "sha256": "28e810a233a012d0a3a21ab79a924e306aae5c994dc1e577968c7e68979b22e3"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-2415-original-1.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": false,
+          "sha256": "baaf7dddefa8a503611dfa418858516b49e7aeb23b7ad169ce8844b2737a0955"
+        }
+      ],
+      "name": "月门岩山场景",
+      "category": "背景",
+      "usage": "浅色 KV、尊享旅程；含火焰石雕，避免再叠主体",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2415-render.png",
+      "thumbnail": "thumbs/vip-42-2415.png",
+      "libraryNodeId": "651:2457"
+    },
+    {
+      "id": "vip-42-2439",
+      "nodeId": "42:2439",
+      "sourceName": "jimeng-2026-06-23-6738-石头变成金属质感，铂金，更加高级有气质，国际范，logo突出来 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2439",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-2439-original-1.png",
+          "width": 1440,
+          "height": 2560,
+          "transparent": true,
+          "sha256": "e0447adaec97eca9f6002b2c84c2a6c67efe0a9d56c7bab2c597c84861f81eb3"
+        }
+      ],
+      "name": "铂金鎏金火焰石雕",
+      "category": "主体",
+      "usage": "SVIP 招募、身份、尊享权益主视觉",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2439-original-1.png",
+      "thumbnail": "thumbs/vip-42-2439.png",
+      "libraryNodeId": "651:2389"
+    },
+    {
+      "id": "vip-42-2865",
+      "nodeId": "42:2865",
+      "sourceName": "cb03dfc9-d466-45bf-b8e4-3e4c1a380778 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2865",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-2865-original-1.png",
+          "width": 1492,
+          "height": 1054,
+          "transparent": false,
+          "sha256": "62e1a6f0159398ee80559ec2d58fadedffb0e624a059b36f8d4631b74288a880"
+        }
+      ],
+      "name": "黑色山峦雾景",
+      "category": "背景",
+      "usage": "黑色长图收尾或低干扰背景",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2865-original-1.png",
+      "thumbnail": "thumbs/vip-42-2865.png",
+      "libraryNodeId": "651:2464"
+    },
+    {
+      "id": "vip-42-3456",
+      "nodeId": "42:3456",
+      "sourceName": "jimeng-2026-06-22-5475-将参考图1的logo。变成参考图2和参考图3的风格 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-3456",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3456-original-4.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": true,
+          "sha256": "d5041a79d7bd6d8ed9f039196fed44e943ac0d40785943b58b43cf5970d04c04"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3456-original-1.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": false,
+          "sha256": "e2c86ceb8f2d82578abfc18c1bfe14d6f19b8afb68662057f605b989bb2d8006"
+        }
+      ],
+      "name": "蓝银金属火焰",
+      "category": "主体",
+      "usage": "品牌身份、会员升级；蓝银备选风格",
+      "status": "可见备选",
+      "primary": "assets/vip-42-3456-original-4.png",
+      "thumbnail": "thumbs/vip-42-3456.png",
+      "libraryNodeId": "651:2396"
+    },
+    {
+      "id": "vip-42-3458",
+      "nodeId": "42:3458",
+      "sourceName": "image 2013724590",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-3458",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3458-original-4.png",
+          "width": 1200,
+          "height": 675,
+          "transparent": true,
+          "sha256": "f850b25ae41f98b9cb93ada933a8088b2484dce5c4d345b2db6d1dd739638631"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3458-original-1.png",
+          "width": 1200,
+          "height": 675,
+          "transparent": false,
+          "sha256": "c63aa5f6a1f871f42327ff406dc3942cdfcefa26dbb912a63aad09128be20e52"
+        }
+      ],
+      "name": "黑色岩峰",
+      "category": "背景",
+      "usage": "山峰、巅峰主题的局部背景",
+      "status": "可见备选",
+      "primary": "assets/vip-42-3458-original-4.png",
+      "thumbnail": "thumbs/vip-42-3458.png",
+      "libraryNodeId": "651:2471"
+    },
+    {
+      "id": "vip-42-3466",
+      "nodeId": "42:3466",
+      "sourceName": "jimeng-2026-06-17-5203 1",
+      "visible": false,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-3466",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3466-original-1.png",
+          "width": 2591,
+          "height": 3582,
+          "transparent": true,
+          "sha256": "f47ddf5ab4ace411206b1746b93774244b46bd44bf14934be41a1bd10b5ec34c"
+        }
+      ],
+      "name": "悬浮 V 岩石上下构图",
+      "category": "备选",
+      "usage": "隐藏方案，仅在用户指定时使用",
+      "status": "隐藏备选",
+      "primary": "assets/vip-42-3466-original-1.png",
+      "thumbnail": "thumbs/vip-42-3466.png",
+      "libraryNodeId": "651:2888"
+    },
+    {
+      "id": "vip-42-3467",
+      "nodeId": "42:3467",
+      "sourceName": "jimeng-2026-06-17-5203 2",
+      "visible": false,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-3467",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3467-original-1.png",
+          "width": 2591,
+          "height": 3582,
+          "transparent": true,
+          "sha256": "4557f4fc55639c6bf8fcf76d6beb27492edadf9e21717ca8257d69577bf26796"
+        }
+      ],
+      "name": "悬浮 V 岩石裁切变体",
+      "category": "备选",
+      "usage": "隐藏方案，与上下岩石场景配套",
+      "status": "隐藏备选",
+      "primary": "assets/vip-42-3467-original-1.png",
+      "thumbnail": "thumbs/vip-42-3467.png",
+      "libraryNodeId": "651:2895"
+    },
+    {
+      "id": "vip-42-3468",
+      "nodeId": "42:3468",
+      "sourceName": "jimeng-2026-06-17-3876-高清，细节 1",
+      "visible": false,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-3468",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3468-original-1.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": false,
+          "sha256": "0029703152563a34f2ccf48aec5479967c1b62704426809ee0ef3f67537df166"
+        }
+      ],
+      "name": "岩石 V 徽记",
+      "category": "备选",
+      "usage": "隐藏方案，石质 VIP 徽记",
+      "status": "隐藏备选",
+      "primary": "assets/vip-42-3468-original-1.png",
+      "thumbnail": "thumbs/vip-42-3468.png",
+      "libraryNodeId": "651:2902"
+    },
+    {
+      "id": "vip-42-3471",
+      "nodeId": "42:3471",
+      "sourceName": "jimeng-2026-06-17-1638-将参考图图形，增加10%鎏金效果，高级质感，尊贵，边界清晰，鎏金散发轻微细微金粉... 1",
+      "visible": false,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-3471",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3471-original-1.png",
+          "width": 2496,
+          "height": 1664,
+          "transparent": true,
+          "sha256": "ae5e1f3b5f593acd446674514fbb61abfb317d810fada7618300e62505f930c4"
+        }
+      ],
+      "name": "鎏金岩石 V 徽记",
+      "category": "备选",
+      "usage": "隐藏方案，金边石质 VIP 徽记",
+      "status": "隐藏备选",
+      "primary": "assets/vip-42-3471-original-1.png",
+      "thumbnail": "thumbs/vip-42-3471.png",
+      "libraryNodeId": "651:2909"
+    },
+    {
+      "id": "vip-42-3474",
+      "nodeId": "42:3474",
+      "sourceName": "image 2013724575",
+      "visible": false,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-3474",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3474-original-1.png",
+          "width": 658,
+          "height": 389,
+          "transparent": false,
+          "sha256": "2fee25837dc8ab5b8330e043233f4a5716071077a55ee9aa56d89da396a89c5d"
+        }
+      ],
+      "name": "金粉粒子",
+      "category": "备选",
+      "usage": "隐藏装饰，不默认叠加",
+      "status": "隐藏备选",
+      "primary": "assets/vip-42-3474-original-1.png",
+      "thumbnail": "thumbs/vip-42-3474.png",
+      "libraryNodeId": "651:2917"
+    },
+    {
+      "id": "vip-42-3491",
+      "nodeId": "42:3491",
+      "sourceName": "image 2013724592",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-3491",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3491-original-1.png",
+          "width": 1200,
+          "height": 1200,
+          "transparent": false,
+          "sha256": "805fa802a7a9af8ed7844d5140104ca269aeefae9b97c5b75c774cc0d6743531"
+        }
+      ],
+      "name": "银色椭圆展台",
+      "category": "装饰",
+      "usage": "承托独立主体，控制比例",
+      "status": "可见备选",
+      "primary": "assets/vip-42-3491-original-1.png",
+      "thumbnail": "thumbs/vip-42-3491.png",
+      "libraryNodeId": "651:2849"
+    },
+    {
+      "id": "vip-42-4973",
+      "nodeId": "42:4973",
+      "sourceName": "jimeng-2026-06-15-9962 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-4973",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-4973-original-1.png",
+          "width": 3072,
+          "height": 3072,
+          "transparent": false,
+          "sha256": "127f78cf72eecb52469be960cfae5c07adea935bd625346d6f49e77ddff0b0b6"
+        }
+      ],
+      "name": "黑色轨道火焰场景",
+      "category": "背景",
+      "usage": "深色 VIP 头图，主体与背景一体",
+      "status": "可见备选",
+      "primary": "assets/vip-42-4973-original-1.png",
+      "thumbnail": "thumbs/vip-42-4973.png",
+      "libraryNodeId": "651:2478"
+    },
+    {
+      "id": "vip-42-5143",
+      "nodeId": "42:5143",
+      "sourceName": "DESIGN 上的 Pin 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-5143",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-5143-original-1.png",
+          "width": 736,
+          "height": 736,
+          "transparent": true,
+          "sha256": "a00a6deb66532d25bf433519a90f82878c24f246b2409651162b0f52449e0395"
+        }
+      ],
+      "name": "镭射放射球",
+      "category": "装饰",
+      "usage": "历史小尺寸装饰，非默认 VIP 主体",
+      "status": "可见备选",
+      "primary": "assets/vip-42-5143-original-1.png",
+      "thumbnail": "thumbs/vip-42-5143.png",
+      "libraryNodeId": "651:2856"
+    },
+    {
+      "id": "vip-42-5208",
+      "nodeId": "42:5208",
+      "sourceName": "123 3",
+      "visible": false,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-5208",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-5208-original-1.png",
+          "width": 575,
+          "height": 408,
+          "transparent": true,
+          "sha256": "d5e45a0dfeece5760495077b5bb7168d713eaca6c2f662a62644d735e1960907"
+        }
+      ],
+      "name": "双会员卡组合",
+      "category": "备选",
+      "usage": "隐藏方案，会员卡权益主题",
+      "status": "隐藏备选",
+      "primary": "assets/vip-42-5208-original-1.png",
+      "thumbnail": "thumbs/vip-42-5208.png",
+      "libraryNodeId": "651:2924"
+    },
+    {
+      "id": "vip-42-5225",
+      "nodeId": "42:5225",
+      "sourceName": "图层 2 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-5225",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-5225-original-1.png",
+          "width": 182,
+          "height": 165,
+          "transparent": true,
+          "sha256": "3ac5a3f987f0b80e3c782da2ce804b75504c4315891b6cba86ae119ec176836f"
+        }
+      ],
+      "name": "白色速度光带",
+      "category": "装饰",
+      "usage": "局部动势，仅在内容需要时使用",
+      "status": "可见备选",
+      "primary": "assets/vip-42-5225-original-1.png",
+      "thumbnail": "thumbs/vip-42-5225.png",
+      "libraryNodeId": "651:2863"
+    },
+    {
+      "id": "vip-42-5226",
+      "nodeId": "42:5226",
+      "sourceName": "图层 0 2",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-5226",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-5226-original-1.png",
+          "width": 1060,
+          "height": 821,
+          "transparent": true,
+          "sha256": "7726f5c8e0021921d7e482213dabc51cc1e3783344b027e9c048f3d42b09f876"
+        }
+      ],
+      "name": "美元币岩坡",
+      "category": "背景",
+      "usage": "收益、资产增长主题",
+      "status": "可见备选",
+      "primary": "assets/vip-42-5226-original-1.png",
+      "thumbnail": "thumbs/vip-42-5226.png",
+      "libraryNodeId": "651:2486"
+    },
+    {
+      "id": "vip-42-5240",
+      "nodeId": "42:5240",
+      "sourceName": "de26e83a-bca0-4310-b73d-d053f783c928 拷贝 2 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-5240",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-5240-original-1.png",
+          "width": 956,
+          "height": 666,
+          "transparent": true,
+          "sha256": "cce913bbef373f42261073967f0b17cab6914b28cfb13ac281b981a5253c3c8b"
+        }
+      ],
+      "name": "黑色峭壁",
+      "category": "背景",
+      "usage": "局部边缘岩壁，避免遮挡正文",
+      "status": "可见备选",
+      "primary": "assets/vip-42-5240-original-1.png",
+      "thumbnail": "thumbs/vip-42-5240.png",
+      "libraryNodeId": "651:2493"
+    },
+    {
+      "id": "vip-42-5241",
+      "nodeId": "42:5241",
+      "sourceName": "2 113469",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-5241",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-5241-original-1.png",
+          "width": 657,
+          "height": 314,
+          "transparent": true,
+          "sha256": "9b3cc6b706e7d6770deec2d0afb824ec7682fb3c7ef51beed5ea6f47d3a5dfd8"
+        }
+      ],
+      "name": "黑色山石",
+      "category": "背景",
+      "usage": "底部岩石承托",
+      "status": "可见备选",
+      "primary": "assets/vip-42-5241-original-1.png",
+      "thumbnail": "thumbs/vip-42-5241.png",
+      "libraryNodeId": "651:2500"
+    },
+    {
+      "id": "vip-42-5242",
+      "nodeId": "42:5242",
+      "sourceName": "15 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-5242",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-5242-original-1.png",
+          "width": 385,
+          "height": 395,
+          "transparent": true,
+          "sha256": "53af630ce3cf9b8d56b0c1af054332074d86c7944e9ce27a519b6fbce375b027"
+        }
+      ],
+      "name": "银色会员卡与币",
+      "category": "主体",
+      "usage": "会员身份、专属权益、资产主题",
+      "status": "可见备选",
+      "primary": "assets/vip-42-5242-original-1.png",
+      "thumbnail": "thumbs/vip-42-5242.png",
+      "libraryNodeId": "651:2403"
+    },
+    {
+      "id": "vip-42-5523",
+      "nodeId": "42:5523",
+      "sourceName": "jimeng-2026-06-15-1294-将参考图2的logo印在图1的玻璃币上，logo是灰白色，币是蓝色的，克莱因蓝 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-5523",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-5523-original-1.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": false,
+          "sha256": "527c29093300da42994a0b4a5d36606d984e025b5070cc4ac3f64f1989d70da1"
+        }
+      ],
+      "name": "蓝色火焰币与碎石",
+      "category": "主体",
+      "usage": "蓝色玻璃币备选，非默认黑金",
+      "status": "可见备选",
+      "primary": "assets/vip-42-5523-original-1.png",
+      "thumbnail": "thumbs/vip-42-5523.png",
+      "libraryNodeId": "651:2410"
+    },
+    {
+      "id": "vip-42-6467",
+      "nodeId": "42:6467",
+      "sourceName": "image 2013724588",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-6467",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-6467-original-2.png",
+          "width": 750,
+          "height": 600,
+          "transparent": true,
+          "sha256": "2645ad012add3728bc9dfec0133f996be7ff2486dee484761c26160c7fbdf8c7"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-6467-original-1.png",
+          "width": 750,
+          "height": 600,
+          "transparent": false,
+          "sha256": "e0191456ca40acc77ddc8d0c467a59459c8625e5a8572ac0d25bb64bd741311d"
+        }
+      ],
+      "name": "峡谷岩壁",
+      "category": "背景",
+      "usage": "左右岩壁框景，中间留给标题",
+      "status": "可见备选",
+      "primary": "assets/vip-42-6467-original-2.png",
+      "thumbnail": "thumbs/vip-42-6467.png",
+      "libraryNodeId": "651:2507"
+    },
+    {
+      "id": "vip-42-6911",
+      "nodeId": "42:6911",
+      "sourceName": "jimeng-2026-06-15-1256-高清，将参考图2的logo刻在参考图1的石头上，与石头质感颜色保持一致 1 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-6911",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-6911-original-3.png",
+          "width": 684,
+          "height": 696,
+          "transparent": true,
+          "sha256": "25f023cdd2e263beb6e29337c5b834b46eaa91e13c84ff4cdaf02d9ce3f37f41"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-6911-original-1.png",
+          "width": 684,
+          "height": 696,
+          "transparent": false,
+          "sha256": "8db4593e1c6c8007106b2ad7fe200c74027295ecd28bd94fd24c6b030e6ab57d"
+        }
+      ],
+      "name": "灰岩火焰石雕",
+      "category": "主体",
+      "usage": "沉稳石质会员身份主题",
+      "status": "可见备选",
+      "primary": "assets/vip-42-6911-original-3.png",
+      "thumbnail": "thumbs/vip-42-6911.png",
+      "libraryNodeId": "651:2418"
+    },
+    {
+      "id": "vip-42-7362",
+      "nodeId": "42:7362",
+      "sourceName": "jimeng-2026-06-22-5475-将参考图1的logo。变成参考图2和参考图3的风格 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-7362",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-7362-render.png",
+          "width": 180,
+          "height": 206,
+          "transparent": false,
+          "sha256": "84a0595423fe91ad262496efc8c8cd1b61667a50aa340d2004640bdad79ee753"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3456-original-4.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": true,
+          "sha256": "d5041a79d7bd6d8ed9f039196fed44e943ac0d40785943b58b43cf5970d04c04"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-7362-original-1.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": false,
+          "sha256": "e5628577f22e03d7de18fccfde53327027e1dee56663de2d249c54a303ef8d7b"
+        }
+      ],
+      "name": "金银火焰节点配色变体",
+      "category": "主体",
+      "usage": "保留 Figma 节点配色；原图为蓝银版本；与蓝银原图不可混为同色版本",
+      "status": "可见备选",
+      "primary": "assets/vip-42-7362-render.png",
+      "thumbnail": "thumbs/vip-42-7362.png",
+      "libraryNodeId": "651:2425"
+    },
+    {
+      "id": "vip-42-7368",
+      "nodeId": "42:7368",
+      "sourceName": "Group 2147231335 1",
+      "visible": false,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-7368",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-7368-original-1.png",
+          "width": 2748,
+          "height": 2856,
+          "transparent": true,
+          "sha256": "f6e009192fa4478c87d39b47d46f5cfc4869482fa8300994e5a0e03b976c30cb"
+        }
+      ],
+      "name": "山巅 V 徽记场景",
+      "category": "备选",
+      "usage": "隐藏完整场景，仅作备选参考",
+      "status": "隐藏备选",
+      "primary": "assets/vip-42-7368-original-1.png",
+      "thumbnail": "thumbs/vip-42-7368.png",
+      "libraryNodeId": "651:2931"
+    },
+    {
+      "id": "vip-42-8278",
+      "nodeId": "42:8278",
+      "sourceName": "image 2013724591",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-8278",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-8278-original-2.png",
+          "width": 640,
+          "height": 640,
+          "transparent": true,
+          "sha256": "b84faf398e5c6b4e8ae14a3e0de84571670ef11e3533d363c27e78298f4a4c8f"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-8278-original-1.png",
+          "width": 640,
+          "height": 640,
+          "transparent": false,
+          "sha256": "5c1f254fbc2b0a54a903da4d6de42ccad7420dd08a2ff48da2595f08e2cf12ac"
+        }
+      ],
+      "name": "浅色层叠岩峰",
+      "category": "背景",
+      "usage": "浅色 KV 局部岩石，顶部或侧面留白",
+      "status": "可见备选",
+      "primary": "assets/vip-42-8278-original-2.png",
+      "thumbnail": "thumbs/vip-42-8278.png",
+      "libraryNodeId": "651:2515"
+    },
+    {
+      "id": "vip-42-8742",
+      "nodeId": "42:8742",
+      "sourceName": "image 2013724593",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-8742",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-8742-original-2.png",
+          "width": 1200,
+          "height": 1200,
+          "transparent": true,
+          "sha256": "f4f956f501e4c66eea33ccd4f40e0581fdd8254723f782593f8eb075baa53692"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-3491-original-1.png",
+          "width": 1200,
+          "height": 1200,
+          "transparent": false,
+          "sha256": "805fa802a7a9af8ed7844d5140104ca269aeefae9b97c5b75c774cc0d6743531"
+        }
+      ],
+      "name": "银色展台透明版",
+      "category": "装饰",
+      "usage": "透明台座，承托独立主体",
+      "status": "可见备选",
+      "primary": "assets/vip-42-8742-original-2.png",
+      "thumbnail": "thumbs/vip-42-8742.png",
+      "libraryNodeId": "651:2870"
+    },
+    {
+      "id": "vip-42-8750",
+      "nodeId": "42:8750",
+      "sourceName": "image 2013724593",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-8750",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-8750-original-2.png",
+          "width": 420,
+          "height": 240,
+          "transparent": true,
+          "sha256": "9580022fa1ee31ab070204a70d9caed55d0a5f7a3b3c5c5e55c8157cb6eaa548"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-8750-original-1.png",
+          "width": 420,
+          "height": 240,
+          "transparent": false,
+          "sha256": "25edb34bf46f2154515deffdfc7213d024b207ddcd9dab2c378a207ec1d53995"
+        }
+      ],
+      "name": "液态银金属波带",
+      "category": "装饰",
+      "usage": "横向流动金属装饰，不压文字",
+      "status": "可见备选",
+      "primary": "assets/vip-42-8750-original-2.png",
+      "thumbnail": "thumbs/vip-42-8750.png",
+      "libraryNodeId": "651:2878"
+    },
+    {
+      "id": "vip-42-9190",
+      "nodeId": "42:9190",
+      "sourceName": "image 2013724594",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-9190",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-9190-original-1.png",
+          "width": 480,
+          "height": 480,
+          "transparent": true,
+          "sha256": "6ffcec3a7ac67b58d7441373463151a7463c8956f908412241d1795a65d2dbc9"
+        }
+      ],
+      "name": "三色 V 钻石徽记合集",
+      "category": "主体",
+      "usage": "黑金、香槟金、银色 V 徽记，原图是三枚合集",
+      "status": "可见备选",
+      "primary": "assets/vip-42-9190-original-1.png",
+      "thumbnail": "thumbs/vip-42-9190.png",
+      "libraryNodeId": "651:2432"
+    },
+    {
+      "id": "vip-42-10566",
+      "nodeId": "42:10566",
+      "sourceName": "Frame 2147231351 1",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-10566",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-10566-original-3.png",
+          "width": 1648,
+          "height": 1440,
+          "transparent": true,
+          "sha256": "a468490056f09af32ee73bdebc1c225444733f1c8ee05e7a32049af5053debd2"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-10566-original-1.png",
+          "width": 1648,
+          "height": 1440,
+          "transparent": false,
+          "sha256": "bd64c3e63c14c247cf8a95843b6bfa273da187f232c0fd4e081d13bae0075ca3"
+        }
+      ],
+      "name": "银白金属火焰",
+      "category": "主体",
+      "usage": "银白高级感会员身份主体",
+      "status": "可见备选",
+      "primary": "assets/vip-42-10566-original-3.png",
+      "thumbnail": "thumbs/vip-42-10566.png",
+      "libraryNodeId": "651:2439"
+    },
+    {
+      "id": "vip-42-12129",
+      "nodeId": "42:12129",
+      "sourceName": "jimeng-2026-06-15-4068-将图1的卡片换成图2的币，通透玻璃质感，黑白色系，高级，大客户vip尊贵之感 3",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-12129",
+      "files": [
+        {
+          "kind": "original",
+          "path": "assets/vip-42-12129-original-4.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": true,
+          "sha256": "c930289ccf071271a88e4fa7cb138c589157764740874bfd3a1526a517951b5a"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-12129-original-2.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": false,
+          "sha256": "1a0016628ef42142469dbc444e341ab24ede1aa93c77a7a2017765bb9e79777e"
+        }
+      ],
+      "name": "悬浮火焰币与岩石",
+      "category": "主体",
+      "usage": "整体构图可用于会员头图",
+      "status": "可见备选",
+      "primary": "assets/vip-42-12129-original-4.png",
+      "thumbnail": "thumbs/vip-42-12129.png",
+      "libraryNodeId": "651:2447"
+    },
+    {
+      "id": "vip-42-2455",
+      "nodeId": "42:2455",
+      "sourceName": "42:2455",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2455",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2455-render.png",
+          "width": 80,
+          "height": 64,
+          "transparent": false,
+          "sha256": "21f54411b17020d2c3f2bd68f17511ff8398be0742ac05654433508adc7906e7"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2455-complete.svg"
+        }
+      ],
+      "name": "手续费返现几何插画",
+      "category": "权益插画",
+      "usage": "返现权益卡片，源稿为细线几何图形",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2455-complete.svg",
+      "thumbnail": "thumbs/vip-42-2455.png",
+      "libraryNodeId": "651:2557"
+    },
+    {
+      "id": "vip-42-2488",
+      "nodeId": "42:2488",
+      "sourceName": "42:2488",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2488",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2488-render.png",
+          "width": 80,
+          "height": 64,
+          "transparent": false,
+          "sha256": "f5888c2cf2445f2e25d53160db00903be7271e766c7d6e69a5a8d5fd10258a30"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2488-complete.svg"
+        }
+      ],
+      "name": "积分空投几何插画",
+      "category": "权益插画",
+      "usage": "每月瓜分积分空投权益卡片",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2488-complete.svg",
+      "thumbnail": "thumbs/vip-42-2488.png",
+      "libraryNodeId": "651:2571"
+    },
+    {
+      "id": "vip-42-2527",
+      "nodeId": "42:2527",
+      "sourceName": "42:2527",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2527",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2527-render.png",
+          "width": 80,
+          "height": 64,
+          "transparent": false,
+          "sha256": "784a832d260c734f4091cbba42271be91a7996ee911c0237cf0b38179fa1d14e"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2527-complete.svg"
+        }
+      ],
+      "name": "额外返佣轨道插画",
+      "category": "权益插画",
+      "usage": "返佣权益卡片",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2527-complete.svg",
+      "thumbnail": "thumbs/vip-42-2527.png",
+      "libraryNodeId": "651:2590"
+    },
+    {
+      "id": "vip-42-2567",
+      "nodeId": "42:2567",
+      "sourceName": "42:2567",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2567",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2567-render.png",
+          "width": 80,
+          "height": 64,
+          "transparent": false,
+          "sha256": "d055e7124e9d1d9874f7e753c07cb130eb263ca0d891948a7c764495f8ba9294"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2567-complete.svg"
+        }
+      ],
+      "name": "高收益理财圆环插画",
+      "category": "权益插画",
+      "usage": "理财权益卡片",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2567-complete.svg",
+      "thumbnail": "thumbs/vip-42-2567.png",
+      "libraryNodeId": "651:2611"
+    },
+    {
+      "id": "vip-42-2407",
+      "nodeId": "42:2407",
+      "sourceName": "42:2407",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2407",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2407-render.png",
+          "width": 390,
+          "height": 428,
+          "transparent": false,
+          "sha256": "62ef1fca911085db3da69cde93d1428d7a3f0e16c08649ebe5870c80499407b2"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-2415-original-1.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": false,
+          "sha256": "baaf7dddefa8a503611dfa418858516b49e7aeb23b7ad169ce8844b2737a0955"
+        }
+      ],
+      "name": "浅蓝米金山谷头图",
+      "category": "背景",
+      "usage": "定稿头图背景，可叠铂金火焰石雕",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2407-render.png",
+      "thumbnail": "thumbs/vip-42-2407.png",
+      "libraryNodeId": "651:2522"
+    },
+    {
+      "id": "vip-42-2592",
+      "nodeId": "42:2592",
+      "sourceName": "42:2592",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2592",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2592-render.png",
+          "width": 390,
+          "height": 152,
+          "transparent": false,
+          "sha256": "17e287e8d487118c669417a312f559e266633c8790a58153fc29085ebbcf38b6"
+        },
+        {
+          "kind": "original",
+          "path": "assets/vip-42-2415-original-1.png",
+          "width": 2048,
+          "height": 2048,
+          "transparent": false,
+          "sha256": "baaf7dddefa8a503611dfa418858516b49e7aeb23b7ad169ce8844b2737a0955"
+        }
+      ],
+      "name": "黑色山谷过渡",
+      "category": "背景",
+      "usage": "定稿长图模块间过渡",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2592-render.png",
+      "thumbnail": "thumbs/vip-42-2592.png",
+      "libraryNodeId": "651:2542"
+    },
+    {
+      "id": "vip-42-2621",
+      "nodeId": "42:2621",
+      "sourceName": "42:2621",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2621",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2621-render.png",
+          "width": 28,
+          "height": 28,
+          "transparent": false,
+          "sha256": "ea1afca12ef8f0c6378a351e156ddb4481e7dfca6ee0cb069d6b0c76a995ffff"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2621-complete.svg"
+        }
+      ],
+      "name": "金币循环线性图标",
+      "category": "权益图标",
+      "usage": "费用、返现、资产相关权益",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2621-complete.svg",
+      "thumbnail": "thumbs/vip-42-2621.png",
+      "libraryNodeId": "651:2635"
+    },
+    {
+      "id": "vip-42-2629",
+      "nodeId": "42:2629",
+      "sourceName": "42:2629",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2629",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2629-render.png",
+          "width": 28,
+          "height": 28,
+          "transparent": false,
+          "sha256": "ebbad287b4086a6e83bf39faeca8434d05f84fd4c143ae33d6796cc8aaa3dab7"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2629-complete.svg"
+        }
+      ],
+      "name": "奖杯线性图标",
+      "category": "权益图标",
+      "usage": "奖励、荣誉权益",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2629-complete.svg",
+      "thumbnail": "thumbs/vip-42-2629.png",
+      "libraryNodeId": "651:2644"
+    },
+    {
+      "id": "vip-42-2640",
+      "nodeId": "42:2640",
+      "sourceName": "42:2640",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2640",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2640-render.png",
+          "width": 28,
+          "height": 28,
+          "transparent": false,
+          "sha256": "4865c4d90598e707988d6ad156ce2c9e76a9975a26bb42858a16655ef9413d0e"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2640-complete.svg"
+        }
+      ],
+      "name": "质押线性图标",
+      "category": "权益图标",
+      "usage": "质押、资产类权益",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2640-complete.svg",
+      "thumbnail": "thumbs/vip-42-2640.png",
+      "libraryNodeId": "651:2655"
+    },
+    {
+      "id": "vip-42-2653",
+      "nodeId": "42:2653",
+      "sourceName": "42:2653",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2653",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2653-render.png",
+          "width": 28,
+          "height": 28,
+          "transparent": false,
+          "sha256": "f8128df7e8f3ddc4b0267ae138a1061773fa433d10f6c395f5c4b5d79c6593c8"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2653-complete.svg"
+        }
+      ],
+      "name": "握手爱心线性图标",
+      "category": "权益图标",
+      "usage": "合作、专属服务权益",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2653-complete.svg",
+      "thumbnail": "thumbs/vip-42-2653.png",
+      "libraryNodeId": "651:2688"
+    },
+    {
+      "id": "vip-42-2672",
+      "nodeId": "42:2672",
+      "sourceName": "42:2672",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2672",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2672-render.png",
+          "width": 28,
+          "height": 28,
+          "transparent": false,
+          "sha256": "2c9e4b546f0005c20c16bfbe2969e05a4c4c55054fc6d307c292d9686e95eb5c"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2672-complete.svg"
+        }
+      ],
+      "name": "用户线性图标",
+      "category": "权益图标",
+      "usage": "客户服务、身份权益",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2672-complete.svg",
+      "thumbnail": "thumbs/vip-42-2672.png",
+      "libraryNodeId": "651:2727"
+    },
+    {
+      "id": "vip-42-2684",
+      "nodeId": "42:2684",
+      "sourceName": "42:2684",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2684",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2684-render.png",
+          "width": 28,
+          "height": 28,
+          "transparent": false,
+          "sha256": "b442ee8eef0e9d8971487ec83d9c6f472388a9f8607606cfc7e58c8bddc98153"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2684-complete.svg"
+        }
+      ],
+      "name": "认证线性图标",
+      "category": "权益图标",
+      "usage": "认证、保障权益",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2684-complete.svg",
+      "thumbnail": "thumbs/vip-42-2684.png",
+      "libraryNodeId": "651:2759"
+    },
+    {
+      "id": "vip-42-2698",
+      "nodeId": "42:2698",
+      "sourceName": "42:2698",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2698",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2698-render.png",
+          "width": 28,
+          "height": 28,
+          "transparent": false,
+          "sha256": "1028d5aa1c60ce30b63c353e590e2b665f47ea560bc5e90b5c122ce5f7aa2634"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2698-complete.svg"
+        }
+      ],
+      "name": "C2C 线性图标",
+      "category": "权益图标",
+      "usage": "C2C 交易权益",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2698-complete.svg",
+      "thumbnail": "thumbs/vip-42-2698.png",
+      "libraryNodeId": "651:2792"
+    },
+    {
+      "id": "vip-42-2717",
+      "nodeId": "42:2717",
+      "sourceName": "42:2717",
+      "visible": true,
+      "sourceUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=42-2717",
+      "files": [
+        {
+          "kind": "render",
+          "path": "assets/vip-42-2717-render.png",
+          "width": 28,
+          "height": 28,
+          "transparent": false,
+          "sha256": "0f8e0883755d9a3e292ebefdddcf7dcc8671b82532fd7724e1f54af62868b189"
+        },
+        {
+          "kind": "vector",
+          "path": "assets/vip-42-2717-complete.svg"
+        }
+      ],
+      "name": "地球线性图标",
+      "category": "权益图标",
+      "usage": "全球服务权益",
+      "status": "定稿复用",
+      "primary": "assets/vip-42-2717-complete.svg",
+      "thumbnail": "thumbs/vip-42-2717.png",
+      "libraryNodeId": "651:2811"
+    }
+  ],
+  "selectionNote": "定稿复用优先；可见备选须与需求匹配；隐藏备选不默认使用。图标用途为按造型的建议，不代表产品权益承诺。",
+  "figmaLibraryUrl": "https://www.figma.com/design/wqcnMW66GZliX2G40KyuSH/SVIP?node-id=651-2379",
+  "figmaLibraryPageId": "651:2379"
+}

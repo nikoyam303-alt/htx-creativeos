@@ -13,3 +13,7 @@
 ## HTX SVIP 黑金配图库
 
 - [VIP 配图库](assets/illustrations/htx-vip/README.md)：44 项主体、背景、权益插画、权益图标及装饰素材，含总览、分类预览、语义索引与 Figma 溯源。
+
+## HTX VIP / SVIP 视觉 Skill
+
+- [htx-svip](skills/htx-svip/SKILL.md)：黑金活动物料，全部语言强制鸿蒙，使用新版灰底白焰 Logo；含 VIP 图库离线素材与 Figma 来源。短文案卡片上下居中，主体与 Logo 分区。
