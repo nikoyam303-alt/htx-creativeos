@@ -9,3 +9,7 @@
 
 - [poloniex-visual](skills/poloniex-visual/SKILL.md)：绿色社媒、Proxima Nova 字体强规范，以及官方插画检索下载。
 - [深色插画库](assets/illustrations/poloniex-dark/README.md)：56 张原始深色背景 PNG、两张总览和可检索来源索引；不含白底版本。
+
+## HTX SVIP 黑金配图库
+
+- [VIP 配图库](assets/illustrations/htx-vip/README.md)：44 项主体、背景、权益插画、权益图标及装饰素材，含总览、分类预览、语义索引与 Figma 溯源。
