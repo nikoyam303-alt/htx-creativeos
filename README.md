@@ -17,3 +17,8 @@
 ## HTX VIP / SVIP 视觉 Skill
 
 - [htx-svip](skills/htx-svip/SKILL.md)：黑金活动物料，全部语言强制鸿蒙，使用新版灰底白焰 Logo；含 VIP 图库离线素材与 Figma 来源。短文案卡片上下居中，主体与 Logo 分区。
+
+## HTX 火宝角色 Skill 与配图库
+
+- [火宝 skill](skills/htx-huobao-fast/SKILL.md)：优先检索配图库，缺少合适动作时再生图；角色为额前单蓝角。
+- [火宝配图库](assets/illustrations/htx-huobao/README.md)：54 款完整原图、3 张总览、动作关键词及 Figma 溯源。

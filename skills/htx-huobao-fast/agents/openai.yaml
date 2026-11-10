@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTX 火宝 Agent"
+  short_description: "生成火宝插画并按 HTX 品牌逻辑动态排版海报"
+  default_prompt: "使用 $htx-huobao-fast 根据我的完整内容生成一张 HTX 火宝海报。"
