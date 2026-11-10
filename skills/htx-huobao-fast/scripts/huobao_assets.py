@@ -14,6 +14,11 @@ BASE = 'https://raw.githubusercontent.com/nikoyam303-alt/htx-creativeos/main/'
 MANIFEST = BASE + 'assets/illustrations/htx-huobao/manifest.json'
 
 def read_url(url):
+    library_prefix = BASE + 'assets/illustrations/htx-huobao/'
+    if url.startswith(library_prefix):
+        cached = Path(__file__).resolve().parents[1] / 'assets/library' / url[len(library_prefix):]
+        if cached.is_file():
+            return cached.read_bytes()
     request = urllib.request.Request(url, headers={'User-Agent': 'htx-huobao-skill/1.0'})
     try:
         with urllib.request.urlopen(request, timeout=60) as response:

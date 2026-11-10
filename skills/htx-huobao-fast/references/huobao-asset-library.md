@@ -11,4 +11,4 @@ python3 scripts/huobao_assets.py --id HB-274 --output work/huobao.png
 python3 scripts/huobao_assets.py --manifest references/huobao-manifest.json --query "庆祝"
 ```
 
-离线索引只能检索；下载仍需网络或已校验的目标文件。若没有准确匹配，不把相近动作说成完全符合。优先用原图构图适配；新增动作采用用户指定工具，并附官方参考图。
+本机若安装了 `assets/library/` 缓存，脚本优先使用缓存并在选图下载时校验 SHA-256；未缓存时访问 GitHub。单独的离线索引只能检索。若没有准确匹配，不把相近动作说成完全符合。优先用原图构图适配；新增动作采用用户指定工具，并附官方参考图。
